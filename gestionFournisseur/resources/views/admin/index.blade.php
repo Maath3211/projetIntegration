@@ -9,14 +9,15 @@
     </div>
 </header>
 
-<h1>Page d'administration</h1>
+
 
 <div class="container">
     <div class="row">
         <div class="col-6 offset-3">
-
+            
 
             <div class="text-center py-5">
+                <h1>Page d'administration</h1>
                 <div class="d-flex">
                     <label>Courriel de l'appro.</label>
                     <input type="text" class="form-control inputCourriel" placeholder="Courriel" name="emailAppro">
