@@ -1,13 +1,19 @@
-  /* CSS GESTION 3R */
-  html, body {
-    background-color: black;
-  }
+/* CSS GESTION 3R */
 
-  /* FOOTER */
-  footer {
+@font-face {
+    font-family: alumni;
+    src: url("../fonts/AlumniSans-ExtraBold.ttf");
+}
+
+html,
+body {
+    background-color: black;
+}
+
+/* FOOTER */
+footer {
     padding: 20px;
     text-align: center;
     color: green;
     margin: 10px;
-  }
-  
+}
