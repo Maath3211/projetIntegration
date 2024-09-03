@@ -6,6 +6,12 @@
     src: url("../fonts/AlumniSans-ExtraBold.ttf");
 }
 
+@font-face {
+    font-family: ttHoves;
+    src: url("../fonts/TT\ Hoves\ Pro\ Trial\ Medium.ttf");
+}
+
+
 html,
 body {
     background-color: black;

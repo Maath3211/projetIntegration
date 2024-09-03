@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Administration')
 
-<link rel="stylesheet" href="{{asset('css/admin.css')}}">
+<link rel="stylesheet" href="{{ asset('css/admin.css') }}">
 
 <header>
     <div>
@@ -14,7 +14,7 @@
 <div class="container">
     <div class="row">
         <div class="col-6 offset-3">
-            
+
 
             <div class="text-center py-5">
                 <h1>Page d'administration</h1>
@@ -40,5 +40,4 @@
             </div>
         </div>
     </div>
-</div>
 </div>
