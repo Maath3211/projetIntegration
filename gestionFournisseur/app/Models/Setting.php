@@ -8,11 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class setting extends Model
 {
     use HasFactory;
+    protected $table = 'setting';
 
     protected $fillable = [
         'emailAppro',
-        'delai',
-        'maxSize',
+        'delaiRev',
+        'tailleMax',
         'emailFinance'
     ];
 }

@@ -28,12 +28,12 @@
 
                     <div class="d-flex">
                         <label>Délai avant la révision (mois)</label>
-                        <input type="number" class="form-control inputChiffre" placeholder="24" name="delai" >
+                        <input type="number" class="form-control inputChiffre" placeholder="24" name="delaiRev" >
                     </div>
 {{-- TODO: ajouter les required + email--}}
                     <div class="d-flex">
                         <label>Taille maximale des fichiers joints (Mo)</label>
-                        <input type="number" class="form-control inputChiffre" placeholder="75" name="maxSize" >
+                        <input type="number" class="form-control inputChiffre" placeholder="75" name="tailleMax" >
                     </div>
 
                     <div class="d-flex">

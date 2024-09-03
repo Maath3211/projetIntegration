@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Setting;
 use Illuminate\Http\Request;
+use App\Http\Requests\SettingRequest;
+
 
 class AdminController extends Controller
 {
@@ -11,8 +14,14 @@ class AdminController extends Controller
         return View('admin.setting');
     }
 
-    public function update(Request $request)
+    public function update(SettingRequest $request, Setting $Request)
     {
+        
+
+
+
+
+
         if ($request->emailAppro){
             $request->validate([
                 'emailAppro' => [
@@ -33,6 +42,13 @@ class AdminController extends Controller
                 ]);
         }
 
+
+
+
+
+
+
+        
         if ($request->delai){
             
         }
@@ -61,8 +77,15 @@ class AdminController extends Controller
                     'emailFinance.email' => 'Le courriel finance doit être dans le format d\'un adresse courriel.',
                 ]);
         }
-        /* $compte->save(); */
-        return redirect()->route('admin.parametre');
+
+        $setting = new setting();
+        $setting->emailAppro = $request->emailAppro;
+        $setting->delaiRev = $request->delaiRev;
+        $setting->tailleMax = $request->tailleMax;
+        $setting->emailFinance = $request->emailFinance;
+        $setting->save();
+
+        return redirect()->route('admin.setting');
     }
 
 
