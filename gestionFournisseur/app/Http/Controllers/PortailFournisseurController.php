@@ -17,11 +17,11 @@ class PortailFournisseurController extends Controller
     public function index()
     {
         $fournisseurs = Fournisseur::all();
-        return View('gestion.index');
+        return View('fournisseur.index');
     }
     public function infoLogin()
     {
-        return View('gestion.information');
+        return View('fournisseur.information');
     }
 
 
@@ -78,10 +78,10 @@ class PortailFournisseurController extends Controller
         $reussi = Auth::attempt(['email' => $request->email, 'password' => $request->password]);
         if($reussi){
             $fournisseurEmail = Fournisseur::where('email', $request->email)->firstOrFail();
-            return redirect()->route('gestion.information');
+            return redirect()->route('fournisseur.information');
         }
         else{
-            return redirect()->route('gestion.index')->withErrors(['Informations invalides']); 
+            return redirect()->route('fournisseur.index')->withErrors(['Informations invalides']); 
         }
     }
 
@@ -90,10 +90,10 @@ class PortailFournisseurController extends Controller
         $reussi = Auth::attempt(['neq' => $request->neq, 'password' => $request->password]);
         if($reussi){
             $fournisseurNeq = Fournisseur::where('neq', $request->neq)->firstOrFail();
-            return redirect()->route('gestion.information');
+            return redirect()->route('fournisseur.information');
         }
         else{
-            return redirect()->route('gestion.index')->withErrors(['Informations invalides']); 
+            return redirect()->route('fournisseur.index')->withErrors(['Informations invalides']); 
         }
     }
 
