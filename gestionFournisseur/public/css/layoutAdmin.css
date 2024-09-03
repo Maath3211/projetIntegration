@@ -1,0 +1,42 @@
+/*  Couleur premiere triade: 1: #78c6e0, 2: #0076d5, 3: #0b2341 */
+
+@font-face {
+    font-family: alumni;
+    src: url("../fonts/AlumniSans-ExtraBold.ttf");
+}
+
+@font-face {
+    font-family: ttHoves;
+    src: url("../fonts/TT\ Hoves\ Pro\ Trial\ Medium.ttf");
+}
+
+body{
+    background-color: whitesmoke;
+}
+
+h1{
+    font-family: alumni;
+    color: #0b2341;
+}
+
+label{
+    font-family: ttHoves;
+    color: #0076d5;
+}
+
+#msgErreur{
+    position: fixed;
+    width: 32%;
+    left: 0;
+    right: 0;
+    top: 10%;
+    margin: auto;
+}
+
+/* FOOTER */
+footer {
+    padding: 20px;
+    text-align: center;
+    color: green;
+    margin: 10px;
+}

@@ -26,5 +26,8 @@ Route::POST('/compte',
 [PortailFournisseursController::class,'store'])->name('gestion.inscription');
 
 # Accceuil admin
-Route::GET('/administration',
-[AdminController::class,'index'])->name('admin.index');
+Route::GET('/administration/parametre',
+[AdminController::class,'setting'])->name('admin.setting');
+
+Route::POST('/administration/parametre/sauvegarde',
+[AdminController::class,'update'])->name('admin.saveSetting');
