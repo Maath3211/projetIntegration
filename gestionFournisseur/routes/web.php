@@ -26,10 +26,13 @@ Route::GET('/compte',
 Route::POST('/compte',
 [PortailFournisseursController::class,'store'])->name('fournisseur.inscription');
 
-# Accceuil admin
-Route::GET('/administration',
-[AdminController::class,'index'])->name('admin.index');
-
 # Accceuil Responsable
 Route::GET('/responsable',
 [ResponsablesController::class,'index'])->name('responsable.index');
+
+# Accceuil admin
+Route::GET('/administration/parametre',
+[AdminController::class,'setting'])->name('admin.setting');
+
+Route::POST('/administration/parametre/sauvegarde',
+[AdminController::class,'update'])->name('admin.saveSetting');
