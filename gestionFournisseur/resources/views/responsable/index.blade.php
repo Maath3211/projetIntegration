@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.fournisseur')
 @section('title',"Page d'accueil")
 
 <!-- TODO: aller chercher les fournisseur dans la BD -->
@@ -10,9 +10,27 @@
 </header>
 <div class="container bg-primary mb-3">
     <div class="row">
-        <div class="col-8 text-end">
-
+        <div class="col-2 mt-3 mb-3 append">
+            <input type="checkbox">
+            <p>En attente</p>
         </div>
+
+        <div class="col-2 mt-3 mb-3 append">
+            <input type="checkbox">
+            <p>Acceptées</p>
+        </div>
+
+        <div class="col-2 mt-3 mb-3 append">
+            <input type="checkbox">
+            <p>Refusées</p>
+        </div>
+
+        <div class="col-2 mt-3 mb-3 ">
+            <input type="checkbox">
+            <p>À réviser</p>
+        </div>
+
+
         <div class="col-4">
             <div class="input-group mb-3 mt-3">
                     <input type="text" class="form-control" placeholder="Entrez" aria-label="Recipient's username" aria-describedby="basic-addon2">

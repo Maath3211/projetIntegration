@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\PortailFournisseurController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ResponsablesController;
 
 
 # Connexion portail fournisseur
@@ -28,3 +29,7 @@ Route::POST('/compte',
 # Accceuil admin
 Route::GET('/administration',
 [AdminController::class,'index'])->name('admin.index');
+
+# Accceuil Responsable
+Route::GET('/responsable',
+[ResponsablesController::class,'index'])->name('responsable.index');
