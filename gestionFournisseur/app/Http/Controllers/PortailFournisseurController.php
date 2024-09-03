@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Models\Fournisseur;
 use App\Http\Requests\ConnexionRequest;
+use App\Http\Requests\FournisseurRequest;
 
 
 class PortailFournisseurController extends Controller
@@ -72,9 +73,44 @@ class PortailFournisseurController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+
+
+    public function createIden()
     {
-        //
+        return view('fournisseur.inscriptionIden');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function storeIden(FournisseurRequest $request, Fournisseur $Request)
+    {
+        {
+            try
+            {
+                $fournisseurIden = new Fournisseur($request->all());
+                $fournisseurIden['neq'] = ucfirst($request->neq);
+                $fournisseurIden['entreprise'] = ucfirst($request->entreprise);
+                $fournisseurIden['email'] = ($request->email);
+                $fournisseurIden['password'] = ($request->password);
+                
+                $fournisseurIden->save();
+                return redirect()->route('fournisseur.index')->with('message',"Bienvenue!");
+            }
+            /*$fournisseurIden = new Fournisseur([
+                'neq' => ucfirst($request->neq),
+                'entreprise' => ucfirst($request->entreprise),
+                'email' => $request->email,
+                'password' => bcrypt($request->password), // Hash du mot de passe
+            ]); */
+            catch (\Throwable $e)
+            {
+                 Log::debug($e);
+                 return redirect()->route('fournisseur.inscriptionIden')->withErrors(['Informations invalides']); 
+            }
+
+            return redirect()->route('fournisseur.index');
+            }
     }
 
     public function loginEmail(ConnexionRequest $request)

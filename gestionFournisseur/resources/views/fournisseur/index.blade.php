@@ -5,7 +5,8 @@
     <a href="/"><h5 class="compagny">logo</h5></a>
 </div>
 <nav class="main-nav d-flex">                 
-    <a href="{{route('fournisseur.information')}}">Information</a>
+    <a href="{{route('fournisseur.inscription')}}">Inscription</a>  
+</nav>
   </nav>   
 </header>
 <div class="text-center py-5">
