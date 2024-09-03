@@ -3,6 +3,7 @@
 
 <!-- TODO: aller chercher les fournisseur dans la BD -->
 <!-- FIXME: Le designe ces TURBO LAID !!!! -->
+<!-- FIXME: Les dropdown ne fonctionnent pas  -->
 <header>
 <div>
     <a href="/"><h5 class="compagny">VILLE3R</h5></a>
@@ -51,6 +52,20 @@
                     <a class="dropdown-item" href="#">Action</a>
                     <a class="dropdown-item" href="#">Another action</a>
                     <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-3 bg-danger text-center pt-5 border">
+        <div class="input-group">
+                <input type="text" class="form-control" placeholder="Catégories de travaux" >
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><</button>
+                    <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
                     <div role="separator" class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">Separated link</a>
                     </div>
@@ -60,7 +75,7 @@
 
         <div class="col-3 bg-danger text-center pt-5 border">
         <div class="input-group">
-                <input type="text" class="form-control" placeholder="Produit et service" >
+                <input type="text" class="form-control" placeholder="Régions administratives" >
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><</button>
                     <div class="dropdown-menu">
@@ -76,7 +91,7 @@
 
         <div class="col-3 bg-danger text-center pt-5 border">
         <div class="input-group">
-                <input type="text" class="form-control" placeholder="Produit et service" >
+                <input type="text" class="form-control" placeholder="Régions administratives" >
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><</button>
                     <div class="dropdown-menu">
@@ -90,21 +105,10 @@
             </div>
         </div>
 
-                <div class="col-3 bg-danger text-center pt-5 border">
-                <div class="input-group">
-                <input type="text" class="form-control" placeholder="Produit et service" >
-                <div class="input-group-append">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><</button>
-                    <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <div role="separator" class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+               
+
+
+
 
 
 
