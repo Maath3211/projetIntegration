@@ -1,0 +1,85 @@
+/* CSS GESTION FOURNISSEUR 3R */
+
+/*  Couleur premiere triade: 1: #78c6e0, 2: #0076d5, 3: #0b2341 */
+
+@font-face {
+    font-family: alumni;
+    src: url("../fonts/AlumniSans-ExtraBold.ttf");
+  }
+
+  @font-face {
+    font-family: ttHoves;
+    src: url("../TT-Hoves-Pro-Trial-Medium.ttf");
+  }
+
+h1{
+  font-family: alumni;
+  color: #0b2341;
+}
+  
+  html, body {
+    background-color: whitesmoke;
+  }
+  
+  /* ACCEUIL FOURNISSEUR */
+  
+  fieldset {
+    border: 2px solid #ccc;
+    padding: 0 10px 20px 10px;
+  }
+  legend {
+    font-family: ttHoves;
+    color: #0076d5;
+  }
+  
+  .titreForm {
+    white-space: nowrap;
+  }
+  
+  label {
+      font-family: ttHoves;
+      color: #78c6e0;
+      display:inline-block;
+      width: 80px;
+  }
+  
+  
+  .form-group {
+    font-family: alumni;
+    color: #0b2341;
+    position: relative; /* Pour le lien */
+    margin-bottom: 20px;
+    width: 500px;
+  
+  }
+  
+  /* LINK */
+  
+  .link-right {
+    position: absolute; 
+    right: 12px; 
+    bottom: -20px; 
+    font-size: 0.9em; 
+  }
+  
+  /* FOOTER */
+  
+  footer {
+    padding: 20px;
+    text-align: center;
+    color: green;
+    margin: 10px;
+  }
+  
+  /*MEDIA*/
+  
+  @media (max-width: 1000px) {
+    .link-right {
+      position: static; 
+      display: block; 
+      text-align: right; 
+      margin-top: 5px;
+    }
+  }
+  
+  
