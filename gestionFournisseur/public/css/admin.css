@@ -7,6 +7,10 @@ label{
     color: #78c6e0;
 }
 
+input::placeholder {
+    opacity: 0.8 !important;
+}
+
 .inputChiffre {
     margin-left: auto;
     width: 12% !important;
