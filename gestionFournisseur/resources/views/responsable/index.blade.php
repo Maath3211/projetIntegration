@@ -10,7 +10,8 @@
 </header>
 <div class="container bg-primary mb-3">
     <div class="row">
-        <div class="col-2 mt-3 mb-3 append">
+        <div class="col-2 mt-3 mb-3">
+            
             <input type="checkbox">
             <p>En attente</p>
         </div>
@@ -40,10 +41,73 @@
             </div>
         </div>
 
-
-        <div class="col-12 bg-danger text-center p-5">
-            <h1>Tri</h1>
+<!-- Triage -->
+        <div class="col-3 bg-danger text-center pt-5 pb-5  border ">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Produit et service" >
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> . </button>
+                    <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                    <div role="separator" class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Separated link</a>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <div class="col-3 bg-danger text-center pt-5 border">
+        <div class="input-group">
+                <input type="text" class="form-control" placeholder="Produit et service" >
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><</button>
+                    <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                    <div role="separator" class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Separated link</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-3 bg-danger text-center pt-5 border">
+        <div class="input-group">
+                <input type="text" class="form-control" placeholder="Produit et service" >
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><</button>
+                    <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                    <div role="separator" class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Separated link</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+                <div class="col-3 bg-danger text-center pt-5 border">
+                <div class="input-group">
+                <input type="text" class="form-control" placeholder="Produit et service" >
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><</button>
+                    <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                    <div role="separator" class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Separated link</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
     </div>
 </div>
 
