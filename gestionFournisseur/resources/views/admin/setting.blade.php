@@ -23,23 +23,23 @@
                     <div class="d-flex">
                         <label>Courriel de l'appro.</label>
                         <input type="text" class="form-control inputCourriel" placeholder="Courriel"
-                            name="emailAppro">
+                            name="emailAppro" value="a@a">
                     </div>
 
                     <div class="d-flex">
                         <label>Délai avant la révision (mois)</label>
-                        <input type="number" class="form-control inputChiffre" placeholder="24" name="delaiRev" >
+                        <input type="number" class="form-control inputChiffre" placeholder="24" name="delaiRev" value="24">
                     </div>
 {{-- TODO: ajouter les required + email--}}
                     <div class="d-flex">
                         <label>Taille maximale des fichiers joints (Mo)</label>
-                        <input type="number" class="form-control inputChiffre" placeholder="75" name="tailleMax" >
+                        <input type="number" class="form-control inputChiffre" placeholder="75" name="tailleMax" value="24">
                     </div>
 
                     <div class="d-flex">
                         <label>Courriel des finances</label>
                         <input type="email" class="form-control inputCourriel" placeholder="Courriel"
-                            name="emailFinance" >
+                            name="emailFinance" value="a@a">
                     </div>
                     <br>
                     <div>

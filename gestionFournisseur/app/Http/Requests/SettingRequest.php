@@ -11,7 +11,7 @@ class SettingRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,6 +25,10 @@ class SettingRequest extends FormRequest
             'emailAppro' => [
                 'required',
                 'email'
+            ],
+            'emailFinance' => [
+                'required',
+                'email'
             ]
 
         ];
@@ -34,6 +38,8 @@ class SettingRequest extends FormRequest
         return [
             'emailAppro.required' => 'Le courriel approvisionnement est requis.',
             'emailAppro.email' => 'Le courriel approvisionnement doit être dans le format d\'un adresse courriel.',
+            'emailFinance.required' => 'Le courriel finance est requis.',
+            'emailFinance.email' => 'Le courriel finance doit être dans le format d\'un adresse courriel.',
         ];
     }
 }
