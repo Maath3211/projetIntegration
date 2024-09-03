@@ -14,6 +14,8 @@ Route::POST('/connexion/neq',
 [PortailFournisseurController::class,'loginNeq'])->name('login.neq');
 Route::POST('/connexion/email',
 [PortailFournisseurController::class,'loginEmail'])->name('login.email');
+Route::GET('/UNSPSC',
+[PortailFournisseurController::class,'UNSPSC'])->name('fournisseur.UNSPSC');
 
 # Information du fournisseur TODO: quand fournisseur sera completé
 Route::GET('/information',

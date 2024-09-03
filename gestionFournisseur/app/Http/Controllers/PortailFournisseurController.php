@@ -24,6 +24,10 @@ class PortailFournisseurController extends Controller
         return View('fournisseur.information');
     }
 
+    public function UNSPSC()
+    {
+        return View('fournisseur.UNSPSC');
+    }
 
     /**
      * Show the form for creating a new resource.
