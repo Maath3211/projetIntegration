@@ -14,23 +14,21 @@ Route::POST('/connexion/neq',
 [PortailFournisseurController::class,'loginNeq'])->name('login.neq');
 Route::POST('/connexion/email',
 [PortailFournisseurController::class,'loginEmail'])->name('login.email');
-Route::GET('/UNSPSC',
-[PortailFournisseurController::class,'UNSPSC'])->name('fournisseur.UNSPSC');
 
 # Information du fournisseur TODO: quand fournisseur sera completé
 Route::GET('/information',
 [PortailFournisseurController::class,'infoLogin'])->name('fournisseur.information');
 
-# Inscription
-Route::GET('/compte',
-[PortailFournisseursController::class,'create'])->name('fournisseur.inscription');
+# InscriptionIdentification
+Route::GET('/compte/identification',
+[PortailFournisseurController::class,'createIden'])->name('fournisseur.inscription');
 
-Route::POST('/compte',
-[PortailFournisseursController::class,'store'])->name('fournisseur.inscription');
+Route::POST('/compte/identification',
+[PortailFournisseurController::class,'storeIden'])->name('fournisseur.inscription');
 
-# Accceuil Responsable
-Route::GET('/responsable',
-[ResponsablesController::class,'index'])->name('responsable.index');
+# InscriptionUNSPSC
+Route::GET('/UNSPSC',
+[PortailFournisseurController::class,'UNSPSC'])->name('fournisseur.UNSPSC');
 
 # Accceuil admin
 Route::GET('/administration/parametre',
@@ -38,3 +36,7 @@ Route::GET('/administration/parametre',
 
 Route::POST('/administration/parametre/sauvegarde',
 [AdminController::class,'update'])->name('admin.saveSetting');
+
+# Accceuil Responsable
+Route::GET('/responsable',
+[ResponsablesController::class,'index'])->name('responsable.index');
