@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('unspsc', function (Blueprint $table) {
             $table->id();
-            $table->int('code');
+            $table->integer('code');
             $table->text('description');
             $table->text('details');
             $table->timestamps();

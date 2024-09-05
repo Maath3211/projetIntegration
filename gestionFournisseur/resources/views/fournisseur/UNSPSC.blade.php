@@ -37,21 +37,24 @@
             <div class="row">
                 <h5 class="pl-5">S14 - Services Publics</h5>
 
-            <div class="col-md-1">
-                <input type="checkbox" class="mt-2">
-            </div>
 
-            <div class="col-md-4">
-                <p>17516152</p>
-            </div>
+            @if (count($codes))
+                    @foreach($codes as $code)
+                    <div class="col-md-1">
+                        <input type="checkbox" class="mt-2" id=" {{ $code->id }}">
+                    </div>
+        
+                    <div class="col-md-4">
+                        <p>{{ $code->code }}</p>
+                    </div>
 
-            <div class="col-md-7">
-                <p>Chien et chat</p>
-            </div>
-                
-
-
-
+                    <div class="col-md-7">
+                        <p>{{ $code->description }}</p>
+                    </div>
+                    @endforeach
+                @else
+                    <p>Marche pas</p>
+                @endif
 
 
             <div class="row">

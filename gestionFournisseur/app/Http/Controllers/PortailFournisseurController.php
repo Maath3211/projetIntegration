@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Models\Fournisseur;
+use App\Models\Unspsc;
 use App\Http\Requests\ConnexionRequest;
 use App\Http\Requests\FournisseurRequest;
 
@@ -27,7 +28,8 @@ class PortailFournisseurController extends Controller
 
     public function UNSPSC()
     {
-        return View('fournisseur.UNSPSC');
+        $codes = Unspsc::all();
+        return View('fournisseur.UNSPSC', compact('codes'));
     }
 
     /**
