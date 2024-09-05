@@ -39,7 +39,8 @@
             <div class="row">
                 <h5 class="pl-5">S14 - Services Publics</h5>
 
-
+                <form method="POST" action="{{ route('fournisseur.storeUnspsc')}}">
+                    @csrf
                 @if (count($codes))
                 <div class="scroll-container">
                     @foreach($codes as $code)
@@ -75,6 +76,7 @@
                     <textarea name="Details" id="detail" class="form-control" maxlength="500"></textarea>
                 </div>
 
+
                 <div class="col-md-1">
                     
                 </div>
@@ -90,8 +92,8 @@
                 </div>
 
                 <div class="col-md-3">
-                {{-- <button class="btn btn-default" href="{{ route(fournisseur.createUnspsc)}}">Suivant</button> --}}
-                    
+                <button class="btn btn-default" >Suivant</button>
+            </form>
                 </div>
             </div>
 
