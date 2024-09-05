@@ -38,23 +38,27 @@
                 <h5 class="pl-5">S14 - Services Publics</h5>
 
 
-            @if (count($codes))
+                @if (count($codes))
+                <div class="scroll-container">
                     @foreach($codes as $code)
-                    <div class="col-md-1">
-                        <input type="checkbox" class="mt-2" id=" {{ $code->id }}">
-                    </div>
-        
-                    <div class="col-md-4">
-                        <p>{{ $code->code }}</p>
-                    </div>
-
-                    <div class="col-md-7">
-                        <p>{{ $code->description }}</p>
-                    </div>
+                        <div class="item">
+                            <div class="col-md-1">
+                                <input type="radio" class="mt-2" id="{{ $code->id }}" name="choix" value="{{ $code->id }}">
+                            </div>
+                    
+                            <div class="col-md-4">
+                                <p>{{ $code->code }}</p>
+                            </div>
+            
+                            <div class="col-md-7">
+                                <p>{{ $code->description }}</p>
+                            </div>
+                        </div>
                     @endforeach
-                @else
-                    <p>Marche pas</p>
-                @endif
+                </div>
+            @else
+                <p>Marche pas</p>
+            @endif
 
 
             <div class="row">

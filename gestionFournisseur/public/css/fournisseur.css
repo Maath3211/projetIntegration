@@ -81,5 +81,20 @@ h1{
       margin-top: 5px;
     }
   }
+
+  .scroll-container {
+    height: 200px; /* Ajustez la hauteur en fonction de vos besoins */
+    overflow-y: auto; /* Permet le défilement vertical */
+    border: 1px solid #ccc; /* Bordure pour voir les limites du conteneur */
+    padding: 10px;
+}
+
+.item {
+    display: flex;
+    margin-bottom: 10px; /* Espacement entre les éléments */
+    background-color: #f0f0f0;
+    padding: 10px;
+    border: 1px solid #ddd;
+}
   
   

@@ -18,14 +18,39 @@ class UnspscSeeder extends Seeder
             [
            'code'=>72101504,
             'description'=>"Services de prévoyance et de mise à l'épreuve de catastrophe",
-            'details'=>'Je fais des combinaison spacial'
+
             ],
 
             [
             'code'=>72101506,
             'description'=>"Services de maintenance d'ascenseurs",
-            'details'=>'Je fais des Ascenseurs'
+
             ],
+
+            [
+                'code'=>72101506,
+                'description'=>"Services de maintenance d'ascenseurs",
+    
+            ],    
+            
+            [
+                'code'=>72101504,
+                'description'=>"Services de prévoyance et de mise à l'épreuve de catastrophe",
+     
+            ],
+     
+            [
+                'code'=>72101506,
+                'description'=>"Services de maintenance d'ascenseurs",
+     
+            ],
+     
+            [
+                'code'=>72101506,
+                'description'=>"Services de maintenance d'ascenseurs",
+         
+            ], 
+            
 
         ]);
     }
