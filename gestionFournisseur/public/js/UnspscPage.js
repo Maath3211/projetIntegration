@@ -26,7 +26,7 @@
 //     searchInput.addEventListener('input', filterItems);
 // });
 
-
+// TODO: améliorer le triage des élément EX: si je tape 111 y vas chercher dans l'ordre de ma liste si ya 3-1 qui suit Pas claire mais je comprends
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('search-input');
     const items = Array.from(document.querySelectorAll('.item'));

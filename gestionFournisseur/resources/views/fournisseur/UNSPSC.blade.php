@@ -26,13 +26,13 @@
                     <h1>Services</h1>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <input type="text" class="form-control" maxlength="80" id="search-input" name="recherche" placeholder="Rechercher...">
                 </div>
 
-                <div class="col-md-2 mt-1">
+                {{-- <div class="col-md-2 mt-1">
                     <Button>Logo</Button>
-                </div>
+                </div> --}}
             </div>
 
 
@@ -59,7 +59,7 @@
                     @endforeach
                 </div>
             @else
-                <p>Marche pas</p>
+                <p>Erreur : aucun Services public proposé</p>
             @endif
 
 

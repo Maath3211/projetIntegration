@@ -15,41 +15,41 @@ class UnspscSeeder extends Seeder
     {
         DB::table('unspsc')->insert([
 
-            [
-           'code'=>72101504,
-            'description'=>"Services de prévoyance et de mise à l'épreuve de catastrophe",
+        //     [
+        //    'code'=>72101504,
+        //     'description'=>"Services de prévoyance et de mise à l'épreuve de catastrophe",
 
-            ],
+        //     ],
 
-            [
-            'code'=>72101506,
-            'description'=>"Services de maintenance d'ascenseurs",
+        //     [
+        //     'code'=>72101506,
+        //     'description'=>"Services de maintenance d'ascenseurs",
 
-            ],
+        //     ],
 
-            [
-                'code'=>72101506,
-                'description'=>"Services de maintenance d'ascenseurs",
+        //     [
+        //         'code'=>72101506,
+        //         'description'=>"Services de maintenance d'ascenseurs",
     
-            ],    
+        //     ],    
             
-            [
-                'code'=>72101504,
-                'description'=>"Services de prévoyance et de mise à l'épreuve de catastrophe",
+        //     [
+        //         'code'=>72101504,
+        //         'description'=>"Services de prévoyance et de mise à l'épreuve de catastrophe",
      
-            ],
+        //     ],
      
-            [
-                'code'=>72101506,
-                'description'=>"Services de maintenance d'ascenseurs",
+        //     [
+        //         'code'=>72101506,
+        //         'description'=>"Services de maintenance d'ascenseurs",
      
-            ],
+        //     ],
      
-            [
-                'code'=>72101506,
-                'description'=>"Services de maintenance d'ascenseurs",
+        //     [
+        //         'code'=>72101506,
+        //         'description'=>"Services de maintenance d'ascenseurs",
          
-            ], 
+        //     ], 
             
 
         ]);
