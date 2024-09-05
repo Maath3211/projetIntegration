@@ -29,6 +29,14 @@ class SettingRequest extends FormRequest
             'emailFinance' => [
                 'required',
                 'email'
+            ],
+            'delaiRev' => [
+                'required',
+                'integer'
+            ],
+            'tailleMax' => [
+                'required',
+                'integer'
             ]
 
         ];
@@ -40,6 +48,12 @@ class SettingRequest extends FormRequest
             'emailAppro.email' => 'Le courriel approvisionnement doit être dans le format d\'un adresse courriel.',
             'emailFinance.required' => 'Le courriel finance est requis.',
             'emailFinance.email' => 'Le courriel finance doit être dans le format d\'un adresse courriel.',
+            'delaiRev.required' => 'Le délai de révision est requis',
+            // FIXME: changer message integer???
+            'delaiRev.integer' => 'Le delai doit être un nombre rond',
+            'tailleMax.required' => 'La taille maximale est requise',
+            // FIXME: changer message integer???
+            'tailleMax.integer' => 'Le taille maximale doit être un nombre rond',
         ];
     }
 }
