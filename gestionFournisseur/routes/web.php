@@ -31,6 +31,15 @@ Route::GET('/UNSPSC',
 [PortailFournisseurController::class,'UNSPSC'])->name('fournisseur.UNSPSC');
 
 # admin
+
+# InscriptionCoordonnées
+Route::GET('/compte/coordonnees',
+[PortailFournisseurController::class,'createCoordo'])->name('fournisseur.coordonnees');
+
+Route::POST('/compte/coordonnees',
+[PortailFournisseurController::class,'storeCoordo'])->name('fournisseur.coordonnees');
+
+# Accceuil admin
 Route::GET('/administration/parametre',
 [AdminController::class,'setting'])->name('admin.setting');
 

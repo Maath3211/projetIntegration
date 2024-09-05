@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Models\Fournisseur;
+use App\Models\FournisseurCoord;
 use App\Models\Unspsc;
 use App\Http\Requests\ConnexionRequest;
 use App\Http\Requests\FournisseurRequest;
+use App\Http\Requests\FournisseurCoordRequest;
 
 
 class PortailFournisseurController extends Controller
@@ -76,6 +78,41 @@ class PortailFournisseurController extends Controller
      * Remove the specified resource from storage.
      */
 
+     public function createCoordo()
+     {
+         return View('fournisseur.coordonnees'); // nom de la page web 
+     }
+ 
+     public function storeCoordo(FournisseurCoordRequest $request, FournisseurCoord $Request)
+     {
+        {
+            try
+            {
+                $fournisseurCoord = new FournisseurCoord($request->all());
+                $fournisseurCoord['noCivic'] = ($request->noCivic);
+                $fournisseurCoord['rue'] = ($request->rue);
+                $fournisseurCoord['bureau'] = ($request->bureau);
+                $fournisseurCoord['ville'] = ($request->ville);
+                $fournisseurCoord['province'] = ($request->province);
+                $fournisseurCoord['codePostal'] = ($request->codePostal);
+                /*$fournisseurCoord['codeRegion'] = ($request->password);*/
+                /*$fournisseurCoord['nomRegion'] = ($request->password);*/
+                $fournisseurCoord['site'] = ($request->site);
+                $fournisseurCoord['typeTel'] = ($request->typeTel);
+                $fournisseurCoord['numero'] = ($request->numero);
+                $fournisseurCoord['poste'] = ($request->poste);
+                $fournisseurCoord->save();
+                return redirect()->route('fournisseur.index')->with('message',"Enregistré!");
+            }
+            catch (\Throwable $e)
+            {
+                 Log::debug($e);
+                 return redirect()->route('fournisseur.coordonnees')->withErrors(['Informations invalides']); 
+            }
+
+            return redirect()->route('fournisseur.index');
+            }
+    }
 
     public function createIden()
     {
@@ -91,7 +128,7 @@ class PortailFournisseurController extends Controller
             try
             {
                 $fournisseurIden = new Fournisseur($request->all());
-                $fournisseurIden['neq'] = ucfirst($request->neq);
+                $fournisseurIden['neq'] = ($request->neq);
                 $fournisseurIden['entreprise'] = ucfirst($request->entreprise);
                 $fournisseurIden['email'] = ($request->email);
                 $fournisseurIden['password'] = ($request->password);
@@ -99,12 +136,6 @@ class PortailFournisseurController extends Controller
                 $fournisseurIden->save();
                 return redirect()->route('fournisseur.index')->with('message',"Bienvenue!");
             }
-            /*$fournisseurIden = new Fournisseur([
-                'neq' => ucfirst($request->neq),
-                'entreprise' => ucfirst($request->entreprise),
-                'email' => $request->email,
-                'password' => bcrypt($request->password), // Hash du mot de passe
-            ]); */
             catch (\Throwable $e)
             {
                  Log::debug($e);
