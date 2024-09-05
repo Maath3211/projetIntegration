@@ -34,6 +34,15 @@ Route::GET('/UNSPSC',
 [PortailFournisseurController::class,'createUnspsc'])->name('fournisseur.createUnspsc');
 
 # admin
+
+# InscriptionCoordonnées
+Route::GET('/compte/coordonnees',
+[PortailFournisseurController::class,'createCoordo'])->name('fournisseur.coordonnees');
+
+Route::POST('/compte/coordonnees',
+[PortailFournisseurController::class,'storeCoordo'])->name('fournisseur.coordonnees');
+
+# Accceuil admin
 Route::GET('/administration/parametre',
 [AdminController::class,'setting'])->name('admin.setting');
 
@@ -43,3 +52,19 @@ Route::POST('/administration/parametre/sauvegarde',
 # Acccueil Responsable
 Route::GET('/responsable',
 [ResponsablesController::class,'index'])->name('responsable.index');
+
+
+
+
+
+
+
+
+
+
+
+Route::GET('/impo',
+[AdminController::class,'impo'])->name('admin.impo');
+
+Route::PATCH('/impoImg',
+[AdminController::class,'impoImg'])->name('admin.impoImg');
