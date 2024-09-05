@@ -3,8 +3,10 @@
 <header>
 <div>
     <a href="/"><h5 class="compagny">LOGO-VILLE3R</h5></a>
+
 </div>
 </header>
+
 <div class="container-fluid">
     <div class="row">
 
@@ -25,7 +27,7 @@
                 </div>
 
                 <div class="col-md-3">
-                    <input type="text" class="form-control" maxlength="80">
+                    <input type="text" class="form-control" maxlength="80" id="search-input" name="recherche" placeholder="Rechercher...">
                 </div>
 
                 <div class="col-md-2 mt-1">
@@ -113,3 +115,4 @@
 
     </div>
 </div>
+<script src="{{ asset('js/UnspscPage.js') }}"></script>

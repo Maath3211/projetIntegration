@@ -16,6 +16,11 @@ h1{
   font-family: alumni;
   color: #0b2341;
 }
+
+p{
+  font-family: ttHoves;
+  color: black;
+}
   
   html, body {
     background-color: whitesmoke;
@@ -83,7 +88,7 @@ h1{
   }
 
   .scroll-container {
-    height: 200px; /* Ajustez la hauteur en fonction de vos besoins */
+    height: 400px; /* Ajustez la hauteur en fonction de vos besoins */
     overflow-y: auto; /* Permet le défilement vertical */
     border: 1px solid #ccc; /* Bordure pour voir les limites du conteneur */
     padding: 10px;
