@@ -30,13 +30,13 @@ Route::POST('/compte/identification',
 Route::GET('/UNSPSC',
 [PortailFournisseurController::class,'UNSPSC'])->name('fournisseur.UNSPSC');
 
-# Accceuil admin
+# admin
 Route::GET('/administration/parametre',
 [AdminController::class,'setting'])->name('admin.setting');
 
 Route::POST('/administration/parametre/sauvegarde',
 [AdminController::class,'update'])->name('admin.saveSetting');
 
-# Accceuil Responsable
+# Acccueil Responsable
 Route::GET('/responsable',
 [ResponsablesController::class,'index'])->name('responsable.index');
