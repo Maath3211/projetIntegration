@@ -23,23 +23,23 @@
                     <div class="d-flex">
                         <label>Courriel de l'appro.</label>
                         <input type="email" class="form-control inputCourriel" placeholder="Courriel"
-                            name="emailAppro" value="a@a" required>
+                            name="emailAppro" value="{{ $settings->emailAppro }}" required>
                     </div>
 
                     <div class="d-flex">
                         <label>Délai avant la révision (mois)</label>
-                        <input type="number" class="form-control inputChiffre" placeholder="24" name="delaiRev" value="24" required>
+                        <input type="number" class="form-control inputChiffre" placeholder="24" name="delaiRev" required value="{{ $settings->delaiRev }}">
                     </div>
                     
                     <div class="d-flex">
                         <label>Taille maximale des fichiers joints (Mo)</label>
-                        <input type="number" class="form-control inputChiffre" placeholder="75" name="tailleMax" value="24" required>
+                        <input type="number" class="form-control inputChiffre" placeholder="75" name="tailleMax" required value="{{ $settings->tailleMax }}">
                     </div>
 
                     <div class="d-flex">
                         <label>Courriel des finances</label>
                         <input type="email" class="form-control inputCourriel" placeholder="Courriel"
-                            name="emailFinance" value="a@a" required>
+                            name="emailFinance" required value="{{ $settings->emailFinance }}">
                     </div>
                     <br>
                     <div>

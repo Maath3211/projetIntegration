@@ -11,7 +11,8 @@ class AdminController extends Controller
 {
     public function setting()
     {
-        return View('admin.setting');
+        $settings = Setting::latest()->first();
+        return View('admin.setting', compact('settings'));
     }
 
     public function update(SettingRequest $request, Setting $Request)
