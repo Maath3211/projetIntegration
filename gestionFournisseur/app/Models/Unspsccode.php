@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Unspsccode extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['idUser','unspsc','details'];
 }

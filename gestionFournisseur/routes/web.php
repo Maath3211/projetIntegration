@@ -27,11 +27,12 @@ Route::POST('/compte/identification',
 [PortailFournisseurController::class,'storeIden'])->name('fournisseur.inscription');
 
 # InscriptionUNSPSC
-// Route::GET('/UNSPSC',
-// [PortailFournisseurController::class,'UNSPSC'])->name('fournisseur.UNSPSC');
-
 Route::GET('/UNSPSC',
-[PortailFournisseurController::class,'createUnspsc'])->name('fournisseur.createUnspsc');
+[PortailFournisseurController::class,'UNSPSC'])->name('fournisseur.UNSPSC');
+
+Route::POST('/UNSPSC/store',
+[PortailFournisseurController::class,'storeUnspsc'])->name('fournisseur.storeUnspsc');
+
 
 # admin
 
