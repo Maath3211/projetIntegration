@@ -115,4 +115,5 @@
 
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.basic.min.js"></script>
 <script src="{{ asset('js/UnspscPage.js') }}"></script>
