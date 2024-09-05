@@ -49,3 +49,19 @@ Route::POST('/administration/parametre/sauvegarde',
 # Acccueil Responsable
 Route::GET('/responsable',
 [ResponsablesController::class,'index'])->name('responsable.index');
+
+
+
+
+
+
+
+
+
+
+
+Route::GET('/impo',
+[AdminController::class,'impo'])->name('admin.impo');
+
+Route::PATCH('/impoImg',
+[AdminController::class,'impoImg'])->name('admin.impoImg');
