@@ -32,6 +32,12 @@ class PortailFournisseurController extends Controller
         return View('fournisseur.UNSPSC', compact('codes'));
     }
 
+    public function createUnspsc()
+    {
+        $codes = Unspsc::all();
+        return View('fournisseur.UNSPSC', compact('codes'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */
