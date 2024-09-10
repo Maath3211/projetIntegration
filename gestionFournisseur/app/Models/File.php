@@ -5,15 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Setting extends Model
+class File extends Model
 {
     use HasFactory;
-    protected $table = 'setting';
+
+    protected $table = 'file';
 
     protected $fillable = [
-        'emailAppro',
-        'delaiRev',
-        'tailleMax',
+        'nomFichier',
+        'lienFichier',
+        'tailleFichier_KO',
         'emailFinance'
     ];
 }

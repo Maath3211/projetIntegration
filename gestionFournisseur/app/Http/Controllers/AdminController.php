@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Setting;
+use App\Models\File;
 use Illuminate\Http\Request;
 use App\Http\Requests\SettingRequest;
-use Termwind\Components\Dd;
 
 
 class AdminController extends Controller
@@ -39,23 +39,30 @@ class AdminController extends Controller
             $maxSize = Setting::latest()->first()->tailleMax;
             $maxSize = $maxSize * 1024;
             $uploadedFile = $request->file('image');
-            $nomFichierUnique = '/images/fournisseurs/' . str_replace('  ', '_', '1'/* $compte->id */) . '-' . uniqid() . '.' . $uploadedFile->extension();
+            $uniqueFileName = str_replace('  ', '_', '1'/* $compte->id */) . '-' . uniqid() . '.' . $uploadedFile->extension();
+            $file = new File();
+            $file->nomFichier = $uniqueFileName;
+            $file->lienFichier = '/images/fournisseurs/' . $uniqueFileName;
+            $file->tailleFichier_KO = $uploadedFile->getSize();
+            
 
             $request->validate([
-                'image' => 'required|image|max:' . $maxSize,
+                'image' => 'required|max:' . $maxSize . '|extensions:pdf,doc,docx,jpg,jpeg,png,xlsx,xls,csv',
             ], [
                 'image.max' => 'Le fichier est au dessus de la limite définie',
-                'image.required' => 'L\'image est requise'
+                'image.required' => 'L\'image est requise',
+                'image.extensions' => 'Le fichier doit être dans un format imprimable: JPG, PNG, DOCX, DOC, PDF, XLSX, XLS, CSV'
             ]);
 
             try {
-                $request->image->move(public_path('images/fournisseurs'), $nomFichierUnique);
+                $request->image->move(public_path('images/fournisseurs'), $uniqueFileName);
                 /* File::delete(public_path() . $compte->image); */
+                $file->save();
 
             } catch (\Symfony\Component\HttpFoundation\File\Exception\FileException $e) {
                 Log::error("Erreur lors du téléversement du fichier.", [$e]);
             }
-            /* $compte->image = $nomFichierUnique; */
+            /* $compte->image = $uniqueFileName; */
             return redirect()->route('admin.impo')->with('message', 'Téléversement réussi');
             ;
         }
