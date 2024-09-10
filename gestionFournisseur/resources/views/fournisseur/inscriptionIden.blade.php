@@ -47,19 +47,4 @@
       </div> 
     </div> 
 </form>
-<!-- 
-Si validation MP avec de JS
-<form method="post" action="{{route('fournisseur.inscription')}}" onsubmit="return validatePassword()">
-<script>
-  function validatePassword() {
-    var password = document.getElementById("password").value;
-    var confirmPassword = document.getElementById("confirmPassword").value;
-    if (password !== confirmPassword) {
-      alert("Les mots de passe ne correspondent pas.");
-      return false;
-    }
-    return true;
-  }
-</script>
--->
 @endsection
