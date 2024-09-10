@@ -69,3 +69,8 @@ Route::GET('/impo',
 
 Route::PATCH('/impoImg',
 [AdminController::class,'impoImg'])->name('admin.impoImg');
+
+Route::GET('/Contact',
+[AdminController::class,'contact'])->name('admin.contact');
+Route::POST('/ajoutContactDB',
+[AdminController::class,'Ajoutcontact'])->name('admin.ajoutContact');
