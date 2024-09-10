@@ -5,10 +5,11 @@
     <a href="/"><h5 class="compagny">LOGO-VILLE3R</h5></a>
 </div>
 </header>
+@section('contenu')
 <div class="text-center py-5">
     <h1>Inscription Fournisseur ( IDENTIFICATION )</h1>
 </div>
-<form method="post" action="{{route('fournisseur.inscription')}}" onsubmit="return validatePassword()">
+<form method="post" action="{{route('fournisseur.inscription')}}">
   @csrf
     <div class="d-flex row justify-content-center">
       <div class="form-group">
@@ -46,6 +47,9 @@
       </div> 
     </div> 
 </form>
+<!-- 
+Si validation MP avec de JS
+<form method="post" action="{{route('fournisseur.inscription')}}" onsubmit="return validatePassword()">
 <script>
   function validatePassword() {
     var password = document.getElementById("password").value;
@@ -57,3 +61,5 @@
     return true;
   }
 </script>
+-->
+@endsection

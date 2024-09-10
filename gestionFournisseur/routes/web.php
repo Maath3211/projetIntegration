@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ResponsablesController;
 
 
+
 # Connexion portail fournisseur
 Route::GET('/',
 [PortailFournisseurController::class,'index'])->name('fournisseur.index');
@@ -53,15 +54,6 @@ Route::POST('/administration/parametre/sauvegarde',
 # Acccueil Responsable
 Route::GET('/responsable',
 [ResponsablesController::class,'index'])->name('responsable.index');
-
-
-
-
-
-
-
-
-
 
 
 Route::GET('/impo',

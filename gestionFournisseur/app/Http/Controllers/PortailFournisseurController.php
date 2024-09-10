@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 use App\Models\Fournisseur;
 use App\Models\FournisseurCoord;
 use App\Models\Unspsc;
@@ -13,6 +14,7 @@ use App\Http\Requests\ConnexionRequest;
 use App\Http\Requests\FournisseurRequest;
 use App\Http\Requests\FournisseurCoordRequest;
 use App\Http\Requests\UnspscRequest;
+
 
 
 
@@ -96,10 +98,19 @@ class PortailFournisseurController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-
+    //withoutVerifying()->get
      public function createCoordo()
      {
-         return View('fournisseur.coordonnees'); // nom de la page web 
+        $response = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22munnom%22%20FROM%20%2219385b4e-5503-4330-9e59-f998f5918363%22');
+
+        if ($response->successful()) {
+            $villes = collect($response->json()['result']['records'])->pluck('munnom')->all();
+
+        } else {
+            $villes = [];
+        }
+
+        return view('fournisseur.coordonnees', compact('villes')); 
      }
  
      public function storeCoordo(FournisseurCoordRequest $request, FournisseurCoord $Request)
@@ -107,20 +118,27 @@ class PortailFournisseurController extends Controller
         {
             try
             {
-                $fournisseurCoord = new FournisseurCoord($request->all());
+
+                $fournisseurCoord = new FournisseurCoord($request->validated());
                 $fournisseurCoord['noCivic'] = ($request->noCivic);
                 $fournisseurCoord['rue'] = ($request->rue);
                 $fournisseurCoord['bureau'] = ($request->bureau);
-                $fournisseurCoord['ville'] = ($request->ville);
+                $fournisseurCoord['ville'] = ucfirst($request->ville);
                 $fournisseurCoord['province'] = ($request->province);
-                $fournisseurCoord['codePostal'] = ($request->codePostal);
-                /*$fournisseurCoord['codeRegion'] = ($request->password);*/
-                /*$fournisseurCoord['nomRegion'] = ($request->password);*/
+                $fournisseurCoord['codePostal'] = strtoupper($request->codePostal);
+                //$fournisseurCoord['codeRegion'] = ($codeRegion);
+                //$fournisseurCoord['nomRegion'] = ($nomRegion);
                 $fournisseurCoord['site'] = ($request->site);
                 $fournisseurCoord['typeTel'] = ($request->typeTel);
                 $fournisseurCoord['numero'] = ($request->numero);
                 $fournisseurCoord['poste'] = ($request->poste);
+                $fournisseurCoord['typeTel2'] = ($request->typeTel2);
+                $fournisseurCoord['numero2'] = ($request->numero2);
+                $fournisseurCoord['poste2'] = ($request->poste2);
                 $fournisseurCoord->save();
+
+                dd($fournisseurCoord->toArray()); 
+
                 return redirect()->route('fournisseur.index')->with('message',"Enregistré!");
             }
             catch (\Throwable $e)
@@ -146,9 +164,9 @@ class PortailFournisseurController extends Controller
         {
             try
             {
-                $fournisseurIden = new Fournisseur($request->all());
+                $fournisseurIden = new Fournisseur($request->validated());
                 $fournisseurIden['neq'] = ($request->neq);
-                $fournisseurIden['entreprise'] = ucfirst($request->entreprise);
+                $fournisseurIden['entreprise'] = ($request->entreprise);
                 $fournisseurIden['email'] = ($request->email);
                 $fournisseurIden['password'] = ($request->password);
                 
