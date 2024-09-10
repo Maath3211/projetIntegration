@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ContactRequest;
 use App\Models\Setting;
 use App\Models\File;
 use Illuminate\Http\Request;
 use App\Http\Requests\SettingRequest;
+use Log;
 
 
 class AdminController extends Controller
@@ -30,7 +32,7 @@ class AdminController extends Controller
 
     public function impo()
     {
-        return view('importationImg');
+        return view('tmp.importationImg');
     }
 
     public function impoImg(Request $request)
@@ -71,5 +73,18 @@ class AdminController extends Controller
     }
 
 
+
+
+
+
+    public function contact(){
+        return view('tmp.ajoutContact');
+    }
+
+    public function ajoutContact(ContactRequest $request){
+        $request->telephone = str_replace([' ','(',')','-'], '',$request->telephone);
+        dd($request->telephone);
+        return redirect()->route('admin.contact')->with('message', 'Contact ajouté avec succès');
+    }
 
 }

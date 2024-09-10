@@ -109,3 +109,8 @@ h1 {
     border: 1px solid #ddd;
   }
   
+#logo{
+  top: 200px;
+  left: 1%;
+  width: 6%;
+}
