@@ -109,8 +109,9 @@ h1 {
     border: 1px solid #ddd;
   }
   
-#logo{
-  top: 200px;
+#logoV3R{
+  position: absolute;
+  top: 10px;
   left: 1%;
   width: 6%;
 }
