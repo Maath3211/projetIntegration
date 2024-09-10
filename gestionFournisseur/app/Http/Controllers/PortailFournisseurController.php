@@ -33,27 +33,6 @@ class PortailFournisseurController extends Controller
         return View('fournisseur.information');
     }
 
-    public function UNSPSC()
-    {
-        $codes = Unspsc::all();
-        return View('fournisseur.UNSPSC', compact('codes'));
-    }
-
-    public function storeUnspsc(UnspscRequest $request)
-    {
-        try{
-            $code = new Unspsccode($request->all());
-            $code->save();
-            
-        }
-        catch(\Throwable $e){
-            Log::debug($e);
-            return redirect()->route('fournisseur.index');
-        }
-        return redirect()->route('fournisseur.UNSPSC');
-        
-    }
-
 
     /**
      * Show the form for creating a new resource.
@@ -98,7 +77,38 @@ class PortailFournisseurController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    //withoutVerifying()->get
+    public function createIden()
+    {
+        return view('fournisseur.inscriptionIden');
+    }
+
+    /**
+     * INSCRIPTION **** INSCRIPTION **** INSCRIPTION ****INSCRIPTION ****INSCRIPTION ****INSCRIPTION **** INSCRIPTION ****INSCRIPTION ****
+     */
+    public function storeIden(FournisseurRequest $request, Fournisseur $Request)
+    {
+        {
+            try
+            {
+                $fournisseurIden = new Fournisseur($request->validated());
+                $fournisseurIden['neq'] = ($request->neq);
+                $fournisseurIden['entreprise'] = ($request->entreprise);
+                $fournisseurIden['email'] = ($request->email);
+                $fournisseurIden['password'] = ($request->password);
+                
+                $fournisseurIden->save();
+                return redirect()->route('fournisseur.index')->with('message',"Bienvenue!");
+            }
+            catch (\Throwable $e)
+            {
+                 Log::debug($e);
+                 return redirect()->route('fournisseur.inscriptionIden')->withErrors(['Informations invalides']); 
+            }
+
+            return redirect()->route('fournisseur.index');
+            }
+    }
+
      public function createCoordo()
      {
         $response = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22munnom%22%20FROM%20%2219385b4e-5503-4330-9e59-f998f5918363%22');
@@ -137,7 +147,7 @@ class PortailFournisseurController extends Controller
                 $fournisseurCoord['poste2'] = ($request->poste2);
                 $fournisseurCoord->save();
 
-                dd($fournisseurCoord->toArray()); 
+                // dd($fournisseurCoord->toArray()); 
 
                 return redirect()->route('fournisseur.index')->with('message',"Enregistré!");
             }
@@ -150,38 +160,30 @@ class PortailFournisseurController extends Controller
             return redirect()->route('fournisseur.index');
             }
     }
-
-    public function createIden()
+    
+    public function UNSPSC()
     {
-        return view('fournisseur.inscriptionIden');
+        $codes = Unspsc::all();
+        return View('fournisseur.UNSPSC', compact('codes'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function storeIden(FournisseurRequest $request, Fournisseur $Request)
+    public function storeUnspsc(UnspscRequest $request)
     {
-        {
-            try
-            {
-                $fournisseurIden = new Fournisseur($request->validated());
-                $fournisseurIden['neq'] = ($request->neq);
-                $fournisseurIden['entreprise'] = ($request->entreprise);
-                $fournisseurIden['email'] = ($request->email);
-                $fournisseurIden['password'] = ($request->password);
-                
-                $fournisseurIden->save();
-                return redirect()->route('fournisseur.index')->with('message',"Bienvenue!");
-            }
-            catch (\Throwable $e)
-            {
-                 Log::debug($e);
-                 return redirect()->route('fournisseur.inscriptionIden')->withErrors(['Informations invalides']); 
-            }
-
+        try{
+            $code = new Unspsccode($request->all());
+            $code->save();
+            
+        }
+        catch(\Throwable $e){
+            Log::debug($e);
             return redirect()->route('fournisseur.index');
-            }
+        }
+        return redirect()->route('fournisseur.UNSPSC');
+        
     }
+        /**
+     * CONNEXION **** CONNEXION **** CONNEXION ****CONNEXION ****CONNEXION****CONNEXION **** CONNEXION ****CONNEXION ****
+     */
 
     public function loginEmail(ConnexionRequest $request)
     {

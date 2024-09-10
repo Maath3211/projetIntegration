@@ -15,10 +15,8 @@
     <link rel="stylesheet" href="{{ asset('css/fournisseur.css') }}">
     <title>@yield('title')</title>
 </head>
-
+<!-- <img src="{{asset('images/logo-v3r-v2.svg')}}" alt="logoV3R" id="logoV3R" class="img-fluid"> -->
 <body>
-    <img src="{{asset('images/logo-v3r-v2.svg')}}" alt="logoV3R" id="logoV3R" class="img-fluid">
-
     @if (isset($errors) && $errors->any())
         <div class="alert alert-danger">
             @foreach ($errors->all() as $error)

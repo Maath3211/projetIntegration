@@ -6,8 +6,6 @@ use App\Http\Controllers\PortailFournisseurController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ResponsablesController;
 
-
-
 # Connexion portail fournisseur
 Route::GET('/',
 [PortailFournisseurController::class,'index'])->name('fournisseur.index');
@@ -34,15 +32,26 @@ Route::GET('/UNSPSC',
 Route::POST('/UNSPSC/store',
 [PortailFournisseurController::class,'storeUnspsc'])->name('fournisseur.storeUnspsc');
 
-
-# admin
-
 # InscriptionCoordonnées
 Route::GET('/compte/coordonnees',
 [PortailFournisseurController::class,'createCoordo'])->name('fournisseur.coordonnees');
 
 Route::POST('/compte/coordonnees',
 [PortailFournisseurController::class,'storeCoordo'])->name('fournisseur.coordonnees');
+
+# InscriptionImportaion 
+Route::GET('/impo',
+[AdminController::class,'impo'])->name('admin.impo');
+
+Route::PATCH('/impoImg',
+[AdminController::class,'impoImg'])->name('admin.impoImg');
+
+# InscriptionContact
+Route::GET('/Contact',
+[AdminController::class,'contact'])->name('admin.contact');
+
+Route::POST('/ajoutContactDB',
+[AdminController::class,'Ajoutcontact'])->name('admin.ajoutContact');
 
 # Accceuil admin
 Route::GET('/administration/parametre',
@@ -55,14 +64,3 @@ Route::POST('/administration/parametre/sauvegarde',
 Route::GET('/responsable',
 [ResponsablesController::class,'index'])->name('responsable.index');
 
-
-Route::GET('/impo',
-[AdminController::class,'impo'])->name('admin.impo');
-
-Route::PATCH('/impoImg',
-[AdminController::class,'impoImg'])->name('admin.impoImg');
-
-Route::GET('/Contact',
-[AdminController::class,'contact'])->name('admin.contact');
-Route::POST('/ajoutContactDB',
-[AdminController::class,'Ajoutcontact'])->name('admin.ajoutContact');
