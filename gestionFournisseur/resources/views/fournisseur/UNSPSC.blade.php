@@ -7,6 +7,7 @@
 </div>
 </header>
 
+
 <div class="container-fluid">
     <div class="row">
 
@@ -40,13 +41,17 @@
                 <h5 class="pl-5">S14 - Services Publics</h5>
 
                 <form method="POST" action="{{ route('fournisseur.storeUnspsc')}}">
+                    <div class="col-md-1">
+                        <input type="radio" class="mt-2"  value="1" name="idUser" >
+                    </div>
                     @csrf
                 @if (count($codes))
                 <div class="scroll-container">
                     @foreach($codes as $code)
+
                         <div class="item">
                             <div class="col-md-1">
-                                <input type="radio" class="mt-2" id="{{ $code->id }}" name="choix" value="{{ $code->id }}">
+                                <input type="radio" class="mt-2" id="idUnspsc" name="idUnspsc" value="{{ $code->id }}">
                             </div>
                     
                             <div class="col-md-4">
@@ -73,7 +78,7 @@
                 </div>
 
                 <div class="col-md-10">
-                    <textarea name="Details" id="detail" class="form-control" maxlength="500"></textarea>
+                    <textarea name="details" id="details" class="form-control" maxlength="500"></textarea>
                 </div>
 
 

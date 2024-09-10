@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('unspsccodes', function (Blueprint $table) {
             $table->id();
             $table->integer('idUser');
-            $table->integer('unspsc');
-            $table->integer('details');
+            $table->foreignId('idUnspsc')->constrained('Unspsc');
+            $table->string('details',500);
             $table->timestamps();
         });
     }

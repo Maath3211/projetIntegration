@@ -8,9 +8,12 @@ use Illuminate\Support\Facades\Log;
 use App\Models\Fournisseur;
 use App\Models\FournisseurCoord;
 use App\Models\Unspsc;
+use App\Models\Unspsccode;
 use App\Http\Requests\ConnexionRequest;
 use App\Http\Requests\FournisseurRequest;
 use App\Http\Requests\FournisseurCoordRequest;
+use App\Http\Requests\UnspscRequest;
+
 
 
 class PortailFournisseurController extends Controller
@@ -34,8 +37,18 @@ class PortailFournisseurController extends Controller
         return View('fournisseur.UNSPSC', compact('codes'));
     }
 
-    public function storeUnspsc()
+    public function storeUnspsc(UnspscRequest $request)
     {
+        try{
+            $code = new Unspsccode($request->all());
+            $code->save();
+            
+        }
+        catch(\Throwable $e){
+            Log::debug($e);
+            return redirect()->route('fournisseur.index');
+        }
+        return redirect()->route('fournisseur.UNSPSC');
         
     }
 
