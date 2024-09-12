@@ -24,7 +24,7 @@
           <div class="d-flex flex-column justify-content-center py-5">
             <div class="form-group">
               <label for="neq" class="titreForm">Numéro d'entreprise (NEQ)</label>
-              <input type="text" class="form-control" maxlength="10" pattern="\d*" inputmode="numeric" id="neq" placeholder="Numéro d'entreprise (NEQ)" name="neq" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+              <input type="text" class="form-control" maxlength="10" pattern="\d*" inputmode="numeric" id="neq" placeholder="Numéro d'entreprise (NEQ)" name="neq">
               <a href="#" class="link-right">Pas de NEQ?</a>
             </div>
             <div class="form-group">

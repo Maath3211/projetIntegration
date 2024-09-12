@@ -5,10 +5,10 @@
     <a href="/"><h5 class="compagny">LOGO-VILLE3R</h5></a>
 </div>
 </header>
+@section('contenu')
 <div class="text-center py-5">
     <h1 class="py-5">Coordonnées</h1>
 </div>
-@section('contenu')
 <div class="container-fluid d-flex justify-content-center align-items-center vh-100">
     <div class="row">
         <div class="col-md-12">
@@ -37,14 +37,24 @@
                     <div class="d-flex row justify-content-center">
                         <div class="form-group">
                             <label for="ville" class="titreForm">Ville</label>
-                            <input type="text" class="form-control" id="ville" placeholder="ville" name="ville">
+                            @if(isset($villes) && count($villes) > 0)
+                            <select class="form-control" id="ville" name="ville">
+                                <option value="">Sélectionnez une ville</option>
+                                @foreach($villes as $ville)
+                                    <option value="{{ $ville }}">{{ $ville }}</option>
+                                @endforeach
+                            </select>
+                             @else
+                                <p>Aucune ville disponible.</p>
+                             @endif
                         </div> 
                     </div>
                     <div class="d-flex row justify-content-center">
                         <div class="form-group">
                             <label for="province" class="titreForm">Province</label>
                             <select name="province" class="form-control" id="province">
-                                <option value="quebec">Québec</option>
+                                <option value="Québec"selected>Québec</option>
+                                <option value="Ontario">Ontario</option>
                             </select>
                         </div> 
                     </div>
@@ -67,16 +77,16 @@
                         <div class="form-group">
                             <label for="typeTel" class="titreForm">Type</label>
                             <select name="typeTel" class="form-control" id="typeTel" name="typeTel">
-                                <option value="01">Bureau</option>
-                                <option value="02">Télécopieur</option>
-                                <option value="03">Cellulaire</option>
+                                <option value="Bureau">Bureau</option>
+                                <option value="Télécopieur">Télécopieur</option>
+                                <option value="Cellulaire">Cellulaire</option>
                             </select>
                         </div> 
                     </div>
                     <div class="d-flex row justify-content-center">
                         <div class="form-group">
                             <label for="numero" class="titreForm">Numero</label>
-                            <input type="text" class="form-control" id="numero" placeholder="" name="numero">
+                            <input type="text" class="form-control telephones" id="numero" placeholder="555-555-5555" name="numero" maxlength="12">
                         </div>
                     </div>
                     <div class="d-flex row justify-content-center">
@@ -87,7 +97,25 @@
                     </div>
                     <div class="d-flex row justify-content-center">
                         <div class="form-group">
-                            <button type="button">+</button>
+                            <label for="typeTel2" class="titreForm">Type</label>
+                            <select name="typeTel2" class="form-control" id="typeTel2">
+                                <option value="" selected>-- Sélectionnez un type --</option>
+                                <option value="Bureau">Bureau</option>
+                                <option value="Télécopieur">Télécopieur</option>
+                                <option value="Cellulaire">Cellulaire</option>
+                            </select>
+                        </div> 
+                    </div>
+                    <div class="d-flex row justify-content-center">
+                        <div class="form-group">
+                            <label for="numero2" class="titreForm">Numero</label>
+                            <input type="text" class="form-control telephones" id="numero2" placeholder="555-555-5555" name="numero2" maxlength="12">
+                        </div>
+                    </div>
+                    <div class="d-flex row justify-content-center">
+                        <div class="form-group">
+                            <label for="poste2" class="titreForm">Poste</label>
+                            <input type="text" class="form-control" id="poste2" placeholder="" name="poste2">
                         </div>
                     </div>
                 </fieldset>
@@ -102,3 +130,4 @@
     </div>
 </div>
 @endsection
+<script src="{{ asset('js/numTelephone.js') }}"></script>
