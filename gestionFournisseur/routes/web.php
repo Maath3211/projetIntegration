@@ -32,6 +32,13 @@ Route::GET('/UNSPSC',
 Route::POST('/UNSPSC/store',
 [PortailFournisseurController::class,'storeUnspsc'])->name('fournisseur.storeUnspsc');
 
+# InscriptionUNSPSC
+Route::GET('/RBQ',
+[PortailFournisseurController::class,'RBQ'])->name('fournisseur.RBQ');
+
+// Route::POST('/UNSPSC/store',
+// [PortailFournisseurController::class,'storeUnspsc'])->name('fournisseur.storeUnspsc');
+
 # InscriptionCoordonnées
 Route::GET('/compte/coordonnees',
 [PortailFournisseurController::class,'createCoordo'])->name('fournisseur.coordonnees');

@@ -30,9 +30,9 @@ class UnspscRequest extends FormRequest
     public function messages(){
         return[
             'details.required' => 'Champ obligatoire',
-            'details.max' => 'Details trop grand',
+            'details.max' => 'Détails trop grand',
             'details.min' => 'Détails trop petit',
-            'idUnspsc.required' => 'Dois ',
+            'idUnspsc.required' => 'Aucun code Unspsc sélectionner',
         ];
     }
 }
