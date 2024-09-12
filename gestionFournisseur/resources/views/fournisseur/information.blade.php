@@ -11,6 +11,7 @@
         </form>
     </nav> 
 </header>
+@section('contenu')
 <div class="text-center py-5">
     <h1> TODO: Info Fournisseur ( En construction )</h1>
 </div>
@@ -19,3 +20,4 @@
         <h1 class="titreForm"> Page d'informations de NEQ : {{$fournisseur->neq}} EMAIL : {{$fournisseur->email}} ENTREPRISE : {{$fournisseur->entreprise}}</h1>
     </div> 
 @endif
+@endsection

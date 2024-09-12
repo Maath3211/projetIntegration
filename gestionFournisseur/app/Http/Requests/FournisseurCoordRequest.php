@@ -21,12 +21,13 @@ class FournisseurCoordRequest extends FormRequest
      */
     public function rules(): array
     {
+
         return [
             'noCivic' => 'required|max:8|alpha_num',
             'rue' => 'required|string|max:64',
             'bureau' => 'nullable|string|max:8|alpha_num', 
             'ville' => 'required|string|max:64',
-            'province' => 'required',
+            'province' => 'required|in:Alberta,Colombie-Britannique,Île-du-prince-Édouard,Manitoba,Nouveau-Brunswick,Nouvelle-Écosse,Ontario,Québec,Saskatchewan,Terre-Neuve-et-Labrador,Territoires du Nord-Ouest,Nunavut,Yukon',
             'codePostal' => ['required', 'string', 'regex:/^(?!.*[DFIOQU])[A-VXY][0-9][A-Z] ?[0-9][A-Z][0-9]$/i'], // inclusion du i pour insensible à la case
             //'codeRegion' => 'nullable|string|size:2', Ne devrait pas contenir d'erreur via l'API
             //'nomRegion' => 'nullable|string',         Ne devrait pas contenir d'erreur via l'API
@@ -61,6 +62,7 @@ class FournisseurCoordRequest extends FormRequest
             'ville.required' => 'La ville est requise.',
             'ville.max' => 'La ville ne peut pas dépasser 64 caractères.',
             'province.required' => 'La province est requise.',
+            'province.in' => 'Choix : Alberta,Colombie-Britannique,Île-du-prince-Édouard,Manitoba,Nouveau-Brunswick,Nouvelle-Écosse,Ontario,Québec,Saskatchewan,Terre-Neuve-et-Labrador,Territoires du Nord-Ouest,Nunavut,Yukon',
             'codePostal.required' => 'Le code postal est requis.',
             'codePostal.regex' => 'Le code postal doit être un code postal canadien valide.',
             'codeRegion.size' => 'Le code de région doit être exactement de 2 caractères.',

@@ -11,6 +11,7 @@
 </nav>
   </nav>   
 </header>
+@section('contenu')
 <div class="text-center py-5">
     <h1>Bienvenue sur le site de ville</h1>
 </div>
@@ -64,3 +65,5 @@
     </div>
   </div>
 </div>
+@endsection
+<script src="{{ asset('js/neq.js') }}"></script>

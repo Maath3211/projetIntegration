@@ -14,19 +14,19 @@
     <div class="d-flex row justify-content-center">
       <div class="form-group">
         <label for="neq" class="titreForm">Numéro d'entreprise (NEQ)</label>
-        <input type="text" class="form-control" maxlength="10" pattern="\d*" inputmode="numeric" id="neq" placeholder="Numéro d'entreprise (NEQ)" name="neq" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+        <input type="text" class="form-control" maxlength="10" pattern="\d*" inputmode="numeric" id="neq" placeholder="Numéro d'entreprise (NEQ)" name="neq" value="{{old('neq')}}">
       </div> 
     </div> 
     <div class="d-flex row justify-content-center">
       <div class="form-group">
         <label for="prenom" class="titreForm">Nom d'entreprise</label>
-        <input type="text" class="form-control" id="entreprise" placeholder="entreprise" name="entreprise">
+        <input type="text" class="form-control" id="entreprise" placeholder="entreprise" name="entreprise" value="{{old('entreprise')}}">
       </div> 
     </div> 
     <div class="d-flex row justify-content-center">
       <div class="form-group">
         <label for="email" class="titreForm">Email</label>
-        <input type="email" class="form-control" id="email" placeholder="email" name="email">
+        <input type="email" class="form-control" id="email" placeholder="email" name="email" value="{{old('email')}}">
       </div> 
     </div> 
     <div class="d-flex row justify-content-center">
@@ -48,3 +48,4 @@
     </div> 
 </form>
 @endsection
+<script src="{{ asset('js/neq.js') }}"></script>
