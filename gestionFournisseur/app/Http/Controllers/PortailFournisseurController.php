@@ -28,9 +28,11 @@ class PortailFournisseurController extends Controller
         $fournisseurs = Fournisseur::all();
         return View('fournisseur.index');
     }
+
     public function infoLogin()
     {
-        return View('fournisseur.information');
+        $fournisseur = Auth::user();
+        return View('fournisseur.information', compact('fournisseur'));
     }
 
 
@@ -244,6 +246,15 @@ class PortailFournisseurController extends Controller
         else{
             return redirect()->route('fournisseur.index')->withErrors(['Informations invalides']); 
         }
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('fournisseur.index')->with('message', 'Déconnecté avec succès');
     }
 
 }

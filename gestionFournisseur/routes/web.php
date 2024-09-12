@@ -14,6 +14,10 @@ Route::POST('/connexion/neq',
 Route::POST('/connexion/email',
 [PortailFournisseurController::class,'loginEmail'])->name('login.email');
 
+#Déconnexion
+Route::POST('/logout',
+[PortailFournisseurController::class,'logout'])->name('fournisseur.logout');
+
 # Information du fournisseur TODO: quand fournisseur sera completé
 Route::GET('/information',
 [PortailFournisseurController::class,'infoLogin'])->name('fournisseur.information');
