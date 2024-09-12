@@ -6,7 +6,7 @@
 
 </div>
 </header>
-
+@section('contenu')
 
 <div class="container-fluid">
     <div class="row">
@@ -20,34 +20,60 @@
     <div class="col-md-8 ">
 
         <fieldset>
-          <legend>Produits et services offerts</legend>
+          <legend>Licence RBQ</legend>
+
+          <div class="row">
+            <div class="col-md-6">
+                <h5>Numéro de licence RBQ</h5>
+            </div>
+
+            <div class="col-md-6">
+                <h5>Statut</h5>
+            </div>
+
+
 
             <div class="row">
-                <div class="col-md-7">
-                    <h1>Services</h1>
-                </div>
-
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <input type="text" class="form-control" maxlength="80" id="search-input" name="recherche" placeholder="Rechercher...">
                 </div>
+    
+                <div class="col-md-6">
+                    <select class="form-control">
+                        <option value="1">Valid</option>
+                        <option value="2">Valide avec restriction</option>
+                        <option value="3">Non valide</option>
+                    </select>
+                </div>
 
-                {{-- <div class="col-md-2 mt-1">
-                    <Button>Logo</Button>
-                </div> --}}
+        </div>
+
+
+            <div class="row mt-5">
+                <div class="col-md-5">
+                    <h5>Type de licence</h5>
+                </div>
+
+                <div class="col-md-7">
+                    <select class="form-control">
+                        <option value="1">Entrepreneur</option>
+                        <option value="2">Constructeur-Propriétaire</option>
+                    </select>
+                </div>
+
+
             </div>
 
 
             <div class="row">
-                <h5 class="pl-5">S14 - Services Publics</h5>
+                <h5 class="pl-5">Catégorie et sous-catégories autorisées</h5>
 
                 <form method="POST" >
-                    <div class="col-md-1">
-                        <input type="radio" class="mt-2"  value="1" name="idUser" >
-                    </div>
+
                      @csrf
-                @if (count($villes)) 
+                @if (count($data)) 
                 <div class="scroll-container">
-                     @foreach($villes as $ville) 
+                     @foreach($data as $record) 
 
                         <div class="item">
                             <div class="col-md-1">
@@ -55,11 +81,11 @@
                             </div>
                     
                             <div class="col-md-4">
-                                <p>Test</p>
+                                <p>{{ $record['Sous-categories'] }}</p>
                             </div>
             
                             <div class="col-md-7">
-                                <p>Test</p>
+                                <p>{{ $record['Categorie'] }}</p>
                             </div>
                         </div>
                      @endforeach 
@@ -69,23 +95,6 @@
             @endif 
 
 
-            <div class="row">
-                <h5 class="pl-5">Détails et spécifications</h5>
-
-
-                <div class="col-md-1">
-                    
-                </div>
-
-                <div class="col-md-10">
-                    <textarea name="details" id="details" class="form-control" maxlength="500"></textarea>
-                </div>
-
-
-                <div class="col-md-1">
-                    
-                </div>
-            </div>
 
             <div class="row mt-4">
 
@@ -122,5 +131,4 @@
 
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.basic.min.js"></script>
-<script src="{{ asset('js/UnspscPage.js') }}"></script>
+@endsection
