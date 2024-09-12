@@ -22,13 +22,17 @@ class UnspscRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'details' => 'required'
+            'details' => 'required|max:500|min:5',
+            'idUnspsc' => 'required'
         ];
     }
 
     public function messages(){
         return[
             'details.required' => 'Champ obligatoire',
+            'details.max' => 'Details trop grand',
+            'details.min' => 'Détails trop petit',
+            'idUnspsc.required' => 'Dois ',
         ];
     }
 }
