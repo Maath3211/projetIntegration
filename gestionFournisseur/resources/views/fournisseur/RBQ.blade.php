@@ -31,15 +31,17 @@
                 <h5>Statut</h5>
             </div>
 
+            <form method="POST" action="{{ route('fournisseur.storeRBQ')}}">
+            @csrf
 
 
             <div class="row">
             <div class="col-md-6">
-                <input type="text" class="form-control" maxlength="12" id="search-input" name="recherche" placeholder="####-####-##">
+                <input type="text" class="form-control" maxlength="12" id="search-input" name="licenceRBQ" placeholder="####-####-##">
             </div>
 
                 <div class="col-md-6">
-                    <select class="form-control">
+                    <select class="form-control" name="statut">
                         <option value="1">Valid</option>
                         <option value="2">Valide avec restriction</option>
                         <option value="3">Non valide</option>
@@ -55,7 +57,7 @@
                 </div>
 
                 <div class="col-md-7">
-                    <select class="form-control">
+                    <select class="form-control" name="typeLicence">
                         <option value="1">Entrepreneur</option>
                         <option value="2">Constructeur-Propriétaire</option>
                     </select>
@@ -68,24 +70,22 @@
             <div class="row">
                 <h5 class="pl-5">Catégorie et sous-catégories autorisées</h5>
 
-                <form method="POST" >
 
-                     @csrf
-                @if (count($data)) 
+                @if (count($codes)) 
                 <div class="scroll-container">
-                     @foreach($data as $record) 
+                     @foreach($codes as $code) 
 
                         <div class="item">
                             <div class="col-md-1">
-                                <input type="radio" class="mt-2" id="idUnspsc" name="idUnspsc">
+                                <input type="radio" class="mt-2" id="Categorie" name="idCategorie" value="{{ $code->id }}">
                             </div>
                     
-                            <div class="col-md-4">
-                                <p>{{ $record['Sous-categories'] }}</p>
+                            <div class="col-md-7">
+                                <p>{{ $code->codeSousCategorie }} : {{ $code->nom }}</p>
                             </div>
             
-                            <div class="col-md-7">
-                                <p>{{ $record['Categorie'] }}</p>
+                            <div class="col-md-4">
+                                <p>{{ $code->nomCategorie }}</p>
                             </div>
                         </div>
                      @endforeach 
