@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ContactRequest;
 use App\Models\Setting;
 use App\Models\File;
+use App\Models\Contact;
 use Illuminate\Http\Request;
 use App\Http\Requests\SettingRequest;
 use Log;
@@ -18,9 +19,14 @@ class AdminController extends Controller
         return View('admin.setting', compact('settings'));
     }
 
-    public function update(SettingRequest $request, Setting $Request)
+    public function update(SettingRequest $request)
     {
-        $setting = new setting();
+        try {
+        }
+        catch(\Throwable $e){
+
+        }
+        $setting = new setting($request->validated());
         $setting->emailAppro = $request->emailAppro;
         $setting->delaiRev = $request->delaiRev;
         $setting->tailleMax = $request->tailleMax;
@@ -46,7 +52,7 @@ class AdminController extends Controller
             $file->nomFichier = $uniqueFileName;
             $file->lienFichier = '/images/fournisseurs/' . $uniqueFileName;
             $file->tailleFichier_KO = $uploadedFile->getSize();
-            
+
 
             $request->validate([
                 'image' => 'required|max:' . $maxSize . '|extensions:pdf,doc,docx,jpg,jpeg,png,xlsx,xls,csv',
@@ -77,14 +83,32 @@ class AdminController extends Controller
 
 
 
-    public function contact(){
+    public function contact()
+    {
         return view('tmp.ajoutContact');
     }
 
-    public function ajoutContact(ContactRequest $request){
-        $request->telephone = str_replace([' ','(',')','-'], '',$request->telephone);
-        dd($request->telephone);
-        return redirect()->route('admin.contact')->with('message', 'Contact ajouté avec succès');
+    public function ajoutContact(/* ContactRequest $request */ Request $request)
+    {
+        $contact = new contact(/* $request->validated() */);//
+            $contact['prenom'] = $request->prenom;
+            $contact['nom'] = $request->nom;
+            $contact['fonction'] = $request->fonction;
+            $contact['courriel'] = $request->courriel;
+            $contact['typeTelephone'] = $request->typeTelephone;
+            $contact['telephone'] = $request->telephone;
+            $contact['poste'] = $request->poste;
+            $contact['fournisseur'] = $request->user()->id;
+            
+            $contact->save();
+        try {
+            
+            
+            return redirect()->route('admin.contact')->with('message', 'Contact ajouté avec succès');
+        }
+        catch(\Throwable $e){
+            return redirect()->route('admin.contact')->withErrors('Erreur lors de l\'ajout du contact');
+        }
     }
 
 }

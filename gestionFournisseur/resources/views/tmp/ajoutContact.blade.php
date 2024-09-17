@@ -1,81 +1,100 @@
 @extends('layouts.fournisseur')
 
-@section('title', 'Administration')
+@section('title', 'Contact')
 
-@section('contenu')
-<div class="container">
+
+<div class="container-fluid">
     <div class="row">
-        <div class="col-6 offset-3">
-            <div class="text-center py-3">
-                <div class="text-center py-5">
-                    <h1>Inscription Fournisseur ( IDENTIFICATION )</h1>
-                </div>
 
-                <form action="{{ route('admin.ajoutContact') }}" method="post">
+        <div class="text-center">
+            <h1>Ajouter un contact</h1>
+        </div>
+
+
+
+        @section('contenu')
+            <p id="plus1">&#8853;</p>
+            <div class="col-md-6 offset-3" id="form1Div">
+                <form action="{{ route('admin.ajoutContact') }}" method="post" id="form1">
                     @csrf
-                    <div class="d-flex">
-                        <label>Prenom</label>
-                        <input type="text" class="form-control" placeholder="Prenom" name="prenom" required
-                            value="a">
-                    </div>
 
-                    <div class="d-flex">
-                        <label>Nom</label>
-                        <input type="text" class="form-control" placeholder="Nom" name="nom" required
-                            value="a">
-                    </div>
-
-                    <div class="d-flex">
-                        <label>Fonction</label>
-                        <input type="text" class="form-control" placeholder="Fonction" name="fonction" required
-                            value="a">
-                    </div>
-
-                    <div class="d-flex">
-                        <label>Courriel</label>
-                        <input type="email" class="form-control" placeholder="Courriel" name="courriel" required
-                            value="a@a">
-                    </div>
-
-
-
-
-
-                    <div class="d-flex row justify-content-center">
-                        <div class="form-group">
-                            <label for="typeTel" class="titreForm">Type</label>
-                            <select name="typeTel" class="form-control" id="typeTel" name="typeTel">
-                                <option value="Bureau">Bureau</option>
-                                <option value="Télécopieur">Télécopieur</option>
-                                <option value="Cellulaire">Cellulaire</option>
-                            </select>
+                    <h2 class="text-center" id="numContact1">Contact 1</h2>
+                    <div class=" py-3">
+                        <div class="d-flex row justify-content-center">
+                            <div class="form-group">
+                                <label>Prenom</label>
+                                <input type="text" class="form-control" placeholder="Prenom" name="prenom" required
+                                    value="{{-- {{ old('prenom') }} --}}a" id="prenom1">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="d-flex row justify-content-center">
-                        <div class="form-group">
-                            <label>Telephone</label>
+                        <div class="d-flex row justify-content-center">
+                            <div class="form-group">
+                                <label>Nom</label>
+                                <input type="text" class="form-control" placeholder="Nom" name="nom" required
+                                    value="{{-- {{ old('nom') }} --}}a" id="nom1">
+                            </div>
+                        </div>
+
+                        <div class="d-flex row justify-content-center">
+                            <div class="form-group">
+                                <label>Fonction</label>
+                                <input type="text" class="form-control" placeholder="Fonction" name="fonction" required
+                                    value="{{-- {{ old('fonction') }} --}}a" id="fonction1">
+                            </div>
+                        </div>
+
+                        <div class="d-flex row justify-content-center">
+                            <div class="form-group">
+                                <label>Courriel</label>
+                                <input type="email" class="form-control" placeholder="Courriel" name="courriel" required
+                                    value="{{-- {{ old('courriel') }} --}}a@a" id="courriel1">
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="d-flex row justify-content-center">
+                            <div class="form-group">
+                                <label for="typeTelephone" class="titreForm">Type</label>
+                                <select class="form-control" id="typeTelephone1" name="typeTelephone">
+                                    <option value="Bureau">Bureau</option>
+                                    <option value="Telecopieur">Télécopieur</option>
+                                    <option value="Cellulaire">Cellulaire</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="d-flex row justify-content-center">
+                            <div class="form-group">
+                                <label>Telephone</label>
                                 <input type="text" class="form-control telephones" placeholder="Telephone"
-                                    name="telephone" required value="666-666-6666">
+                                    name="telephone" required value="{{-- {{ old('telephone') }} --}}111-111-1111" id="telephone1">
+                            </div>
+                        </div>
+
+                        <div class="d-flex row justify-content-center">
+                            <div class="form-group">
+                                <label>Poste</label>
+                                <input type="tel" class="form-control" placeholder="Poste" name="poste"
+                                    value="{{-- {{ old('poste') }} --}}" id="poste1">
+                            </div>
                         </div>
                     </div>
-
-                    <div class="d-flex">
-                        <label>Poste</label>
-                        <input type="tel" class="form-control" placeholder="Poste" name="poste" value="2089">
-                    </div>
-
-
-                    <br>
-                    <div>
-                        <button type="submit" class="btn btn-success">Sauvegarder</button>
-                    </div>
-
-                </form>
             </div>
+
+            <br>
+
+            </form>
+
+            <div class="form-group text-center">
+                <button onclick="submitForms()" class="btn btn-success">Sauvegarder</button>
+            </div>
+
         </div>
     </div>
-</div>
 
-<script src="{{ asset('js/numTelephone.js') }}"></script>
+    <script src="{{ asset('js/numTelephone.js') }}"></script>
+    <script src="{{ asset('js/contact.js') }}"></script>
 @endsection

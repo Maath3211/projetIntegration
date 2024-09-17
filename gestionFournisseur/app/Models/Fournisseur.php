@@ -44,4 +44,8 @@ class Fournisseur extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function contact(){
+        return $this->hasMany(Contact::class)->withPivot('fournisseur_id','contact_id');
+    }
 }

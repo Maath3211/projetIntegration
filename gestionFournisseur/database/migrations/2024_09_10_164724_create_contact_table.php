@@ -13,13 +13,14 @@ return new class extends Migration
     {
         Schema::create('contact', function (Blueprint $table) {
             $table->id();
-            $table->text('prenom');
-            $table->text('nom');
-            $table->text('fonction');
-            $table->text('courriel');
-            $table->text('typeTelephone');
-            $table->text('telephone');
-            $table->integer('poste')->nullable();
+            $table->text('prenom',32);
+            $table->text('nom',32);
+            $table->text('fonction',32);
+            $table->text('courriel',64);
+            $table->text('typeTelephone',12);
+            $table->text('telephone',10);
+            $table->text('poste',6)->nullable();
+            $table->foreignId('fournisseur')->constrained('fournisseurs');
             $table->timestamps();
         });
     }
