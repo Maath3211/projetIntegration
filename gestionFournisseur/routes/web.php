@@ -40,8 +40,10 @@ Route::POST('/UNSPSC/store',
 Route::GET('/RBQ',
 [PortailFournisseurController::class,'RBQ'])->name('fournisseur.RBQ');
 
-// Route::POST('/UNSPSC/store',
-// [PortailFournisseurController::class,'storeUnspsc'])->name('fournisseur.storeUnspsc');
+Route::POST('/RBQ/store',
+[PortailFournisseurController::class,'storeRBQ'])->name('fournisseur.storeRBQ');
+
+
 
 # InscriptionCoordonnées
 Route::GET('/compte/coordonnees',
