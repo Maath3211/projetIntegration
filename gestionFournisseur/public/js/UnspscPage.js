@@ -66,3 +66,22 @@ document.addEventListener('DOMContentLoaded', function() {
     
     searchInput.addEventListener('input', filterItems);
 });
+
+
+
+
+
+
+
+
+
+document.getElementById('rbq').addEventListener('input', function() {
+    var pattern = /^\d{4}-\d{4}-\d{2}$/;
+    var input = this.value;
+    
+    if (!pattern.test(input)) {
+        this.setCustomValidity("Le format doit être ####-####-##");
+    } else {
+        this.setCustomValidity(""); // Réinitialise le message d'erreur si le format est correct
+    }
+});

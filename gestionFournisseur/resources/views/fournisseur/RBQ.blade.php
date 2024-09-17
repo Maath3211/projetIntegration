@@ -34,10 +34,10 @@
 
 
             <div class="row">
-                <div class="col-md-6">
-                    <input type="text" class="form-control" maxlength="80" id="search-input" name="recherche" placeholder="Rechercher...">
-                </div>
-    
+            <div class="col-md-6">
+                <input type="text" class="form-control" maxlength="12" id="search-input" name="recherche" placeholder="####-####-##">
+            </div>
+
                 <div class="col-md-6">
                     <select class="form-control">
                         <option value="1">Valid</option>
@@ -131,4 +131,8 @@
 
     </div>
 </div>
+
+
+<script src="{{ asset('js/RBQ.js') }}"></script>
+
 @endsection
