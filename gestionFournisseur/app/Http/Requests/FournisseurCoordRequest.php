@@ -21,22 +21,23 @@ class FournisseurCoordRequest extends FormRequest
      */
     public function rules(): array
     {
+
         return [
             'noCivic' => 'required|max:8|alpha_num',
             'rue' => 'required|string|max:64',
             'bureau' => 'nullable|string|max:8|alpha_num', 
             'ville' => 'required|string|max:64',
-            'province' => 'required',
+            'province' => 'required|in:Alberta,Colombie-Britannique,Île-du-prince-Édouard,Manitoba,Nouveau-Brunswick,Nouvelle-Écosse,Ontario,Québec,Saskatchewan,Terre-Neuve-et-Labrador,Territoires du Nord-Ouest,Nunavut,Yukon',
             'codePostal' => ['required', 'string', 'regex:/^(?!.*[DFIOQU])[A-VXY][0-9][A-Z] ?[0-9][A-Z][0-9]$/i'], // inclusion du i pour insensible à la case
             //'codeRegion' => 'nullable|string|size:2', Ne devrait pas contenir d'erreur via l'API
             //'nomRegion' => 'nullable|string',         Ne devrait pas contenir d'erreur via l'API
             'site' => 'nullable|string|max:64|url',
-            'typeTel' => 'required', 
+            'typeTel' => 'required|in:Bureau,Télécopieur,Cellulaire', 
             'numero' => 'required|digits:10', 
-            'poste' => 'nullable|string|numeric:6',
+            'poste' => 'nullable|numeric|between:1,999999',
             'typeTel2' => 'nullable', 
             'numero2' => 'nullable|digits:10',   
-            'poste2' => 'nullable|string|numeric:6',
+            'poste2' => 'nullable|numeric|between:1,999999',
         ];
     }
 
@@ -61,18 +62,21 @@ class FournisseurCoordRequest extends FormRequest
             'ville.required' => 'La ville est requise.',
             'ville.max' => 'La ville ne peut pas dépasser 64 caractères.',
             'province.required' => 'La province est requise.',
+            'province.in' => 'Choix : Alberta,Colombie-Britannique,Île-du-prince-Édouard,Manitoba,Nouveau-Brunswick,Nouvelle-Écosse,Ontario,Québec,Saskatchewan,Terre-Neuve-et-Labrador,Territoires du Nord-Ouest,Nunavut,Yukon',
             'codePostal.required' => 'Le code postal est requis.',
             'codePostal.regex' => 'Le code postal doit être un code postal canadien valide.',
             'codeRegion.size' => 'Le code de région doit être exactement de 2 caractères.',
             'codeRegion.numeric' => 'Le code de région doit être numérique.',
             'site.max' => 'L\'adresse du site web ne peut pas dépasser 64 caractères.',
             'site.url' => 'L\'adresse du site web doit être une URL valide. EX: https://www.v3r.net',
+            'typeTel.in' => 'Choix : Bureau, Télécopieur et Cellulaire',
             'numero.required' => 'Le champ numéro de téléphone est obligatoire.',
             'numero.digits' => 'Le champ numéro de téléphone doit contenir exactement 10 chiffres.',
-            'poste.max' => 'Le numéro de poste ne peut pas dépasser 6 caractères.',
+            'poste.between' => 'Le numéro de poste ne peut pas dépasser 6 caractères.',
             'poste.numeric' => 'Le numéro de poste doit être numérique.',
+            'typeTel2.in' => 'Choix : Bureau, Télécopieur et Cellulaire',
             'numero2.digits' => 'Le champ numéro de téléphone doit contenir exactement 10 chiffres.',
-            'poste2.max' => 'Le numéro de poste ne peut pas dépasser 6 caractères.',
+            'poste2.between' => 'Le numéro de poste ne peut pas dépasser 6 caractères.',
             'poste2.numeric' => 'Le numéro de poste doit être numérique.',
         ];
     }

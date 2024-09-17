@@ -28,10 +28,14 @@ class PortailFournisseurController extends Controller
         $fournisseurs = Fournisseur::all();
         return View('fournisseur.index');
     }
+
     public function infoLogin()
     {
-        return View('fournisseur.information');
+        $fournisseur = Auth::user();
+        return View('fournisseur.information', compact('fournisseur'));
     }
+
+
 
 
     /**
@@ -160,6 +164,9 @@ class PortailFournisseurController extends Controller
             return redirect()->route('fournisseur.index');
             }
     }
+
+
+    // Code Unspsc 
     
     public function UNSPSC()
     {
@@ -181,6 +188,38 @@ class PortailFournisseurController extends Controller
         return redirect()->route('fournisseur.UNSPSC');
         
     }
+
+    // Licence RBQ
+
+    public function RBQ()
+    {
+
+        // $response = Http::withoutVerifying()->get('https://www.donneesquebec.ca/recherche/api/3/action/datastore_search_sql?sql=SELECT%20%22Numero%20de%20licence%22,%22Statut%20de%20la%20licence%22,%22Type%20de%20licence%22,%22Categorie%22,%22Sous-categories%22,%22Autre%20nom%22%20from%20%2232f6ec46-85fd-45e9-945b-965d9235840a%22');
+            $response = Http::withoutVerifying()->get('https://www.donneesquebec.ca/recherche/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22Categorie%22,%20%22Sous-categories%22%20FROM%20%2232f6ec46-85fd-45e9-945b-965d9235840a%22');
+
+            if ($response->successful()) {
+                $records = collect($response->json()['result']['records']);
+
+                $data = $records->map(function ($record) {
+                    return [
+                        // 'Numero de licence' => $record['Numero de licence'] ?? null,
+                        // 'Statut de la licence' => $record['Statut de la licence'] ?? null,
+                        // 'Type de licence' => $record['Type de licence'] ?? null,
+                        'Categorie' => $record['Categorie'] ?? null,
+                        'Sous-categories' => $record['Sous-categories'] ?? null,
+                        // 'Autre nom' => $record['Autre nom'] ?? null,
+                    ];
+                })->all();
+            } else {
+                $data = [];
+            }
+    
+            return View('fournisseur.RBQ', compact('data'));
+    }
+
+
+
+
         /**
      * CONNEXION **** CONNEXION **** CONNEXION ****CONNEXION ****CONNEXION****CONNEXION **** CONNEXION ****CONNEXION ****
      */
@@ -207,6 +246,15 @@ class PortailFournisseurController extends Controller
         else{
             return redirect()->route('fournisseur.index')->withErrors(['Informations invalides']); 
         }
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('fournisseur.index')->with('message', 'Déconnecté avec succès');
     }
 
 }
