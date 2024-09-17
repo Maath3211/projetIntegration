@@ -22,8 +22,7 @@ class AdminController extends Controller
     public function update(SettingRequest $request)
     {
         try {
-        }
-        catch(\Throwable $e){
+        } catch (\Throwable $e) {
 
         }
         $setting = new setting($request->validated());
@@ -43,40 +42,52 @@ class AdminController extends Controller
 
     public function impoImg(Request $request)
     {
-        if ($request->hasFile('image')) {
-            $maxSize = Setting::latest()->first()->tailleMax;
-            $maxSize = $maxSize * 1024;
-            $uploadedFile = $request->file('image');
-            $uniqueFileName = str_replace('  ', '_', '1'/* $compte->id */) . '-' . uniqid() . '.' . $uploadedFile->extension();
-            $file = new File();
-            $file->nomFichier = $uniqueFileName;
-            $file->lienFichier = '/images/fournisseurs/' . $uniqueFileName;
-            $file->tailleFichier_KO = $uploadedFile->getSize();
+        if ($request->hasFile('images')) {
+            $maxSize = Setting::latest()->first()->tailleMax * 1024;
 
+            foreach ($request->file('images') as $key => $image) {
+                try {
 
-            $request->validate([
-                'image' => 'required|max:' . $maxSize . '|extensions:pdf,doc,docx,jpg,jpeg,png,xlsx,xls,csv',
-            ], [
-                'image.max' => 'Le fichier est au dessus de la limite définie',
-                'image.required' => 'L\'image est requise',
-                'image.extensions' => 'Le fichier doit être dans un format imprimable: JPG, PNG, DOCX, DOC, PDF, XLSX, XLS, CSV'
-            ]);
+                    $uniqueFileName = str_replace(' ', '_', $request->user()->id) . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
 
-            try {
-                $request->image->move(public_path('images/fournisseurs'), $uniqueFileName);
-                /* File::delete(public_path() . $compte->image); */
-                $file->save();
+                    $request->validate([
+                        "images.{$key}" => 'required|max:' . $maxSize . '|mimes:pdf,doc,docx,jpg,jpeg,png,xlsx,xls,csv',
+                    ], [
+                        "images.{$key}.max" => 'Le fichier est au dessus de la limite définie',
+                        "images.{$key}.required" => 'L\'image est requise',
+                        "images.{$key}.mimes" => 'Le fichier doit être dans un format imprimable: JPG, PNG, DOCX, DOC, PDF, XLSX, XLS, CSV'
+                    ]);
 
-            } catch (\Symfony\Component\HttpFoundation\File\Exception\FileException $e) {
-                Log::error("Erreur lors du téléversement du fichier.", [$e]);
+                    $fileSize = $image->getSize();
+                    if ($fileSize === false || $fileSize === 0) {
+                        throw new \RuntimeException("Impossible de trouver la grosseur pour: " . $image->getClientOriginalName());
+                    }
+
+                    $image->move(public_path('images/fournisseurs'), $uniqueFileName);
+
+                    $file = new File();
+                    $file->nomFichier = $uniqueFileName;
+                    $file->lienFichier = '/images/fournisseurs/' . $uniqueFileName;
+                    $file->tailleFichier_KO = $fileSize;
+                    $file->save();
+
+                    \Log::info("Fichiers importer avec succès: " . $uniqueFileName);
+                } catch (\Exception $e) {
+                    \Log::error("Erreur pendant l'importation: " . $image->getClientOriginalName(), [
+                        'error' => $e->getMessage(),
+                        'trace' => $e->getTraceAsString()
+                    ]);
+                    return redirect()->route('admin.impo')->withErrors(['error' => 'Erreur lors du téléversement du fichier.' . $e->getMessage()]);
+                }
             }
-            /* $compte->image = $uniqueFileName; */
-            return redirect()->route('admin.impo')->with('message', 'Téléversement réussi');
-            ;
-        }
-        return redirect()->route('admin.impo')->withErrors(['error' => 'Erreur lors du téléversement du fichier.']);
 
+            return redirect()->route('admin.impo')->with('message', 'Téléversement réussi');
+        }
+
+        return redirect()->route('admin.impo')->withErrors(['error' => 'Aucun fichier à importer.']);
     }
+
+
 
 
 
@@ -91,22 +102,21 @@ class AdminController extends Controller
     public function ajoutContact(/* ContactRequest $request */ Request $request)
     {
         $contact = new contact(/* $request->validated() */);//
-            $contact['prenom'] = $request->prenom;
-            $contact['nom'] = $request->nom;
-            $contact['fonction'] = $request->fonction;
-            $contact['courriel'] = $request->courriel;
-            $contact['typeTelephone'] = $request->typeTelephone;
-            $contact['telephone'] = $request->telephone;
-            $contact['poste'] = $request->poste;
-            $contact['fournisseur'] = $request->user()->id;
-            
-            $contact->save();
+        $contact['prenom'] = $request->prenom;
+        $contact['nom'] = $request->nom;
+        $contact['fonction'] = $request->fonction;
+        $contact['courriel'] = $request->courriel;
+        $contact['typeTelephone'] = $request->typeTelephone;
+        $contact['telephone'] = $request->telephone;
+        $contact['poste'] = $request->poste;
+        $contact['fournisseur'] = $request->user()->id;
+
+        $contact->save();
         try {
-            
-            
+
+
             return redirect()->route('admin.contact')->with('message', 'Contact ajouté avec succès');
-        }
-        catch(\Throwable $e){
+        } catch (\Throwable $e) {
             return redirect()->route('admin.contact')->withErrors('Erreur lors de l\'ajout du contact');
         }
     }
