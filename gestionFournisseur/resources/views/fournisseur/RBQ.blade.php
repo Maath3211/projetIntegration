@@ -106,7 +106,7 @@
                 </div>
 
                 <div class="col-md-3">
-                <button class="btn btn-default" >Suivant</button>
+                <button class="form-control" >Suivant</button>
             </form>
                 </div>
             </div>

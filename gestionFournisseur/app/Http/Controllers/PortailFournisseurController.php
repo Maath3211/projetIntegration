@@ -218,6 +218,14 @@ class PortailFournisseurController extends Controller
         
     }
 
+    //Finance
+
+
+    public function finances()
+    {
+
+        return View('fournisseur.finances');
+    }
 
 
         /**
