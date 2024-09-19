@@ -25,7 +25,7 @@
                     <h5 class="pl-5">S14 - Services Publics</h5>
                     <form method="POST" action="{{ route('fournisseur.storeUnspsc') }}">
                         <div class="col-md-1">
-                            <input type="radio" class="mt-2" value="1" name="idUser">
+                            <input type="radio" class="mt-2" value="1" name="idUser" id="idUser">
                         </div>
                         @csrf
                         @if (count($codes))
@@ -33,7 +33,7 @@
                                 @foreach($codes as $code)
                                     <div class="item">
                                         <div class="col-md-1">
-                                            <input type="radio" class="mt-2" id="idUnspsc" name="idUnspsc" value="{{ $code->id }}">
+                                            <input type="radio" class="mt-2" id="idUnspsc" name="idUnspsc" value="{{ $code->id }}" {{ old('idUnspsc') == $code->id ? 'checked' : '' }}>
                                         </div>
                                         <div class="col-md-4">
                                             <p>{{ $code->code }}</p>
@@ -51,8 +51,8 @@
                             <h5 class="pl-5">Détails et spécifications</h5>
                             <div class="col-md-1"></div>
                             <div class="col-md-10">
-                                <textarea name="details" id="details" class="form-control" maxlength="500" value="{{old('details')}}"></textarea>
-                            </div>
+                                <textarea name="details" id="details" class="form-control" maxlength="500">{{ old('details') }}</textarea>
+                            </div>                            
                             <div class="col-md-1"></div>
                         </div>
                         <div class="row mt-4">

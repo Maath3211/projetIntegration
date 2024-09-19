@@ -37,15 +37,16 @@
                             <h5>Conditions de paiement</h5>
                         </div>
                         <div class="col-md-12">
-                            <select class="form-control" name="paiement" id="paiement">
-                                <option value="Payable immédiatement sans déduction">Payable immédiatement sans déduction</option>
-                                <option value="Payable immédiatement sans déduction. Date de base au 15 du mois suivant">Payable immédiatement sans déduction. Date de base au 15 du mois suivant</option>
-                                <option value="Dans les 15 jours 2% escompte. dans les 30 jours sans déduction">Dans les 15 jours 2% escompte, dans les 30 jours sans déduction</option>
-                                <option value="Après entrée facture jusquau 15 du mois. jusquau 15 du mois suivant...">Après entrée facture jusqu'au 15 du mois, jusqu'au 15 du mois suivant...</option>
-                                <option value="Dans les 15 jours sans déduction">Dans les 15 jours sans déduction</option>
-                                <option value="Dans les 30 jours sans déduction">Dans les 30 jours sans déduction</option>
-                                <option value="Dans les 45 jours sans déduction">Dans les 45 jours sans déduction</option>
-                                <option value="Dans les 60 jours sans déduction">Dans les 60 jours sans déduction</option>
+                            <select class="form-control" name="paiement" id="paiement" value="{{old('paiement')}}">
+                                <option value="Payable immédiatement sans déduction" {{ old('paiement') == 'Payable immédiatement sans déduction' ? 'selected' : '' }}>Payable immédiatement sans déduction</option>
+                                <option value="Payable immédiatement sans déduction. Date de base au 15 du mois suivant" {{ old('paiement') == 'Payable immédiatement sans déduction. Date de base au 15 du mois suivant' ? 'selected' : '' }}>Payable immédiatement sans déduction. Date de base au 15 du mois suivant</option>
+                                <option value="Dans les 15 jours 2% escompte. dans les 30 jours sans déduction" {{ old('paiement') == 'Dans les 15 jours 2% escompte. dans les 30 jours sans déduction' ? 'selected' : '' }}>Dans les 15 jours 2% escompte, dans les 30 jours sans déduction</option>
+                                <option value="Après entrée facture jusqu'au 15 du mois. jusqu'au 15 du mois suivant" {{ old('paiement') == 'Après entrée facture jusqu\'au 15 du mois. jusqu\'au 15 du mois suivant' ? 'selected' : '' }}>Après entrée facture jusqu'au 15 du mois, jusqu'au 15 du mois suivant</option>
+                                <option value="Dans les 15 jours sans déduction" {{ old('paiement') == 'Dans les 15 jours sans déduction' ? 'selected' : '' }}>Dans les 15 jours sans déduction</option>
+                                <option value="Dans les 30 jours sans déduction" {{ old('paiement') == 'Dans les 30 jours sans déduction' ? 'selected' : '' }}>Dans les 30 jours sans déduction</option>
+                                <option value="Dans les 45 jours sans déduction" {{ old('paiement') == 'Dans les 45 jours sans déduction' ? 'selected' : '' }}>Dans les 45 jours sans déduction</option>
+                                <option value="Dans les 60 jours sans déduction" {{ old('paiement') == 'Dans les 60 jours sans déduction' ? 'selected' : '' }}>Dans les 60 jours sans déduction</option>
+                            
                             </select>
                         </div>
                     </div>
@@ -53,21 +54,21 @@
                     <div class="row">
                         <legend>Devise</legend>
                         <div class="col-md-12">
-                            <input type="radio" id="devise" name="devise" value="CAD"> CAD - Dollar canadien
+                            <input type="radio" id="devise" name="devise" value="CAD" {{ old('devise') == 'CAD' ? 'checked' : '' }}> CAD - Dollar canadien
                         </div>
                         <div class="col-md-12">
-                            <input type="radio" id="devise" name="devise" value="USD"> USD - Dollar des États-Unis
-                        </div>
+                            <input type="radio" id="devise" name="devise" value="USD" {{ old('devise') == 'USD' ? 'checked' : '' }}> USD - Dollar des États-Unis
+                        </div>                        
                     </div>
 
                     <div class="row">
                         <legend>Mode de communication</legend>
-                        <div class="col-md-4">
-                            <input type="radio" id="communication" name="communication" value="courriel"> Courriel
+                        <div class="col-md-4"> 
+                            <input type="radio" id="communication" name="communication" value="courriel" {{ old('communication') == 'courriel' ? 'checked' : '' }}> Courriel
                         </div>
                         <div class="col-md-6">
-                            <input type="radio" id="communication" name="communication" value="courrielRegulier"> Courriel régulier
-                        </div>
+                            <input type="radio" id="communication" name="communication" value="courrielRegulier" {{ old('communication') == 'courrielRegulier' ? 'checked' : '' }}> Courriel régulier
+                        </div>                        
                     </div>
 
                     <div class="row mt-4">
