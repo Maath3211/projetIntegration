@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('unspsc', function (Blueprint $table) {
+        Schema::create('finances', function (Blueprint $table) {
             $table->id();
-            $table->string('nature',200)->nullable();
-            $table->string('code_categorie',150)->nullable();
-            $table->string('categorie',300)->nullable();
-            $table->integer('code')->nullable();
-            $table->text('description')->nullable();
+            $table->string('tps',250);
+            $table->string('tvq',250);
+            $table->string('paiement',500);
+            $table->string('devise',500);
+            $table->string('communication',500);
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('unspsc');
+        Schema::dropIfExists('finances');
     }
 };

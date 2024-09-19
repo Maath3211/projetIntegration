@@ -12,11 +12,13 @@ use App\Models\Unspsc;
 use App\Models\Unspsccode;
 use App\Models\RBQLicence;
 use App\Models\Categorie;
+use App\Models\Finance;
 use App\Http\Requests\ConnexionRequest;
 use App\Http\Requests\FournisseurRequest;
 use App\Http\Requests\FournisseurCoordRequest;
 use App\Http\Requests\UnspscRequest;
 use App\Http\Requests\RBQRequest;
+use App\Http\Requests\FinanceRequest;
 
 
 
@@ -241,6 +243,21 @@ class PortailFournisseurController extends Controller
     {
 
         return View('fournisseur.finances');
+    }
+
+    public function storeFinances(FinanceRequest $request)
+    {
+        try{
+            $code = new Finance($request->all());
+            $code->save();
+            
+        }
+        catch(\Throwable $e){
+            Log::debug($e);
+            return redirect()->route('fournisseur.finances');
+        }
+        return redirect()->route('fournisseur.UNSPSC');
+        
     }
 
 
