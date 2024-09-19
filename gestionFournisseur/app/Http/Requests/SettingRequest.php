@@ -59,7 +59,7 @@ class SettingRequest extends FormRequest
             'tailleMax.required' => 'La taille maximale est requise',
             'tailleMax.integer' => 'La taille maximale doit être non fractionnée',
             'tailleMax.min' => 'La ne peut pas être négatif',
-            'tailleMax.max' => 'La taille ne peut pas être supérieur à 100 mo',
+            'tailleMax.max' => 'La taille ne peut pas être supérieure à 100 mo',
             
         ];
     }

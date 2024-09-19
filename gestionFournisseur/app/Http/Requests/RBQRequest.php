@@ -40,7 +40,7 @@ class RBQRequest extends FormRequest
     public function messages(){
         return[
             'licenceRBQ.required' => 'Il manque un numéro de licence',
-            'licenceRBQ.min' => 'Numéro de licence incomplètes',
+            'licenceRBQ.min' => 'Numéro de licence incomplète',
             'idCategorie.required' => 'Choisir une catégorie',
         ];
     }

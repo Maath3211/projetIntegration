@@ -21,5 +21,12 @@ class FournisseursSeeder extends Seeder
             'entreprise' => 'Cegep',
             'password' =>Hash::make('adminggg')
         ]);
+        DB::table('fournisseurs')->insert([
+            'id' => 2,
+            'email'=> 'mathys.lessard.02@edu.cegeptr.qc.ca',
+            'neq' => '1123456782',
+            'entreprise' => 'Cegep',
+            'password' =>Hash::make('adminggg')
+        ]);
     }
 }

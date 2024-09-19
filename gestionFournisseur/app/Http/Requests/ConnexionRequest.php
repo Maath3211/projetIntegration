@@ -37,8 +37,8 @@ class ConnexionRequest extends FormRequest
     {
         return
         [
-            'password.min' => 'Le password doit contenir entre 7 caractères minimun',
-            'password.max' => 'Le password doit contenir entre 12 caractères maximun',
+            'password.min' => 'Le password doit contenir entre 7 caractères minimum',
+            'password.max' => 'Le password doit contenir entre 12 caractères maximum',
             'neq.min' => 'Le neq doit contenir 10 caractères',
             'neq.max' => 'Le neq doit contenir 10 caractères',
             'neq.unique' => 'Le NEQ doit être unique.'

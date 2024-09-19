@@ -31,7 +31,7 @@
             <div class="form-group">
               <label for="password" class="titreForm">Mot de passe</label>
               <input type="password" class="form-control" id="password" placeholder="Mot de passe" name="password">
-              <a href="#" class="link-right">Mot de passe oublié ?</a>
+              <a href="{{ route('login.resetView') }}" class="link-right">Mot de passe oublié ?</a>
             </div>
             <div class="form-group">
               <button type="submit" class="btn btn-secondary">Suivant</button>
@@ -54,7 +54,7 @@
             <div class="form-group">
               <label for="password" class="titreForm">Mot de passe</label>
               <input type="password" class="form-control" id="password" placeholder="Mot de passe" name="password">
-              <a href="#" class="link-right">Mot de passe oublié ?</a>
+              <a href="{{ route('login.resetView') }}" class="link-right">Mot de passe oublié ?</a>
             </div>
             <div class="form-group">
               <button type="submit" class="btn btn-secondary">Suivant</button>
