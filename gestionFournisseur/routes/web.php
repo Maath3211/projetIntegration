@@ -67,6 +67,9 @@ Route::PATCH('/importation/store',
 Route::GET('/finances',
 [PortailFournisseurController::class,'finances'])->name('fournisseur.finances');
 
+Route::POST('/finances/store',
+[PortailFournisseurController::class,'storeFinances'])->name('fournisseur.storeFinances');
+
 # Information du fournisseur TODO: quand fournisseur sera completé
 Route::GET('/information',
 [PortailFournisseurController::class,'infoLogin'])->name('fournisseur.information');
