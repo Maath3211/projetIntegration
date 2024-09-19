@@ -18,14 +18,19 @@ Route::POST('/connexion/email',
 [PortailFournisseurController::class,'loginEmail'])->name('login.email');
 
 # Reinitialisation mot de passe
-Route::GET('/reinitialisation/neq',
-[AdminController::class, 'resetNEQView'])->name('login.resetNEQ');
+Route::GET('/reinitialisation',
+[AdminController::class, 'sendResetPasswordView'])->name('login.resetView');
 
-Route::GET('/reinitialisation/email',
-[AdminController::class, 'resetEmailView'])->name('login.resetEmail');
+Route::POST('/reinitialisation',
+[AdminController::class, 'sendResetPassword']) -> name('login.reset');
 
-Route::POST('/reset',
-[AdminController::class, 'reset']) -> name('login.reset');
+Route::GET('/reinitialisation/{code}',
+[AdminController::class, 'resetPasswordView'])->name('login.modifierView');
+
+Route::POST('/reinitialisation/{code}',
+[AdminController::class, 'resetPassword']) -> name('login.modifier');
+
+
 
 #Déconnexion
 Route::POST('/logout',
