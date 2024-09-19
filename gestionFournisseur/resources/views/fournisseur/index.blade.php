@@ -5,7 +5,7 @@
     <a href="/"><h5 class="compagny">logo</h5></a>
 </div>
 <nav class="main-nav d-flex">                 
-    <a href="{{route('fournisseur.inscription')}}">Inscription</a>
+    <a href="{{route('fournisseur.identification')}}">Indentification</a>
     <br>
     <a href="{{route('fournisseur.coordonnees')}}">Coordonnees</a>  
 </nav>
@@ -48,7 +48,7 @@
           <div class="d-flex flex-column justify-content-center py-5">
             <div class="form-group">
               <label for="email" class="titreForm">Email</label>
-              <input type="email" class="form-control" id="email" placeholder="Adresse courielle" name="email">
+              <input type="email" class="form-control" id="email" placeholder="Adresse courriel" name="email">
               <a href="#" class="link-right">NEQ?</a>
             </div>
             <div class="form-group">

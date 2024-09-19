@@ -9,7 +9,7 @@
 <div class="text-center py-5">
     <h1>Inscription Fournisseur ( IDENTIFICATION )</h1>
 </div>
-<form method="post" action="{{route('fournisseur.inscription')}}">
+<form method="post" action="{{route('fournisseur.storeIdentification')}}">
   @csrf
     <div class="d-flex row justify-content-center">
       <div class="form-group">
@@ -20,13 +20,13 @@
     <div class="d-flex row justify-content-center">
       <div class="form-group">
         <label for="prenom" class="titreForm">Nom d'entreprise</label>
-        <input type="text" class="form-control" id="entreprise" placeholder="entreprise" name="entreprise" value="{{old('entreprise')}}">
+        <input type="text" class="form-control" id="entreprise" placeholder="Nom d'entreprise" name="entreprise" value="{{old('entreprise')}}">
       </div> 
     </div> 
     <div class="d-flex row justify-content-center">
       <div class="form-group">
         <label for="email" class="titreForm">Email</label>
-        <input type="email" class="form-control" id="email" placeholder="email" name="email" value="{{old('email')}}">
+        <input type="email" class="form-control" id="email" placeholder="Adresse courriel" name="email" value="{{old('email')}}">
       </div> 
     </div> 
     <div class="d-flex row justify-content-center">

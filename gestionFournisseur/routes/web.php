@@ -6,28 +6,27 @@ use App\Http\Controllers\PortailFournisseurController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ResponsablesController;
 
-# Connexion portail fournisseur
+#FOURNISSEUR
+
+# Connexion 
 Route::GET('/',
 [PortailFournisseurController::class,'index'])->name('fournisseur.index');
 Route::POST('/connexion/neq',
+
 [PortailFournisseurController::class,'loginNeq'])->name('login.neq');
 Route::POST('/connexion/email',
 [PortailFournisseurController::class,'loginEmail'])->name('login.email');
 
-#Déconnexion
+# Déconnexion
 Route::POST('/logout',
 [PortailFournisseurController::class,'logout'])->name('fournisseur.logout');
 
-# Information du fournisseur TODO: quand fournisseur sera completé
-Route::GET('/information',
-[PortailFournisseurController::class,'infoLogin'])->name('fournisseur.information');
-
 # InscriptionIdentification
-Route::GET('/compte/identification',
-[PortailFournisseurController::class,'createIden'])->name('fournisseur.inscription');
+Route::GET('/identification',
+[PortailFournisseurController::class,'createIdentification'])->name('fournisseur.identification');
 
-Route::POST('/compte/identification',
-[PortailFournisseurController::class,'storeIden'])->name('fournisseur.inscription');
+Route::POST('/identification/store',
+[PortailFournisseurController::class,'storeIdentification'])->name('fournisseur.storeIdentification');
 
 # InscriptionUNSPSC
 Route::GET('/UNSPSC',
@@ -43,6 +42,27 @@ Route::GET('/RBQ',
 Route::POST('/RBQ/store',
 [PortailFournisseurController::class,'storeRBQ'])->name('fournisseur.storeRBQ');
 
+# InscriptionCoordonnées
+Route::GET('/coordonnees',
+[PortailFournisseurController::class,'createCoordo'])->name('fournisseur.coordonnees');
+
+Route::POST('/coordonnees/store',
+[PortailFournisseurController::class,'storeCoordo'])->name('fournisseur.storeCoordonnees');
+
+# InscriptionContact
+Route::GET('/contact',
+[AdminController::class,'contact'])->name('admin.contact');
+
+Route::POST('/contact/store',
+[AdminController::class,'Ajoutcontact'])->name('admin.ajoutContact');
+
+# InscriptionImportation 
+Route::GET('/importation',
+[AdminController::class,'impo'])->name('admin.impo');
+
+Route::PATCH('/importation/store',
+[AdminController::class,'impoImg'])->name('admin.impoImg');
+
 # InscriptionFinance
 Route::GET('/finances',
 [PortailFournisseurController::class,'finances'])->name('fournisseur.finances');
@@ -50,37 +70,28 @@ Route::GET('/finances',
 Route::POST('/finances/store',
 [PortailFournisseurController::class,'storeFinances'])->name('fournisseur.storeFinances');
 
+# Information du fournisseur TODO: quand fournisseur sera completé
+Route::GET('/information',
+[PortailFournisseurController::class,'infoLogin'])->name('fournisseur.information');
 
 
-# InscriptionCoordonnées
-Route::GET('/compte/coordonnees',
-[PortailFournisseurController::class,'createCoordo'])->name('fournisseur.coordonnees');
 
-Route::POST('/compte/coordonnees',
-[PortailFournisseurController::class,'storeCoordo'])->name('fournisseur.coordonnees');
 
-# InscriptionImportaion 
-Route::GET('/impo',
-[AdminController::class,'impo'])->name('admin.impo');
+# ADMINISTRATION
 
-Route::PATCH('/impoImg',
-[AdminController::class,'impoImg'])->name('admin.impoImg');
-
-# InscriptionContact
-Route::GET('/Contact',
-[AdminController::class,'contact'])->name('admin.contact');
-
-Route::POST('/ajoutContactDB',
-[AdminController::class,'Ajoutcontact'])->name('admin.ajoutContact');
-
-# Accceuil admin
+# Settings
 Route::GET('/administration/parametre',
 [AdminController::class,'setting'])->name('admin.setting');
 
 Route::POST('/administration/parametre/sauvegarde',
 [AdminController::class,'update'])->name('admin.saveSetting');
 
-# Acccueil Responsable
+
+
+
+# RESPONSABLE
+
+# Page principale
 Route::GET('/responsable',
 [ResponsablesController::class,'index'])->name('responsable.index');
 

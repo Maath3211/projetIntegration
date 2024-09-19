@@ -12,7 +12,7 @@
 <div class="container-fluid d-flex justify-content-center align-items-center vh-100">
     <div class="row">
         <div class="col-md-12">
-            <form method="post" action="{{ route('fournisseur.coordonnees') }}">
+            <form method="post" action="{{ route('fournisseur.storeCoordonnees') }}">
                 @csrf
                 <fieldset class="fieldset">
                     <legend>Adresse</legend>
@@ -25,16 +25,16 @@
                     <div class="d-flex row justify-content-center">
                         <div class="form-group">
                             <label for="rue" class="titreForm">Rue</label>
-                            <input type="text" class="form-control" id="rue" placeholder="rue" name="rue" value="{{old('rue')}}">
+                            <input type="text" class="form-control" id="rue" placeholder="Rue" name="rue" value="{{old('rue')}}">
                         </div>
                     </div>
                     <div class="d-flex row justify-content-center">
                         <div class="form-group">
                             <label for="bureau" class="titreForm">Bureau</label>
-                            <input type="text" class="form-control" id="bureau" placeholder="bureau" value="{{old('bureau')}}">
+                            <input type="text" class="form-control" id="bureau" placeholder="Bureau" value="{{old('bureau')}}">
                         </div> 
                     </div>
-                    <div class="d-flex row justify-content-center">
+                    <div class="d-flex row justify-content-center" id="villeContainer">
                         <div class="form-group">
                             <label for="ville" class="titreForm">Ville</label>
                             @if(isset($villes) && count($villes) > 0)
@@ -47,6 +47,7 @@
                              @else
                                 <p>Aucune ville disponible.</p>
                              @endif
+                             <input type="text" class="form-control" id="villeInput" name="ville" placeholder="Entrez la ville" style="display: none;">
                         </div> 
                     </div>
                     <div class="d-flex row justify-content-center">
@@ -141,4 +142,7 @@
     </div>
 </div>
 @endsection
+
 <script src="{{ asset('js/numTelephone.js') }}"></script>
+<script src="{{ asset('js/ville.js') }}"></script>
+
