@@ -29,4 +29,15 @@ class FinanceRequest extends FormRequest
             'communication' => 'required',
         ];
     }
+
+
+    public function messages(){
+        return[
+            'tps.required' => 'Entrer le numéro de TPS',
+            'tvq.required' => 'Entrer le numéro de TVQ',
+            'paiement.required' => 'Choisir une catégorie',
+            'devise.required' => 'Choisir une Devise',
+            'communication.required' => 'Choisir un mode de communication',
+        ];
+    }
 }

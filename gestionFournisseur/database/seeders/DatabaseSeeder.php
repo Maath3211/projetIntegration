@@ -20,5 +20,6 @@ class DatabaseSeeder extends Seeder
         $this->call(FournisseursSeeder::class);
         $this->call(UnspscSeeder::class);
         $this->call(SettingSeeder::class);
+        $this->call(CategorieSeeder::class);
     }
 }
