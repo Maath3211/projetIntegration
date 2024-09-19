@@ -42,12 +42,6 @@ Route::GET('/RBQ',
 Route::POST('/RBQ/store',
 [PortailFournisseurController::class,'storeRBQ'])->name('fournisseur.storeRBQ');
 
-# InscriptionRBQ
-Route::GET('/finances',
-[PortailFournisseurController::class,'finances'])->name('fournisseur.finances');
-
-
-
 # InscriptionCoordonnées
 Route::GET('/coordonnees',
 [PortailFournisseurController::class,'createCoordo'])->name('fournisseur.coordonnees');
@@ -70,9 +64,8 @@ Route::PATCH('/importation/store',
 [AdminController::class,'impoImg'])->name('admin.impoImg');
 
 # InscriptionFinance
-
-
-
+Route::GET('/finances',
+[PortailFournisseurController::class,'finances'])->name('fournisseur.finances');
 
 # Information du fournisseur TODO: quand fournisseur sera completé
 Route::GET('/information',
