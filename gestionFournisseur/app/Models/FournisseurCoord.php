@@ -22,8 +22,8 @@ class FournisseurCoord extends Model
         'ville',
         'province',
         'codePostal',
-        /*'codeRegion',*/
-        /*'nomRegion',*/
+        'codeRegion',
+        'nomRegion',
         'site',
         'typeTel',
         'numero',
