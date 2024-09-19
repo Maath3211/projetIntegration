@@ -43,9 +43,12 @@ Route::GET('/RBQ',
 Route::POST('/RBQ/store',
 [PortailFournisseurController::class,'storeRBQ'])->name('fournisseur.storeRBQ');
 
-# InscriptionRBQ
+# InscriptionFinance
 Route::GET('/finances',
 [PortailFournisseurController::class,'finances'])->name('fournisseur.finances');
+
+Route::POST('/finances/store',
+[PortailFournisseurController::class,'storeFinances'])->name('fournisseur.storeFinances');
 
 
 
