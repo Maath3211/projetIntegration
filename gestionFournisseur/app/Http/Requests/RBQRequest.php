@@ -23,15 +23,15 @@ class RBQRequest extends FormRequest
     {
         return [
             'licenceRBQ' => 'required|min:12',
-            'statut' => 'required',
-            'typeLicence' => 'required',
+            'statut' => 'required|in:Valid,Valide avec restriction,Non valide',
+            'typeLicence' => 'required|in:Entrepreneur,Constructeur-Propriétaire',
             'idCategorie' => 'required'
         ];
     }
 
     public function messages(){
         return[
-            'licenceRBQ.required' => 'Champ obligatoire',
+            'licenceRBQ.required' => 'Il manque un numéro de licence',
             'licenceRBQ.min' => 'Numéro de licence incomplètes',
             'idCategorie.required' => 'Choisir une catégorie',
         ];

@@ -1,3 +1,4 @@
+{{-- TODO: Améliorer le chargement de la page --}}
 @extends('layouts.fournisseur')
 @section('title',"Page d'accueil")
 <header>

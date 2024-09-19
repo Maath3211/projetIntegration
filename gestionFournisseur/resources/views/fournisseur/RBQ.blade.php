@@ -35,9 +35,9 @@
                         </div>
                         <div class="col-md-6">
                             <select class="form-control" name="statut">
-                                <option value="1">Valid</option>
-                                <option value="2">Valide avec restriction</option>
-                                <option value="3">Non valide</option>
+                                <option value="Valid">Valid</option>
+                                <option value="Valide avec restriction">Valide avec restriction</option>
+                                <option value="Non valide">Non valide</option>
                             </select>
                         </div>
                     </div>
@@ -48,8 +48,8 @@
                         </div>
                         <div class="col-md-7">
                             <select class="form-control" name="typeLicence">
-                                <option value="1">Entrepreneur</option>
-                                <option value="2">Constructeur-Propriétaire</option>
+                                <option value="Entrepreneur">Entrepreneur</option>
+                                <option value="Constructeur-Propriétaire">Constructeur-Propriétaire</option>
                             </select>
                         </div>
                     </div>

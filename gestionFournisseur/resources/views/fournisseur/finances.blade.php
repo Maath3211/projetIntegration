@@ -38,14 +38,14 @@
                         </div>
                         <div class="col-md-12">
                             <select class="form-control" name="paiement" id="paiement">
-                                <option value="1">Payable immédiatement sans déduction</option>
-                                <option value="2">Payable immédiatement sans déduction. Date de base au 15 du mois suivant</option>
-                                <option value="3">Dans les 15 jours 2% escompte, dans les 30 jours sans déduction</option>
-                                <option value="4">Après entrée facture jusqu'au 15 du mois, jusqu'au 15 du mois suivant...</option>
-                                <option value="5">Dans les 15 jours sans déduction</option>
-                                <option value="6">Dans les 30 jours sans déduction</option>
-                                <option value="7">Dans les 45 jours sans déduction</option>
-                                <option value="8">Dans les 60 jours sans déduction</option>
+                                <option value="Payable immédiatement sans déduction">Payable immédiatement sans déduction</option>
+                                <option value="Payable immédiatement sans déduction. Date de base au 15 du mois suivant">Payable immédiatement sans déduction. Date de base au 15 du mois suivant</option>
+                                <option value="Dans les 15 jours 2% escompte. dans les 30 jours sans déduction">Dans les 15 jours 2% escompte, dans les 30 jours sans déduction</option>
+                                <option value="Après entrée facture jusquau 15 du mois. jusquau 15 du mois suivant...">Après entrée facture jusqu'au 15 du mois, jusqu'au 15 du mois suivant...</option>
+                                <option value="Dans les 15 jours sans déduction">Dans les 15 jours sans déduction</option>
+                                <option value="Dans les 30 jours sans déduction">Dans les 30 jours sans déduction</option>
+                                <option value="Dans les 45 jours sans déduction">Dans les 45 jours sans déduction</option>
+                                <option value="Dans les 60 jours sans déduction">Dans les 60 jours sans déduction</option>
                             </select>
                         </div>
                     </div>
