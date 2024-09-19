@@ -55,7 +55,7 @@
                     </div>
 
                     <div class="row">
-                        <h5 class="pl-5">Catégorie et sous-catégories autorisées</h5>
+                        <h5 class="pl-5">Catégories et sous-catégories autorisées</h5>
                         
                         @if (count($codes)) 
                             <div class="scroll-container">

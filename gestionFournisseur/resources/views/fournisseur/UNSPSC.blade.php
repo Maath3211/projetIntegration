@@ -45,7 +45,7 @@
                                 @endforeach
                             </div>
                         @else
-                            <p>Erreur : aucun Services public proposé</p>
+                            <p>Erreur : aucun service public proposé</p>
                         @endif
                         <div class="row">
                             <h5 class="pl-5">Détails et spécifications</h5>
