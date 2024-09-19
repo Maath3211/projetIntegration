@@ -22,11 +22,19 @@ class RBQRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'licenceRBQ' => 'required|min:12',
-            'statut' => 'required|in:Valid,Valide avec restriction,Non valide',
+            'licenceRBQ' => 'required|min:10',
+            'statut' => 'required|in:Valide,Valide avec restriction,Non valide',
             'typeLicence' => 'required|in:Entrepreneur,Constructeur-Propriétaire',
             'idCategorie' => 'required'
         ];
+    }
+
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'licenceRBQ' => str_replace('-', '', $this->input('licenceRBQ', '')),
+        ]);
     }
 
     public function messages(){

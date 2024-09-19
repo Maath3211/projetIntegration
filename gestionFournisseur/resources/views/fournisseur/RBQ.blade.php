@@ -35,7 +35,7 @@
                         </div>
                         <div class="col-md-6">
                             <select class="form-control" name="statut">
-                                <option value="Valid">Valid</option>
+                                <option value="Valide">Valide</option>
                                 <option value="Valide avec restriction">Valide avec restriction</option>
                                 <option value="Non valide">Non valide</option>
                             </select>

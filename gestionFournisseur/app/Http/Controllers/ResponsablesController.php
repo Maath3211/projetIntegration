@@ -14,6 +14,11 @@ class ResponsablesController extends Controller
         return View('responsable.index');
     }
 
+    public function listeFournisseur()
+    {
+        return View('responsable.listeFournisseur');
+    }
+
     /**
      * Show the form for creating a new resource.
      */

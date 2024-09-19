@@ -95,3 +95,6 @@ Route::POST('/administration/parametre/sauvegarde',
 Route::GET('/responsable',
 [ResponsablesController::class,'index'])->name('responsable.index');
 
+Route::GET('/responsable/listeFournisseur',
+[ResponsablesController::class,'listeFournisseur'])->name('responsable.listeFournisseur');
+

@@ -26,7 +26,7 @@ class FinanceRequest extends FormRequest
             'tvq' => 'required',
             'paiement' => 'required|in:Payable immédiatement sans déduction,Payable immédiatement sans déduction. Date de base au 15 du mois suivant,Dans les 15 jours 2% escompte. dans les 30 jours sans déduction,Après entrée facture jusquau 15 du mois. jusquau 15 du mois suivant...,Dans les 15 jours sans déduction,Dans les 30 jours sans déduction,Dans les 45 jours sans déduction,Dans les 60 jours sans déduction,',
             'devise' => 'required|in:CAD,USD',
-            'communication' => 'required|courriel,courrielRegulier',
+            'communication' => 'required|in:courriel,courrielRegulier',
         ];
     }
 
