@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('neq', 10)->unique();
             $table->string('entreprise', 64);
             $table->string('password', 255); /* Plus grand pour encryptage */
+            $table->string('codeReset', 60)->nullable();
+            $table->date('demandeReset')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

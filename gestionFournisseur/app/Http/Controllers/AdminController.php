@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ContactRequest;
+use App\Models\Fournisseur;
 use App\Models\Setting;
 use App\Models\File;
 use App\Models\Contact;
 use Illuminate\Http\Request;
 use App\Http\Requests\SettingRequest;
+use Carbon\Carbon;
+use Str;
 use Log;
 
 
@@ -37,7 +40,7 @@ class AdminController extends Controller
 
     public function impo()
     {
-        return view('tmp.importationImg');
+        return view('fournisseur.importationImg');
     }
 
     public function impoImg(Request $request)
@@ -96,7 +99,7 @@ class AdminController extends Controller
 
     public function contact()
     {
-        return view('tmp.ajoutContact');
+        return view('fournisseur.ajoutContact');
     }
 
     public function ajoutContact(/* ContactRequest $request */ Request $request)
@@ -120,5 +123,37 @@ class AdminController extends Controller
             return redirect()->route('admin.contact')->withErrors('Erreur lors de l\'ajout du contact');
         }
     }
+
+
+
+
+
+    public function resetNEQView()
+    {
+        return view('fournisseur.resetNEQ');
+    }
+
+    public function resetEmailView()
+    {
+        return view('fournisseur.resetEmail');
+    }
+
+    public function reset(Request $request)
+    {
+
+        if (Fournisseur::where('email', $request->identifiant)->first()) {
+            $fournisseur = Fournisseur::where('email', $request->identifiant)->first();
+            $fournisseur->codeReset = Str::random(60);
+            $fournisseur->demandeReset = Carbon::now();
+            dd(Carbon::now());
+            $fournisseur->save();
+            // Mail::to($fournisseur->email )->send(new PasswordReset($fournisseur));
+        }
+        return redirect()->route('fournisseur.index')->with('message', 'Un courriel à été envoyer à l\'adresse associé au compte s\'il existe');
+
+
+    }
+
+
 
 }
