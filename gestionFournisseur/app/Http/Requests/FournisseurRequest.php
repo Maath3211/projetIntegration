@@ -39,9 +39,9 @@ class FournisseurRequest extends FormRequest
                 'regex:/[A-Z]/',
                 'regex:/[a-z]/',
                 'regex:/[0-9]/',
-                'regex:/[@$!%*?&]/'
+                'regex:/[@$!%*?&]/',
+                'confirmed'
             ],
-            'confirmPassword' => 'required_with:password|same:password',
         ];
     }
 
@@ -60,8 +60,7 @@ class FournisseurRequest extends FormRequest
             'password.min' => 'Le mot de passe doit contenir au moins 7 caractères.',
             'password.max' => 'Le mot de passe ne peut pas dépasser 12 caractères.',
             'password.regex' => 'Le mot de passe doit contenir au moin une majuscules, une minuscules, un chiffre et un caractères spéciaux',
-            'confirmPassword.required_with' => 'La confirmation du mot de passe est requise.',
-            'confirmPassword.same' => 'Les mots de passe ne correspondent pas.',
+            'password.confirmed' => 'Les mots de passe ne correspondent pas.',
         ];
     }
 }

@@ -38,7 +38,7 @@
   <div class="d-flex row justify-content-center">
     <div class="form-group">
       <label for="confirmPassword" class="titreForm">Resaisir le mot de passe</label>
-      <input type="password" class="form-control" id="confirmPassword" placeholder="Mot de passe" name="confirmPassword">
+      <input type="password" class="form-control" id="confirmPassword" placeholder="Mot de passe" name="password_confirmation">
     </div> 
   </div> 
     <div class="d-flex row justify-content-center">

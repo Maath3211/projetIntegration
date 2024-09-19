@@ -15,7 +15,7 @@
         @section('contenu')
             <p id="plus1">&#8853;</p>
             <div class="col-md-6 offset-3" id="form1Div">
-                <form action="{{ route('admin.ajoutContact') }}" method="post" id="form1">
+                <form action="{{ route('fournisseur.storeContact') }}" method="post" id="form1">
                     @csrf
 
                     <h2 class="text-center" id="numContact1">Contact 1</h2>

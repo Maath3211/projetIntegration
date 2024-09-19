@@ -2,7 +2,7 @@
 @section('title', 'Administration')
 
 @section('contenu')
-<form action="{{ route('admin.impoImg') }}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('fournisseur.storeImportation') }}" method="POST" enctype="multipart/form-data">
     @csrf
     @method('PATCH')
     <div class="container-fluid">

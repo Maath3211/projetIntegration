@@ -4,16 +4,17 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\PortailFournisseurController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\ResponsablesController;
+// use App\Http\Controllers\ResponsablesController;
 
 #FOURNISSEUR
 
 # Connexion 
 Route::GET('/',
 [PortailFournisseurController::class,'index'])->name('fournisseur.index');
-Route::POST('/connexion/neq',
 
+Route::POST('/connexion/neq',
 [PortailFournisseurController::class,'loginNeq'])->name('login.neq');
+
 Route::POST('/connexion/email',
 [PortailFournisseurController::class,'loginEmail'])->name('login.email');
 
@@ -66,17 +67,17 @@ Route::POST('/coordonnees/store',
 
 # InscriptionContact
 Route::GET('/contact',
-[AdminController::class,'contact'])->name('admin.contact');
+[PortailFournisseurController::class,'contact'])->name('fournisseur.contact');
 
 Route::POST('/contact/store',
-[AdminController::class,'Ajoutcontact'])->name('admin.ajoutContact');
+[PortailFournisseurController::class,'storeContact'])->name('fournisseur.storeContact');
 
 # InscriptionImportation 
 Route::GET('/importation',
-[AdminController::class,'impo'])->name('admin.impo');
+[PortailFournisseurController::class,'importation'])->name('fournisseur.importation');
 
 Route::PATCH('/importation/store',
-[AdminController::class,'impoImg'])->name('admin.impoImg');
+[PortailFournisseurController::class,'storeImportation'])->name('fournisseur.storeImportation');
 
 # InscriptionFinance
 Route::GET('/finances',
@@ -108,8 +109,8 @@ Route::POST('/administration/parametre/sauvegarde',
 
 # Page principale
 Route::GET('/responsable',
-[ResponsablesController::class,'index'])->name('responsable.index');
+[AdminController::class,'index'])->name('responsable.index');
 
 Route::GET('/responsable/listeFournisseur',
-[ResponsablesController::class,'listeFournisseur'])->name('responsable.listeFournisseur');
+[AdminController::class,'listeFournisseur'])->name('responsable.listeFournisseur');
 
