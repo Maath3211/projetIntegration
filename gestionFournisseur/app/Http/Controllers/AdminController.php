@@ -59,14 +59,14 @@ class AdminController extends Controller
                     $request->validate([
                         "images.{$key}" => 'required|max:' . $maxSize . '|mimes:pdf,doc,docx,jpg,jpeg,png,xlsx,xls,csv',
                     ], [
-                        "images.{$key}.max" => 'Le fichier est au dessus de la limite définie',
+                        "images.{$key}.max" => 'Le fichier est au-dessus de la limite définie',
                         "images.{$key}.required" => 'L\'image est requise',
                         "images.{$key}.mimes" => 'Le fichier doit être dans un format imprimable: JPG, PNG, DOCX, DOC, PDF, XLSX, XLS, CSV'
                     ]);
 
                     $fileSize = $image->getSize();
                     if ($fileSize === false || $fileSize === 0) {
-                        throw new \RuntimeException("Impossible de trouver la grosseur pour: " . $image->getClientOriginalName());
+                        throw new \RuntimeException("Impossible de trouver la taille pour: " . $image->getClientOriginalName());
                     }
 
                     $image->move(public_path('images/fournisseurs'), $uniqueFileName);
@@ -77,7 +77,7 @@ class AdminController extends Controller
                     $file->tailleFichier_KO = $fileSize;
                     $file->save();
 
-                    \Log::info("Fichiers importer avec succès: " . $uniqueFileName);
+                    \Log::info("Fichiers importés avec succès: " . $uniqueFileName);
                 } catch (\Exception $e) {
                     \Log::error("Erreur pendant l'importation: " . $image->getClientOriginalName(), [
                         'error' => $e->getMessage(),
@@ -87,7 +87,7 @@ class AdminController extends Controller
                 }
             }
 
-            return redirect()->route('admin.impo')->with('message', 'Téléversement réussi');
+            return redirect()->route('admin.impo')->with('message', 'Téléversement réussi !');
         }
 
         return redirect()->route('admin.impo')->withErrors(['error' => 'Aucun fichier à importer.']);
@@ -105,9 +105,9 @@ class AdminController extends Controller
         return view('fournisseur.ajoutContact');
     }
 
-    public function ajoutContact(/* ContactRequest $request */ Request $request)
+    public function ajoutContact(ContactRequest $request, Contact $Request)
     {
-        $contact = new contact(/* $request->validated() */);//
+        $contact = new contact($request->validated());
         $contact['prenom'] = $request->prenom;
         $contact['nom'] = $request->nom;
         $contact['fonction'] = $request->fonction;

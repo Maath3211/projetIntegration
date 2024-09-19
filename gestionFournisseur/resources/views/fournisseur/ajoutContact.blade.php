@@ -22,8 +22,8 @@
                     <div class=" py-3">
                         <div class="d-flex row justify-content-center">
                             <div class="form-group">
-                                <label>Prenom</label>
-                                <input type="text" class="form-control" placeholder="Prenom" name="prenom" required
+                                <label>Prénom</label>
+                                <input type="text" class="form-control" placeholder="Prénom" name="prenom" required
                                     value="{{-- {{ old('prenom') }} --}}a" id="prenom1">
                             </div>
                         </div>
@@ -69,7 +69,7 @@
                         <div class="d-flex row justify-content-center">
                             <div class="form-group">
                                 <label>Telephone</label>
-                                <input type="text" class="form-control telephones" placeholder="Telephone"
+                                <input type="text" class="form-control telephones" placeholder="Téléphone"
                                     name="telephone" required value="{{-- {{ old('telephone') }} --}}111-111-1111" id="telephone1">
                             </div>
                         </div>
@@ -88,8 +88,10 @@
 
             </form>
 
-            <div class="form-group text-center">
-                <button onclick="submitForms()" class="btn btn-success">Sauvegarder</button>
+            <div class="d-flex row justify-content-center">
+                <div class="form-group">
+                    <button onclick="submitForms()" class="btn btn-secondary">Sauvegarder</button>
+                </div>
             </div>
 
         </div>

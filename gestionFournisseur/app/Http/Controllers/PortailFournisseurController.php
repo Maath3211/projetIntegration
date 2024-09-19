@@ -198,7 +198,7 @@ class PortailFournisseurController extends Controller
     public function storeUnspsc(UnspscRequest $request)
     {
         try{
-            $code = new Unspsccode($request->all());
+            $code = new Unspsccode($request->validated());
             $code->save();
             
         }
@@ -224,7 +224,7 @@ class PortailFournisseurController extends Controller
     public function storeRBQ(RBQRequest $request)
     {
         try{
-            $code = new RBQLicence($request->all());
+            $code = new RBQLicence($request->validated());
             $code->save();
             
         }
