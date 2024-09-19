@@ -32,11 +32,15 @@ class SettingRequest extends FormRequest
             ],
             'delaiRev' => [
                 'required',
-                'integer'
+                'integer',
+                'min:1',
+                'max:24'
             ],
             'tailleMax' => [
                 'required',
-                'integer'
+                'integer',
+                'min:1',
+                'max:100'
             ]
 
         ];
@@ -44,16 +48,19 @@ class SettingRequest extends FormRequest
     public function messages()
     {
         return [
-            'emailAppro.required' => 'Le courriel approvisionnement est requis.',
-            'emailAppro.email' => 'Le courriel approvisionnement doit être dans le format d\'un adresse courriel.',
+            'emailAppro.required' => 'Le courriel d\'approvisionnement est requis.',
+            'emailAppro.email' => 'Le courriel d\'approvisionnement doit être dans le format d\'une adresse courriel.',
             'emailFinance.required' => 'Le courriel finance est requis.',
-            'emailFinance.email' => 'Le courriel finance doit être dans le format d\'un adresse courriel.',
+            'emailFinance.email' => 'Le courriel finance doit être dans le format d\'une adresse courriel.',
             'delaiRev.required' => 'Le délai de révision est requis',
-            // FIXME: changer message integer???
-            'delaiRev.integer' => 'Le delai doit être un nombre rond',
+            'delaiRev.integer' => 'Le délai doit être un nombre non fractionné',
+            'delaiRev.min' => 'Le délai ne peut pas être négatif',
+            'delaiRev.max' => 'Le délai ne peut pas être supérieur à 24 mois',
             'tailleMax.required' => 'La taille maximale est requise',
-            // FIXME: changer message integer???
-            'tailleMax.integer' => 'Le taille maximale doit être un nombre rond',
+            'tailleMax.integer' => 'La taille maximale doit être non fractionnée',
+            'tailleMax.min' => 'La ne peut pas être négatif',
+            'tailleMax.max' => 'La taille ne peut pas être supérieur à 100 mo',
+            
         ];
     }
 }

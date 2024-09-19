@@ -16,12 +16,12 @@
     <div class="row">
         <div class="col-6 offset-3">
             <div class="text-center py-3">
-                <h1>Page d'administration</h1>
+                <h1>Gestion des paramètres</h1>
 
                 <form action="{{ route('admin.saveSetting') }}" method="post">
                     @csrf
                     <div class="d-flex">
-                        <label>Courriel de l'appro.</label>
+                        <label>Courriel de l'Appro.</label>
                         <input type="email" class="form-control inputCourriel" placeholder="Courriel"
                             name="emailAppro" @if ($settings && $settings->emailAppro) value="{{ $settings->emailAppro }}" @endif required>
                     </div>

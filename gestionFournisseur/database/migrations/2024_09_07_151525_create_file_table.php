@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('file', function (Blueprint $table) {
             $table->id();
-            $table->text('nomFichier');
+            $table->text('nomFichier',32);
             $table->text('lienFichier');
             $table->float('tailleFichier_KO');
             $table->timestamps();
