@@ -28,5 +28,8 @@ class FournisseurCoord extends Model
         'typeTel',
         'numero',
         'poste',
+        'typeTel2',
+        'numero2',
+        'poste2',
     ];
 }

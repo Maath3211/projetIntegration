@@ -22,7 +22,10 @@ class Fournisseur extends Authenticatable
     protected $fillable = [
         'email',
         'neq',
-        'password'
+        'entreprise',
+        'password',
+        'codeReset',
+        'demandeReset',
     ];
 
     /**
