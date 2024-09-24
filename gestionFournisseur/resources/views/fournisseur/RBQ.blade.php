@@ -9,6 +9,10 @@
 </header>
 
 @section('contenu')
+
+<p>{{ $neq }}</p>
+
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-2"></div>
