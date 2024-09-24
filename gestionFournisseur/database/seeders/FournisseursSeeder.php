@@ -19,6 +19,7 @@ class FournisseursSeeder extends Seeder
             'email'=> 'admin@admin.com',
             'neq' => '1123456789',
             'entreprise' => 'Cegep',
+            'statut' => 'confirme',
             'password' =>Hash::make('adminggg')
         ]);
         DB::table('fournisseurs')->insert([
@@ -26,6 +27,7 @@ class FournisseursSeeder extends Seeder
             'email'=> 'mathys.lessard.02@edu.cegeptr.qc.ca',
             'neq' => '1123456782',
             'entreprise' => 'Cegep',
+            'statut' => 'attente',
             'password' =>Hash::make('adminggg')
         ]);
     }

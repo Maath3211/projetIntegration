@@ -15,6 +15,7 @@ use App\Models\FournisseurCoord;
 use App\Models\Contact;
 use App\Models\File;
 use App\Models\Finance;
+use App\Models\Setting;
 use App\Http\Requests\ConnexionRequest;
 use App\Http\Requests\FournisseurRequest;
 use App\Http\Requests\UnspscRequest;
@@ -254,13 +255,13 @@ class PortailFournisseurController extends Controller
 
             $contact->save();
 
-            return redirect()->route('fournisseur.index')->with('message',"Enregistré!");
+            return redirect()->route('fournisseur.contact')->with('message',"Enregistré!");
         } 
 
         catch (\Throwable $e)
         {
             Log::debug($e);
-            return redirect()->route('fournisseur.ajoutContact')->withErrors(['Informations invalides']); 
+            return redirect()->route('fournisseur.contact')->withErrors(['Informations invalides']); 
         } 
     }
 

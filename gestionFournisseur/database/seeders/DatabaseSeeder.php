@@ -21,5 +21,6 @@ class DatabaseSeeder extends Seeder
         $this->call(UnspscSeeder::class);
         $this->call(SettingSeeder::class);
         $this->call(CategorieSeeder::class);
+        $this->call(UserSeeder::class);
     }
 }

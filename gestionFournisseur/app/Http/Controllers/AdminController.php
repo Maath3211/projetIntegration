@@ -2,15 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\demandeFournisseur;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 use App\Models\Setting;
+use App\Models\Fournisseur;
+use App\Models\User;
 use App\Http\Requests\SettingRequest;
 use App\Http\Requests\ResetPasswordRequest;
 use App\Mail\ResetPassword;
 use Carbon\Carbon;
 use Mail;
 use Str;
-use Log;
+use DB;
 
 
 class AdminController extends Controller
@@ -52,7 +58,7 @@ class AdminController extends Controller
         return redirect()->route('admin.setting');
     }
 
-   
+
     // MESSAGE DU SYSTÈME --- MESSAGE DU SYSTÈME --- MESSAGE DU SYSTÈME --- MESSAGE DU SYSTÈME --- MESSAGE DU SYSTÈME --- MESSAGE DU SYSTÈME --- MESSAGE DU SYSTÈME
 
 
@@ -93,15 +99,15 @@ class AdminController extends Controller
             $fournisseur->demandeReset = null;
             $fournisseur->save();
             return redirect()->route('fournisseur.index')->withErrors('Le code à expiré');
-        }
-        else{
+        } else {
             return view('fournisseur.resetPassword', compact('codeReset'));
         }
     }
 
-    public function resetPassword(ResetPasswordRequest $request,string $codeReset){
+    public function resetPassword(ResetPasswordRequest $request, string $codeReset)
+    {
         $fournisseur = Fournisseur::where('codeReset', $codeReset)->firstOrFail();
-        if($fournisseur->code == $request->codeReset){
+        if ($fournisseur->code == $request->codeReset) {
             $fournisseur->password = $request->password;
             $fournisseur->codeReset = null;
             $fournisseur->demandeReset = null;
@@ -110,6 +116,36 @@ class AdminController extends Controller
         }
     }
 
+    public function demandeFourn()
+    {
+        $fn = new Fournisseur();
+
+        $fn->email = 'a@a.com';
+        $fn->neq = '8888888888';
+        $fn->entreprise = 'bor';
+        $fn->statut = 'attente';
+        $fn->password = 'adminggg';
+
+        $fn->save();
+
+        $admins = DB::table('users')->where('role', ['admin','responsable'])->get();
+        
+        foreach( $admins as $admin){
+            Mail::to($admin->email)->send(new demandeFournisseur());
+        }
+    }
+
+    public function demandeFournisseurView(){
+
+        $fnAttentes = DB::table('fournisseurs')->where('statut', 'attente')->get();
+        return view('admin.demandeFournisseur', compact('fnAttentes'));
+    }
+
+    public function demandeFournisseurZoom($neq){
+        $fn = DB::table('fournisseurs')->where('neq', $neq)->first();
+        $contacts = DB::table('contact')->where('fournisseur', $fn->id)->get();
+        return view('admin.zoomDemandeFournisseur', compact('fn', 'contacts'));
+    }
 
 
 }

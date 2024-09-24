@@ -114,3 +114,18 @@ Route::GET('/responsable',
 Route::GET('/responsable/listeFournisseur',
 [AdminController::class,'listeFournisseur'])->name('responsable.listeFournisseur');
 
+
+
+
+
+
+
+# TODO: A classer
+Route::GET('/test',
+[AdminController::class,'demandeFourn']);
+
+Route::GET('/administration/demandeFournisseur',
+[AdminController::class,'demandeFournisseurView'])->name('responsable.demandeFournisseur');
+
+Route::GET('/administration/demandeFournisseur/{neq}',
+[AdminController::class,'demandeFournisseurZoom'])->name('responsable.demandeFournisseurZoom');
