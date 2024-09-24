@@ -10,8 +10,11 @@
 
 @section('contenu')
 
-<p>{{ $neq }}</p>
-
+@if(isset($fournisseurIden))
+    <p>{{ $fournisseurIden }}</p>
+@else
+    <p>Marche pas</p>
+@endif
 
 <div class="container-fluid">
     <div class="row">

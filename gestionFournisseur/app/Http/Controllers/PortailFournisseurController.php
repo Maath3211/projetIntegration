@@ -112,7 +112,8 @@ class PortailFournisseurController extends Controller
             $fournisseurIden->save();
 
 
-            return redirect()->route('fournisseur.RBQ')->with('message',"Enregistré!");
+
+            return redirect()->route('fournisseur.RBQ',compact('$fournisseurIden'))->with('message',"Enregistré!");
         }
         catch (\Throwable $e)
         {
@@ -172,10 +173,8 @@ class PortailFournisseurController extends Controller
     }
     public function RBQ()
     {
-
-
         $codes = Categorie::all();
-        return View('fournisseur.RBQ', compact('codes','neq'));
+        return View('fournisseur.RBQ', compact('codes'));
     }
 
 
