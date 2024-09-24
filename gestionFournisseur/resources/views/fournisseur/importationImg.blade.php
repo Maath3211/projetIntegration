@@ -9,7 +9,7 @@
         <div class="d-flex row justify-content-center">
             <div class="form-group">
                 <label for="imageID" class="titreForm">Photo de profil
-                    <small class="text-muted">(Optionel)</small>
+                    <small class="text-muted">(Optionnel)</small>
                 </label>
             </div>
         </div>

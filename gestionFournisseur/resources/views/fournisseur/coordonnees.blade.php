@@ -41,7 +41,7 @@
                     <div class="d-flex row justify-content-center">
                         <div class="form-group">
                             <label for="bureau" class="titreForm">Bureau
-                                <small class="text-muted">(Optionel)</small>
+                                <small class="text-muted">(Optionnel)</small>
                             </label>
                             <input type="text" class="form-control" id="bureau" placeholder="Bureau" value="{{old('bureau')}}">
                             @error('bureau')
@@ -109,7 +109,7 @@
                     <div class="d-flex row justify-content-center">
                         <div class="form-group"></label>
                             <label for="site" class="titreForm">Site internet
-                                <small class="text-muted">(Optionel)</small>
+                                <small class="text-muted">(Optionnel)</small>
                             </label>
                             <input type="url" class="form-control" id="site" placeholder="Votre site internet" name="site" value="{{old('site')}}">
                             @error('site')
@@ -149,7 +149,7 @@
                     <div class="d-flex row justify-content-center">
                         <div class="form-group">
                             <label for="poste" class="titreForm">Poste
-                                <small class="text-muted">(Optionel)</small>
+                                <small class="text-muted">(Optionnel)</small>
                             </label>
                             <input type="text" class="form-control" id="poste" placeholder="" name="poste" value="{{old('poste')}}">
                             @error('poste')
@@ -160,7 +160,7 @@
                     <div class="d-flex row justify-content-center">
                         <div class="form-group">
                             <label for="typeTel2" class="titreForm">Type
-                                <small class="text-muted">(Optionel)</small>
+                                <small class="text-muted">(Optionnel)</small>
                             </label>
                             <select name="typeTel2" class="form-control" id="typeTel2">
                                 <option value="" {{ old('typeTel2') == '' ? 'selected' : '' }}>-- Sélectionnez un type --</option>
@@ -187,7 +187,7 @@
                     <div class="d-flex row justify-content-center">
                         <div class="form-group">
                             <label for="poste2" class="titreForm">Poste
-                                <small class="text-muted">(Optionel)</small>
+                                <small class="text-muted">(Optionnel)</small>
                             </label>
                             <input type="text" class="form-control" id="poste2" placeholder="" name="poste2" value="{{old('poste2')}}">
                             @error('poste2')

@@ -107,7 +107,7 @@
                         <div class="d-flex row justify-content-center">
                             <div class="form-group">
                                 <label for="poste" class="titreForm">Poste
-                                    <small class="text-muted">(Optionel)</small>
+                                    <small class="text-muted">(Optionnel)</small>
                                 </label>
                                 <input type="tel" class="form-control" placeholder="Poste" name="poste"
                                     value="{{-- {{ old('poste') }} --}}" id="poste1">
