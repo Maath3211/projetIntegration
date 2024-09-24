@@ -279,7 +279,6 @@ class PortailFournisseurController extends Controller
             $contact['telephone'] = $request->telephone;
             $contact['poste'] = $request->poste;
             $contact['fournisseur'] = $request->user()->id;
-
             $contact->save();
 
             return redirect()->route('fournisseur.index')->with('message',"Enregistré!");
@@ -288,7 +287,7 @@ class PortailFournisseurController extends Controller
         catch (\Throwable $e)
         {
             Log::debug($e);
-            return redirect()->route('fournisseur.ajoutContact')->withErrors(['Informations invalides']); 
+            return redirect()->route('fournisseur.index')->withErrors(['Informations invalides']); 
         } 
     }
 
