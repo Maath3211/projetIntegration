@@ -25,7 +25,13 @@
                     <h5 class="pl-5">S14 - Services Publics</h5>
                     <form method="POST" action="{{ route('fournisseur.storeUnspsc') }}">
                         <div class="col-md-1">
+                            <label for="id" class="titreForm">idUser
+                                <small class="text-danger">*</small>
+                            </label>
                             <input type="radio" class="mt-2" value="1" name="idUser" id="idUser">
+                            @error('idUser')
+                            <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
                         @csrf
                         @if (count($codes))
@@ -33,7 +39,13 @@
                                 @foreach($codes as $code)
                                     <div class="item">
                                         <div class="col-md-1">
+                                            <label for="code" class="titreForm">Code
+                                                <small class="text-danger">*</small>
+                                            </label>
                                             <input type="radio" class="mt-2" id="idUnspsc" name="idUnspsc" value="{{ $code->id }}" {{ old('idUnspsc') == $code->id ? 'checked' : '' }}>
+                                            @error('idUnspsc')
+                                            <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                         <div class="col-md-4">
                                             <p>{{ $code->code }}</p>
@@ -48,10 +60,15 @@
                             <p>Erreur : aucun service public proposé</p>
                         @endif
                         <div class="row">
-                            <h5 class="pl-5">Détails et spécifications</h5>
+                            <h5 class="pl-5">Détails et spécifications
+                                <small class="text-danger">*</small>
+                            </h5>
                             <div class="col-md-1"></div>
                             <div class="col-md-10">
                                 <textarea name="details" id="details" class="form-control" maxlength="500">{{ old('details') }}</textarea>
+                                @error('details')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>                            
                             <div class="col-md-1"></div>
                         </div>

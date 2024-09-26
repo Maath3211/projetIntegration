@@ -111,7 +111,12 @@ class PortailFournisseurController extends Controller
             $fournisseurIden['password'] = ($request->password);
             
             $fournisseurIden->save();
-            return redirect()->route('fournisseur.index')->with('message',"Enregistré!");
+
+
+
+            return redirect()->route('fournisseur.RBQ', ['fournisseurIden' => $fournisseurIden])->with('message', "Enregistré!");
+
+
         }
         catch (\Throwable $e)
         {
@@ -145,11 +150,36 @@ class PortailFournisseurController extends Controller
 
     // Licence RBQ
     // TODO: faire la recherche neq avec la licence RBQ (Attendre les gars de la ville)
-    public function RBQ()
+
+    public function RechercheRBQ(){
+
+        $response = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22Numero%20de%20licence%22,%20%22Statut%20de%20la%20licence%22,%20%22Categorie%22,%20%22Sous-categories%22%20FROM%20%2232f6ec46-85fd-45e9-945b-965d9235840a%22%20WHERE%20%22NEQ%22%20=%20%278831854938%27%20AND%20%22Categorie%22%20%3C%3E%20%27null%27');
+
+            if ($response->successful()) {
+                $records = collect($response->json()['result']['records']);
+                $data = $records->map(function ($record) {
+                    return [
+                        'Numero de licence' => $record['Numero de licence'] ?? null,
+                        'Statut de la licence' => $record['Statut de la licence'] ?? null,
+                        //'Type de licence' => $record['Type de licence'] ?? null,
+                        'Categorie' => $record['Categorie'] ?? null,
+                        'Sous-categories' => $record['Sous-categories'] ?? null,
+                        //'Autre nom' => $record['Autre nom'] ?? null,
+                    ];
+                })->all();
+     
+            } else {
+                $data = [];
+            }
+
+            return View('fournisseur.RBQ', compact('data'));
+    }
+    public function RBQ(Fournisseur $fournisseurIden)
     {
         $codes = Categorie::all();
-        return View('fournisseur.RBQ', compact('codes'));
+        return view('fournisseur.RBQ', compact('codes', 'fournisseurIden'));
     }
+    
 
 
     public function storeRBQ(RBQRequest $request)
@@ -252,7 +282,6 @@ class PortailFournisseurController extends Controller
             $contact['telephone'] = $request->telephone;
             $contact['poste'] = $request->poste;
             $contact['fournisseur'] = $request->user()->id;
-
             $contact->save();
 
             return redirect()->route('fournisseur.contact')->with('message',"Enregistré!");
@@ -261,7 +290,7 @@ class PortailFournisseurController extends Controller
         catch (\Throwable $e)
         {
             Log::debug($e);
-            return redirect()->route('fournisseur.contact')->withErrors(['Informations invalides']); 
+            return redirect()->route('fournisseur.index')->withErrors(['Informations invalides']); 
         } 
     }
 

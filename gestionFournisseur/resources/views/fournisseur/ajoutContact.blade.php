@@ -22,33 +22,53 @@
                     <div class=" py-3">
                         <div class="d-flex row justify-content-center">
                             <div class="form-group">
-                                <label>Prénom</label>
+                                <label>Prénom
+                                    <small class="text-danger">*</small>
+                                </label>
                                 <input type="text" class="form-control" placeholder="Prénom" name="prenom" required
                                     value="{{-- {{ old('prenom') }} --}}a" id="prenom1">
+                                    @error('prenom')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                             </div>
                         </div>
 
                         <div class="d-flex row justify-content-center">
                             <div class="form-group">
-                                <label>Nom</label>
+                                <label>Nom
+                                    <small class="text-danger">*</small>
+                                </label>
                                 <input type="text" class="form-control" placeholder="Nom" name="nom" required
                                     value="{{-- {{ old('nom') }} --}}a" id="nom1">
+                                    @error('nom')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                             </div>
                         </div>
 
                         <div class="d-flex row justify-content-center">
                             <div class="form-group">
-                                <label>Fonction</label>
+                                <label>Fonction
+                                    <small class="text-danger">*</small>
+                                </label>
                                 <input type="text" class="form-control" placeholder="Fonction" name="fonction" required
                                     value="{{-- {{ old('fonction') }} --}}a" id="fonction1">
+                                    @error('fonction')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                             </div>
                         </div>
 
                         <div class="d-flex row justify-content-center">
                             <div class="form-group">
-                                <label>Courriel</label>
+                                <label>Courriel
+                                    <small class="text-danger">*</small>
+                                </label>
                                 <input type="email" class="form-control" placeholder="Courriel" name="courriel" required
                                     value="{{-- {{ old('courriel') }} --}}a@a" id="courriel1">
+                                    @error('courriel')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                             </div>
                         </div>
 
@@ -57,28 +77,43 @@
 
                         <div class="d-flex row justify-content-center">
                             <div class="form-group">
-                                <label for="typeTelephone" class="titreForm">Type</label>
+                                <label for="typeTelephone" class="titreForm">Type
+                                    <small class="text-danger">*</small>
+                                </label>
                                 <select class="form-control" id="typeTelephone1" name="typeTelephone">
                                     <option value="Bureau">Bureau</option>
                                     <option value="Telecopieur">Télécopieur</option>
                                     <option value="Cellulaire">Cellulaire</option>
                                 </select>
+                                @error('typeTelephone')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
 
                         <div class="d-flex row justify-content-center">
                             <div class="form-group">
-                                <label>Telephone</label>
+                                <label for="telephone" class="titreForm">Telephone
+                                    <small class="text-danger">*</small>
+                                </label>
                                 <input type="text" class="form-control telephones" placeholder="Téléphone"
                                     name="telephone" required value="{{-- {{ old('telephone') }} --}}111-111-1111" id="telephone1">
+                                    @error('telephone1')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                             </div>
                         </div>
 
                         <div class="d-flex row justify-content-center">
                             <div class="form-group">
-                                <label>Poste</label>
+                                <label for="poste" class="titreForm">Poste
+                                    <small class="text-muted">(Optionnel)</small>
+                                </label>
                                 <input type="tel" class="form-control" placeholder="Poste" name="poste"
                                     value="{{-- {{ old('poste') }} --}}" id="poste1">
+                                    @error('poste')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                             </div>
                         </div>
                     </div>

@@ -28,11 +28,17 @@
               <label for="neq" class="titreForm">Numéro d'entreprise (NEQ)</label>
               <input type="text" class="form-control" maxlength="10" pattern="\d*" inputmode="numeric" id="neq" placeholder="Numéro d'entreprise (NEQ)" name="neq">
               <a href="#" class="link-right">Pas de NEQ?</a>
+              @error('neq')
+              <span class="text-danger">{{ $message }}</span>
+              @enderror
             </div>
             <div class="form-group">
               <label for="password" class="titreForm">Mot de passe</label>
               <input type="password" class="form-control" id="password" placeholder="Mot de passe" name="password">
               <a href="{{ route('login.resetView') }}" class="link-right">Mot de passe oublié ?</a>
+              @error('password')
+              <span class="text-danger">{{ $message }}</span>
+              @enderror
             </div>
             <div class="form-group">
               <button type="submit" class="btn btn-secondary">Suivant</button>
@@ -51,11 +57,17 @@
               <label for="email" class="titreForm">Email</label>
               <input type="email" class="form-control" id="email" placeholder="Adresse courriel" name="email">
               <a href="#" class="link-right">NEQ?</a>
+              @error('email')
+              <span class="text-danger">{{ $message }}</span>
+              @enderror
             </div>
             <div class="form-group">
               <label for="password" class="titreForm">Mot de passe</label>
               <input type="password" class="form-control" id="password" placeholder="Mot de passe" name="password">
               <a href="{{ route('login.resetView') }}" class="link-right">Mot de passe oublié ?</a>
+              @error('password')
+              <span class="text-danger">{{ $message }}</span>
+              @enderror
             </div>
             <div class="form-group">
               <button type="submit" class="btn btn-secondary">Suivant</button>
