@@ -113,7 +113,9 @@ class PortailFournisseurController extends Controller
 
 
 
-            return redirect()->route('fournisseur.RBQ',compact('$fournisseurIden'))->with('message',"Enregistré!");
+            return redirect()->route('fournisseur.RBQ', ['fournisseurIden' => $fournisseurIden])->with('message', "Enregistré!");
+
+
         }
         catch (\Throwable $e)
         {
@@ -171,11 +173,12 @@ class PortailFournisseurController extends Controller
 
             return View('fournisseur.RBQ', compact('data'));
     }
-    public function RBQ()
+    public function RBQ(Fournisseur $fournisseurIden)
     {
         $codes = Categorie::all();
-        return View('fournisseur.RBQ', compact('codes'));
+        return view('fournisseur.RBQ', compact('codes', 'fournisseurIden'));
     }
+    
 
 
     public function storeRBQ(RBQRequest $request)

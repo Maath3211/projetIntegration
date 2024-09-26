@@ -7,18 +7,10 @@
         <a href="/"><h5 class="compagny">LOGO-VILLE3R</h5></a>
     </div>
 </header>
-
-@section('contenu')
-
-@if(isset($fournisseurIden))
-    <p>{{ $fournisseurIden }}</p>
-@else
-    <p>Marche pas</p>
-@endif
-
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-2"></div>
+        <p>NEQ : {{ $fournisseurIden->neq }}</p>
 
         <div class="col-md-8">
             <fieldset>
