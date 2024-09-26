@@ -23,6 +23,8 @@ use App\Http\Requests\RBQRequest;
 use App\Http\Requests\FournisseurCoordRequest;
 use App\Http\Requests\ContactRequest;
 use App\Http\Requests\FinanceRequest;
+use App\Mail\recevoirConfirmation;
+use Mail;
 
 
 class PortailFournisseurController extends Controller
@@ -108,8 +110,7 @@ class PortailFournisseurController extends Controller
             $fournisseurIden['neq'] = ($request->neq);
             $fournisseurIden['entreprise'] = ucfirst($request->entreprise);
             $fournisseurIden['email'] = strtolower($request->email);
-            $fournisseurIden['password'] = ($request->password);
-            
+            $fournisseurIden['password'] = ($request->password);   
             $fournisseurIden->save();
 
 
@@ -200,16 +201,18 @@ class PortailFournisseurController extends Controller
 
     public function createCoordo()
     {
-       $response = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22munnom%22%20FROM%20%2219385b4e-5503-4330-9e59-f998f5918363%22');
 
-       if ($response->successful()) {
-           $villes = collect($response->json()['result']['records'])->pluck('munnom')->all();
 
-       } else {
-           $villes = [];
-       }
+        $response = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22munnom%22%20FROM%20%2219385b4e-5503-4330-9e59-f998f5918363%22');
 
-       return view('fournisseur.coordonnees', compact('villes')); 
+        if ($response->successful()) {
+            $villes = collect($response->json()['result']['records'])->pluck('munnom')->all();
+
+        } else {
+            $villes = [];
+        }
+
+        return view('fournisseur.coordonnees', compact('villes'));
     }
 
     public function storeCoordo(FournisseurCoordRequest $request)
@@ -222,9 +225,9 @@ class PortailFournisseurController extends Controller
             $provinceChoisie = $request->input('province');
 
             if ($provinceChoisie === 'Québec') {
-            $response = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22munnom%22,%20%22regadm%22%20FROM%20%2219385b4e-5503-4330-9e59-f998f5918363%22%20WHERE%20%22munnom%22=%27' . urlencode($villeChoisie) . '%27');
-                if ($response->successful() && count($response->json()['result']['records']) > 0) {
-                    $regionTrouve = $response->json()['result']['records'][0]['regadm'];
+            $responseVille = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22munnom%22,%20%22regadm%22%20FROM%20%2219385b4e-5503-4330-9e59-f998f5918363%22%20WHERE%20%22munnom%22=%27' . urlencode($villeChoisie) . '%27');
+                if ($responseVille->successful() && count($responseVille->json()['result']['records']) > 0) {
+                    $regionTrouve = $responseVille->json()['result']['records'][0]['regadm'];
 
                     if (!empty($regionTrouve)) {
                         $nomRegion = rtrim(strtok($regionTrouve, '('));
@@ -251,9 +254,8 @@ class PortailFournisseurController extends Controller
             $fournisseurCoord['poste2'] = ($request->poste2);
             $fournisseurCoord->save();
 
-            // dd($fournisseurCoord->toArray()); 
-
             return redirect()->route('fournisseur.index')->with('message',"Enregistré!");
+            
         }
         catch (\Throwable $e)
         {
@@ -341,7 +343,8 @@ class PortailFournisseurController extends Controller
                 }
             }
 
-            return redirect()->route('fournisseur.importation')->with('message', 'Téléversement réussi !');
+            return redirect()->route('fournisseur.index')->with('message', 'Téléversement réussi !');
+            
         }
 
         return redirect()->route('fournisseur.importation')->withErrors(['error' => 'Aucun fichier à importer.']);

@@ -21,7 +21,7 @@
                             <label for="noCivic" class="titreForm">N Civique
                                 <small class="text-danger">*</small>
                             </label>
-                            <input type="text" class="form-control" id="noCivic" placeholder="N Civique" name="noCivic" value="{{old('noCivic')}}">
+                            <input type="text" class="form-control" id="noCivic" placeholder="N Civique" name="noCivic" value="{{old('noCivic', $noCivicNeq)}}">
                             @error('noCivic')
                             <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -32,7 +32,7 @@
                             <label for="rue" class="titreForm">Rue
                                 <small class="text-danger">*</small>
                             </label>
-                            <input type="text" class="form-control" id="rue" placeholder="Rue" name="rue" value="{{old('rue')}}">
+                            <input type="text" class="form-control" id="rue" placeholder="Rue" name="rue" value="{{old('rue', $rueNeq)}}">
                             @error('rue')
                             <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -58,11 +58,11 @@
                             <select class="form-control" id="ville" name="ville">
                                 <option value="">Sélectionnez une ville</option>
                                 @foreach($villes as $ville)
-                                <option value="{{ $ville }}" {{ old('ville') == $ville ? 'selected' : '' }}>{{ $ville }}</option>
+                                <option value="{{ $ville }}" {{ old('ville') == $ville || (isset($villeNeq) && $villeNeq == $ville) ? 'selected' : '' }}>{{ $ville }}</option>
                                 @endforeach
                             </select>
                              @else
-                                <p>Aucune ville disponible.</p>
+                             <input type="text" class="form-control" id="villeInput" name="ville" placeholder="Entrez la ville" value="{{ old('ville', $villeNeq) }}">
                              @endif
                              <input type="text" class="form-control" id="villeInput" name="ville" placeholder="Entrez la ville" style="display: none;">
                              @error('ville')
@@ -100,7 +100,7 @@
                             <label for="codePostal" class="titreForm">Code Postal
                                 <small class="text-danger">*</small>
                             </label>
-                            <input type="text" class="form-control" id="codePostal" placeholder="Code postal" name="codePostal" value="{{old('codePostal')}}">
+                            <input type="text" class="form-control" id="codePostal" placeholder="Code postal" name="codePostal" value="{{old('codePostal' , $codePostalNeq)}}">
                             @error('codePostal')
                             <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -140,7 +140,7 @@
                             <label for="numero" class="titreForm">Numero
                                 <small class="text-danger">*</small>
                             </label>
-                            <input type="text" class="form-control telephones" id="numero" placeholder="555-555-5555" name="numero" maxlength="12" value="{{old('numero')}}">
+                            <input type="text" class="form-control telephones" id="numero" placeholder="555-555-5555" name="numero" maxlength="12" value="{{old('numero', $telNeqAff)}}">
                             @error('numero')
                             <span class="text-danger">{{ $message }}</span>
                             @enderror
