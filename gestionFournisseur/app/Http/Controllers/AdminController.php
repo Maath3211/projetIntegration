@@ -143,8 +143,14 @@ class AdminController extends Controller
 
     public function demandeFournisseurZoom($neq){
         $fn = DB::table('fournisseurs')->where('neq', $neq)->first();
-        $contacts = DB::table('contact')->where('fournisseur', $fn->id)->get();
-        return view('admin.zoomDemandeFournisseur', compact('fn', 'contacts'));
+        $contacts = DB::table('contact')->where('fournisseur_id', $fn->id)->get();
+        $coord = DB::table('coordonnees')->where('fournisseur_id', $fn->id)->get()->firstOrFail();
+        $fn->dateStatut = Carbon::parse($fn->dateStatut)->toDateString();
+        $fn->created_at = Carbon::parse($fn->created_at)->toDateString();
+        $fn->updated_at = Carbon::parse($fn->updated_at)->toDateString();
+
+       
+        return view('admin.zoomDemandeFournisseur', compact('fn', 'contacts','coord'));
     }
 
 

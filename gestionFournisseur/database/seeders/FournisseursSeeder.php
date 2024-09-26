@@ -27,7 +27,6 @@ class FournisseursSeeder extends Seeder
             'email'=> 'mathys.lessard.02@edu.cegeptr.qc.ca',
             'neq' => '1123456782',
             'entreprise' => 'Cegep',
-            'statut' => 'attente',
             'password' =>Hash::make('adminggg')
         ]);
     }

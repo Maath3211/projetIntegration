@@ -28,6 +28,8 @@ return new class extends Migration
             $table->string('typeTel2', 64)->nullable();
             $table->string('numero2', 10)->nullable();
             $table->string('poste2', 6)->nullable();
+            $table->unsignedBigInteger('fournisseur_id');
+            $table->foreign('fournisseur_id')->references('id')->on('fournisseurs');
             $table->timestamps();
         });
     }

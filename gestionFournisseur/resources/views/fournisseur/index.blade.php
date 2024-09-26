@@ -15,6 +15,7 @@
 <div class="text-center py-5">
     <h1>Bienvenue sur le site de ville</h1>
 </div>
+
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-6">
