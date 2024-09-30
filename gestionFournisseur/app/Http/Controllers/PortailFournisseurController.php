@@ -129,11 +129,13 @@ class PortailFournisseurController extends Controller
 
     // Code Unspsc 
     
-    public function UNSPSC()
+    public function UNSPSC(Request $request)
     {
-        $codes = Unspsc::all();
-        return View('fournisseur.UNSPSC', compact('codes'));
+        // Limite à 500 éléments par requête
+        $codes = Unspsc::limit(500)->get();
+        return view('fournisseur.UNSPSC', compact('codes'));
     }
+    
 
     public function storeUnspsc(UnspscRequest $request)
     {
@@ -148,6 +150,19 @@ class PortailFournisseurController extends Controller
             Log::debug($e);
             return redirect()->route('fournisseur.UNSPSC')->withErrors(['Informations invalides']); 
         }
+    }
+
+    public function loadMoreUnspsc(Request $request)
+    {
+    $page = $request->input('page', 1);
+    $limit = 500;
+    $offset = ($page - 1) * $limit;
+
+    // Charge les éléments suivants
+    $codes = Unspsc::offset($offset)->limit($limit)->get();
+
+    // Retourne les éléments sous forme de JSON pour les traiter côté client
+    return response()->json(['codes' => $codes]);
     }
 
     // Licence RBQ
