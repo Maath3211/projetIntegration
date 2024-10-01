@@ -19,8 +19,13 @@ class Contact extends Model
         'typeTelephone',
         'telephone',
         'poste',
-        'fournisseur'
+        'fournisseur_id'
     ];
+
+    public function fournisseur()
+    {
+        return $this->belongsTo(Fournisseur::class);
+    }
 
     
 

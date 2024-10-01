@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="{{ asset('css/fournisseur.css') }}">
     <title>@yield('title')</title>
 </head>
+{{-- TODO: ajouter background blanc (voir site ville) --}}
 <!-- <img src="{{asset('images/logo-v3r-v2.svg')}}" alt="logoV3R" id="logoV3R" class="img-fluid"> -->
 <body>
     @if (isset($errors) && $errors->any())
