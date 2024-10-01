@@ -6,6 +6,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\FournisseurCoord;
+use App\Models\Contact;
 
 
 
@@ -28,6 +30,16 @@ class Fournisseur extends Authenticatable
         'demandeReset',
     ];
 
+    public function coordonnees()
+    {
+        return $this->hasMany(FournisseurCoord::class, 'fournisseur_id');
+    }
+
+    public function contacts()
+    {
+        return $this->hasMany(Contact::class, 'fournisseur_id');
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -48,7 +60,7 @@ class Fournisseur extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function contact(){
+    /*public function contact(){
         return $this->hasMany(Contact::class)->withPivot('fournisseur_id','contact_id');
-    }
+    } */
 }

@@ -31,5 +31,12 @@ class FournisseurCoord extends Model
         'typeTel2',
         'numero2',
         'poste2',
+        'fournisseur_id'
     ];
+
+    public function fournisseur()
+    {
+        return $this->belongsTo(Fournisseur::class);
+    }
 }
+

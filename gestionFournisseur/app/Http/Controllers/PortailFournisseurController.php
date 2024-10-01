@@ -25,6 +25,7 @@ use App\Http\Requests\ContactRequest;
 use App\Http\Requests\FinanceRequest;
 use App\Mail\recevoirConfirmation;
 use Mail;
+use DB;
 
 
 class PortailFournisseurController extends Controller
@@ -99,6 +100,7 @@ class PortailFournisseurController extends Controller
 
     public function createIdentification()
     {
+        
         return view('fournisseur.identification');
     }
 
@@ -106,18 +108,16 @@ class PortailFournisseurController extends Controller
     {
         try
         {
-            $fournisseurIden = new Fournisseur($request->validated());
-            $fournisseurIden['neq'] = ($request->neq);
-            $fournisseurIden['entreprise'] = ucfirst($request->entreprise);
-            $fournisseurIden['email'] = strtolower($request->email);
-            $fournisseurIden['password'] = ($request->password);   
-            $fournisseurIden->save();
+            session([
+                'fournisseur' => [
+                    'neq' => $request->neq,
+                    'entreprise' => ucfirst($request->entreprise),
+                    'email' => strtolower($request->email),
+                    'password' => ($request->password)
+                ]
+            ]);
 
-
-
-            return redirect()->route('fournisseur.RBQ', ['fournisseurIden' => $fournisseurIden])->with('message', "Enregistré!");
-
-
+            return redirect()->route('fournisseur.coordonnees')->with('message', "Enregistré!");
         }
         catch (\Throwable $e)
         {
@@ -125,6 +125,191 @@ class PortailFournisseurController extends Controller
             return redirect()->route('fournisseur.identification')->withErrors(['Informations invalides']); 
         }  
     }
+
+       // Coordonnées
+
+       public function createCoordo()
+       {
+           $fournisseurData = session('fournisseur');
+           $neq = $fournisseurData['neq'] ?? null;
+           $villeNeq = null;  
+           $noCivicNeq = null;
+           $rueNeq = null;
+           $codePostalNeq = null;
+           $telNeq = null;
+       
+           if ($neq) {
+               $responseNeq = Http::withoutVerifying()->get("https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20*%20FROM%20%2232f6ec46-85fd-45e9-945b-965d9235840a%22%20WHERE%20%22NEQ%22%20=%20'{$neq}'");
+       
+               if ($responseNeq->successful()) {
+                   $infoTrouve = $responseNeq->json();
+       
+                   if (!empty($infoTrouve['result']['records'])) {
+            
+                       $villeNeq = $infoTrouve['result']['records'][0]['Municipalite'] ?? null;
+                       $adresseTrouve = $infoTrouve['result']['records'][0]['Adresse'] ?? null;
+                       $telNeq = $infoTrouve['result']['records'][0]['Numero de telephone'] ?? null;
+                       $telNeqAff = substr($telNeq, 0, 3) . '-' . substr($telNeq, 3, 3) . '-' . substr($telNeq, 6);
+                       if (!empty($adresseTrouve)) {
+                           $division = explode(' ', $adresseTrouve);
+       
+                           $noCivicNeq = $division[0] ?? null;
+                           $rechercheProvince = array_search('QC', $division);
+                           $rueNeq = implode(' ', array_slice($division, 1, $rechercheProvince - 2));
+                           $codePostalNeq = implode(' ', array_slice($division, -2));
+                           $codePostalNeq = str_replace(' ', '', $codePostalNeq);
+
+                          //dd($noCivicNeq, $rueNeq, $codePostalNeq, $emailNeq, $telNeqAff, $villeNeq);
+                   } 
+                   }
+               }
+           }
+   
+           $response = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22munnom%22%20FROM%20%2219385b4e-5503-4330-9e59-f998f5918363%22');
+   
+           if ($response->successful()) {
+               $villes = collect($response->json()['result']['records'])->pluck('munnom')->all();
+   
+           } else {
+               $villes = [];
+           }
+   
+           return view('fournisseur.coordonnees', compact('villes','villeNeq', 'noCivicNeq', 'rueNeq', 'codePostalNeq', 'telNeqAff'));
+       }
+   
+       public function storeCoordo(FournisseurCoordRequest $request)
+       {
+           try
+           {
+               $fournisseurData = session('fournisseur');
+   
+               if (!$fournisseurData) {
+                   return redirect()->route('fournisseur.identification')->withErrors(['Erreur, Recommencer']);
+               }
+   
+              //$fournisseur = new Fournisseur($fournisseurData);
+               //$fournisseur->save();
+              
+   
+               $nomRegion = "";
+               $codeRegion = "";
+               $villeChoisie = $request->input('ville');
+               $provinceChoisie = $request->input('province');
+   
+               if ($provinceChoisie === 'Québec') {
+               $responseVille = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22munnom%22,%20%22regadm%22%20FROM%20%2219385b4e-5503-4330-9e59-f998f5918363%22%20WHERE%20%22munnom%22=%27' . urlencode($villeChoisie) . '%27');
+                   if ($responseVille->successful() && count($responseVille->json()['result']['records']) > 0) {
+                       $regionTrouve = $responseVille->json()['result']['records'][0]['regadm'];
+   
+                       if (!empty($regionTrouve)) {
+                           $nomRegion = rtrim(strtok($regionTrouve, '('));
+                           $codeRegion = trim(strtok('()')); 
+                   }
+               }
+           }
+   
+               /*$fournisseurCoord = new FournisseurCoord($request->validated());
+               $fournisseurCoord['noCivic'] = ($request->noCivic);
+               $fournisseurCoord['rue'] = ($request->rue);
+               $fournisseurCoord['bureau'] = ($request->bureau);
+               $fournisseurCoord['ville'] = ($request->ville);
+               $fournisseurCoord['province'] = ($request->province);
+               $fournisseurCoord['codePostal'] = strtoupper($request->codePostal);
+               $fournisseurCoord['codeRegion'] = ($codeRegion);
+               $fournisseurCoord['nomRegion'] = ($nomRegion);
+               $fournisseurCoord['site'] = strtolower($request->site);
+               $fournisseurCoord['typeTel'] = ($request->typeTel);
+               $fournisseurCoord['numero'] = ($request->numero);
+               $fournisseurCoord['poste'] = ($request->poste);
+               $fournisseurCoord['typeTel2'] = ($request->typeTel2);
+               $fournisseurCoord['numero2'] = ($request->numero2);
+               $fournisseurCoord['poste2'] = ($request->poste2);
+               $fournisseurCoord['fournisseur_id'] = $fournisseur->id;
+               $fournisseurCoord->save(); */
+
+            session([
+                'coordonnees' => [
+                   'noCivic' => $request->noCivic,
+                   'rue' => $request->rue,
+                   'bureau' => $request->bureau,
+                   'ville' => $request->ville,
+                   'province' => $request->province,
+                   'codePostal' => strtoupper($request->codePostal),
+                   'codeRegion' => $request->codeRegion ?? null,
+                   'nomRegion' => $request->nomRegion ?? null,
+                   'site' => strtolower($request->site),
+                   'typeTel' => $request->typeTel,
+                   'numero' => $request->numero,
+                   'poste' => $request->poste,
+                   'typeTel2' => $request->typeTel2,
+                   'numero2' => $request->numero2,
+                   'poste2' => $request->poste2,
+                   //'fournisseur_id' => $fournisseur->id
+                   ]
+               ]); 
+   
+               return redirect()->route('fournisseur.contact')->with('message',"Enregistré!");
+               
+           }
+           catch (\Throwable $e)
+           {
+               Log::debug($e);
+               return redirect()->route('fournisseur.coordonnees')->withErrors(['Informations invalides']); 
+           } 
+      }
+   
+      // Contact
+   
+       public function contact()
+       {
+           return view('fournisseur.ajoutContact');
+       }
+   
+       public function storeContact(ContactRequest $request)
+       {
+           try 
+           {
+   
+           $fournisseurData = session('fournisseur');
+           $neq = $fournisseurData['neq'] ?? null;
+           $coordonneesData = session('coordonnees'); 
+   
+           if (is_null($fournisseurData) || is_null($coordonneesData)) {
+               return redirect()->route('fournisseur.identification')->withErrors(['Informations de fournisseur ou de coordonnées manquantes.']);
+           }
+   
+               $fournisseur = new Fournisseur($fournisseurData);
+       
+               $fournisseur->save();
+               $id = DB::table('fournisseurs')->where('neq', $neq)->get()->first();
+               $id = $id->id;
+   
+               $fournisseurCoord = new FournisseurCoord($coordonneesData);
+               $fournisseurCoord->fournisseur_id = $fournisseur->id;
+               $fournisseurCoord->save();
+   
+               $contact = new Contact($request->validated());
+               $contact['prenom'] = $request->prenom;
+               $contact['nom'] = $request->nom;
+               $contact['fonction'] = $request->fonction;
+               $contact['courriel'] = $request->courriel;
+               $contact['typeTelephone'] = $request->typeTelephone;
+               $contact['telephone'] = $request->telephone;
+               $contact['poste'] = $request->poste;
+               $contact['fournisseur_id'] = $fournisseur->id;
+               $contact->save();
+   
+               session()->forget(['fournisseur', 'coordonnees']);
+   
+               return redirect()->route('fournisseur.UNSPSC')->with('message',"Enregistré!");
+           } 
+   
+           catch (\Throwable $e)
+           {
+               Log::debug($e);
+               return redirect()->route('fournisseur.index')->withErrors(['Informations invalides']); 
+           } 
+       }
 
     // Code Unspsc 
     
@@ -140,7 +325,7 @@ class PortailFournisseurController extends Controller
         {
             $code = new Unspsccode($request->validated());
             $code->save();
-            return redirect()->route('fournisseur.UNSPSC')->with('message',"Enregistré!");
+            return redirect()->route('fournisseur.RBQ')->with('message',"Enregistré!");
         }
         catch(\Throwable $e)
         {
@@ -189,7 +374,7 @@ class PortailFournisseurController extends Controller
         {
             $code = new RBQLicence($request->validated());
             $code->save();
-            return redirect()->route('fournisseur.RBQ')->with('message',"Enregistré!");
+            return redirect()->route('fournisseur.importation')->with('message',"Enregistré!");
         }
         catch(\Throwable $e){
             Log::debug($e);
@@ -197,104 +382,7 @@ class PortailFournisseurController extends Controller
         }
     }
 
-    // Coordonnées
-
-    public function createCoordo()
-    {
-
-
-        $response = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22munnom%22%20FROM%20%2219385b4e-5503-4330-9e59-f998f5918363%22');
-
-        if ($response->successful()) {
-            $villes = collect($response->json()['result']['records'])->pluck('munnom')->all();
-
-        } else {
-            $villes = [];
-        }
-
-        return view('fournisseur.coordonnees', compact('villes'));
-    }
-
-    public function storeCoordo(FournisseurCoordRequest $request)
-    {
-        try
-        {
-            $nomRegion = "";
-            $codeRegion = "";
-            $villeChoisie = $request->input('ville');
-            $provinceChoisie = $request->input('province');
-
-            if ($provinceChoisie === 'Québec') {
-            $responseVille = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22munnom%22,%20%22regadm%22%20FROM%20%2219385b4e-5503-4330-9e59-f998f5918363%22%20WHERE%20%22munnom%22=%27' . urlencode($villeChoisie) . '%27');
-                if ($responseVille->successful() && count($responseVille->json()['result']['records']) > 0) {
-                    $regionTrouve = $responseVille->json()['result']['records'][0]['regadm'];
-
-                    if (!empty($regionTrouve)) {
-                        $nomRegion = rtrim(strtok($regionTrouve, '('));
-                        $codeRegion = trim(strtok('()')); 
-                }
-            }
-        }
-
-            $fournisseurCoord = new FournisseurCoord($request->validated());
-            $fournisseurCoord['noCivic'] = ($request->noCivic);
-            $fournisseurCoord['rue'] = ($request->rue);
-            $fournisseurCoord['bureau'] = ($request->bureau);
-            $fournisseurCoord['ville'] = ($request->ville);
-            $fournisseurCoord['province'] = ($request->province);
-            $fournisseurCoord['codePostal'] = strtoupper($request->codePostal);
-            $fournisseurCoord['codeRegion'] = ($codeRegion);
-            $fournisseurCoord['nomRegion'] = ($nomRegion);
-            $fournisseurCoord['site'] = strtolower($request->site);
-            $fournisseurCoord['typeTel'] = ($request->typeTel);
-            $fournisseurCoord['numero'] = ($request->numero);
-            $fournisseurCoord['poste'] = ($request->poste);
-            $fournisseurCoord['typeTel2'] = ($request->typeTel2);
-            $fournisseurCoord['numero2'] = ($request->numero2);
-            $fournisseurCoord['poste2'] = ($request->poste2);
-            $fournisseurCoord->save();
-
-            return redirect()->route('fournisseur.index')->with('message',"Enregistré!");
-            
-        }
-        catch (\Throwable $e)
-        {
-            Log::debug($e);
-            return redirect()->route('fournisseur.coordonnees')->withErrors(['Informations invalides']); 
-        } 
-   }
-
-   // Contact
-
-    public function contact()
-    {
-        return view('fournisseur.ajoutContact');
-    }
-
-    public function storeContact(ContactRequest $request)
-    {
-        try 
-        {
-            $contact = new Contact($request->validated());
-            $contact['prenom'] = $request->prenom;
-            $contact['nom'] = $request->nom;
-            $contact['fonction'] = $request->fonction;
-            $contact['courriel'] = $request->courriel;
-            $contact['typeTelephone'] = $request->typeTelephone;
-            $contact['telephone'] = $request->telephone;
-            $contact['poste'] = $request->poste;
-            $contact['fournisseur'] = $request->user()->id;
-            $contact->save();
-
-            return redirect()->route('fournisseur.contact')->with('message',"Enregistré!");
-        } 
-
-        catch (\Throwable $e)
-        {
-            Log::debug($e);
-            return redirect()->route('fournisseur.index')->withErrors(['Informations invalides']); 
-        } 
-    }
+ 
 
     // Importation
     public function importation()
