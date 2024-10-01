@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('RBQLicences', function (Blueprint $table) {
             $table->id();
+            $table->string('neq',30);
             $table->string('licenceRBQ',10);
             $table->string('statut',25);
             $table->string('typeLicence',250);

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class RBQLicence extends Model
 {
     use HasFactory;
-    protected $fillable = ['licenceRBQ','statut','typeLicence','idCategorie'];
+    protected $fillable = ['neq','licenceRBQ','statut','typeLicence','idCategorie'];
 
     public function unspsc() : HasMany{
         return $this->hasMany('App\Categorie');

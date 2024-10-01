@@ -132,7 +132,7 @@ class PortailFournisseurController extends Controller
     public function UNSPSC(Request $request)
     {
         // Limite à 500 éléments par requête
-        $codes = Unspsc::limit(500)->get();
+        $codes = Unspsc::limit(20)->get();
         return view('fournisseur.UNSPSC', compact('codes'));
     }
     
@@ -152,66 +152,55 @@ class PortailFournisseurController extends Controller
         }
     }
 
-    public function loadMoreUnspsc(Request $request)
-    {
-    $page = $request->input('page', 1);
-    $limit = 500;
-    $offset = ($page - 1) * $limit;
-
-    // Charge les éléments suivants
-    $codes = Unspsc::offset($offset)->limit($limit)->get();
-
-    // Retourne les éléments sous forme de JSON pour les traiter côté client
-    return response()->json(['codes' => $codes]);
-    }
 
     // Licence RBQ
     // TODO: faire la recherche neq avec la licence RBQ (Attendre les gars de la ville)
 
-    public function RechercheRBQ(){
-
-        $response = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22Numero%20de%20licence%22,%20%22Statut%20de%20la%20licence%22,%20%22Categorie%22,%20%22Sous-categories%22%20FROM%20%2232f6ec46-85fd-45e9-945b-965d9235840a%22%20WHERE%20%22NEQ%22%20=%20%278831854938%27%20AND%20%22Categorie%22%20%3C%3E%20%27null%27');
-
-            if ($response->successful()) {
-                $records = collect($response->json()['result']['records']);
-                $data = $records->map(function ($record) {
-                    return [
-                        'Numero de licence' => $record['Numero de licence'] ?? null,
-                        'Statut de la licence' => $record['Statut de la licence'] ?? null,
-                        //'Type de licence' => $record['Type de licence'] ?? null,
-                        'Categorie' => $record['Categorie'] ?? null,
-                        'Sous-categories' => $record['Sous-categories'] ?? null,
-                        //'Autre nom' => $record['Autre nom'] ?? null,
-                    ];
-                })->all();
-     
-            } else {
-                $data = [];
-            }
-
-            return View('fournisseur.RBQ', compact('data'));
-    }
     public function RBQ($id)
     {
         $codes = Categorie::all();
     
         // Récupérer l'objet Fournisseur à partir de l'ID
         $fournisseurIden = Fournisseur::findOrFail($id);
+        $neqFournisseur = $fournisseurIden->neq;
     
+        // Requête vers l'API
+        $response = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22Numero%20de%20licence%22,%20%22Statut%20de%20la%20licence%22,%20%22Categorie%22,%20%22Sous-categories%22%20FROM%20%2232f6ec46-85fd-45e9-945b-965d9235840a%22%20WHERE%20%22NEQ%22%20=%20%27' . $neqFournisseur . '%27%20AND%20%22Categorie%22%20%3C%3E%20%27null%27');
+    
+        if ($response->successful()) {
+            // Récupérer uniquement le premier enregistrement
+            $record = collect($response->json()['result']['records'])->first();
+    
+            // Extraire les informations si disponibles
+            $numRBQ = $record['Numero de licence'] ?? null;
+            $statutRBQ = $record['Statut de la licence'] ?? null;
+            $typeLicence = $record['Type de licence'] ?? null;
+            $categorie = $record['Categorie'] ?? null;
+            $sousCategories = $record['Sous-categories'] ?? null;
+        } else {
+            // Valeurs par défaut si l'API ne renvoie rien
+            $numRBQ = null;
+            $statutRBQ = null;
+            $typeLicence = null;
+            $categorie = null;
+            $sousCategories = null;
+        }
+
         // Passer les données à la vue
-        return view('fournisseur.RBQ', compact('codes', 'fournisseurIden'));
+        return view('fournisseur.RBQ', compact('codes', 'fournisseurIden', 'numRBQ', 'statutRBQ', 'typeLicence', 'categorie', 'sousCategories'));
     }
     
     
 
 
-    public function storeRBQ()
+    public function storeRBQ(RBQRequest $request)
     {
         try
         {
             $code = new RBQLicence($request->validated());
             $code->save();
-            return redirect()->route('fournisseur.RBQ')->with('message',"Enregistré!");
+            
+            return redirect()->route('fournisseur.UNSPSC')->with('message',"Enregistré!");
         }
         catch(\Throwable $e){
             Log::debug($e);
