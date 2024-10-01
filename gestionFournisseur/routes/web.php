@@ -133,3 +133,9 @@ Route::GET('/administration/demandeFournisseur',
 
 Route::GET('/administration/demandeFournisseur/{neq}',
 [AdminController::class,'demandeFournisseurZoom'])->name('responsable.demandeFournisseurZoom');
+
+Route::POST('/administration/demandeFournisseur/{neq}/accepeter',
+[AdminController::class, 'accepterFournisseur'])->name('responsable.accepterFournisseur');
+
+Route::GET('/administration/demandeFournisseur/{neq}/fichier/{idFichier}',
+[AdminController::class, 'telechargerFichier'])->name('responsable.telechargerFichier');

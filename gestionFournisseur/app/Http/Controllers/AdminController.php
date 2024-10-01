@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Setting;
 use App\Models\Fournisseur;
 use App\Models\User;
@@ -17,6 +18,7 @@ use Carbon\Carbon;
 use Mail;
 use Str;
 use DB;
+use Redirect;
 
 
 class AdminController extends Controller
@@ -118,40 +120,69 @@ class AdminController extends Controller
 
     public function demandeFourn()
     {
-        $fn = new Fournisseur();
-
-        $fn->email = 'a@a.com';
-        $fn->neq = '8888888888';
-        $fn->entreprise = 'bor';
-        $fn->statut = 'attente';
-        $fn->password = 'adminggg';
-
-        $fn->save();
-
-        $admins = DB::table('users')->where('role', ['admin','responsable'])->get();
-        
-        foreach( $admins as $admin){
+        $admins = DB::table('users')->where('role', ['admin', 'responsable'])->get();
+        foreach ($admins as $admin) {
             Mail::to($admin->email)->send(new demandeFournisseur());
         }
+
     }
 
-    public function demandeFournisseurView(){
+    public function demandeFournisseurView()
+    {
 
         $fnAttentes = DB::table('fournisseurs')->where('statut', 'attente')->get();
         return view('admin.demandeFournisseur', compact('fnAttentes'));
     }
 
-    public function demandeFournisseurZoom($neq){
+    public function demandeFournisseurZoom($neq)
+    {
         $fn = DB::table('fournisseurs')->where('neq', $neq)->first();
         $contacts = DB::table('contact')->where('fournisseur_id', $fn->id)->get();
         $coord = DB::table('coordonnees')->where('fournisseur_id', $fn->id)->get()->firstOrFail();
+        $files = DB::table('file')->where('fournisseur_id', $fn->id)->get();
         $fn->dateStatut = Carbon::parse($fn->dateStatut)->toDateString();
         $fn->created_at = Carbon::parse($fn->created_at)->toDateString();
         $fn->updated_at = Carbon::parse($fn->updated_at)->toDateString();
 
-       
-        return view('admin.zoomDemandeFournisseur', compact('fn', 'contacts','coord'));
+        return view('admin.zoomDemandeFournisseur', compact('fn', 'contacts', 'coord', 'files'));
     }
+
+    public function accepterFournisseur($neq)
+    {
+        try {
+            $fn = Fournisseur::where('neq', $neq)->firstOrFail();
+            $fn->statut = 'confirme';
+            $fn->dateStatut = Carbon::now();
+            $fn->raisonRefus = null;
+            $fn->save();
+
+            return redirect()->route('responsable.demandeFournisseur')->with('message', "Enregistré!");
+        } catch (\Throwable $e) {
+            Log::debug($e);
+            return Redirect::back()->withErrors(['Erreur interne']);
+        }
+
+    }
+
+    public function refuserFournisseur()
+    {
+
+    }
+
+    // neq necessaire meme si pas utilisé, sinon l'id du fichier devient le neq
+    public function telechargerFichier($neq, $idFichier)
+    {
+        $file = DB::table('file')->where('id', $idFichier)->get()->firstOrFail();
+
+        $fichier = public_path($file->lienFichier);
+        if (file_exists($fichier)) {
+            return response()->download($fichier);
+        } else {
+            return back()->withErrors('Fichier introuvable');
+        }
+    }
+
+
 
 
 }
