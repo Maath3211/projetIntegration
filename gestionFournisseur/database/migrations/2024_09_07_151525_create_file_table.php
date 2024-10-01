@@ -16,6 +16,8 @@ return new class extends Migration
             $table->text('nomFichier',32);
             $table->text('lienFichier');
             $table->float('tailleFichier_KO');
+            $table->unsignedBigInteger('fournisseur_id');
+            $table->foreign('fournisseur_id')->references('id')->on('fournisseurs');
             $table->timestamps();
         });
     }

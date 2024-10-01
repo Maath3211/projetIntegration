@@ -1,6 +1,6 @@
 @extends('layouts.fournisseur')
 
-@section('title', "Page d'accueil")
+@section('title', "RBQ")
 
 <header>
     <div>
@@ -115,4 +115,4 @@
 </div>
 
 <script src="{{ asset('js/RBQ.js') }}"></script>
-@endsection
+

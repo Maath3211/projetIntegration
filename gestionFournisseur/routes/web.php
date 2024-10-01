@@ -44,6 +44,10 @@ Route::GET('/identification',
 Route::POST('/identification/store',
 [PortailFournisseurController::class,'storeIdentification'])->name('fournisseur.storeIdentification');
 
+# InscriptionUNSPSC
+Route::GET('/UNSPSC',
+[PortailFournisseurController::class,'UNSPSC'])->name('fournisseur.UNSPSC');
+
 # InscriptionCoordonnées
 Route::GET('/coordonnees',
 [PortailFournisseurController::class,'createCoordo'])->name('fournisseur.coordonnees');
@@ -59,14 +63,13 @@ Route::POST('/contact/store',
 [PortailFournisseurController::class,'storeContact'])->name('fournisseur.storeContact');
 
 # InscriptionUNSPSC
-Route::GET('/UNSPSC',
-[PortailFournisseurController::class,'UNSPSC'])->name('fournisseur.UNSPSC');
-
 Route::POST('/UNSPSC/store',
 [PortailFournisseurController::class,'storeUnspsc'])->name('fournisseur.storeUnspsc');
 
+Route::get('/loadMoreUnspsc', [FournisseurController::class, 'loadMoreUnspsc']);
+
 # InscriptionRBQ
-Route::GET('/RBQ',
+Route::GET('/RBQ/{id}',
 [PortailFournisseurController::class,'RBQ'])->name('fournisseur.RBQ');
 
 Route::POST('/RBQ/store',
@@ -129,3 +132,9 @@ Route::GET('/administration/demandeFournisseur',
 
 Route::GET('/administration/demandeFournisseur/{neq}',
 [AdminController::class,'demandeFournisseurZoom'])->name('responsable.demandeFournisseurZoom');
+
+Route::POST('/administration/demandeFournisseur/{neq}/accepeter',
+[AdminController::class, 'accepterFournisseur'])->name('responsable.accepterFournisseur');
+
+Route::GET('/administration/demandeFournisseur/{neq}/fichier/{idFichier}',
+[AdminController::class, 'telechargerFichier'])->name('responsable.telechargerFichier');
