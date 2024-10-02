@@ -46,6 +46,7 @@ class FournisseurCoordRequest extends FormRequest
         $this->merge([
             'numero' => str_replace('-', '', $this->input('numero', '')),
             'numero2' => str_replace('-', '', $this->input('numero2', '')),
+            'codePostal' => str_replace(' ', '', $this->input('codePostal', '')),
         ]);
     }
     

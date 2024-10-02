@@ -12,6 +12,9 @@
     src: url("../fonts/TT-Hoves-Pro-Trial-Medium.ttf");
 }
 
+.text-muted {
+size:10px;
+}
 
 .py-5 {
   margin-bottom: 100px;
