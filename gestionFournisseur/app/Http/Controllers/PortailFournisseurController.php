@@ -344,13 +344,17 @@ class PortailFournisseurController extends Controller
     {
         $codes = Categorie::all();
     
+        // $fournisseurData = session('fournisseur');
+        // $neqFournisseur = $fournisseurData['neq'] ?? null;
         // Récupérer l'objet Fournisseur à partir de l'ID
         $fournisseurIden = Fournisseur::findOrFail($id);
         $neqFournisseur = $fournisseurIden->neq;
     
         // Requête vers l'API
-        $response = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22Numero%20de%20licence%22,%20%22Statut%20de%20la%20licence%22,%20%22Categorie%22,%20%22Sous-categories%22%20FROM%20%2232f6ec46-85fd-45e9-945b-965d9235840a%22%20WHERE%20%22NEQ%22%20=%20%27' . $neqFournisseur . '%27%20AND%20%22Categorie%22%20%3C%3E%20%27null%27');
-    
+        //$response = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22Numero%20de%20licence%22,%20%22Statut%20de%20la%20licence%22,%20%22Categorie%22,%20%22Sous-categories%22%20FROM%20%2232f6ec46-85fd-45e9-945b-965d9235840a%22%20WHERE%20%22NEQ%22%20=%20%27' . $neqFournisseur . '%27%20AND%20%22Categorie%22%20%3C%3E%20%27null%27');
+        $response = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22Numero%20de%20licence%22,%20%22Statut%20de%20la%20licence%22,%20%22Categorie%22,%20%22Sous-categories%22,%20%22Type%20de%20licence%22,%20%22Restriction%22%20FROM%20%2232f6ec46-85fd-45e9-945b-965d9235840a%22%20WHERE%20%22NEQ%22%20=%20%27' . $neqFournisseur . '%27%20AND%20%22Categorie%22%20%3C%3E%20%27null%27');
+        $url = 'https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22Numero%20de%20licence%22,%20%22Statut%20de%20la%20licence%22,%20%22Categorie%22,%20%22Sous-categories%22,%20%22Type%20de%20licence%22,%20%22Restriction%22%20FROM%20%2232f6ec46-85fd-45e9-945b-965d9235840a%22%20WHERE%20%22NEQ%22%20=%20%27' . $neqFournisseur . '%27%20AND%20%22Categorie%22%20%3C%3E%20%27null%27';
+
         if ($response->successful()) {
             // Récupérer uniquement le premier enregistrement
             $record = collect($response->json()['result']['records'])->first();
@@ -361,6 +365,7 @@ class PortailFournisseurController extends Controller
             $typeLicence = $record['Type de licence'] ?? null;
             $categorie = $record['Categorie'] ?? null;
             $sousCategories = $record['Sous-categories'] ?? null;
+            $restriction = $record['Restriction'] ?? null;
         } else {
             // Valeurs par défaut si l'API ne renvoie rien
             $numRBQ = null;
@@ -368,10 +373,11 @@ class PortailFournisseurController extends Controller
             $typeLicence = null;
             $categorie = null;
             $sousCategories = null;
+            $restriction = null;
         }
-
+        //dd($restriction);
         // Passer les données à la vue
-        return view('fournisseur.RBQ', compact('codes', 'fournisseurIden', 'numRBQ', 'statutRBQ', 'typeLicence', 'categorie', 'sousCategories'));
+        return view('fournisseur.RBQ', compact('codes', 'fournisseurIden', 'numRBQ', 'statutRBQ', 'typeLicence', 'categorie', 'sousCategories','restriction'));
     }
     
     

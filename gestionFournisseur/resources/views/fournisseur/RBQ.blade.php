@@ -11,7 +11,8 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-2"></div>
-
+        <p>{{$restriction}}</p>
+        <p>{{$statutRBQ}}</p>
         <div class="col-md-8">
             <fieldset>
                 <legend>Licence RBQ</legend>
@@ -36,8 +37,8 @@
                                 <small class="text-danger">*</small>
                             </h5>
                             <select class="form-control" name="statut">
-                                <option value="Valide" {{ $statutRBQ == 'Valide' ? 'selected' : '' }}>Valide</option>
-                                <option value="Valide avec restriction" {{ $statutRBQ == 'Valide avec restriction' ? 'selected' : '' }}>Valide avec restriction</option>
+                                <option value="Valide" {{ $statutRBQ == 'Active' && $restriction == 'Non' ? 'selected' : '' }}>Valide</option>
+                                <option value="Valide avec restriction" {{ $statutRBQ == 'Active' && $restriction == 'Oui' ? 'selected' : '' }}>Valide avec restriction</option>
                                 <option value="Non valide" {{ $statutRBQ == 'Non valide' ? 'selected' : '' }}>Non valide</option>
                             </select>
                             @error('statut')
@@ -55,7 +56,7 @@
                         <div class="col-md-7">
                             <select class="form-control" name="typeLicence">
                                 <option value="Entrepreneur" {{ $typeLicence == 'Entrepreneur' ? 'selected' : '' }}>Entrepreneur</option>
-                                <option value="Constructeur-Propriétaire" {{ $typeLicence == 'Constructeur-Propriétaire' ? 'selected' : '' }}>Constructeur-Propriétaire</option>
+                                <option value="Constructeur-proprietaire" {{ $typeLicence == 'Constructeur-proprietaire' ? 'selected' : '' }}>Constructeur-proprietaire</option>
                             </select>
                             @error('typeLicence')
                             <span class="text-danger">{{ $message }}</span>
