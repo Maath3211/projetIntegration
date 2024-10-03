@@ -144,6 +144,7 @@ class PortailFournisseurController extends Controller
         $rueNeq = null;
         $codePostalNeq = null;
         $telNeq = null;
+        $telNeqAff = null;
     
     
         if ($neq) {
@@ -333,13 +334,13 @@ class PortailFournisseurController extends Controller
     
     public function UNSPSC(Request $request)
     {
-        $fournisseurData = session('fournisseur');
-        $coordonneesData = session('coordonnees');
-        $contactData = session('contact');
+        // $fournisseurData = session('fournisseur');
+        // $coordonneesData = session('coordonnees');
+        // $contactData = session('contact');
     
-        if (is_null($fournisseurData) || is_null($coordonneesData) || is_null($contactData)) {
-            return redirect()->route('fournisseur.contact')->withErrors(['Les informations du fournisseur, des coordonnées ou du contact sont manquantes.']);
-        }
+        // if (is_null($fournisseurData) || is_null($coordonneesData) || is_null($contactData)) {
+        //     return redirect()->route('fournisseur.contact')->withErrors(['Les informations du fournisseur, des coordonnées ou du contact sont manquantes.']);
+        // }
 
         $codes = Unspsc::limit(500)->get();
         return view('fournisseur.UNSPSC', compact('codes'));
@@ -372,7 +373,7 @@ class PortailFournisseurController extends Controller
 
     public function RBQ($id)
     {
-        /*
+        
         $fournisseurData = session('fournisseur');
         $coordonneesData = session('coordonnees');
         $contactData = session('contact');
@@ -381,29 +382,26 @@ class PortailFournisseurController extends Controller
         if (is_null($fournisseurData) || is_null($coordonneesData) || is_null($contactData) || is_null($unspscData)) {
             return redirect()->route('fournisseur.UNSPSC')->withErrors(['Les informations du fournisseur, des coordonnées, du contact ou du code UNSPSC sont manquantes.']);
         }
-        */
+        
 
 
 
         $codes = Categorie::all();
 
-    
-        // $fournisseurData = session('fournisseur');
-        // $neqFournisseur = $fournisseurData['neq'] ?? null;
-        // Récupérer l'objet Fournisseur à partir de l'ID
-        $fournisseurIden = Fournisseur::findOrFail($id);
-        $neqFournisseur = $fournisseurIden->neq;
+        $fournisseurIden = Fournisseur::findOrFail($id);;
+        $neqFournisseur = $fournisseurIden['neq'] ?? null;
     
         // Requête vers l'API
-        //$response = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22Numero%20de%20licence%22,%20%22Statut%20de%20la%20licence%22,%20%22Categorie%22,%20%22Sous-categories%22%20FROM%20%2232f6ec46-85fd-45e9-945b-965d9235840a%22%20WHERE%20%22NEQ%22%20=%20%27' . $neqFournisseur . '%27%20AND%20%22Categorie%22%20%3C%3E%20%27null%27');
-        $response = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22Numero%20de%20licence%22,%20%22Statut%20de%20la%20licence%22,%20%22Categorie%22,%20%22Sous-categories%22,%20%22Type%20de%20licence%22,%20%22Restriction%22%20FROM%20%2232f6ec46-85fd-45e9-945b-965d9235840a%22%20WHERE%20%22NEQ%22%20=%20%27' . $neqFournisseur . '%27%20AND%20%22Categorie%22%20%3C%3E%20%27null%27');
-        $url = 'https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22Numero%20de%20licence%22,%20%22Statut%20de%20la%20licence%22,%20%22Categorie%22,%20%22Sous-categories%22,%20%22Type%20de%20licence%22,%20%22Restriction%22%20FROM%20%2232f6ec46-85fd-45e9-945b-965d9235840a%22%20WHERE%20%22NEQ%22%20=%20%27' . $neqFournisseur . '%27%20AND%20%22Categorie%22%20%3C%3E%20%27null%27';
+        
+        $response = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22Numero%20de%20licence%22,%20%22Statut%20de%20la%20licence%22,%20%22Categorie%22,%20%22Sous-categories%22,%20%22NEQ%22,%20%22Type%20de%20licence%22,%20%22Restriction%22%20FROM%20%2232f6ec46-85fd-45e9-945b-965d9235840a%22%20WHERE%20%22NEQ%22%20=%20%27' . $neqFournisseur . '%27%20AND%20%22Categorie%22%20%3C%3E%20%27null%27');
+        //$url = 'https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22Numero%20de%20licence%22,%20%22Statut%20de%20la%20licence%22,%20%22Categorie%22,%20%22Sous-categories%22,%20%22Type%20de%20licence%22,%20%22Restriction%22%20FROM%20%2232f6ec46-85fd-45e9-945b-965d9235840a%22%20WHERE%20%22NEQ%22%20=%20%27' . $neqFournisseur . '%27%20AND%20%22Categorie%22%20%3C%3E%20%27null%27';
 
         if ($response->successful()) {
             // Récupérer uniquement le premier enregistrement
             $record = collect($response->json()['result']['records'])->first();
     
             // Extraire les informations si disponibles
+            $neq = $record['NEQ'] ?? null;
             $numRBQ = $record['Numero de licence'] ?? null;
             $statutRBQ = $record['Statut de la licence'] ?? null;
             $typeLicence = $record['Type de licence'] ?? null;
@@ -412,6 +410,7 @@ class PortailFournisseurController extends Controller
             $restriction = $record['Restriction'] ?? null;
         } else {
             // Valeurs par défaut si l'API ne renvoie rien
+            $neq = null;
             $numRBQ = null;
             $statutRBQ = null;
             $typeLicence = null;
@@ -419,12 +418,13 @@ class PortailFournisseurController extends Controller
             $sousCategories = null;
             $restriction = null;
         }
-        //dd($restriction);
+
+        
         // Passer les données à la vue
-        return view('fournisseur.RBQ', compact('codes', 'fournisseurIden', 'numRBQ', 'statutRBQ', 'typeLicence', 'categorie', 'sousCategories','restriction'));
+        return view('fournisseur.RBQ', compact('neq','codes', 'fournisseurIden', 'numRBQ', 'statutRBQ', 'typeLicence', 'categorie', 'sousCategories','restriction'));
     }
     
-    
+
 
 
     public function storeRBQ(RBQRequest $request)
@@ -443,7 +443,7 @@ class PortailFournisseurController extends Controller
         }
         catch(\Throwable $e){
             Log::debug($e);
-            return redirect()->route('fournisseur.RBQ')->withErrors(['Informations invalides']); 
+            return redirect()->route('fournisseur.UNSPSC')->withErrors(['Informations invalides']); 
         }
     }
 

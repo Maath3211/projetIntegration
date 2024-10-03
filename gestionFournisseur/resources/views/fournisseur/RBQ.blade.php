@@ -11,15 +11,13 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-2"></div>
-        <p>{{$restriction}}</p>
-        <p>{{$statutRBQ}}</p>
         <div class="col-md-8">
             <fieldset>
                 <legend>Licence RBQ</legend>
 
                 <form method="POST" action="{{ route('fournisseur.storeRBQ') }}">
                     @csrf
-                    <input type="text" value="{{$fournisseurIden->neq}}" id="neq" name="neq" hidden></input>
+                    <input type="text" value="{{$neq}}" id="neq" name="neq" hidden></input>
 
                     <div class="row">
                         <div class="col-md-6">
@@ -56,7 +54,7 @@
                         <div class="col-md-7">
                             <select class="form-control" name="typeLicence">
                                 <option value="Entrepreneur" {{ $typeLicence == 'Entrepreneur' ? 'selected' : '' }}>Entrepreneur</option>
-                                <option value="Constructeur-proprietaire" {{ $typeLicence == 'Constructeur-proprietaire' ? 'selected' : '' }}>Constructeur-proprietaire</option>
+                                <option value="Constructeur-Propriétaire" {{ $typeLicence == 'Constructeur-proprietaire' ? 'selected' : '' }}>Constructeur-propriétaire</option>
                             </select>
                             @error('typeLicence')
                             <span class="text-danger">{{ $message }}</span>

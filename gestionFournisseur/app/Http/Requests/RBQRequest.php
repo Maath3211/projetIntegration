@@ -43,6 +43,7 @@ class RBQRequest extends FormRequest
             'licenceRBQ.required' => 'Il manque un numéro de licence',
             'licenceRBQ.min' => 'Numéro de licence incomplète',
             'idCategorie.required' => 'Choisir une catégorie',
+            'typeLicence.required' => 'Il manque un type de licence',
         ];
     }
 }

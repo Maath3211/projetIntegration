@@ -82,12 +82,6 @@ Route::POST('/UNSPSC/store',
 
 
 
-# InscriptionRBQ
-Route::GET('/RBQ/{id}',
-[PortailFournisseurController::class,'RBQ'])->name('fournisseur.RBQ');
-
-Route::POST('/RBQ/store',
-[PortailFournisseurController::class,'storeRBQ'])->name('fournisseur.storeRBQ');
 
 # InscriptionImportation 
 Route::GET('/importation',
