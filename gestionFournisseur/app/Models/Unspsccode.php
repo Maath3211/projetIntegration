@@ -11,7 +11,7 @@ class Unspsccode extends Model
     use HasFactory;
 
     protected $table = 'unspsccodes';
-    protected $fillable = ['fournisseur_id','details'];
+    protected $fillable = ['fournisseur_id','idUnspsc','details'];
 
 
 

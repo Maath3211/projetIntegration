@@ -23,8 +23,7 @@ class UnspscRequest extends FormRequest
     {
         return [
             'details' => 'required|max:500|min:5',
-            /*'idUnspsc' => 'required',*/
-            'idUser' => 'required'
+            'idUnspsc' => 'required',
         ];
     }
 

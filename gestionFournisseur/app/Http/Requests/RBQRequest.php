@@ -22,7 +22,6 @@ class RBQRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'neq' => 'required',
             'licenceRBQ' => 'required|min:10',
             'statut' => 'required|in:Valide,Valide avec restriction,Non valide',
             'typeLicence' => 'required|in:Entrepreneur,Constructeur-Propriétaire',

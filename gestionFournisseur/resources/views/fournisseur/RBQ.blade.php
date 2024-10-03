@@ -17,8 +17,6 @@
 
                 <form method="POST" action="{{ route('fournisseur.storeRBQ') }}">
                     @csrf
-                    <input type="text" value="{{$neq}}" id="neq" name="neq" hidden></input>
-
                     <div class="row">
                         <div class="col-md-6">
                             <h5>Numéro de licence RBQ

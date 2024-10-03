@@ -28,10 +28,6 @@
                             <label for="id" class="titreForm">idUser
                                 <small class="text-danger">*</small>
                             </label>
-                            <input type="radio" class="mt-2" value="1" name="idUser" id="idUser">
-                            @error('idUser')
-                            <span class="text-danger">{{ $message }}</span>
-                            @enderror
                         </div>
                         @csrf
                         @if (count($codes))
