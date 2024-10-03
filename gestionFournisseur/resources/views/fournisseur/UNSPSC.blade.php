@@ -39,9 +39,6 @@
                                                 <small class="text-danger">*</small>
                                             </label>
                                             <input type="radio" class="mt-2" id="idUnspsc" name="idUnspsc" value="{{ $code->id }}" {{ old('idUnspsc') == $code->id ? 'checked' : '' }}>
-                                            @error('idUnspsc')
-                                            <span class="text-danger">{{ $message }}</span>
-                                            @enderror
                                         </div>
                                         <div class="col-md-4">
                                             <p>{{ $code->code }}</p>
@@ -55,6 +52,10 @@
                         @else
                             <p>Erreur : aucun service public proposé</p>
                         @endif
+                        @error('idUnspsc')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                        {{-- {{ $codes->links() }} --}}
                         <div class="row">
                             <h5 class="pl-5">Détails et spécifications
                                 <small class="text-danger">*</small>
