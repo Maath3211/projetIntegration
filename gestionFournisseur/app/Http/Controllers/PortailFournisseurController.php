@@ -334,13 +334,13 @@ class PortailFournisseurController extends Controller
     
     public function UNSPSC(Request $request)
     {
-        // $fournisseurData = session('fournisseur');
-        // $coordonneesData = session('coordonnees');
-        // $contactData = session('contact');
+        $fournisseurData = session('fournisseur');
+        $coordonneesData = session('coordonnees');
+        $contactData = session('contact');
     
-        // if (is_null($fournisseurData) || is_null($coordonneesData) || is_null($contactData)) {
-        //     return redirect()->route('fournisseur.contact')->withErrors(['Les informations du fournisseur, des coordonnées ou du contact sont manquantes.']);
-        // }
+         if (is_null($fournisseurData) || is_null($coordonneesData) || is_null($contactData)) {
+             return redirect()->route('fournisseur.contact')->withErrors(['Les informations du fournisseur, des coordonnées ou du contact sont manquantes.']);
+         }
 
         $codes = Unspsc::limit(500)->get();
         return view('fournisseur.UNSPSC', compact('codes'));
@@ -352,8 +352,11 @@ class PortailFournisseurController extends Controller
         try
         {
             session([
-                'UNSPSC' => $request->validated()
-            ]);
+                'UNSPSC' => [
+                'details' => $request->details
+                ]
+            ]); 
+
 
             //$code = new Unspsccode($request->validated());
             //$code->save();
@@ -371,10 +374,10 @@ class PortailFournisseurController extends Controller
     // Licence RBQ
     // TODO: faire la recherche neq avec la licence RBQ (Attendre les gars de la ville)
 
-    public function RBQ($id)
+    public function RBQ()
     {
-        
         $fournisseurData = session('fournisseur');
+        $neq = $fournisseurData['neq'] ?? null;
         $coordonneesData = session('coordonnees');
         $contactData = session('contact');
         $unspscData = session('UNSPSC');
@@ -388,12 +391,12 @@ class PortailFournisseurController extends Controller
 
         $codes = Categorie::all();
 
-        $fournisseurIden = Fournisseur::findOrFail($id);;
-        $neqFournisseur = $fournisseurIden['neq'] ?? null;
+        //$fournisseurIden = Fournisseur::findOrFail($id);;
+        //$neqFournisseur = $fournisseurIden['neq'] ?? null;
     
         // Requête vers l'API
         
-        $response = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22Numero%20de%20licence%22,%20%22Statut%20de%20la%20licence%22,%20%22Categorie%22,%20%22Sous-categories%22,%20%22NEQ%22,%20%22Type%20de%20licence%22,%20%22Restriction%22%20FROM%20%2232f6ec46-85fd-45e9-945b-965d9235840a%22%20WHERE%20%22NEQ%22%20=%20%27' . $neqFournisseur . '%27%20AND%20%22Categorie%22%20%3C%3E%20%27null%27');
+        $response = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22Numero%20de%20licence%22,%20%22Statut%20de%20la%20licence%22,%20%22Categorie%22,%20%22Sous-categories%22,%20%22NEQ%22,%20%22Type%20de%20licence%22,%20%22Restriction%22%20FROM%20%2232f6ec46-85fd-45e9-945b-965d9235840a%22%20WHERE%20%22NEQ%22%20=%20%27' . $neq . '%27%20AND%20%22Categorie%22%20%3C%3E%20%27null%27');
         //$url = 'https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22Numero%20de%20licence%22,%20%22Statut%20de%20la%20licence%22,%20%22Categorie%22,%20%22Sous-categories%22,%20%22Type%20de%20licence%22,%20%22Restriction%22%20FROM%20%2232f6ec46-85fd-45e9-945b-965d9235840a%22%20WHERE%20%22NEQ%22%20=%20%27' . $neqFournisseur . '%27%20AND%20%22Categorie%22%20%3C%3E%20%27null%27';
 
         if ($response->successful()) {
@@ -431,9 +434,11 @@ class PortailFournisseurController extends Controller
     {
         try
         {
-            /*session([
-                'RBQ' => $request->validated()
-            ]); */
+            session([
+                'RBQ' => [
+                   'noCivic' => $request->noCivic
+                   ]
+               ]); 
 
             $code = new RBQLicence($request->validated());
             $code->save();
@@ -459,7 +464,7 @@ class PortailFournisseurController extends Controller
         $contactData = session('contact');
         $unspscData = session('UNSPSC');
         //$rbqData = session('RBQ');
-        //$unspscData = session('UNSPSC');
+        $unspscData = session('UNSPSC');
     
         if (is_null($fournisseurData) || is_null($coordonneesData) || is_null($contactData)/* || is_null($rbqData) || is_null($unspscData)*/) 
         {
@@ -544,11 +549,11 @@ class PortailFournisseurController extends Controller
                 $contact = new Contact($contactData);
                 $contact->fournisseur_id = $fournisseur->id;
                 $contact->save();
-                /*
+                
                 $unspsc = new Unspsccode($unspscData);
                 $unspsc->fournisseur_id = $fournisseur->id;
                 $unspsc->save();
-                */
+                
                 /*
                 $rbqLicence = new RBQLicence($rbqData);
                 $rbqLicence->fournisseur_id = $fournisseur->id;

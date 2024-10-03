@@ -56,7 +56,7 @@ Route::get('/loadMoreUnspsc', [PortailFournisseurController::class, 'loadMoreUns
 
 
 # InscriptionRBQ
-Route::GET('/RBQ/{id}',
+Route::GET('/RBQ',
 [PortailFournisseurController::class,'RBQ'])->name('fournisseur.RBQ');
 
 Route::POST('/RBQ/store',

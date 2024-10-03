@@ -11,7 +11,9 @@ class Unspsccode extends Model
     use HasFactory;
 
     protected $table = 'unspsccodes';
-    protected $fillable = ['idUser','idUnspsc','details'];
+    protected $fillable = ['fournisseur_id','details'];
+
+
 
     public function unspsc() : HasMany{
         return $this->hasMany('App\Unspsc');

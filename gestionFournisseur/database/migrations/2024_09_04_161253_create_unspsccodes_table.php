@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('unspsccodes', function (Blueprint $table) {
             $table->id();
-            $table->integer('idUser');
-            // $table->foreignId('idUnspsc')->constrained('Unspsc');
             $table->string('details',500);
+            $table->foreignId('idUnspsc')->constrained('Unspsc');
+            $table->unsignedBigInteger('fournisseur_id');
+            $table->foreign('fournisseur_id')->references('id')->on('fournisseurs');
             $table->timestamps();
         });
     }

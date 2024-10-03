@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('statut',25);
             $table->string('typeLicence',250);
             $table->foreignId('idCategorie')->constrained('categories');
+            $table->unsignedBigInteger('fournisseur_id');
+            $table->foreign('fournisseur_id')->references('id')->on('fournisseurs');
             $table->timestamps();
         });
     }
