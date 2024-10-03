@@ -172,6 +172,7 @@ class AdminController extends Controller
     // neq necessaire meme si pas utilisé, sinon l'id du fichier devient le neq
     public function telechargerFichier($neq, $idFichier)
     {
+        // TODO: renommer avant de télécharger
         $file = DB::table('file')->where('id', $idFichier)->get()->firstOrFail();
 
         $fichier = public_path($file->lienFichier);
