@@ -35,9 +35,11 @@
             <p>{{ $coord->noCivic . ', ' . $coord->rue }}</p>
             <p>{{ $coord->ville . ' (' . $coord->province . ') ' . $coord->codePostal }}</p>
             <p><a href="https://{{ $coord->site }} " target='blank'>{{ $coord->site }}</a></p>
-            <p>{{ $coord->typeTel . ' ' . $coord->numero }}</p>
+            <p>{{ $coord->typeTel . ' ' . substr($coord->numero, 0, 3) . '-' . substr($coord->numero, 3, 3) . '-' . substr($coord->numero, 6) }}
+            </p>
             @if ($coord->typeTel2 && $coord->numero2)
-                <p>{{ $coord->typeTel2 . ' ' . $coord->numero2 }}</p>
+                <p>{{ $coord->typeTel2 . ' ' . substr($coord->numero2, 0, 3) . '-' . substr($coord->numero2, 3, 3) . '-' . substr($coord->numero2, 6) }}
+                </p>
             @endif
         </div>
 
@@ -45,24 +47,25 @@
             <h3>Pièces jointes</h3>
         </div>
 
-
-        @foreach ($files as $file)
-            <?php $extension = pathinfo($file->nomFichier, PATHINFO_EXTENSION); ?>
-            @if ($extension == 'png')
-                <img src="{{ asset('images/icons/png.png') }}" class="imgFormat">
-            @elseif($extension == 'pdf')
-                <img src="{{ asset('images/icons/pdf.png') }}" class="imgFormat">
-            @elseif($extension == 'jpg' || $extension == 'jpeg')
-                <img src="{{ asset('images/icons/jpg.png') }}" class="imgFormat">
-            @elseif($extension == 'txt' || $extension == 'doc' || $extension == 'docx')
-                <img src="{{ asset('images/icons/txt.png') }}" class="imgFormat">
-            @elseif($extension == 'xls' || $extension == 'xlsx' || $extension == 'csv')
-                <img src="{{ asset('images/icons/xls.png') }}" class="imgFormat">
-            @endif
-            <a href="{{ route('responsable.telechargerFichier', [$fn->neq, $file->id]) }}"> {{ $file->nomFichier }},
-                {{ $file->tailleFichier_KO }} ko</a>
-            <br>
-        @endforeach
+        <div>
+            @foreach ($files as $file)
+                <?php $extension = pathinfo($file->nomFichier, PATHINFO_EXTENSION); ?>
+                @if ($extension == 'png')
+                    <img src="{{ asset('images/icons/png.png') }}" class="imgFormat">
+                @elseif($extension == 'pdf')
+                    <img src="{{ asset('images/icons/pdf.png') }}" class="imgFormat">
+                @elseif($extension == 'jpg' || $extension == 'jpeg')
+                    <img src="{{ asset('images/icons/jpg.png') }}" class="imgFormat">
+                @elseif($extension == 'txt' || $extension == 'doc' || $extension == 'docx')
+                    <img src="{{ asset('images/icons/txt.png') }}" class="imgFormat">
+                @elseif($extension == 'xls' || $extension == 'xlsx' || $extension == 'csv')
+                    <img src="{{ asset('images/icons/xls.png') }}" class="imgFormat">
+                @endif
+                <a href="{{ route('responsable.telechargerFichier', [$fn->neq, $file->id]) }}"> {{ $file->nomFichier }},
+                    {{ number_format($file->tailleFichier_KO / 1024, 2) }} mo</a>
+                <br>
+            @endforeach
+        </div>
 
         <table class="table table-hover table-striped table-bordered">
             <tr>
@@ -90,12 +93,18 @@
 
         <form action="{{ route('responsable.accepterFournisseur', $fn->neq) }}" method="post" id="form1">
             @csrf
-            <button type="submit" class="btn btn-success">Accepter</button>
+            <button type="submit" class="btn btn-success" id="btAccepter">Accepter</button>
         </form>
         <form action="{{ route('fournisseur.storeContact') }}" method="post" id="form1">
             @csrf
-            <button type="submit" class="btn btn-danger">Refuser</button>
+            <a class="btn btn-danger" id="btRefuser" >Refuser</a>
         </form>
+        
+
 
     </div>
+
+
+    <script src="{{ asset('js/zoomDemandeFournisseur.js') }}"></script>
 @endsection
+
