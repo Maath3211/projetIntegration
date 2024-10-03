@@ -311,7 +311,7 @@ class PortailFournisseurController extends Controller
                 ]
             ]);
 
-            return redirect()->route('fournisseur.importation')->with('message', "Enregistré!");
+            return redirect()->route('fournisseur.UNSPSC')->with('message', "Enregistré!");
         } catch (\Throwable $e) {
             Log::debug($e);
             return redirect()->route('fournisseur.index')->withErrors(['Informations invalides']);
@@ -350,7 +350,7 @@ class PortailFournisseurController extends Controller
             //$code = new Unspsccode($request->validated());
             //$code->save();
 
-            return redirect()->route('fournisseur.importation')->with('message', "Enregistré!");
+            return redirect()->route('fournisseur.RBQ')->with('message', "Enregistré!");
         } catch (\Throwable $e) {
             Log::debug($e);
             return redirect()->route('fournisseur.UNSPSC')->withErrors(['Informations invalides']);
@@ -380,7 +380,7 @@ class PortailFournisseurController extends Controller
         $codes = Categorie::all();
         // Requête vers l'API
 
-        $response = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22Numero%20de%20licence%22,%20%22Statut%20de%20la%20licence%22,%20%22Categorie%22,%20%22Sous-categories%22,%20%22NEQ%22,%20%22Type%20de%20licence%22,%20%22Restriction%22%20FROM%20%2232f6ec46-85fd-45e9-945b-965d9235840a%22%20WHERE%20%22NEQ%22%20=%20%27' . $neqFournisseur . '%27%20AND%20%22Categorie%22%20%3C%3E%20%27null%27');
+        $response = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22Numero%20de%20licence%22,%20%22Statut%20de%20la%20licence%22,%20%22Categorie%22,%20%22Sous-categories%22,%20%22NEQ%22,%20%22Type%20de%20licence%22,%20%22Restriction%22%20FROM%20%2232f6ec46-85fd-45e9-945b-965d9235840a%22%20WHERE%20%22NEQ%22%20=%20%27' . $neq . '%27%20AND%20%22Categorie%22%20%3C%3E%20%27null%27');
         //$url = 'https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22Numero%20de%20licence%22,%20%22Statut%20de%20la%20licence%22,%20%22Categorie%22,%20%22Sous-categories%22,%20%22Type%20de%20licence%22,%20%22Restriction%22%20FROM%20%2232f6ec46-85fd-45e9-945b-965d9235840a%22%20WHERE%20%22NEQ%22%20=%20%27' . $neqFournisseur . '%27%20AND%20%22Categorie%22%20%3C%3E%20%27null%27';
 
         if ($response->successful()) {
@@ -445,11 +445,11 @@ class PortailFournisseurController extends Controller
         $fournisseurData = session('fournisseur');
         $coordonneesData = session('coordonnees');
         $contactData = session('contact');
-        // $unspscData = session('UNSPSC');
-        //$rbqData = session('RBQ');
+         $unspscData = session('UNSPSC');
+        $rbqData = session('RBQ');
         $unspscData = session('UNSPSC');
     
-        if (is_null($fournisseurData) || is_null($coordonneesData) || is_null($contactData)/* || is_null($rbqData) || is_null($unspscData)*/) 
+        if (is_null($fournisseurData) || is_null($coordonneesData) || is_null($contactData) || is_null($rbqData) || is_null($unspscData)) 
         {
             return redirect()->route('fournisseur.UNSPSC')->withErrors(['Les informations requises sont manquantes. Veuillez compléter toutes les étapes précédentes.']);
         }
@@ -482,57 +482,13 @@ class PortailFournisseurController extends Controller
                     /*  return redirect()->route('fournisseur.importation')->withErrors(['error' => 'Erreur lors du téléversement du fichier.' . $e->getMessage()]); */
                 }
             }
-            $fournisseurData = session('fournisseur');
-            $coordonneesData = session('coordonnees');
-            $contactData = session('contact');
-            $unspscData = session('UNSPSC');
-            //$rbqData = session('RBQ');
-            //$fileData = session('file');
-            
-            try 
-            {
-                $fournisseur = new Fournisseur($fournisseurData);
-                $fournisseur->save();
-
-                $fournisseurCoord = new FournisseurCoord($coordonneesData);
-                $fournisseurCoord->fournisseur_id = $fournisseur->id;
-                $fournisseurCoord->save();
-    
-                $contact = new Contact($contactData);
-                $contact->fournisseur_id = $fournisseur->id;
-                $contact->save();
-                
-                $unspsc = new Unspsccode($unspscData);
-                $unspsc->fournisseur_id = $fournisseur->id;
-                $unspsc->save();
-                
-                /*
-                $rbqLicence = new RBQLicence($rbqData);
-                $rbqLicence->fournisseur_id = $fournisseur->id;
-                $rbqLicence->save();
-                */
-                /*
-                $file = new File($fileData);
-                $file->fournisseur_id = $fournisseur->id;
-                $file->save();
-*/
-                session()->forget(['fournisseur', 'coordonnees', 'contact'/*, 'RBQ','UNSPSC','file*/]);
-            
-
-                return redirect()->route('fournisseur.index')->with('message', 'Toutes les informations ont été enregistrées avec succès.');
-            } 
-            catch (\Throwable $e)
-            {
-                Log::debug($e);
-                return redirect()->route('fournisseur.importation')->withErrors(['error' => 'Erreur lors de la sauvegarde des informations.' . $e->getMessage()]);
-            }
         }
 
         $fournisseurData = session('fournisseur');
         $coordonneesData = session('coordonnees');
         $contactData = session('contact');
-        //$unspscData = session('UNSPSC');
-        //$rbqData = session('RBQ');
+        $unspscData = session('UNSPSC');
+        $rbqData = session('RBQ');
 
         try {
             $fournisseur = new Fournisseur($fournisseurData);
@@ -545,16 +501,16 @@ class PortailFournisseurController extends Controller
             $contact = new Contact($contactData);
             $contact->fournisseur_id = $fournisseur->id;
             $contact->save();
-            /*
+            
             $unspsc = new Unspsccode($unspscData);
             $unspsc->fournisseur_id = $fournisseur->id;
             $unspsc->save();
-            */
-            /*
+            
+            
             $rbqLicence = new RBQLicence($rbqData);
             $rbqLicence->fournisseur_id = $fournisseur->id;
             $rbqLicence->save();
-            */
+            
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $key => $image) {
                     try {
@@ -587,7 +543,7 @@ class PortailFournisseurController extends Controller
             }
 
 
-            session()->forget(['fournisseur', 'coordonnees', 'contact'/*, 'RBQ','UNSPSC','file*/]);
+            session()->forget(['fournisseur', 'coordonnees', 'contact', 'RBQ','UNSPSC','file']);
 
             return redirect()->route('fournisseur.index')->with('message', 'Toutes les informations ont été enregistrées avec succès.');
         } catch (\Throwable $e) {
