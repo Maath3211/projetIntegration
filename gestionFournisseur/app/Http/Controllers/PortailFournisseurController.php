@@ -53,7 +53,7 @@ class PortailFournisseurController extends Controller
      */
     public function create()
     {
-       //
+        //
     }
 
     /**
@@ -61,7 +61,7 @@ class PortailFournisseurController extends Controller
      */
     public function store(FournisseurRequest $request, Fournisseur $Request)
     {
-       //
+        //
     }
 
     /**
@@ -69,7 +69,7 @@ class PortailFournisseurController extends Controller
      */
     public function show(string $id)
     {
-        
+
     }
 
     /**
@@ -106,8 +106,7 @@ class PortailFournisseurController extends Controller
 
     public function storeIdentification(FournisseurRequest $request)
     {
-        try
-        {
+        try {
             session([
                 'fournisseur' => [
                     'neq' => $request->neq,
@@ -118,58 +117,55 @@ class PortailFournisseurController extends Controller
             ]);
 
             return redirect()->route('fournisseur.coordonnees')->with('message', "Enregistré!");
-        }
-        catch (\Throwable $e)
-        {
+        } catch (\Throwable $e) {
             Log::debug($e);
-            return redirect()->route('fournisseur.identification')->withErrors(['Informations invalides']); 
-        }  
+            return redirect()->route('fournisseur.identification')->withErrors(['Informations invalides']);
+        }
     }
 
-       // Coordonnées
+    // Coordonnées
 
-      public function createCoordo()
+    public function createCoordo()
     {
         $fournisseurData = session('fournisseur');
-   
-        if (!$fournisseurData) 
-        {
+
+        if (!$fournisseurData) {
             return redirect()->route('fournisseur.identification')->withErrors(['Erreur, Recommencer']);
         }
 
         $fournisseurData = session('fournisseur');
         $neq = $fournisseurData['neq'] ?? null;
-        $villeNeq = null;  
+        $villeNeq = null;
         $noCivicNeq = null;
         $rueNeq = null;
         $codePostalNeq = null;
         $telNeq = null;
         $telNeqAff = null;
-    
-    
+
+
         if ($neq) {
             $responseNeq = Http::withoutVerifying()->get("https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20*%20FROM%20%2232f6ec46-85fd-45e9-945b-965d9235840a%22%20WHERE%20%22NEQ%22%20=%20'{$neq}'");
-    
+
             if ($responseNeq->successful()) {
                 $infoTrouve = $responseNeq->json();
-    
+
                 if (!empty($infoTrouve['result']['records'])) {
-         
+
                     $villeNeq = $infoTrouve['result']['records'][0]['Municipalite'] ?? null;
                     $adresseTrouve = $infoTrouve['result']['records'][0]['Adresse'] ?? null;
                     $telNeq = $infoTrouve['result']['records'][0]['Numero de telephone'] ?? null;
                     $telNeqAff = substr($telNeq, 0, 3) . '-' . substr($telNeq, 3, 3) . '-' . substr($telNeq, 6);
                     if (!empty($adresseTrouve)) {
                         $division = explode(' ', $adresseTrouve);
-    
+
                         $noCivicNeq = $division[0] ?? null;
                         $rechercheProvince = array_search('QC', $division);
                         $rueNeq = implode(' ', array_slice($division, 1, $rechercheProvince - 2));
                         $codePostalNeq = implode(' ', array_slice($division, -2));
                         $codePostalNeq = str_replace(' ', '', $codePostalNeq);
-                        
-                       //dd($noCivicNeq, $rueNeq, $codePostalNeq, $emailNeq, $telNeqAff, $villeNeq);
-                } 
+
+                        //dd($noCivicNeq, $rueNeq, $codePostalNeq, $emailNeq, $telNeqAff, $villeNeq);
+                    }
                 }
             }
         }
@@ -183,133 +179,128 @@ class PortailFournisseurController extends Controller
             $villes = [];
         }
 
-        return view('fournisseur.coordonnees', compact('villes','villeNeq', 'noCivicNeq', 'rueNeq', 'codePostalNeq', 'telNeqAff'));
+        return view('fournisseur.coordonnees', compact('villes', 'villeNeq', 'noCivicNeq', 'rueNeq', 'codePostalNeq', 'telNeqAff'));
     }
 
-   
-       public function storeCoordo(FournisseurCoordRequest $request)
-       {
-           try
-           {
-               $nomRegion = "";
-               $codeRegion = "";
-               $villeChoisie = $request->input('ville');
-               $provinceChoisie = $request->input('province');
-   
-               if ($provinceChoisie === 'Québec') {
-               $responseVille = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22munnom%22,%20%22regadm%22%20FROM%20%2219385b4e-5503-4330-9e59-f998f5918363%22%20WHERE%20%22munnom%22=%27' . urlencode($villeChoisie) . '%27');
-                   if ($responseVille->successful() && count($responseVille->json()['result']['records']) > 0) {
-                       $regionTrouve = $responseVille->json()['result']['records'][0]['regadm'];
-   
-                       if (!empty($regionTrouve)) {
-                           $nomRegion = rtrim(strtok($regionTrouve, '('));
-                           $codeRegion = trim(strtok('()')); 
-                   }
-               }
-           }
-   
-               /*$fournisseurCoord = new FournisseurCoord($request->validated());
-               $fournisseurCoord['noCivic'] = ($request->noCivic);
-               $fournisseurCoord['rue'] = ($request->rue);
-               $fournisseurCoord['bureau'] = ($request->bureau);
-               $fournisseurCoord['ville'] = ($request->ville);
-               $fournisseurCoord['province'] = ($request->province);
-               $fournisseurCoord['codePostal'] = strtoupper($request->codePostal);
-               $fournisseurCoord['codeRegion'] = ($codeRegion);
-               $fournisseurCoord['nomRegion'] = ($nomRegion);
-               $fournisseurCoord['site'] = strtolower($request->site);
-               $fournisseurCoord['typeTel'] = ($request->typeTel);
-               $fournisseurCoord['numero'] = ($request->numero);
-               $fournisseurCoord['poste'] = ($request->poste);
-               $fournisseurCoord['typeTel2'] = ($request->typeTel2);
-               $fournisseurCoord['numero2'] = ($request->numero2);
-               $fournisseurCoord['poste2'] = ($request->poste2);
-               $fournisseurCoord['fournisseur_id'] = $fournisseur->id;
-               $fournisseurCoord->save(); */
+
+    public function storeCoordo(FournisseurCoordRequest $request)
+    {
+        try {
+            $nomRegion = "";
+            $codeRegion = "";
+            $villeChoisie = $request->input('ville');
+            $provinceChoisie = $request->input('province');
+
+            if ($provinceChoisie === 'Québec') {
+                $responseVille = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22munnom%22,%20%22regadm%22%20FROM%20%2219385b4e-5503-4330-9e59-f998f5918363%22%20WHERE%20%22munnom%22=%27' . urlencode($villeChoisie) . '%27');
+                if ($responseVille->successful() && count($responseVille->json()['result']['records']) > 0) {
+                    $regionTrouve = $responseVille->json()['result']['records'][0]['regadm'];
+
+                    if (!empty($regionTrouve)) {
+                        $nomRegion = rtrim(strtok($regionTrouve, '('));
+                        $codeRegion = trim(strtok('()'));
+                    }
+                }
+            }
+
+            /*$fournisseurCoord = new FournisseurCoord($request->validated());
+            $fournisseurCoord['noCivic'] = ($request->noCivic);
+            $fournisseurCoord['rue'] = ($request->rue);
+            $fournisseurCoord['bureau'] = ($request->bureau);
+            $fournisseurCoord['ville'] = ($request->ville);
+            $fournisseurCoord['province'] = ($request->province);
+            $fournisseurCoord['codePostal'] = strtoupper($request->codePostal);
+            $fournisseurCoord['codeRegion'] = ($codeRegion);
+            $fournisseurCoord['nomRegion'] = ($nomRegion);
+            $fournisseurCoord['site'] = strtolower($request->site);
+            $fournisseurCoord['typeTel'] = ($request->typeTel);
+            $fournisseurCoord['numero'] = ($request->numero);
+            $fournisseurCoord['poste'] = ($request->poste);
+            $fournisseurCoord['typeTel2'] = ($request->typeTel2);
+            $fournisseurCoord['numero2'] = ($request->numero2);
+            $fournisseurCoord['poste2'] = ($request->poste2);
+            $fournisseurCoord['fournisseur_id'] = $fournisseur->id;
+            $fournisseurCoord->save(); */
 
             session([
                 'coordonnees' => [
-                   'noCivic' => $request->noCivic,
-                   'rue' => $request->rue,
-                   'bureau' => $request->bureau,
-                   'ville' => $request->ville,
-                   'province' => $request->province,
-                   'codePostal' => strtoupper($request->codePostal),
-                   'codeRegion' => $request->codeRegion ?? null,
-                   'nomRegion' => $request->nomRegion ?? null,
-                   'site' => strtolower($request->site),
-                   'typeTel' => $request->typeTel,
-                   'numero' => $request->numero,
-                   'poste' => $request->poste,
-                   'typeTel2' => $request->typeTel2,
-                   'numero2' => $request->numero2,
-                   'poste2' => $request->poste2,
-                   ]
-               ]); 
-   
-               return redirect()->route('fournisseur.contact')->with('message',"Enregistré!");
-               
-           }
-           catch (\Throwable $e)
-           {
-               Log::debug($e);
-               return redirect()->route('fournisseur.coordonnees')->withErrors(['Informations invalides']); 
-           } 
-      }
-   
-      // Contact
-   
-       public function contact()
-       {
+                    'noCivic' => $request->noCivic,
+                    'rue' => $request->rue,
+                    'bureau' => $request->bureau,
+                    'ville' => $request->ville,
+                    'province' => $request->province,
+                    'codePostal' => strtoupper($request->codePostal),
+                    'codeRegion' => $request->codeRegion ?? null,
+                    'nomRegion' => $request->nomRegion ?? null,
+                    'site' => strtolower($request->site),
+                    'typeTel' => $request->typeTel,
+                    'numero' => $request->numero,
+                    'poste' => $request->poste,
+                    'typeTel2' => $request->typeTel2,
+                    'numero2' => $request->numero2,
+                    'poste2' => $request->poste2,
+                ]
+            ]);
+
+            return redirect()->route('fournisseur.contact')->with('message', "Enregistré!");
+
+        } catch (\Throwable $e) {
+            Log::debug($e);
+            return redirect()->route('fournisseur.coordonnees')->withErrors(['Informations invalides']);
+        }
+    }
+
+    // Contact
+
+    public function contact()
+    {
 
         $fournisseurData = session('fournisseur');
         $coordonneesData = session('coordonnees');
-    
-        if (is_null($fournisseurData) || is_null($coordonneesData)) 
-        {
+
+        if (is_null($fournisseurData) || is_null($coordonneesData)) {
             return redirect()->route('fournisseur.coordonnees')->withErrors(['Les informations du fournisseur ou des coordonnées sont manquantes.']);
         }
-           return view('fournisseur.ajoutContact');
-       }
-   
-       public function storeContact(ContactRequest $request)
-       {
-           try 
-           {
-   
-           //$fournisseurData = session('fournisseur');
-           //$neq = $fournisseurData['neq'] ?? null;
-           //$coordonneesData = session('coordonnees'); 
-   
-           //if (is_null($fournisseurData) || is_null($coordonneesData)) {
-              // return redirect()->route('fournisseur.identification')->withErrors(['Informations de fournisseur ou de coordonnées manquantes.']);
-          // }
-   
-               //$fournisseur = new Fournisseur($fournisseurData);
-       
-               //$fournisseur->save();
-               //$id = DB::table('fournisseurs')->where('neq', $neq)->get()->first();
-               //$id = $id->id;
-                //Log::debug('Id du fournisseur', ['fournisseur_id' => $fournisseur->id]);
+        return view('fournisseur.ajoutContact');
+    }
 
-   
-               //$fournisseurCoord = new FournisseurCoord($coordonneesData);
-               //$fournisseurCoord->fournisseur_id = $fournisseur->id;
-               //$fournisseurCoord->save();
-           /*
-               $contact = new Contact($request->validated());
-               $contact['prenom'] = $request->prenom;
-               $contact['nom'] = $request->nom;
-               $contact['fonction'] = $request->fonction;
-               $contact['courriel'] = $request->courriel;
-               $contact['typeTelephone'] = $request->typeTelephone;
-               $contact['telephone'] = $request->telephone;
-               $contact['poste'] = $request->poste;
-               $contact['fournisseur_id'] = $fournisseur->id;
-               $contact->save();
-               */
-                session([
-                    'contact' => [
+    public function storeContact(ContactRequest $request)
+    {
+        try {
+
+            //$fournisseurData = session('fournisseur');
+            //$neq = $fournisseurData['neq'] ?? null;
+            //$coordonneesData = session('coordonnees'); 
+
+            //if (is_null($fournisseurData) || is_null($coordonneesData)) {
+            // return redirect()->route('fournisseur.identification')->withErrors(['Informations de fournisseur ou de coordonnées manquantes.']);
+            // }
+
+            //$fournisseur = new Fournisseur($fournisseurData);
+
+            //$fournisseur->save();
+            //$id = DB::table('fournisseurs')->where('neq', $neq)->get()->first();
+            //$id = $id->id;
+            //Log::debug('Id du fournisseur', ['fournisseur_id' => $fournisseur->id]);
+
+
+            //$fournisseurCoord = new FournisseurCoord($coordonneesData);
+            //$fournisseurCoord->fournisseur_id = $fournisseur->id;
+            //$fournisseurCoord->save();
+            /*
+                $contact = new Contact($request->validated());
+                $contact['prenom'] = $request->prenom;
+                $contact['nom'] = $request->nom;
+                $contact['fonction'] = $request->fonction;
+                $contact['courriel'] = $request->courriel;
+                $contact['typeTelephone'] = $request->typeTelephone;
+                $contact['telephone'] = $request->telephone;
+                $contact['poste'] = $request->poste;
+                $contact['fournisseur_id'] = $fournisseur->id;
+                $contact->save();
+                */
+            session([
+                'contact' => [
                     'prenom' => $request->prenom,
                     'nom' => $request->nom,
                     'fonction' => $request->fonction,
@@ -317,27 +308,24 @@ class PortailFournisseurController extends Controller
                     'typeTelephone' => $request->typeTelephone,
                     'telephone' => $request->telephone,
                     'poste' => $request->poste,
-                    ]
-                ]); 
-                
-               return redirect()->route('fournisseur.UNSPSC')->with('message',"Enregistré!");
-           } 
-   
-           catch (\Throwable $e)
-           {
-               Log::debug($e);
-               return redirect()->route('fournisseur.index')->withErrors(['Informations invalides']); 
-           } 
-       }
+                ]
+            ]);
+
+            return redirect()->route('fournisseur.importation')->with('message', "Enregistré!");
+        } catch (\Throwable $e) {
+            Log::debug($e);
+            return redirect()->route('fournisseur.index')->withErrors(['Informations invalides']);
+        }
+    }
 
     // Code Unspsc 
-    
+
     public function UNSPSC(Request $request)
     {
         // $fournisseurData = session('fournisseur');
         // $coordonneesData = session('coordonnees');
         // $contactData = session('contact');
-    
+
         // if (is_null($fournisseurData) || is_null($coordonneesData) || is_null($contactData)) {
         //     return redirect()->route('fournisseur.contact')->withErrors(['Les informations du fournisseur, des coordonnées ou du contact sont manquantes.']);
         // }
@@ -345,12 +333,11 @@ class PortailFournisseurController extends Controller
         $codes = Unspsc::limit(500)->get();
         return view('fournisseur.UNSPSC', compact('codes'));
     }
-    
+
 
     public function storeUnspsc(UnspscRequest $request)
     {
-        try
-        {
+        try {
             session([
                 'UNSPSC' => $request->validated()
             ]);
@@ -358,12 +345,10 @@ class PortailFournisseurController extends Controller
             //$code = new Unspsccode($request->validated());
             //$code->save();
 
-            return redirect()->route('fournisseur.importation')->with('message',"Enregistré!");
-        }
-        catch(\Throwable $e)
-        {
+            return redirect()->route('fournisseur.importation')->with('message', "Enregistré!");
+        } catch (\Throwable $e) {
             Log::debug($e);
-            return redirect()->route('fournisseur.UNSPSC')->withErrors(['Informations invalides']); 
+            return redirect()->route('fournisseur.UNSPSC')->withErrors(['Informations invalides']);
         }
     }
 
@@ -373,33 +358,34 @@ class PortailFournisseurController extends Controller
 
     public function RBQ($id)
     {
-        
+
         $fournisseurData = session('fournisseur');
         $coordonneesData = session('coordonnees');
         $contactData = session('contact');
         $unspscData = session('UNSPSC');
-    
+
         if (is_null($fournisseurData) || is_null($coordonneesData) || is_null($contactData) || is_null($unspscData)) {
             return redirect()->route('fournisseur.UNSPSC')->withErrors(['Les informations du fournisseur, des coordonnées, du contact ou du code UNSPSC sont manquantes.']);
         }
-        
+
 
 
 
         $codes = Categorie::all();
 
-        $fournisseurIden = Fournisseur::findOrFail($id);;
+        $fournisseurIden = Fournisseur::findOrFail($id);
+        ;
         $neqFournisseur = $fournisseurIden['neq'] ?? null;
-    
+
         // Requête vers l'API
-        
+
         $response = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22Numero%20de%20licence%22,%20%22Statut%20de%20la%20licence%22,%20%22Categorie%22,%20%22Sous-categories%22,%20%22NEQ%22,%20%22Type%20de%20licence%22,%20%22Restriction%22%20FROM%20%2232f6ec46-85fd-45e9-945b-965d9235840a%22%20WHERE%20%22NEQ%22%20=%20%27' . $neqFournisseur . '%27%20AND%20%22Categorie%22%20%3C%3E%20%27null%27');
         //$url = 'https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22Numero%20de%20licence%22,%20%22Statut%20de%20la%20licence%22,%20%22Categorie%22,%20%22Sous-categories%22,%20%22Type%20de%20licence%22,%20%22Restriction%22%20FROM%20%2232f6ec46-85fd-45e9-945b-965d9235840a%22%20WHERE%20%22NEQ%22%20=%20%27' . $neqFournisseur . '%27%20AND%20%22Categorie%22%20%3C%3E%20%27null%27';
 
         if ($response->successful()) {
             // Récupérer uniquement le premier enregistrement
             $record = collect($response->json()['result']['records'])->first();
-    
+
             // Extraire les informations si disponibles
             $neq = $record['NEQ'] ?? null;
             $numRBQ = $record['Numero de licence'] ?? null;
@@ -419,36 +405,34 @@ class PortailFournisseurController extends Controller
             $restriction = null;
         }
 
-        
+
         // Passer les données à la vue
-        return view('fournisseur.RBQ', compact('neq','codes', 'fournisseurIden', 'numRBQ', 'statutRBQ', 'typeLicence', 'categorie', 'sousCategories','restriction'));
+        return view('fournisseur.RBQ', compact('neq', 'codes', 'fournisseurIden', 'numRBQ', 'statutRBQ', 'typeLicence', 'categorie', 'sousCategories', 'restriction'));
     }
-    
+
 
 
 
     public function storeRBQ(RBQRequest $request)
     {
-        try
-        {
+        try {
             /*session([
                 'RBQ' => $request->validated()
             ]); */
 
             $code = new RBQLicence($request->validated());
             $code->save();
-            
 
-            return redirect()->route('fournisseur.importation')->with('message',"Enregistré!");
-        }
-        catch(\Throwable $e){
+
+            return redirect()->route('fournisseur.importation')->with('message', "Enregistré!");
+        } catch (\Throwable $e) {
             Log::debug($e);
-            return redirect()->route('fournisseur.UNSPSC')->withErrors(['Informations invalides']); 
+            return redirect()->route('fournisseur.UNSPSC')->withErrors(['Informations invalides']);
         }
     }
 
 
- 
+
 
     // Importation
     public function importation()
@@ -457,32 +441,26 @@ class PortailFournisseurController extends Controller
         $fournisseurData = session('fournisseur');
         $coordonneesData = session('coordonnees');
         $contactData = session('contact');
-        $unspscData = session('UNSPSC');
+        // $unspscData = session('UNSPSC');
         //$rbqData = session('RBQ');
         //$unspscData = session('UNSPSC');
-    
-        if (is_null($fournisseurData) || is_null($coordonneesData) || is_null($contactData)/* || is_null($rbqData) || is_null($unspscData)*/) 
-        {
+
+        if (is_null($fournisseurData) || is_null($coordonneesData) || is_null($contactData)/* || is_null($rbqData) || is_null($unspscData)*/) {
             return redirect()->route('fournisseur.UNSPSC')->withErrors(['Les informations requises sont manquantes. Veuillez compléter toutes les étapes précédentes.']);
         }
-        
+
         return view('fournisseur.importationImg');
     }
 
     public function storeImportation(Request $request)
     {
-        
-        if ($request->hasFile('images')) 
-        {
+
+
+        if ($request->hasFile('images')) {
             $maxSize = Setting::latest()->first()->tailleMax * 1024;
 
-            foreach ($request->file('images') as $key => $image) 
-            {
-                try 
-                {
-
-                    $uniqueFileName = str_replace(' ', '_', $request->user()->id) . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
-                    // TODO: verifier si faire un request
+            foreach ($request->file('images') as $key => $image) {
+                try {
                     $request->validate([
                         "images.{$key}" => 'required|max:' . $maxSize . '|mimes:pdf,doc,docx,jpg,jpeg,png,xlsx,xls,csv',
                     ], [
@@ -491,87 +469,82 @@ class PortailFournisseurController extends Controller
                         "images.{$key}.mimes" => 'Le fichier doit être dans un format imprimable: JPG, PNG, DOCX, DOC, PDF, XLSX, XLS, CSV'
                     ]);
 
-                    $fileSize = $image->getSize();
-                    if ($fileSize === false || $fileSize === 0) 
-                    {
-                        throw new \RuntimeException("Impossible de trouver la taille pour: " . $image->getClientOriginalName());
-                    }
-
-                    $image->move(public_path('images/fournisseurs'), $uniqueFileName);
-                    /*
-                    session([
-                    'file' => [
-                        $file->nomFichier = $uniqueFileName,
-                        $file->lienFichier = '/images/fournisseurs/' . $uniqueFileName,
-                        $file->tailleFichier_KO = $fileSize,
-                    ]
-                    ]); 
-                    */
-                    
-                    $file = new File();
-                    $file->nomFichier = $uniqueFileName;
-                    $file->lienFichier = '/images/fournisseurs/' . $uniqueFileName;
-                    $file->tailleFichier_KO = $fileSize;
-                    $file->save(); 
-
-                    \Log::info("Fichiers importés avec succès: " . $uniqueFileName);
-                } 
-                catch (\Exception $e) 
-                {
+                } catch (\Exception $e) {
                     \Log::error("Erreur pendant l'importation: " . $image->getClientOriginalName(), [
                         'error' => $e->getMessage(),
                         'trace' => $e->getTraceAsString()
                     ]);
-                    return redirect()->route('fournisseur.importation')->withErrors(['error' => 'Erreur lors du téléversement du fichier.' . $e->getMessage()]);
+                    /*  return redirect()->route('fournisseur.importation')->withErrors(['error' => 'Erreur lors du téléversement du fichier.' . $e->getMessage()]); */
                 }
             }
-            $fournisseurData = session('fournisseur');
-            $coordonneesData = session('coordonnees');
-            $contactData = session('contact');
-            //$unspscData = session('UNSPSC');
-            //$rbqData = session('RBQ');
-            //$fileData = session('file');
-            
-            try 
-            {
-                $fournisseur = new Fournisseur($fournisseurData);
-                $fournisseur->save();
-
-                $fournisseurCoord = new FournisseurCoord($coordonneesData);
-                $fournisseurCoord->fournisseur_id = $fournisseur->id;
-                $fournisseurCoord->save();
-    
-                $contact = new Contact($contactData);
-                $contact->fournisseur_id = $fournisseur->id;
-                $contact->save();
-                /*
-                $unspsc = new Unspsccode($unspscData);
-                $unspsc->fournisseur_id = $fournisseur->id;
-                $unspsc->save();
-                */
-                /*
-                $rbqLicence = new RBQLicence($rbqData);
-                $rbqLicence->fournisseur_id = $fournisseur->id;
-                $rbqLicence->save();
-                */
-                /*
-                $file = new File($fileData);
-                $file->fournisseur_id = $fournisseur->id;
-                $file->save();
-*/
-                session()->forget(['fournisseur', 'coordonnees', 'contact'/*, 'RBQ','UNSPSC','file*/]);
-            
-
-                return redirect()->route('fournisseur.index')->with('message', 'Toutes les informations ont été enregistrées avec succès.');
-            } 
-            catch (\Throwable $e)
-            {
-                Log::debug($e);
-                return redirect()->route('fournisseur.importation')->withErrors(['error' => 'Erreur lors de la sauvegarde des informations.' . $e->getMessage()]);
-            }
         }
-    
-        return redirect()->route('fournisseur.importation')->withErrors(['error' => 'Aucun fichier à importer.']);
+
+        $fournisseurData = session('fournisseur');
+        $coordonneesData = session('coordonnees');
+        $contactData = session('contact');
+        //$unspscData = session('UNSPSC');
+        //$rbqData = session('RBQ');
+
+        try {
+            $fournisseur = new Fournisseur($fournisseurData);
+            $fournisseur->save();
+
+            $fournisseurCoord = new FournisseurCoord($coordonneesData);
+            $fournisseurCoord->fournisseur_id = $fournisseur->id;
+            $fournisseurCoord->save();
+
+            $contact = new Contact($contactData);
+            $contact->fournisseur_id = $fournisseur->id;
+            $contact->save();
+            /*
+            $unspsc = new Unspsccode($unspscData);
+            $unspsc->fournisseur_id = $fournisseur->id;
+            $unspsc->save();
+            */
+            /*
+            $rbqLicence = new RBQLicence($rbqData);
+            $rbqLicence->fournisseur_id = $fournisseur->id;
+            $rbqLicence->save();
+            */
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $key => $image) {
+                    try {
+
+                        $uniqueFileName = str_replace(' ', '_', $fournisseur->id) . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
+
+                        $fileSize = $image->getSize();
+                        if ($fileSize === false || $fileSize === 0) {
+                            throw new \RuntimeException("Impossible de trouver la taille pour: " . $image->getClientOriginalName());
+                        }
+
+                        $image->move(public_path('images/fournisseurs'), $uniqueFileName);
+
+                        $file = new File();
+                        $file->nomFichier = $uniqueFileName;
+                        $file->lienFichier = '/images/fournisseurs/' . $uniqueFileName;
+                        $file->tailleFichier_KO = $fileSize;
+                        $file->fournisseur_id = $fournisseur->id;
+                        $file->save();
+
+                        \Log::info("Fichiers importés avec succès: " . $uniqueFileName);
+                    } catch (\Exception $e) {
+                        \Log::error("Erreur pendant l'importation: " . $image->getClientOriginalName(), [
+                            'error' => $e->getMessage(),
+                            'trace' => $e->getTraceAsString()
+                        ]);
+                        /*  return redirect()->route('fournisseur.importation')->withErrors(['error' => 'Erreur lors du téléversement du fichier.' . $e->getMessage()]); */
+                    }
+                }
+            }
+
+
+            session()->forget(['fournisseur', 'coordonnees', 'contact'/*, 'RBQ','UNSPSC','file*/]);
+
+            return redirect()->route('fournisseur.index')->with('message', 'Toutes les informations ont été enregistrées avec succès.');
+        } catch (\Throwable $e) {
+            Log::debug($e);
+            return redirect()->route('fournisseur.importation')->withErrors(['error' => 'Erreur lors de la sauvegarde des informations.' . $e->getMessage()]);
+        }
     }
 
     //Finance
@@ -584,20 +557,17 @@ class PortailFournisseurController extends Controller
 
     public function storeFinances(FinanceRequest $request)
     {
-        try
-        {
+        try {
             $code = new Finance($request->all());
             $code->save();
-            return redirect()->route('fournisseur.finances')->with('message',"Enregistré!");
-        }
-
-        catch(\Throwable $e){
+            return redirect()->route('fournisseur.finances')->with('message', "Enregistré!");
+        } catch (\Throwable $e) {
             Log::debug($e);
-            return redirect()->route('fournisseur.finances')->withErrors(['Informations invalides']); 
-        }    
+            return redirect()->route('fournisseur.finances')->withErrors(['Informations invalides']);
+        }
     }
 
-        /**
+    /**
      * CONNEXION **** CONNEXION **** CONNEXION ****CONNEXION ****CONNEXION****CONNEXION **** CONNEXION ****CONNEXION ****
      */
 
@@ -605,14 +575,11 @@ class PortailFournisseurController extends Controller
     {
         $reussi = Auth::attempt(['email' => $request->email, 'password' => $request->password]);
 
-        if($reussi)
-        {
+        if ($reussi) {
             $fournisseurEmail = Fournisseur::where('email', $request->email)->firstOrFail();
             return redirect()->route('fournisseur.information');
-        }
-        else
-        {
-            return redirect()->route('fournisseur.index')->withErrors(['Informations invalides']); 
+        } else {
+            return redirect()->route('fournisseur.index')->withErrors(['Informations invalides']);
         }
     }
 
@@ -620,14 +587,11 @@ class PortailFournisseurController extends Controller
     {
         $reussi = Auth::attempt(['neq' => $request->neq, 'password' => $request->password]);
 
-        if($reussi)
-        {
+        if ($reussi) {
             $fournisseurNeq = Fournisseur::where('neq', $request->neq)->firstOrFail();
             return redirect()->route('fournisseur.information');
-        }
-        else
-        {
-            return redirect()->route('fournisseur.index')->withErrors(['Informations invalides']); 
+        } else {
+            return redirect()->route('fournisseur.index')->withErrors(['Informations invalides']);
         }
     }
 
