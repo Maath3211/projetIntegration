@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\PortailFournisseurController;
 use App\Http\Controllers\AdminController;
-// use App\Http\Controllers\ResponsablesController;
 
 #FOURNISSEUR
 
@@ -32,12 +31,18 @@ Route::POST('/reinitialisation/{code}',
 [AdminController::class, 'resetPassword']) -> name('login.modifier');
 
 
-
 #Déconnexion
 Route::POST('/logout',
 [PortailFournisseurController::class,'logout'])->name('fournisseur.logout');
 
 # InscriptionIdentification
+
+Route::GET('/inscription',
+[PortailFournisseurController::class,'inscription'])->name('fournisseur.inscription');
+
+Route::POST('/inscription/store',
+[PortailFournisseurController::class,'storeInscription'])->name('fournisseur.storeInscription');
+
 Route::GET('/identification',
 [PortailFournisseurController::class,'createIdentification'])->name('fournisseur.identification');
 
@@ -52,8 +57,6 @@ Route::POST('/UNSPSC/store',
 [PortailFournisseurController::class,'storeUnspsc'])->name('fournisseur.storeUnspsc');
 
 Route::get('/loadMoreUnspsc', [PortailFournisseurController::class, 'loadMoreUnspsc']);
-
-
 
 # InscriptionRBQ
 Route::GET('/RBQ',
@@ -75,13 +78,6 @@ Route::GET('/contact',
 
 Route::POST('/contact/store',
 [PortailFournisseurController::class,'storeContact'])->name('fournisseur.storeContact');
-
-# InscriptionUNSPSC
-Route::POST('/UNSPSC/store',
-[PortailFournisseurController::class,'storeUnspsc'])->name('fournisseur.storeUnspsc');
-
-
-
 
 # InscriptionImportation 
 Route::GET('/importation',
