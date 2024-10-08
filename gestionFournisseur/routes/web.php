@@ -60,8 +60,6 @@ Route::POST('/UNSPSC/store',
 
 Route::get('/loadMoreUnspsc', [PortailFournisseurController::class, 'loadMoreUnspsc']);
 
-
-
 # InscriptionRBQ
 Route::GET('/RBQ',
 [PortailFournisseurController::class,'RBQ'])->name('fournisseur.RBQ');
@@ -82,13 +80,6 @@ Route::GET('/contact',
 
 Route::POST('/contact/store',
 [PortailFournisseurController::class,'storeContact'])->name('fournisseur.storeContact');
-
-# InscriptionUNSPSC
-Route::POST('/UNSPSC/store',
-[PortailFournisseurController::class,'storeUnspsc'])->name('fournisseur.storeUnspsc');
-
-
-
 
 # InscriptionImportation 
 Route::GET('/importation',

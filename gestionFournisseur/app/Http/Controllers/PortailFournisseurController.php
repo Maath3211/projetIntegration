@@ -98,10 +98,11 @@ class PortailFournisseurController extends Controller
      */
 
     //Identification
+
     public function inscription()
     {
         return view('fournisseur.inscription');
-        session()->forget(['fournisseurNeq','fournisseur', 'coordonnees', 'contact', 'RBQ', 'UNSPSC']);
+        //session()->forget(['fournisseurNeq','fournisseur', 'coordonnees', 'contact', 'RBQ', 'UNSPSC']);
     }
 
     public function storeInscription(FournisseurNeqRequest $request)
@@ -366,11 +367,6 @@ class PortailFournisseurController extends Controller
                 ]
             ]); 
 
-            
-
-            //$code = new Unspsccode($request->validated());
-            //$code->save();
-
             return redirect()->route('fournisseur.RBQ')->with('message', "Enregistré!");
         } catch (\Throwable $e) {
             Log::debug($e);
@@ -576,7 +572,7 @@ class PortailFournisseurController extends Controller
             }
 
             //Mail::to($fournisseur->email)->send(new recevoirConfirmation($fournisseur));
-            session()->forget(['fournisseur', 'coordonnees', 'contact', 'RBQ','UNSPSC']);
+            session()->forget(['fournisseurNeq','fournisseur', 'coordonnees', 'contact', 'RBQ', 'UNSPSC']);
 
             return redirect()->route('fournisseur.index')->with('message', 'Toutes les informations ont été enregistrées avec succès.');
         } 
