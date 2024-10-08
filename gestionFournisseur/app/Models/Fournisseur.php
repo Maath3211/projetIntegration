@@ -28,6 +28,7 @@ class Fournisseur extends Authenticatable
         'password',
         'codeReset',
         'demandeReset',
+        'raisonRefus',
     ];
 
     public function coordonnees()
@@ -46,7 +47,7 @@ class Fournisseur extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'raisonRefus',
+        
         'password',
         'remember_token',
     ];
@@ -59,7 +60,7 @@ class Fournisseur extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'raisonRefus' => 'hashed',
+        
     ];
 
     /*public function contact(){

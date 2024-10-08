@@ -514,7 +514,7 @@ class PortailFournisseurController extends Controller
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $key => $image) {
                     try {
-
+                        
                         $uniqueFileName = str_replace(' ', '_', $fournisseur->id) . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
 
                         $fileSize = $image->getSize();
@@ -525,7 +525,7 @@ class PortailFournisseurController extends Controller
                         $image->move(public_path('images/fournisseurs'), $uniqueFileName);
 
                         $file = new File();
-                        $file->nomFichier = $uniqueFileName;
+                        $file->nomFichier = $image->getClientOriginalName();;
                         $file->lienFichier = '/images/fournisseurs/' . $uniqueFileName;
                         $file->tailleFichier_KO = $fileSize;
                         $file->fournisseur_id = $fournisseur->id;

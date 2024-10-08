@@ -144,5 +144,8 @@ Route::GET('/administration/demandeFournisseur/{neq}',
 Route::POST('/administration/demandeFournisseur/{neq}/accepeter',
 [AdminController::class, 'accepterFournisseur'])->name('responsable.accepterFournisseur');
 
+Route::POST('/administration/demandeFournisseur/{neq}/refuser',
+[AdminController::class, 'refuserFournisseur'])->name('responsable.refuserFournisseur');
+
 Route::GET('/administration/demandeFournisseur/{neq}/fichier/{idFichier}',
 [AdminController::class, 'telechargerFichier'])->name('responsable.telechargerFichier');

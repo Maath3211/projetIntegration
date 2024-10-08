@@ -15,11 +15,15 @@
                 En attente
             @elseif($fn->statut == 'confirme')
                 Acceptée le {{ $fn->dateStatut }}
-            @elseif($fn->statut == 'confirme')
+            @elseif($fn->statut == 'refusé')
                 Refusé le {{ $fn->dateStatut }}
+                @if ($fn->raisonRefus)
+                    <p>Raison de refus: {{ $fn->raisonRefus }}</p>
+                @endif
             @endif
             <p>Création le {{ $fn->created_at }}</p>
             <p>Dernière modification le {{ $fn->updated_at }}</p>
+
         </div>
 
         <div>
@@ -62,7 +66,7 @@
                     <img src="{{ asset('images/icons/xls.png') }}" class="imgFormat">
                 @endif
                 <a href="{{ route('responsable.telechargerFichier', [$fn->neq, $file->id]) }}"> {{ $file->nomFichier }},
-                    {{ number_format($file->tailleFichier_KO / 1024, 2) }} mo</a>
+                    {{ number_format($file->tailleFichier_KO / 1024000, 2) }} mo</a>
                 <br>
             @endforeach
         </div>
@@ -91,15 +95,15 @@
             </tr>
         </table>
 
-        <form action="{{ route('responsable.accepterFournisseur', $fn->neq) }}" method="post" id="form1">
+        <form action="{{ route('responsable.accepterFournisseur', $fn->neq) }}" method="post">
             @csrf
             <button type="submit" class="btn btn-success" id="btAccepter">Accepter</button>
         </form>
-        <form action="{{ route('fournisseur.storeContact') }}" method="post" id="form1">
+        <form action="{{ route('responsable.refuserFournisseur', $fn->neq) }}" method="post" id="form1">
             @csrf
-            <a class="btn btn-danger" id="btRefuser" >Refuser</a>
+            <a class="btn btn-danger" id="btRefuser">Refuser</a>
         </form>
-        
+
 
 
     </div>
@@ -107,4 +111,3 @@
 
     <script src="{{ asset('js/zoomDemandeFournisseur.js') }}"></script>
 @endsection
-

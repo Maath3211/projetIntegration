@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\demandeFournisseur;
+use Crypt;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -140,11 +141,21 @@ class AdminController extends Controller
         $contacts = DB::table('contact')->where('fournisseur_id', $fn->id)->get();
         $coord = DB::table('coordonnees')->where('fournisseur_id', $fn->id)->get()->firstOrFail();
         $files = DB::table('file')->where('fournisseur_id', $fn->id)->get();
+        $rbq = DB::table('rbqlicences')->where('fournisseur_id', $fn->id)->get()->firstOrFail();
+        $categories = DB::table('categories')->where('id', $rbq->idCategorie)->get()->firstOrFail();
+        $unspscFournisseur = DB::table('unspsccodes')->where('fournisseur_id', $fn->id)->get();
+        $unspscCollection = collect();
+        foreach ($unspscFournisseur as $uf) {
+            $unspsc = DB::table('unspsc')->where('id', $uf->idUnspsc)->first();
+            $unspscCollection->push($unspsc);
+        }
         $fn->dateStatut = Carbon::parse($fn->dateStatut)->toDateString();
         $fn->created_at = Carbon::parse($fn->created_at)->toDateString();
         $fn->updated_at = Carbon::parse($fn->updated_at)->toDateString();
+        if ($fn->raisonRefus)
+            $fn->raisonRefus = Crypt::decryptString($fn->raisonRefus);
 
-        return view('admin.zoomDemandeFournisseur', compact('fn', 'contacts', 'coord', 'files'));
+        return view('admin.zoomDemandeFournisseur', compact('fn', 'contacts', 'coord', 'files', 'rbq', 'categories', 'unspscFournisseur', 'unspsc'));
     }
 
     public function accepterFournisseur($neq)
@@ -164,20 +175,29 @@ class AdminController extends Controller
 
     }
 
-    public function refuserFournisseur()
+    public function refuserFournisseur($neq, Request $request)
     {
-
+        $request->validate([
+            "raisonRefus" => 'required',
+        ], [
+            "raisonRefus.required" => 'La raison de refus est requise',
+        ]);
+        $fn = Fournisseur::where('neq', $neq)->firstOrFail();
+        $fn->dateStatut = Carbon::now();
+        $fn->raisonRefus = Crypt::encryptString($request->raisonRefus);
+        $fn->statut = 'refusé';
+        $fn->save();
+        return redirect()->route('responsable.demandeFournisseur')->with('message', 'Le fournisseur a été refusé.');
     }
 
     // neq necessaire meme si pas utilisé, sinon l'id du fichier devient le neq
     public function telechargerFichier($neq, $idFichier)
     {
-        // TODO: renommer avant de télécharger
         $file = DB::table('file')->where('id', $idFichier)->get()->firstOrFail();
 
         $fichier = public_path($file->lienFichier);
         if (file_exists($fichier)) {
-            return response()->download($fichier);
+            return response()->download($fichier, $file->nomFichier);
         } else {
             return back()->withErrors('Fichier introuvable');
         }
