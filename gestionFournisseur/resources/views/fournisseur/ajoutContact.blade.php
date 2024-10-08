@@ -153,7 +153,7 @@
 
             <div class="d-flex row justify-content-center">
                 <div class="form-group">
-                    <button onclick="submitForms()" class="btn btn-secondary">Sauvegarder</button>
+                    <button onclick="submitForms()" class="btn btn-secondary">Suivant</button>
                 </div>
             </div>
 

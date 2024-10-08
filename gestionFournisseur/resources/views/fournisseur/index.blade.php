@@ -39,7 +39,7 @@
               @enderror
             </div>
             <div class="form-group">
-              <button type="submit" class="btn btn-secondary">Suivant</button>
+              <button type="submit" class="btn btn-secondary">Connexion</button>
             </div>
           </div>
         </fieldset>
@@ -76,7 +76,7 @@
               @enderror
             </div>
             <div class="form-group">
-              <button type="submit" class="btn btn-secondary">Suivant</button>
+              <button type="submit" class="btn btn-secondary">Connexion</button>
             </div>
           </div>
         </fieldset>

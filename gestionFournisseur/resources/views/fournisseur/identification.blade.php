@@ -88,9 +88,9 @@
   </div> 
     <div class="d-flex row justify-content-center">
       <div class="form-group">
-        <button type="submit" class="btn btn-secondary">Inscription</button>
+        <button type="submit" class="btn btn-secondary">Suivant</button>
       </div> 
-    </div> 
+    </div>
 </form>
 @endsection
 <script src="{{ asset('js/neq.js') }}"></script>
