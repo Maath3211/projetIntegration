@@ -14,9 +14,9 @@
     <div class="d-flex row justify-content-center">
       <div class="form-group">
         <label for="neq" class="titreForm">Numéro d'entreprise (NEQ)
-          <small class="text-danger">*</small>
+          <small class="text-muted">(Optionel)</small>
         </label>
-        <input type="text" class="form-control" maxlength="10" pattern="\d*" inputmode="numeric" id="neq" placeholder="Numéro d'entreprise (NEQ)" name="neq" value="{{old('neq')}}">
+        <input type="text" class="form-control" maxlength="10" pattern="\d*" inputmode="numeric" id="neq" placeholder="Numéro d'entreprise (NEQ)" name="neq" value="{{old('neq', $neq)}}">
         @error('neq')
         <span class="text-danger">{{ $message }}</span>
         @enderror
@@ -27,7 +27,7 @@
         <label for="prenom" class="titreForm">Nom d'entreprise
           <small class="text-danger">*</small>
         </label>
-        <input type="text" class="form-control" id="entreprise" placeholder="Nom d'entreprise" name="entreprise" value="{{old('entreprise')}}">
+        <input type="text" class="form-control" id="entreprise" placeholder="Nom d'entreprise" name="entreprise" value="{{old('entreprise', $entrepriseNeq)}}">
         @error('entreprise')
         <span class="text-danger">{{ $message }}</span>
         @enderror
@@ -38,7 +38,7 @@
         <label for="email" class="titreForm">Email
           <small class="text-danger">*</small>
         </label>
-        <input type="email" class="form-control" id="email" placeholder="Adresse courriel" name="email" value="{{old('email')}}">
+        <input type="email" class="form-control" id="email" placeholder="Adresse courriel" name="email" value="{{old('email', $emailNeq)}}">
         @error('email')
         <span class="text-danger">{{ $message }}</span>
         @enderror

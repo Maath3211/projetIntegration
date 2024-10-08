@@ -5,9 +5,7 @@
     <a href="/"><h5 class="compagny">logo</h5></a>
 </div>
 <nav class="main-nav d-flex">                 
-    <a href="{{route('fournisseur.identification')}}">Indentification</a>
-    <br>
-    <a href="{{route('fournisseur.coordonnees')}}">Coordonnees</a>  
+    <a href="{{route('fournisseur.inscription')}}">Inscription</a>
 </nav>
   </nav>   
 </header>
@@ -27,7 +25,7 @@
             <div class="form-group">
               <label for="neq" class="titreForm">Numéro d'entreprise (NEQ)</label>
               <input type="text" class="form-control" maxlength="10" pattern="\d*" inputmode="numeric" id="neq" placeholder="Numéro d'entreprise (NEQ)" name="neq">
-              <a href="#" class="link-right">Pas de NEQ?</a>
+              <a href="{{route('fournisseur.identification')}}" class="link-right">Pas de NEQ?</a>
               @error('neq')
               <span class="text-danger">{{ $message }}</span>
               @enderror
@@ -56,7 +54,7 @@
             <div class="form-group">
               <label for="email" class="titreForm">Email</label>
               <input type="email" class="form-control" id="email" placeholder="Adresse courriel" name="email">
-              <a href="#" class="link-right">NEQ?</a>
+              <a href="{{route('fournisseur.inscription')}}" class="link-right">NEQ?</a>
               @error('email')
               <span class="text-danger">{{ $message }}</span>
               @enderror

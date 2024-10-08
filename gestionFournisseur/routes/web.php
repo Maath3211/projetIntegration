@@ -38,6 +38,13 @@ Route::POST('/logout',
 [PortailFournisseurController::class,'logout'])->name('fournisseur.logout');
 
 # InscriptionIdentification
+
+Route::GET('/inscription',
+[PortailFournisseurController::class,'inscription'])->name('fournisseur.inscription');
+
+Route::POST('/inscription/store',
+[PortailFournisseurController::class,'storeInscription'])->name('fournisseur.storeInscription');
+
 Route::GET('/identification',
 [PortailFournisseurController::class,'createIdentification'])->name('fournisseur.identification');
 

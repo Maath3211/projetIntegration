@@ -23,7 +23,6 @@ class FournisseurRequest extends FormRequest
     {
         return [
             'neq' => [
-                'required', // ou nullable si possède pas de NEQ
                 'string',
                 'size:10',
                 'regex:/^(11|22|33|88)[3-9]\d{7}$/', 
