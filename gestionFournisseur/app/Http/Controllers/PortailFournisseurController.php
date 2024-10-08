@@ -330,8 +330,14 @@ class PortailFournisseurController extends Controller
              return redirect()->route('fournisseur.contact')->withErrors(['Les informations du fournisseur, des coordonnées ou du contact sont manquantes.']);
          }
 
-        $codes = Unspsc::limit(500)->get();
+        $codes = Unspsc::limit(20905)->get();
+
+        //$codes = Unspsc::paginate(1000);
+
+
+
         return view('fournisseur.UNSPSC', compact('codes'));
+
     }
 
 
@@ -445,7 +451,7 @@ class PortailFournisseurController extends Controller
         $fournisseurData = session('fournisseur');
         $coordonneesData = session('coordonnees');
         $contactData = session('contact');
-         $unspscData = session('UNSPSC');
+        $unspscData = session('UNSPSC');
         $rbqData = session('RBQ');
         $unspscData = session('UNSPSC');
     
@@ -542,8 +548,8 @@ class PortailFournisseurController extends Controller
                 }
             }
 
-
-            session()->forget(['fournisseur', 'coordonnees', 'contact', 'RBQ','UNSPSC','file']);
+            //Mail::to($fournisseur->email)->send(new recevoirConfirmation($fournisseur));
+            session()->forget(['fournisseur', 'coordonnees', 'contact', 'RBQ','UNSPSC']);
 
             return redirect()->route('fournisseur.index')->with('message', 'Toutes les informations ont été enregistrées avec succès.');
         } catch (\Throwable $e) {
