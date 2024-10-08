@@ -42,7 +42,23 @@ class PortailFournisseurController extends Controller
     public function infoLogin()
     {
         $fournisseur = Auth::user();
-        return View('fournisseur.information', compact('fournisseur'));
+        $rbq = RBQLicence::where('fournisseur_id',$fournisseur->id)->first();
+        $unspsc = Unspsccode::where('fournisseur_id',$fournisseur->id)->first();
+        $contact = Contact::where('fournisseur_id',$fournisseur->id)->first();
+        $coordonee = FournisseurCoord::where('fournisseur_id', $fournisseur->id)->first();
+        $file = File::where('fournisseur_id', $fournisseur->id)->first();
+        
+        
+        $categorie = Categorie::where('id', $rbq->idCategorie)->first();
+        $unspscCode = UNSPSC::where('id', $unspsc->idUnspsc)->first();
+
+
+        //dd($file);
+
+
+
+
+        return View('fournisseur.information', compact('fournisseur','rbq','categorie','unspsc','unspscCode', 'contact', 'coordonee', 'file'));
     }
 
 
