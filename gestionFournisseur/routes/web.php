@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\PortailFournisseurController;
 use App\Http\Controllers\AdminController;
-// use App\Http\Controllers\ResponsablesController;
 
 #FOURNISSEUR
 
@@ -30,7 +29,6 @@ Route::GET('/reinitialisation/{code}',
 
 Route::POST('/reinitialisation/{code}',
 [AdminController::class, 'resetPassword']) -> name('login.modifier');
-
 
 
 #Déconnexion
