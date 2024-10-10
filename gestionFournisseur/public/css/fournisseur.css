@@ -12,33 +12,36 @@
     src: url("../fonts/TT-Hoves-Pro-Trial-Medium.ttf");
 }
 
+html, body {
+  background-color: whitesmoke;
+}
+
+/* TEXTE DANS LES VIEW */
+
 .text-muted {
-size:10px;
+font-size:12px;
 }
 
 .py-5 {
   margin-bottom: 100px;
 }
+
 h1 {
   font-family: alumni;
   color: #0b2341;
 }
 
-p{
+p {
   font-family: ttHoves;
   color: black;
 }
-  
-html, body {
-  background-color: whitesmoke;
-}
 
-/* ACCEUIL FOURNISSEUR */
 
 fieldset {
   border: 2px solid #ccc;
   padding: 0 10px 20px 10px;
 }
+
 legend {
   font-family: ttHoves;
   color: #0076d5;
@@ -48,19 +51,12 @@ legend {
   white-space: nowrap;
 }
 
-.test {
-  width: 20px;
-}
-
-
 label {
     font-family: ttHoves;
-    color: #78c6e0;
+    color: #0076d5;
     display:inline-block;
     width: 80px;
 }
-
-
 
 .form-group {
   font-family: alumni;
@@ -68,9 +64,12 @@ label {
   position: relative; /* Pour le lien */
   margin-bottom: 20px;
   width: 500px;
-
 }
 
+.btn-secondary {
+  color: white;
+  background-color: #0076d5;
+}
 
 /* LINK */
 

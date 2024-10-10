@@ -29,6 +29,7 @@ class Fournisseur extends Authenticatable
         'codeReset',
         'demandeReset',
         'raisonRefus',
+        'id',
     ];
 
     public function coordonnees()
