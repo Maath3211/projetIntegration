@@ -15,6 +15,7 @@ btRefuser.addEventListener("click", function () {
         raisonRefus.cols = 30;
         raisonRefus.rows = 5;
         raisonRefus.name = "raisonRefus";
+        form1.append(raisonRefus);
 
         const btConfirmer = document.createElement("button");
         btConfirmer.textContent = "Confirmer";
