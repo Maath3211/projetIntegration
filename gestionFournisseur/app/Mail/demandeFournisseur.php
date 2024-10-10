@@ -37,7 +37,7 @@ class demandeFournisseur extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.adminDemandeFournisseur',
+            view: 'emails.adminNouveauFournisseur',
         );
     }
 

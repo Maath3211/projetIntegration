@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="{{ asset('css/emailFournisseur.css') }}">
 </head>
 <body>
+    
     <h1>Confirmation de votre inscription</h1>
     <p>Bonjour {{ $fournisseur->entreprise }},</p>
     <p>
