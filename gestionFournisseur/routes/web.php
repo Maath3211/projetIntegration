@@ -100,6 +100,8 @@ Route::GET('/information',
 
 
 
+
+
 # ADMINISTRATION
 
 # Settings
@@ -145,3 +147,4 @@ Route::POST('/responsable/demandeFournisseur/{neq}/refuser',
 
 Route::GET('/responsable/demandeFournisseur/{neq}/fichier/{idFichier}',
 [AdminController::class, 'telechargerFichier'])->name('responsable.telechargerFichier');
+
