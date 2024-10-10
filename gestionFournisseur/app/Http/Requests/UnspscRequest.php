@@ -23,7 +23,8 @@ class UnspscRequest extends FormRequest
     {
         return [
             'details' => 'required|max:500|min:5',
-            'idUnspsc' => 'required',
+            'idUnspsc' => 'required|array|min:1',  
+            /*'idUnspsc.*' => 'integer|exists:unspsccodes,id',*/
         ];
     }
 
@@ -33,6 +34,8 @@ class UnspscRequest extends FormRequest
             'details.max' => 'Détails trop grands',
             'details.min' => 'Détails trop petits',
             'idUnspsc.required' => 'Aucun code Unspsc sélectionné',
+            'idUnspsc.array' => 'Sélection invalide',
+            'idUnspsc.min' => 'Sélectionnez au moins un code',
         ];
     }
 }

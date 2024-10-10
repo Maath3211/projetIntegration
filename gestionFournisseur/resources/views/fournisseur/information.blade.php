@@ -15,7 +15,7 @@
 
 </header>
 @section('contenu')
-@section('contenu')
+
 
 
   <div class="container">
@@ -75,12 +75,11 @@
         </div>
 
         <div class="custom-box">
-          <h5>Finances /* Pas encore fini */</h5>
-          <p>TPS: 875567987<br>TVC: 764987364816576</p>
-          <p><strong>Conditions de paiement</strong><br>Dans les 30 jours suivant la réception</p>
-          <p><strong>Conditions de paiement</strong><br>Dans les 30 jours sans déduction</p>
-          <p><strong>USD</strong> – Dollars des États-Unis</p>
-          <p><strong>Mode de communication</strong><br>Par courriel</p>
+          <h5>Finances</h5>
+          <p>TPS: {{$finance->tps}}<br>TVC: {{$finance->tvq}}</p>
+          <p><strong>Conditions de paiement</strong><br>{{$finance->paiement}}</p>
+          <p><strong>Devise</strong> – {{$finance->devise}}</p>
+          <p><strong>Mode de communication</strong><br>{{$finance->communication}}</p>
         </div>
 
         <div class="custom-box">

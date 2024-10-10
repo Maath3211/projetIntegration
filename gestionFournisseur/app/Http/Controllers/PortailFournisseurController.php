@@ -48,18 +48,21 @@ class PortailFournisseurController extends Controller
         $contact = Contact::where('fournisseur_id',$fournisseur->id)->first();
         $coordonee = FournisseurCoord::where('fournisseur_id', $fournisseur->id)->first();
         $file = File::where('fournisseur_id', $fournisseur->id)->first();
+        $finance = Finance::where('fournisseur_id', $fournisseur->id)->first();
         
         
         $categorie = Categorie::where('id', $rbq->idCategorie)->first();
         $unspscCode = UNSPSC::where('id', $unspsc->idUnspsc)->first();
 
+        if($fournisseur->statut === "attente"){
+            return redirect()->route('fournisseur.finances');
+        }
+        
 
-        //dd($file);
 
 
 
-
-        return View('fournisseur.information', compact('fournisseur','rbq','categorie','unspsc','unspscCode', 'contact', 'coordonee', 'file'));
+        return View('fournisseur.information', compact('fournisseur','rbq','categorie','unspsc','unspscCode', 'contact', 'coordonee', 'file','finance'));
     }
 
 
@@ -362,7 +365,7 @@ class PortailFournisseurController extends Controller
              return redirect()->route('fournisseur.contact')->withErrors(['Les informations du fournisseur, des coordonnées ou du contact sont manquantes.']);
          }
 
-        $codes = Unspsc::limit(20905)->get();
+        $codes = Unspsc::limit(50/*20905*/)->get();
 
         //$codes = Unspsc::paginate(1000);
 
@@ -375,6 +378,8 @@ class PortailFournisseurController extends Controller
 
     public function storeUnspsc(UnspscRequest $request)
     {
+        
+
         try {
             session([
                 'UNSPSC' => [
@@ -382,6 +387,7 @@ class PortailFournisseurController extends Controller
                 'idUnspsc' => $request->idUnspsc
                 ]
             ]); 
+            
 
             return redirect()->route('fournisseur.RBQ')->with('message', "Enregistré!");
         } catch (\Throwable $e) {
@@ -541,10 +547,21 @@ class PortailFournisseurController extends Controller
             $contact->fournisseur_id = $fournisseur->id;
             $contact->save();
             
+            if (isset($unspscData['idUnspsc']) && is_array($unspscData['idUnspsc'])) {
+                foreach ($unspscData['idUnspsc'] as $index => $unspscId) {
+                    // Créez une nouvelle instance de Unspsccode pour chaque idUnspsc
+                    $unspsc = new Unspsccode();
+                    $unspsc->fournisseur_id = $fournisseur->id;
+                    $unspsc->idUnspsc = $unspscId; // Assurez-vous que cette colonne correspond à l'ID
+                    $unspsc->details = $unspscData['details'] ?? ''; // Vérifiez si les détails sont fournis
+                    $unspsc->save();
+                }
+            }
+            /*
             $unspsc = new Unspsccode($unspscData);
             $unspsc->fournisseur_id = $fournisseur->id;
             $unspsc->save();
-            
+            */
             
             $rbqLicence = new RBQLicence($rbqData);
             $rbqLicence->fournisseur_id = $fournisseur->id;
@@ -610,9 +627,17 @@ class PortailFournisseurController extends Controller
     public function storeFinances(FinanceRequest $request)
     {
         try {
+
+            $fournisseur = Auth::user();
+            $leFournisseur = Fournisseur::where('id',$fournisseur->id)->first();
             $code = new Finance($request->all());
+            $code->fournisseur_id = $fournisseur->id;
+            $leFournisseur->statut = "confirme";
             $code->save();
-            return redirect()->route('fournisseur.finances')->with('message', "Enregistré!");
+            $leFournisseur->save();
+            
+
+            return redirect()->route('fournisseur.index')->with('message', "Enregistré!");
         } catch (\Throwable $e) {
             Log::debug($e);
             return redirect()->route('fournisseur.finances')->withErrors(['Informations invalides']);

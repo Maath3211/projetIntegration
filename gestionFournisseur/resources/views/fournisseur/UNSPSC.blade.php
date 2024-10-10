@@ -25,9 +25,6 @@
                     <h5 class="pl-5">S14 - Services Publics</h5>
                     <form method="POST" action="{{ route('fournisseur.storeUnspsc') }}">
                         <div class="col-md-1">
-                            <label for="id" class="titreForm">idUser
-                                <small class="text-danger">*</small>
-                            </label>
                         </div>
                         @csrf
                         @if (count($codes))
@@ -38,7 +35,7 @@
                                             <label for="code" class="titreForm">Code
                                                 <small class="text-danger">*</small>
                                             </label>
-                                            <input type="radio" class="mt-2" id="idUnspsc" name="idUnspsc" value="{{ $code->id }}" {{ old('idUnspsc') == $code->id ? 'checked' : '' }}>
+                                            <input type="checkbox" class="mt-2" id="idUnspsc{{ $code->id }}" name="idUnspsc[]" value="{{ $code->id }}" {{ in_array($code->id, old('idUnspsc', [])) ? 'checked' : '' }}>
                                         </div>
                                         <div class="col-md-4">
                                             <p>{{ $code->code }}</p>

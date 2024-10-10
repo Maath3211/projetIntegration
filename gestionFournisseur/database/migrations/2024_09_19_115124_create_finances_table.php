@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('paiement',500);
             $table->string('devise',500);
             $table->string('communication',500);
+            $table->unsignedBigInteger('fournisseur_id');
+            $table->foreign('fournisseur_id')->references('id')->on('fournisseurs');
             $table->timestamps();
         });
     }
