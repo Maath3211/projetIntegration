@@ -1,0 +1,23 @@
+/* Email au fournisseur 3R */
+
+/*  Couleur premiere triade: 1: #78c6e0, 2: #0076d5, 3: #0b2341 */
+
+@font-face {
+    font-family: alumni;
+    src: url("../fonts/AlumniSans-ExtraBold.ttf");
+}
+
+  @font-face {
+    font-family: ttHoves;
+    src: url("../fonts/TT-Hoves-Pro-Trial-Medium.ttf");
+}
+
+h1 {
+  font-family: alumni;
+  color: #0b2341;
+}
+
+p {
+    font-family: alumni;
+    color: #0076d5;
+  }

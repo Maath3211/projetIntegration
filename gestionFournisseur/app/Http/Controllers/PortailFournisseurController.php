@@ -25,6 +25,7 @@ use App\Http\Requests\FournisseurCoordRequest;
 use App\Http\Requests\ContactRequest;
 use App\Http\Requests\FinanceRequest;
 use App\Mail\recevoirConfirmation;
+use Carbon\Carbon;
 use Mail;
 use DB;
 
@@ -63,6 +64,44 @@ class PortailFournisseurController extends Controller
 
 
         return View('fournisseur.information', compact('fournisseur','rbq','categorie','unspsc','unspscCode', 'contact', 'coordonee', 'file','finance'));
+    }
+
+    public function storeDesactive()
+    {
+        try 
+        {
+            $neq = Auth::user()->neq;
+            $fn = Fournisseur::where('neq', $neq)->firstOrFail();
+            $fn->statut = 'desactivate';
+            $fn->dateStatut = Carbon::now();
+            $fn->save();
+
+            return redirect()->route('fournisseur.information')->with('message', "Enregistré!");
+        } 
+        catch (\Throwable $e) 
+        {
+            Log::debug($e);
+            return redirect()->route('fournisseur.information')->withErrors(['Informations invalides']);
+        }
+    }
+
+    public function storeActive()
+    {
+        try 
+        {
+            
+            $neq = Auth::user()->neq;
+            $fn = Fournisseur::where('neq', $neq)->firstOrFail();
+            $fn->statut = 'activate';
+            $fn->dateStatut = Carbon::now();
+            $fn->save();
+            return redirect()->route('fournisseur.information')->with('message', "Enregistré!");
+        } 
+        catch (\Throwable $e) 
+        {
+            Log::debug($e);
+            return redirect()->route('fournisseur.information')->withErrors(['Informations invalides']);
+        }
     }
 
 
@@ -211,7 +250,6 @@ class PortailFournisseurController extends Controller
         $codePostalNeq = null;
         $telNeq = null;
         $telNeqAff = null;
-
 
         if ($neq) 
         {
@@ -585,7 +623,7 @@ class PortailFournisseurController extends Controller
                         $image->move(public_path('images/fournisseurs'), $uniqueFileName);
 
                         $file = new File();
-                        $file->nomFichier = $uniqueFileName;
+                        $file->nomFichier = $image->getClientOriginalName();;
                         $file->lienFichier = '/images/fournisseurs/' . $uniqueFileName;
                         $file->tailleFichier_KO = $fileSize;
                         $file->fournisseur_id = $fournisseur->id;
@@ -604,7 +642,7 @@ class PortailFournisseurController extends Controller
                 }
             }
 
-            //Mail::to($fournisseur->email)->send(new recevoirConfirmation($fournisseur));
+            // !!!! Laisser en commentaire !!!  Mail::to($fournisseur->email)->send(new recevoirConfirmation($fournisseur));
             session()->forget(['fournisseurNeq','fournisseur', 'coordonnees', 'contact', 'RBQ', 'UNSPSC']);
 
             return redirect()->route('fournisseur.index')->with('message', 'Toutes les informations ont été enregistrées avec succès.');
