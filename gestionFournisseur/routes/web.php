@@ -135,17 +135,17 @@ Route::GET('/responsable/listeFournisseur',
 Route::GET('/test',
 [AdminController::class,'demandeFourn']);
 
-Route::GET('/administration/demandeFournisseur',
+Route::GET('/responsable/demandeFournisseur',
 [AdminController::class,'demandeFournisseurView'])->name('responsable.demandeFournisseur');
 
-Route::GET('/administration/demandeFournisseur/{neq}',
+Route::GET('/responsable/demandeFournisseur/{neq}',
 [AdminController::class,'demandeFournisseurZoom'])->name('responsable.demandeFournisseurZoom');
 
-Route::POST('/administration/demandeFournisseur/{neq}/accepeter',
+Route::POST('/responsable/demandeFournisseur/{neq}/accepter',
 [AdminController::class, 'accepterFournisseur'])->name('responsable.accepterFournisseur');
 
-Route::POST('/administration/demandeFournisseur/{neq}/refuser',
+Route::POST('/responsable/demandeFournisseur/{neq}/refuser',
 [AdminController::class, 'refuserFournisseur'])->name('responsable.refuserFournisseur');
 
-Route::GET('/administration/demandeFournisseur/{neq}/fichier/{idFichier}',
+Route::GET('/responsable/demandeFournisseur/{neq}/fichier/{idFichier}',
 [AdminController::class, 'telechargerFichier'])->name('responsable.telechargerFichier');

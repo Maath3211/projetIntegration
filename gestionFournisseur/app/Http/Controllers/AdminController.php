@@ -145,8 +145,8 @@ class AdminController extends Controller
         $categories = DB::table('categories')->where('id', $rbq->idCategorie)->get()->firstOrFail();
         $unspscFournisseur = DB::table('unspsccodes')->where('fournisseur_id', $fn->id)->get();
         $unspscCollection = collect();
-        foreach ($unspscFournisseur as $uf) {
-            $unspsc = DB::table('unspsc')->where('id', $uf->idUnspsc)->first();
+        foreach ($unspscFournisseur as $uc) {
+            $unspsc = DB::table('unspsc')->where('id', $uc->idUnspsc)->first();
             $unspscCollection->push($unspsc);
         }
         $fn->dateStatut = Carbon::parse($fn->dateStatut)->toDateString();
@@ -155,7 +155,7 @@ class AdminController extends Controller
         if ($fn->raisonRefus)
             $fn->raisonRefus = Crypt::decryptString($fn->raisonRefus);
 
-        return view('admin.zoomDemandeFournisseur', compact('fn', 'contacts', 'coord', 'files', 'rbq', 'categories', 'unspscFournisseur', 'unspsc'));
+        return view('admin.zoomDemandeFournisseur', compact('fn', 'contacts', 'coord', 'files', 'rbq', 'categories', 'unspscFournisseur', 'unspscCollection'));
     }
 
     public function accepterFournisseur($neq)
