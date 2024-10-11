@@ -23,7 +23,7 @@ class UnspscRequest extends FormRequest
     {
         return [
             'details' => 'required|max:500|min:5',
-            'idUnspsc' => 'required|array|min:1',  
+            'idUnspsc' => 'required|array|min:1', 
             /*'idUnspsc.*' => 'integer|exists:unspsccodes,id',*/
         ];
     }

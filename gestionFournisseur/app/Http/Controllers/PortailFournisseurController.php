@@ -47,11 +47,16 @@ class PortailFournisseurController extends Controller
         $contact = Contact::where('fournisseur_id',$fournisseur->id)->first();
         $coordonee = FournisseurCoord::where('fournisseur_id', $fournisseur->id)->first();
         $file = File::where('fournisseur_id', $fournisseur->id)->first();
-        
+        $finance = Finance::where('fournisseur_id', $fournisseur->id)->first();
+
         $categorie = Categorie::where('id', $rbq->idCategorie)->first();
         $unspscCode = UNSPSC::where('id', $unspsc->idUnspsc)->first();
 
-        return View('fournisseur.information', compact('fournisseur','rbq','categorie','unspsc','unspscCode', 'contact', 'coordonee', 'file'));
+        if($fournisseur->statut === "attente"){
+            return redirect()->route('fournisseur.finances');
+        }
+
+        return View('fournisseur.information', compact('fournisseur','rbq','categorie','unspsc','unspscCode', 'contact', 'coordonee', 'file','finance'));
     }
 
     /**
@@ -529,10 +534,21 @@ class PortailFournisseurController extends Controller
             $contact->fournisseur_id = $fournisseur->id;
             $contact->save();
             
+
+            if (isset($unspscData['idUnspsc']) && is_array($unspscData['idUnspsc'])) {
+                foreach ($unspscData['idUnspsc'] as $index => $unspscId) {
+                    $unspsc = new Unspsccode();
+                    $unspsc->fournisseur_id = $fournisseur->id;
+                    $unspsc->idUnspsc = $unspscId; 
+                    $unspsc->details = $unspscData['details'] ?? ''; 
+                    $unspsc->save();
+                }
+            }
+            /*
             $unspsc = new Unspsccode($unspscData);
             $unspsc->fournisseur_id = $fournisseur->id;
             $unspsc->save();
-            
+            */
             
             $rbqLicence = new RBQLicence($rbqData);
             $rbqLicence->fournisseur_id = $fournisseur->id;
@@ -598,9 +614,16 @@ class PortailFournisseurController extends Controller
     public function storeFinances(FinanceRequest $request)
     {
         try {
+            $fournisseur = Auth::user();
+            $leFournisseur = Fournisseur::where('id',$fournisseur->id)->first();
             $code = new Finance($request->all());
+            $code->fournisseur_id = $fournisseur->id;
+            $leFournisseur->statut = "confirme";
             $code->save();
-            return redirect()->route('fournisseur.finances')->with('message', "Enregistré!");
+            $leFournisseur->save();
+            
+
+            return redirect()->route('fournisseur.index')->with('message', "Enregistré!");
         } catch (\Throwable $e) {
             Log::debug($e);
             return redirect()->route('fournisseur.finances')->withErrors(['Informations invalides']);
