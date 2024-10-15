@@ -86,6 +86,10 @@ Route::GET('/importation',
 Route::PATCH('/importation/store',
 [PortailFournisseurController::class,'storeImportation'])->name('fournisseur.storeImportation');
 
+Route::delete('/file/{id}',
+[PortailFournisseurController::class,'deleteFile'])->name('fournisseur.deleteFile');
+
+
 # InscriptionFinance
 Route::GET('/finances',
 [PortailFournisseurController::class,'finances'])->name('fournisseur.finances');
@@ -96,6 +100,15 @@ Route::POST('/finances/store',
 # Information du fournisseur TODO: quand fournisseur sera completé
 Route::GET('/information',
 [PortailFournisseurController::class,'infoLogin'])->name('fournisseur.information');
+
+# Retirer la fiche fournisseur
+Route::POST('/information/desactive',
+[PortailFournisseurController::class,'storeDesactive'])->name('fournisseur.storeDesactive');
+
+# Activer la fiche fournisseur
+Route::POST('/information/active',
+[PortailFournisseurController::class,'storeActive'])->name('fournisseur.storeActive');
+
 
 
 

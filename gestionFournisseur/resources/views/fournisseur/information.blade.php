@@ -8,7 +8,8 @@
     <nav class="sub-nav">
         <form action="{{ route('fournisseur.logout') }}" method="post">
         @csrf
-        <button id="bouton1" type="submit">Déconnecter</button>
+        <div class="form-group">
+          <button type="submit" class="btn btn-secondary">Déconnexion</button>
         </form>
     </nav> 
     
@@ -20,11 +21,25 @@
 
   <div class="container">
     <div class="row">
-      <!-- Left side sections -->
       <div class="col-md-6">
         <div class="custom-box">
           <h5>État de la demande</h5>
           <p><span class="icon">✔️</span> {{$fournisseur->statut}}</p>
+          @if ($fournisseur->statut == 'Inactif')
+          <form action="{{ route('fournisseur.storeActive') }}" method="post">
+              @csrf
+              <div class="form-group">
+                  <button type="submit" class="btn btn-secondary">Réactiver mon compte</button>
+              </div>
+          </form>
+          @else
+          <form action="{{ route('fournisseur.storeDesactive') }}" method="post">
+              @csrf
+              <div class="form-group">
+                  <button type="submit" class="btn btn-secondary">Retirer mon compte</button>
+              </div>
+          </form>
+          @endif
         </div>
 
         <div class="custom-box">
@@ -74,18 +89,38 @@
           </ul>
         </div>
 
-        <div class="custom-box">
-          <h5>Finances</h5>
-          <p>TPS: {{$finance->tps}}<br>TVC: {{$finance->tvq}}</p>
-          <p><strong>Conditions de paiement</strong><br>{{$finance->paiement}}</p>
-          <p><strong>Devise</strong> – {{$finance->devise}}</p>
-          <p><strong>Mode de communication</strong><br>{{$finance->communication}}</p>
-        </div>
-
-        <div class="custom-box">
-          <h5>Document</h5>
-          <p><span class="icon-pdf">📄</span> {{$file->nomFichier}} – {{$file->tailleFichier_KO}} – {{$file->created_at}}</p>
-        </div>
+        @if($files && count($files) > 0)
+            <div class="custom-box">
+                <h5>Documents</h5>
+                @foreach($files as $file)
+                    <p>
+                        <form action="{{ route('fournisseur.deleteFile', $file->id) }}" method="POST" style="display: inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-link">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                              </svg>
+                            </button>
+                        </form>
+                        <span class="icon-pdf">📄</span> {{ $file->nomFichier }}  {{ $file->tailleFichier_KO }} Ko  {{ $file->created_at }}
+                    </p>
+                @endforeach
+                <div class="form-group">
+                  <a href="{{ route('fournisseur.importation') }}" class="btn btn-secondary">Ajouter un nouveau fichier</a>
+                </div>
+            </div>
+        @else
+            <div class="custom-box">
+                <h5>Document</h5>
+                <p>Aucun document disponible.</p>
+                @if($fournisseur->statut != 'Inactif')
+                  <div class="form-group">
+                    <a href="{{ route('fournisseur.importation') }}" class="btn btn-secondary">Ajouter un fichier</a>
+                  </div>
+                @endif
+            </div>
+        @endif
       </div>
     </div>
   </div>
