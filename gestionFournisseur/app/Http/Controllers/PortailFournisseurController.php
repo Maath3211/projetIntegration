@@ -25,6 +25,7 @@ use App\Http\Requests\FournisseurCoordRequest;
 use App\Http\Requests\ContactRequest;
 use App\Http\Requests\FinanceRequest;
 use App\Mail\recevoirConfirmation;
+use App\Mail\demandeFournisseur;
 use Carbon\Carbon;
 use Mail;
 use DB;
@@ -42,22 +43,95 @@ class PortailFournisseurController extends Controller
     public function infoLogin()
     {
         $fournisseur = Auth::user();
-        $rbq = RBQLicence::where('fournisseur_id',$fournisseur->id)->first();
-        $unspsc = Unspsccode::where('fournisseur_id',$fournisseur->id)->first();
-        $contact = Contact::where('fournisseur_id',$fournisseur->id)->first();
+        $rbq = RBQLicence::where('fournisseur_id', $fournisseur->id)->first();
+        $unspsc = Unspsccode::where('fournisseur_id', $fournisseur->id)->first();
+        $contact = Contact::where('fournisseur_id', $fournisseur->id)->first();
         $coordonee = FournisseurCoord::where('fournisseur_id', $fournisseur->id)->first();
-        $file = File::where('fournisseur_id', $fournisseur->id)->first();
+        $files = File::where('fournisseur_id', $fournisseur->id)->get();
         $finance = Finance::where('fournisseur_id', $fournisseur->id)->first();
 
         $categorie = Categorie::where('id', $rbq->idCategorie)->first();
         $unspscCode = UNSPSC::where('id', $unspsc->idUnspsc)->first();
 
-        if($fournisseur->statut === "attente"){
+        if($fournisseur->statut === "En attente"){
             return redirect()->route('fournisseur.finances');
         }
 
-        return View('fournisseur.information', compact('fournisseur','rbq','categorie','unspsc','unspscCode', 'contact', 'coordonee', 'file','finance'));
+        return View('fournisseur.information', compact('fournisseur','rbq','categorie','unspsc','unspscCode', 'contact', 'coordonee', 'files','finance'));
     }
+
+    public function storeDesactive()
+    {
+        try 
+        {
+            $neq = Auth::user()->neq;
+            $fournisseurId = Auth::user()->id;
+            $fournisseur = Fournisseur::where('neq', $neq)->firstOrFail();
+            $fournisseur->statut = 'Inactif';
+            $fournisseur->dateStatut = Carbon::now();
+            $files = File::where('fournisseur_id', $fournisseurId)->get();
+            $destination = public_path('images/fournisseurs/');
+
+            foreach ($files as $file) {
+                $filePath = $destination . $file->nomFichier;
+                
+                if (file_exists($filePath)) {
+                    unlink($filePath); 
+                }
+                $file->delete();
+            }
+
+            $fournisseur->save();
+
+            return redirect()->route('fournisseur.information')->with('message', "Fournisseur désactivé et fichiers supprimés !");
+        } 
+        catch (\Throwable $e) 
+        {
+            Log::debug($e);
+            return redirect()->route('fournisseur.information')->withErrors(['Informations invalides']);
+        }
+    }
+
+    public function storeActive()
+    {
+        try 
+        {
+            
+            $neq = Auth::user()->neq;
+            $fournisseur = Fournisseur::where('neq', $neq)->firstOrFail();
+            $fournisseur->statut = 'Acceptée';
+            $fournisseur->dateStatut = Carbon::now();
+            $fournisseur->save();
+            return redirect()->route('fournisseur.information')->with('message', "Enregistré!");
+        } 
+        catch (\Throwable $e) 
+        {
+            Log::debug($e);
+            return redirect()->route('fournisseur.information')->withErrors(['Informations invalides']);
+        }
+    }
+    
+    public function deleteFile($id)
+    {
+        try {
+            $file = File::findOrFail($id);
+            $filePath = public_path($file->lienFichier);
+
+            if (file_exists($filePath)) {
+                unlink($filePath); 
+            }
+
+            $file->delete(); 
+            
+            return redirect()->route('fournisseur.information')->with('message', 'Fichier supprimé avec succès.');
+        } 
+        catch (\Throwable $e) 
+        {
+            Log::debug($e);
+            return redirect()->route('fournisseur.information')->withErrors(['error' => 'Erreur lors de la suppression du fichier.']);
+        }
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -385,7 +459,6 @@ class PortailFournisseurController extends Controller
 
 
     // Licence RBQ
-    // TODO: faire la recherche neq avec la licence RBQ (Attendre les gars de la ville)
 
     public function RBQ()
     {
@@ -467,13 +540,16 @@ class PortailFournisseurController extends Controller
     // Importation
     public function importation()
     {
+        if (Auth::check())
+        {
+            return view('fournisseur.importationImg');
+        }
 
         $fournisseurData = session('fournisseur');
         $coordonneesData = session('coordonnees');
         $contactData = session('contact');
         $unspscData = session('UNSPSC');
         $rbqData = session('RBQ');
-        $unspscData = session('UNSPSC');
     
         if (is_null($fournisseurData) || is_null($coordonneesData) || is_null($contactData) || is_null($rbqData) || is_null($unspscData)) 
         {
@@ -486,6 +562,54 @@ class PortailFournisseurController extends Controller
     public function storeImportation(Request $request)
     {
 
+        if (Auth::check()) {
+            if ($request->hasFile('images')) {
+                $maxSize = Setting::latest()->first()->tailleMax * 1024;
+    
+                foreach ($request->file('images') as $key => $image) {
+                    try {
+                        $request->validate([
+                            "images.{$key}" => 'required|max:' . $maxSize . '|mimes:pdf,doc,docx,jpg,jpeg,png,xlsx,xls,csv,svg',
+                        ], [
+                            "images.{$key}.max" => 'Le fichier est au-dessus de la limite définie',
+                            "images.{$key}.required" => 'L\'image est requise',
+                            "images.{$key}.mimes" => 'Le fichier doit être dans un format imprimable: JPG, PNG, DOCX, DOC, PDF, XLSX, XLS, CSV'
+                        ]);
+
+                        $uniqueFileName = str_replace(' ', '_', Auth::user()->id) . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
+                        $fileSize = $image->getSize();
+
+                        if ($fileSize === false || $fileSize === 0) 
+                        {
+                            throw new \RuntimeException("Impossible de trouver la taille pour: " . $image->getClientOriginalName());
+                        }
+
+                        $image->move(public_path('images/fournisseurs'), $uniqueFileName);
+
+                        $file = new File();
+                        $file->nomFichier = $image->getClientOriginalName();;
+                        $file->lienFichier = '/images/fournisseurs/' . $uniqueFileName;
+                        $file->tailleFichier_KO = $fileSize;
+                        $file->fournisseur_id = Auth::user()->id;
+                        $file->save();
+    
+                        \Log::info("Fichier importé avec succès: " . $uniqueFileName);
+                    } 
+                    catch (\Exception $e) 
+                    {
+                        \Log::error("Erreur pendant l'importation: " . $image->getClientOriginalName(), [
+                            'error' => $e->getMessage(),
+                            'trace' => $e->getTraceAsString()
+                        ]);
+                        return redirect()->route('fournisseur.importation')->withErrors(['error' => 'Erreur lors du téléversement du fichier: ' . $e->getMessage()]);
+                    }
+                }
+    
+                return redirect()->route('fournisseur.information')->with('message', 'Fichiers importés avec succès.');
+            }
+    
+            return redirect()->route('fournisseur.importation')->withErrors(['error' => 'Aucun fichier à importer.']);
+        }
 
         if ($request->hasFile('images')) 
         {
@@ -496,7 +620,7 @@ class PortailFournisseurController extends Controller
                 try 
                 {
                     $request->validate([
-                        "images.{$key}" => 'required|max:' . $maxSize . '|mimes:pdf,doc,docx,jpg,jpeg,png,xlsx,xls,csv',
+                        "images.{$key}" => 'required|max:' . $maxSize . '|mimes:pdf,doc,docx,jpg,jpeg,png,xlsx,xls,csv,txt',
                     ], [
                         "images.{$key}.max" => 'Le fichier est au-dessus de la limite définie',
                         "images.{$key}.required" => 'L\'image est requise',
@@ -514,6 +638,12 @@ class PortailFournisseurController extends Controller
                 }
             }
         }
+        else 
+        {
+            
+            return redirect()->route('fournisseur.importation')->withErrors(['error' => 'Aucune image à importer.']);
+        }
+    
 
         $fournisseurData = session('fournisseur');
         $coordonneesData = session('coordonnees');
@@ -590,9 +720,20 @@ class PortailFournisseurController extends Controller
                     }
                 }
             }
-
             // !!!! Laisser en commentaire !!!  Mail::to($fournisseur->email)->send(new recevoirConfirmation($fournisseur));
-            session()->forget(['fournisseurNeq','fournisseur', 'coordonnees', 'contact', 'RBQ', 'UNSPSC']);
+            $admins = DB::table('users')->where('role', ['admin', 'responsable'])->get();
+            foreach ($admins as $admin) {
+                if ($admin->email == 'mathys.lessard.02@edu.cegeptr.qc.ca' || $admin->email == 'simon.beaulieu.04@edu.cegeptr.qc.ca') {
+                    Mail::to($admin->email)->send(new demandeFournisseur());
+                }
+            }
+
+            if ($fournisseur->email == 'mathys.lessard.02@edu.cegeptr.qc.ca' || $fournisseur->email == 'simon.beaulieu.04@edu.cegeptr.qc.ca') {
+                Mail::to($fournisseur->email)->send(new recevoirConfirmation($fournisseur));
+            }
+
+
+            session()->forget(['fournisseurNeq', 'fournisseur', 'coordonnees', 'contact', 'RBQ', 'UNSPSC']);
 
             return redirect()->route('fournisseur.index')->with('message', 'Toutes les informations ont été enregistrées avec succès.');
         } 
@@ -602,6 +743,8 @@ class PortailFournisseurController extends Controller
             return redirect()->route('fournisseur.importation')->withErrors(['error' => 'Erreur lors de la sauvegarde des informations.' . $e->getMessage()]);
         }
     }
+
+    
 
     //Finance
 
@@ -616,14 +759,14 @@ class PortailFournisseurController extends Controller
         try {
             $fournisseur = Auth::user();
             $leFournisseur = Fournisseur::where('id',$fournisseur->id)->first();
-            $code = new Finance($request->all());
-            $code->fournisseur_id = $fournisseur->id;
-            $leFournisseur->statut = "confirme";
-            $code->save();
+            $finance = new Finance($request->all());
+            $finance->fournisseur_id = $fournisseur->id;
+            $leFournisseur->statut = "En attente";
+            $finance->save();
             $leFournisseur->save();
             
 
-            return redirect()->route('fournisseur.index')->with('message', "Enregistré!");
+            return redirect()->route('fournisseur.information')->with('message', "Enregistré!");
         } catch (\Throwable $e) {
             Log::debug($e);
             return redirect()->route('fournisseur.finances')->withErrors(['Informations invalides']);

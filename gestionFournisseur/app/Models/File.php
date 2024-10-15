@@ -15,6 +15,12 @@ class File extends Model
         'nomFichier',
         'lienFichier',
         'tailleFichier_KO',
-        'emailFinance'
+        'emailFinance',
+        'fournisseur_id'
     ];
+
+    public function fournisseur()
+    {
+        return $this->belongsTo(Fournisseur::class);
+    }
 }
