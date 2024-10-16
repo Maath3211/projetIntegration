@@ -143,16 +143,7 @@ Route::GET('/affiche',
 Route::GET('/responsable/listeFournisseur',
 [AdminController::class,'listeFournisseur'])->name('responsable.listeFournisseur');
 
-
-
-
-
-
-
-# TODO: A classer
-Route::GET('/test',
-[AdminController::class,'demandeFourn']);
-
+# Demande de fournisseur
 Route::GET('/responsable/demandeFournisseur',
 [AdminController::class,'demandeFournisseurView'])->name('responsable.demandeFournisseur');
 
@@ -168,3 +159,9 @@ Route::POST('/responsable/demandeFournisseur/{neq}/refuser',
 Route::GET('/responsable/demandeFournisseur/{neq}/fichier/{idFichier}',
 [AdminController::class, 'telechargerFichier'])->name('responsable.telechargerFichier');
 
+# Modele de courriel
+
+Route::GET('/responsable/modeleCourriel',
+[AdminController::class, 'afficherModelCourriel'])->name('responsable.afficherModelCourriel');
+
+Route::get('/get-template-content', [AdminController::class, 'getModel']);

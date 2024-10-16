@@ -41,4 +41,6 @@
             </div>
         </div>
     </div>
+
+    <a href="{{ route('responsable.afficherModelCourriel') }}">modele de courriel</a>
 @endsection

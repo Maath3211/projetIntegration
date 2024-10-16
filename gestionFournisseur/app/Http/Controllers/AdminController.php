@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\demandeFournisseur;
+use App\Models\ModelCourriel;
 use Crypt;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -226,6 +227,23 @@ class AdminController extends Controller
         }
     }
 
+
+    public function afficherModelCourriel(){
+        $modelCourriels = ModelCourriel::all();
+
+        return view('admin.afficherModelCourriel', compact('modelCourriels'));
+    }
+
+    public function getModel(Request $request)
+    {
+        $modelId = $request->input('modelId');
+        $modelCourriel = ModelCourriel::findOrFail($modelId);
+        
+        return response()->json([
+            'sujet' => $modelCourriel->sujet,
+            'contenu' => $modelCourriel->contenu
+        ]);
+    }
 
 
 
