@@ -67,7 +67,7 @@ class PortailFournisseurController extends Controller
             $neq = Auth::user()->neq;
             $fournisseurId = Auth::user()->id;
             $fournisseur = Fournisseur::where('neq', $neq)->firstOrFail();
-            $fournisseur->statut = 'Inactif';
+            $fournisseur->statut = 'Désactivée';
             $fournisseur->dateStatut = Carbon::now();
             $files = File::where('fournisseur_id', $fournisseurId)->get();
             $destination = public_path('images/fournisseurs/');
@@ -256,6 +256,7 @@ class PortailFournisseurController extends Controller
             return redirect()->route('fournisseur.identification')->withErrors(['Informations invalides']);
         }
     }
+
 
     // Coordonnées
 

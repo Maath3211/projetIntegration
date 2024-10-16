@@ -11,10 +11,12 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Setting;
 use App\Models\Fournisseur;
+use App\Models\Responsable;
 use App\Models\User;
 use App\Http\Requests\SettingRequest;
 use App\Http\Requests\ResetPasswordRequest;
 use App\Mail\ResetPassword;
+use App\Http\Requests\ConnexionResponsableRequest;
 use Carbon\Carbon;
 use Mail;
 use Str;
@@ -30,6 +32,27 @@ class AdminController extends Controller
     public function index()
     {
         return View('responsable.index');
+    }
+
+    public function loginEmail(ConnexionResponsableRequest $request)
+    {
+
+        $responsable = Responsable::where('email', $request->email)->where('role', $request->role)->first();
+
+        if ($responsable) {
+            session(['responsable' => $responsable]);
+
+            return redirect()->route('responsable.listeFournisseur')->with('message', 'Connexion réussie.');
+        }
+        else 
+        {
+            return redirect()->route('responsable.index')->withErrors(['Informations invalides.']);
+        }
+    }
+
+    public function affiche()
+    {
+        return View('responsable.affiche');
     }
 
     public function listeFournisseur()

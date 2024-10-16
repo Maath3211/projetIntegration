@@ -97,7 +97,7 @@ Route::GET('/finances',
 Route::POST('/finances/store',
 [PortailFournisseurController::class,'storeFinances'])->name('fournisseur.storeFinances');
 
-# Information du fournisseur TODO: quand fournisseur sera completé
+# Information du fournisseur
 Route::GET('/information',
 [PortailFournisseurController::class,'infoLogin'])->name('fournisseur.information');
 
@@ -129,9 +129,16 @@ Route::POST('/administration/parametre/sauvegarde',
 
 # RESPONSABLE
 
-# Page principale
+# Page acceuil connexion
 Route::GET('/responsable',
 [AdminController::class,'index'])->name('responsable.index');
+
+Route::POST('/connexion/email2',
+[AdminController::class,'loginEmail'])->name('login.email');
+
+#Affichage
+Route::GET('/affiche',
+[AdminController::class,'affiche'])->name('responsable.affiche');
 
 Route::GET('/responsable/listeFournisseur',
 [AdminController::class,'listeFournisseur'])->name('responsable.listeFournisseur');

@@ -25,7 +25,7 @@
         <div class="custom-box">
           <h5>État de la demande</h5>
           <p><span class="icon">✔️</span> {{$fournisseur->statut}}</p>
-          @if ($fournisseur->statut == 'Inactif')
+          @if ($fournisseur->statut == 'Désactivée')
           <form action="{{ route('fournisseur.storeActive') }}" method="post">
               @csrf
               <div class="form-group">
@@ -114,7 +114,7 @@
             <div class="custom-box">
                 <h5>Document</h5>
                 <p>Aucun document disponible.</p>
-                @if($fournisseur->statut != 'Inactif')
+                @if($fournisseur->statut != 'Désactivée')
                   <div class="form-group">
                     <a href="{{ route('fournisseur.importation') }}" class="btn btn-secondary">Ajouter un fichier</a>
                   </div>
