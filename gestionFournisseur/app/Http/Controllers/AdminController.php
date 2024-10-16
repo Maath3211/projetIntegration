@@ -34,7 +34,7 @@ class AdminController extends Controller
         return View('responsable.index');
     }
 
-    public function loginEmail(ConnexionResponsableRequest $request)
+    public function loginEmailResponsable(ConnexionResponsableRequest $request)
     {
 
         $responsable = Responsable::where('email', $request->email)->where('role', $request->role)->first();
