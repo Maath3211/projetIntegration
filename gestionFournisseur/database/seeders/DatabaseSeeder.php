@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
         $this->call(CategorieSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(CoordonneSeeder::class);
-        $this->call([ResponsablesSeeder::class,
-        ]);
+        $this->call(ResponsableSeeder::class,
+        );
     }
 }
