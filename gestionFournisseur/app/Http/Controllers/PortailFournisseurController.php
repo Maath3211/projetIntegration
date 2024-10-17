@@ -41,6 +41,30 @@ class PortailFournisseurController extends Controller
         return View('fournisseur.index');
     }
 
+    public function loginNeq(ConnexionRequest $request)
+    {
+        $reussi = Auth::attempt(['neq' => $request->neq, 'password' => $request->password]);
+
+        if ($reussi) 
+        {
+            $fournisseurNeq = Fournisseur::where('neq', $request->neq)->firstOrFail();
+            return redirect()->route('fournisseur.information');
+        } 
+        else 
+        {
+            return redirect()->route('fournisseur.index')->withErrors(['Informations invalides']);
+        }
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('fournisseur.index')->with('message', 'Déconnecté avec succès');
+    }
+
     public function infoLogin()
     {
         $fournisseur = Auth::user();
@@ -117,76 +141,6 @@ class PortailFournisseurController extends Controller
             return redirect()->route('fournisseur.information')->withErrors(['Informations invalides']);
         }
     }
-    
-    public function deleteFile($id)
-    {
-        try {
-            $file = File::findOrFail($id);
-            $filePath = public_path($file->lienFichier);
-
-            if (file_exists($filePath)) {
-                unlink($filePath); 
-            }
-
-            $file->delete(); 
-            
-            return redirect()->route('fournisseur.information')->with('message', 'Fichier supprimé avec succès.');
-        } 
-        catch (\Throwable $e) 
-        {
-            Log::debug($e);
-            return redirect()->route('fournisseur.information')->withErrors(['error' => 'Erreur lors de la suppression du fichier.']);
-        }
-    }
-
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(FournisseurRequest $request, Fournisseur $Request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-
-    /**
-     * INSCRIPTION **** INSCRIPTION **** INSCRIPTION ****INSCRIPTION ****INSCRIPTION ****INSCRIPTION **** INSCRIPTION ****INSCRIPTION ****
-     */
 
     //Identification
 
@@ -838,6 +792,27 @@ class PortailFournisseurController extends Controller
         }
     }
 
+    public function deleteFile($id)
+    {
+        try {
+            $file = File::findOrFail($id);
+            $filePath = public_path($file->lienFichier);
+
+            if (file_exists($filePath)) {
+                unlink($filePath); 
+            }
+
+            $file->delete(); 
+            
+            return redirect()->route('fournisseur.information')->with('message', 'Fichier supprimé avec succès.');
+        } 
+        catch (\Throwable $e) 
+        {
+            Log::debug($e);
+            return redirect()->route('fournisseur.information')->withErrors(['error' => 'Erreur lors de la suppression du fichier.']);
+        }
+    }
+
     
 
     //Finance
@@ -885,29 +860,4 @@ class PortailFournisseurController extends Controller
             return redirect()->route('fournisseur.index')->withErrors(['Informations invalides']);
         }
     }
-
-    public function loginNeq(ConnexionRequest $request)
-    {
-        $reussi = Auth::attempt(['neq' => $request->neq, 'password' => $request->password]);
-
-        if ($reussi) 
-        {
-            $fournisseurNeq = Fournisseur::where('neq', $request->neq)->firstOrFail();
-            return redirect()->route('fournisseur.information');
-        } 
-        else 
-        {
-            return redirect()->route('fournisseur.index')->withErrors(['Informations invalides']);
-        }
-    }
-
-    public function logout(Request $request)
-    {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect()->route('fournisseur.index')->with('message', 'Déconnecté avec succès');
-    }
-
 }
