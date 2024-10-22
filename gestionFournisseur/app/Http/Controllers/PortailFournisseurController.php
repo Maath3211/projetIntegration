@@ -84,7 +84,7 @@ class PortailFournisseurController extends Controller
         $categorie = Categorie::where('id', $rbq->idCategorie)->first();
         $unspscCode = UNSPSC::where('id', $unspsc->idUnspsc)->first();
 
-        if($fournisseur->statut === "En attente"){
+        if($fournisseur->statut === "Acceptée"){
             return redirect()->route('fournisseur.finances');
         }
 
@@ -830,7 +830,7 @@ class PortailFournisseurController extends Controller
             $leFournisseur = Fournisseur::where('id',$fournisseur->id)->first();
             $finance = new Finance($request->all());
             $finance->fournisseur_id = $fournisseur->id;
-            $leFournisseur->statut = "En attente";
+            $leFournisseur->statut = "Acceptée";
             $finance->save();
             $leFournisseur->save();
             
