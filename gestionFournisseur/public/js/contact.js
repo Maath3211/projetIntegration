@@ -3,16 +3,16 @@
 }); */
 
 const form1Div = document.getElementById("form1Div");
-const plus1 = document.getElementById("plus1");
+// const plus1 = document.getElementById("plus1");
 var i = 0;
 
-plus1.addEventListener("click", function () {
+/* plus1.addEventListener("click", function () {
     if (i === 0) ajoutForm2();
     else if (i === 1) {
         plus1.remove();
         ajoutForm3();
     }
-});
+}); */
 
 function submitForms() {
     switch (i) {
@@ -27,10 +27,17 @@ function submitForms() {
             document.getElementById("form1").submit();
             setTimeout(() => {
                 document.getElementById("form2").submit();
-                setTimeout(() => document.getElementById("form3").submit(), 100);
+                setTimeout(
+                    () => document.getElementById("form3").submit(),
+                    100
+                );
             }, 100);
             break;
     }
+}
+
+function submitReturn() {
+    document.getElementById("form1").submit();
 }
 
 function ajoutForm2() {

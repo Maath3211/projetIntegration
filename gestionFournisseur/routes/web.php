@@ -149,6 +149,7 @@ Route::POST('/connexion/responsable/email',
 Route::GET('/affiche',
 [AdminController::class,'affiche'])->name('responsable.affiche');
 #                           ]
+
 Route::GET('/responsable/listeFournisseur',
 [AdminController::class,'listeFournisseur'])->name('responsable.listeFournisseur');
 

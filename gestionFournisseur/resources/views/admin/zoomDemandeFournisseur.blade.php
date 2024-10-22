@@ -76,6 +76,7 @@
 
                     <div class="custom-box">
                         <h5>Contacts</h5>
+                        <a id="plus1" href="{{route('fournisseur.contact')}}">&#8853;</a>
                         @if ($contacts)
                             @foreach ($contacts as $contact)
                                 <p>{{ $contact->prenom }}
