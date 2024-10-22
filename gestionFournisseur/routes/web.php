@@ -145,10 +145,10 @@ Route::GET('/responsable',
 Route::POST('/connexion/responsable/email',
 [AdminController::class,'loginEmailResponsable'])->name('login.email.reponsable');
 
-#Affichage
+#Affichage TODO: a supprimer [
 Route::GET('/affiche',
 [AdminController::class,'affiche'])->name('responsable.affiche');
-
+#                           ]
 Route::GET('/responsable/listeFournisseur',
 [AdminController::class,'listeFournisseur'])->name('responsable.listeFournisseur');
 
@@ -168,9 +168,14 @@ Route::POST('/responsable/demandeFournisseur/{neq}/refuser',
 Route::GET('/responsable/demandeFournisseur/{neq}/fichier/{idFichier}',
 [AdminController::class, 'telechargerFichier'])->name('responsable.telechargerFichier');
 
+
 # Modele de courriel
 
 Route::GET('/responsable/modeleCourriel',
 [AdminController::class, 'afficherModelCourriel'])->name('responsable.afficherModelCourriel');
 
 Route::get('/get-template-content', [AdminController::class, 'getModel']);
+
+Route::POST('/responsable/sauvegarderModeleCourriel',
+[AdminController::class, 'sauvegarderModelCourriel'])->name('responsable.sauvegarderModelCourriel');
+

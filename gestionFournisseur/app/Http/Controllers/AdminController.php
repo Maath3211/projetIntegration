@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ModelCourrielRequest;
 use App\Mail\demandeFournisseur;
 use App\Models\ModelCourriel;
 use Crypt;
@@ -155,7 +156,7 @@ class AdminController extends Controller
     public function demandeFournisseurView()
     {
 
-        $fnAttentes = DB::table('fournisseurs')->where('statut', 'attente')->get();
+        $fnAttentes = DB::table('fournisseurs')->where('statut', 'En attente')->get();
         return view('admin.demandeFournisseur', compact('fnAttentes'));
     }
 
@@ -186,7 +187,7 @@ class AdminController extends Controller
     {
         try {
             $fn = Fournisseur::where('neq', $neq)->firstOrFail();
-            $fn->statut = 'confirme';
+            $fn->statut = 'Acceptée';
             $fn->dateStatut = Carbon::now();
             $fn->raisonRefus = null;
             $fn->save();
@@ -209,7 +210,7 @@ class AdminController extends Controller
         $fn = Fournisseur::where('neq', $neq)->firstOrFail();
         $fn->dateStatut = Carbon::now();
         $fn->raisonRefus = Crypt::encryptString($request->raisonRefus);
-        $fn->statut = 'refusé';
+        $fn->statut = 'Refusé';
         $fn->save();
         return redirect()->route('responsable.demandeFournisseur')->with('message', 'Le fournisseur a été refusé.');
     }
@@ -243,6 +244,16 @@ class AdminController extends Controller
             'sujet' => $modelCourriel->sujet,
             'contenu' => $modelCourriel->contenu
         ]);
+    }
+
+    public function sauvegarderModelCourriel(ModelCourrielRequest $request){
+        $model = ModelCourriel::where('id', $request->model_courriel)->get()->firstOrFail();
+        
+        $model->sujet = $request->sujet;
+        $model->contenu = $request->contenu;
+        $model->save();
+
+        return back();
     }
 
 

@@ -2,20 +2,37 @@
 @section('title', 'Administration')
 
 @section('contenu')
+    <link rel="stylesheet" href="{{ asset('css/modelCourriel.css') }}">
 
-    <label for="model" class="titreForm">Modèle
-        <small class="text-danger"></small>
-    </label>
 
-    <select id="templateSelect" class="form-control" name="model_courriel">
-        @foreach ($modelCourriels as $modelCourriel)
-            <option value="{{ $modelCourriel->id }}">{{ $modelCourriel->nom }}</option>
+
+    <form action="{{route('responsable.sauvegarderModelCourriel')}}" method="post">
+        @csrf
+        <label for="model" class="titreForm">Modèle
+            <small class="text-danger"></small>
+        </label>
+
+        <select id="templateSelect" class="form-control" name="model_courriel">
+            @foreach ($modelCourriels as $modelCourriel)
+                <option value="{{ $modelCourriel->id }}">{{ $modelCourriel->nom }}</option>
             @endforeach
-    </select>
+        </select>
 
-    <div id="templateContent">
+        <div id="templateContent">
+            <label for="sujet">Sujet</label>
+            <textarea name="sujet" id="sujet" cols="50" rows="1"></textarea>
+        </div>
+        <div id="templateContent">
+            <label for="contenu">Contenu</label>
+            <textarea name="contenu" id="contenu" cols="50" rows="10"></textarea>
+        </div>
 
-    </div>
+
+
+        <button type="submit" class="btn btn-success" id="btAccepter">Sauvegarder</button>
+    </form>
+
+
 
 
 
@@ -25,10 +42,12 @@
 
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script>
         $(document).ready(function() {
-            $('#templateSelect').change(function() {
-                var selectedModelId = $(this).val();
+
+            function chargerContenu() {
+                var selectedModelId = $('#templateSelect').val(); // Get the selected value
 
                 $.ajax({
                     url: '/get-template-content',
@@ -37,17 +56,22 @@
                         modelId: selectedModelId
                     },
                     success: function(response) {
-                        $('#templateContent').html(response.contenu);
+                        $('#sujet').text(response.sujet);
+                        $('#contenu').text(response.contenu);
                     },
                     error: function(xhr) {
                         console.log('Error loading template:', xhr.responseText);
                     }
                 });
+            }
+
+            $('#templateSelect').change(function() {
+                chargerContenu();
             });
+
+            chargerContenu();
         });
     </script>
-
-
 
 
 
