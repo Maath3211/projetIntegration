@@ -30,7 +30,7 @@ use App\Mail\demandeFournisseur;
 use Carbon\Carbon;
 use Mail;
 use DB;
-
+use Illuminate\Contracts\View\View;
 
 class PortailFournisseurController extends Controller
 {
@@ -69,7 +69,7 @@ class PortailFournisseurController extends Controller
     {
         $fournisseur = Auth::user();
         $rbq = RBQLicence::where('fournisseur_id', $fournisseur->id)->first();
-        //$unspsc = Unspsccode::where('fournisseur_id', $fournisseur->id)->first();
+        $unspsc = Unspsccode::where('fournisseur_id', $fournisseur->id)->first();
         $contact = Contact::where('fournisseur_id', $fournisseur->id)->first();
         $coordonnees = FournisseurCoord::where('fournisseur_id', $fournisseur->id)->first();
         $numero = $coordonnees->numero;
@@ -82,7 +82,7 @@ class PortailFournisseurController extends Controller
         $finance = Finance::where('fournisseur_id', $fournisseur->id)->first();
 
         $categorie = Categorie::where('id', $rbq->idCategorie)->first();
-        //$unspscCode = UNSPSC::where('id', $unspsc->idUnspsc)->first();
+        $unspscCode = UNSPSC::where('id', $unspsc->idUnspsc)->first();
         $unspscFournisseur = DB::table('unspsccodes')->where('fournisseur_id', $fournisseur->id)->get();
         $unspscCollection = collect();
         foreach ($unspscFournisseur as $uc) {
@@ -93,8 +93,8 @@ class PortailFournisseurController extends Controller
         if($fournisseur->statut === "En attente"){
             return redirect()->route('fournisseur.finances');
         }
-
-        return View('fournisseur.information', compact('fournisseur','rbq','categorie','unspscCollection','unspscFournisseur', 'contact', 'coordonnees', 'files','finance','numero','numero2','codePostal'));
+        //dd($unspscFournisseur);
+        return View('fournisseur.information', compact('fournisseur','rbq','categorie','unspscCollection','unspscFournisseur', 'contact', 'coordonnees', 'files','finance','numero','numero2','codePostal','unspscCode'));
     }
 
     public function storeDesactive()
@@ -511,6 +511,11 @@ class PortailFournisseurController extends Controller
         }
     }
 
+    public function editUNSPSC()
+    {
+        return View('fournisseur.editUNSPSC');
+    }
+
 
     // Licence RBQ
 
@@ -588,7 +593,77 @@ class PortailFournisseurController extends Controller
         }
     }
 
+    public function editRBQ(RBQLicence $rbqLicence)
+    {
+        $fournisseur = Auth::user();
+        $rbq = RBQLicence::where('fournisseur_id', $fournisseur->id)->first();
+        $codes = Categorie::all();
+        $neq = Auth::user()->neq;
 
+
+        
+        $response = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22Numero%20de%20licence%22,%20%22Statut%20de%20la%20licence%22,%20%22Categorie%22,%20%22Sous-categories%22,%20%22NEQ%22,%20%22Type%20de%20licence%22,%20%22Restriction%22%20FROM%20%2232f6ec46-85fd-45e9-945b-965d9235840a%22%20WHERE%20%22NEQ%22%20=%20%27' . $neq . '%27%20AND%20%22Categorie%22%20%3C%3E%20%27null%27');
+            //$url = 'https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22Numero%20de%20licence%22,%20%22Statut%20de%20la%20licence%22,%20%22Categorie%22,%20%22Sous-categories%22,%20%22Type%20de%20licence%22,%20%22Restriction%22%20FROM%20%2232f6ec46-85fd-45e9-945b-965d9235840a%22%20WHERE%20%22NEQ%22%20=%20%27' . $neqFournisseur . '%27%20AND%20%22Categorie%22%20%3C%3E%20%27null%27';
+    
+            if ($response->successful()) {
+                // Récupérer uniquement le premier enregistrement
+                $record = collect($response->json()['result']['records'])->first();
+    
+                // Extraire les informations si disponibles
+                $numRBQ = $record['Numero de licence'] ?? null;
+                $statutRBQ = $record['Statut de la licence'] ?? null;
+                $typeLicence = $record['Type de licence'] ?? null;
+                $categorie = $record['Categorie'] ?? null;
+                $sousCategories = $record['Sous-categories'] ?? null;
+                $restriction = $record['Restriction'] ?? null;
+            } else {
+                // Valeurs par défaut si l'API ne renvoie rien
+                $numRBQ = null;
+                $statutRBQ = null;
+                $typeLicence = null;
+                $categorie = null;
+                $sousCategories = null;
+                $restriction = null;
+            }
+
+        return View('fournisseur.editRBQ',compact('rbq','codes', 'numRBQ', 'statutRBQ', 'typeLicence', 'categorie', 'sousCategories','restriction','rbqLicence'));
+    }
+
+
+    public function updateRBQ(RBQRequest $request, $id)
+    {
+        // Récupérer l'utilisateur authentifié
+        $fournisseur = Auth::user();
+    
+        // Récupérer l'enregistrement RBQLicence existant via l'ID
+        $rbq = RBQLicence::where('fournisseur_id', $fournisseur->id)->find($id);
+    
+        // Vérifier si l'enregistrement existe avant de procéder à la mise à jour
+        if (!$rbq) {
+            return redirect()->route('fournisseur.RBQ.edit')->withErrors(['Licence RBQ non trouvée']);
+        }
+    
+        try {
+            // Mettre à jour les données avec celles du formulaire
+            $rbq->licenceRBQ = $request->licenceRBQ;
+            $rbq->statut = $request->statut;
+            $rbq->typeLicence = $request->typeLicence;
+            $rbq->idCategorie = $request->idCategorie;
+            $rbq->fournisseur_id = $fournisseur->id;
+    
+            // Sauvegarder les modifications
+            $rbq->save();
+    
+            // Rediriger avec un message de succès
+            return redirect()->route('fournisseur.information')->with('message', 'Licence RBQ mise à jour avec succès');
+        } catch (\Throwable $e) {
+            // En cas d'erreur, enregistrer l'exception dans les logs et rediriger avec une erreur
+            Log::debug($e);
+            return redirect()->route('fournisseur.RBQ.edit')->withErrors(['Erreur lors de la mise à jour de la licence RBQ']);
+        }
+    }
+    
+    
 
 
     // Importation
