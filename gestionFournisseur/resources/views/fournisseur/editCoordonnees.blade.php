@@ -12,7 +12,7 @@
 <div class="container-fluid d-flex justify-content-center align-items-center vh-100">
     <div class="row">
         <div class="col-md-12">
-            <form method="post" action="{{ route('fournisseur.storeCoordonnees') }}">
+            <form method="post" action="{{ route('fournisseur.coordonnees.update') }}">
                 @csrf
                 <fieldset class="fieldset">
                     <legend>Adresse</legend>
@@ -21,7 +21,7 @@
                             <label for="noCivic" class="titreForm">N Civique
                                 <small class="text-danger">*</small>
                             </label>
-                            <input type="text" class="form-control" id="noCivic" placeholder="N Civique" name="noCivic" value="{{old('noCivic', $noCivicNeq)}}">
+                            <input type="text" class="form-control" id="noCivic" placeholder="N Civique" name="noCivic" value="{{ old('noCivic', $coordonnees->noCivic) }}">
                             @error('noCivic')
                             <span class="text-danger">{{ $message }}
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
@@ -36,7 +36,7 @@
                             <label for="rue" class="titreForm">Rue
                                 <small class="text-danger">*</small>
                             </label>
-                            <input type="text" class="form-control" id="rue" placeholder="Rue" name="rue" value="{{old('rue', $rueNeq)}}">
+                            <input type="text" class="form-control" id="rue" placeholder="Rue" name="rue" value="{{ old('rue', $coordonnees->rue) }}">
                             @error('rue')
                             <span class="text-danger">{{ $message }}
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
@@ -51,7 +51,7 @@
                             <label for="bureau" class="titreForm">Bureau
                                 <small class="text-muted">(Optionnel)</small>
                             </label>
-                            <input type="text" class="form-control" id="bureau" placeholder="Bureau" name="bureau" value="{{old('bureau')}}">
+                            <input type="text" class="form-control" id="bureau" placeholder="Bureau" name="bureau" value="{{old('bureau', $coordonnees->bureau)}}">
                             @error('bureau')
                             <span class="text-danger">{{ $message }}
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
@@ -70,11 +70,11 @@
                             <select class="form-control" id="ville" name="ville">
                                 <option value="">Sélectionnez une ville</option>
                                 @foreach($villes as $ville)
-                                <option value="{{ $ville }}" {{ old('ville') == $ville || (isset($villeNeq) && $villeNeq == $ville) ? 'selected' : '' }}>{{ $ville }}</option>
+                                <option value="{{ $ville }}" {{ old('ville') == $ville || (isset($coordonnees->ville) && $coordonnees->ville == $ville) ? 'selected' : '' }}>{{ $ville }}</option>
                                 @endforeach
                             </select>
                              @else
-                             <input type="text" class="form-control" id="villeInput" name="ville" placeholder="Entrez la ville" value="{{ old('ville', $villeNeq) }}">
+                             <input type="text" class="form-control" id="villeInput" name="ville" placeholder="Entrez la ville" value="{{ old('ville', $coordonnees->ville) }}">
                              @endif
                              <input type="text" class="form-control" id="villeInput" name="ville" placeholder="Entrez la ville" style="display: none;">
                              @error('ville')
@@ -92,19 +92,19 @@
                                 <small class="text-danger">*</small>
                             </label>
                             <select name="province" class="form-control" id="province">
-                                <option value="Alberta" {{ old('province') == 'Alberta' ? 'selected' : '' }}>Alberta</option>
-                                <option value="Colombie-Britannique" {{ old('province') == 'Colombie-Britannique' ? 'selected' : '' }}>Colombie-Britannique</option>
-                                <option value="Île-du-prince-Édouard" {{ old('province') == 'Île-du-prince-Édouard' ? 'selected' : '' }}>Île-du-prince-Édouard</option>
-                                <option value="Manitoba" {{ old('province') == 'Manitoba' ? 'selected' : '' }}>Manitoba</option>
-                                <option value="Nouveau-Brunswick" {{ old('province') == 'Nouveau-Brunswick' ? 'selected' : '' }}>Nouveau-Brunswick</option>
-                                <option value="Nouvelle-Écosse" {{ old('province') == 'Nouvelle-Écosse' ? 'selected' : '' }}>Nouvelle-Écosse</option>
-                                <option value="Ontario" {{ old('province') == 'Ontario' ? 'selected' : '' }}>Ontario</option>
-                                <option value="Québec" {{ old('province', 'Québec') == 'Québec' ? 'selected' : '' }}>Québec</option>
-                                <option value="Saskatchewan" {{ old('province') == 'Saskatchewan' ? 'selected' : '' }}>Saskatchewan</option>
-                                <option value="Terre-Neuve-et-Labrador" {{ old('province') == 'Terre-Neuve-et-Labrador' ? 'selected' : '' }}>Terre-Neuve-et-Labrador</option>
-                                <option value="Territoires du Nord-Ouest" {{ old('province') == 'Territoires du Nord-Ouest' ? 'selected' : '' }}>Territoires du Nord-Ouest</option>
-                                <option value="Nunavut" {{ old('province') == 'Nunavut' ? 'selected' : '' }}>Nunavut</option>
-                                <option value="Yukon" {{ old('province') == 'Yukon' ? 'selected' : '' }}>Yukon</option>
+                                <option value="Alberta" {{ old('province', $coordonnees->province ?? '') == 'Alberta' ? 'selected' : '' }}>Alberta</option>
+                                <option value="Colombie-Britannique" {{ old('province', $coordonnees->province ?? '') == 'Colombie-Britannique' ? 'selected' : '' }}>Colombie-Britannique</option>
+                                <option value="Île-du-prince-Édouard" {{ old('province', $coordonnees->province ?? '') == 'Île-du-prince-Édouard' ? 'selected' : '' }}>Île-du-prince-Édouard</option>
+                                <option value="Manitoba" {{ old('province', $coordonnees->province ?? '') == 'Manitoba' ? 'selected' : '' }}>Manitoba</option>
+                                <option value="Nouveau-Brunswick" {{ old('province', $coordonnees->province ?? '') == 'Nouveau-Brunswick' ? 'selected' : '' }}>Nouveau-Brunswick</option>
+                                <option value="Nouvelle-Écosse" {{ old('province', $coordonnees->province ?? '') == 'Nouvelle-Écosse' ? 'selected' : '' }}>Nouvelle-Écosse</option>
+                                <option value="Ontario" {{ old('province', $coordonnees->province ?? '') == 'Ontario' ? 'selected' : '' }}>Ontario</option>
+                                <option value="Québec" {{ old('province', $coordonnees->province ?? 'Québec') == 'Québec' ? 'selected' : '' }}>Québec</option>
+                                <option value="Saskatchewan" {{ old('province', $coordonnees->province ?? '') == 'Saskatchewan' ? 'selected' : '' }}>Saskatchewan</option>
+                                <option value="Terre-Neuve-et-Labrador" {{ old('province', $coordonnees->province ?? '') == 'Terre-Neuve-et-Labrador' ? 'selected' : '' }}>Terre-Neuve-et-Labrador</option>
+                                <option value="Territoires du Nord-Ouest" {{ old('province', $coordonnees->province ?? '') == 'Territoires du Nord-Ouest' ? 'selected' : '' }}>Territoires du Nord-Ouest</option>
+                                <option value="Nunavut" {{ old('province', $coordonnees->province ?? '') == 'Nunavut' ? 'selected' : '' }}>Nunavut</option>
+                                <option value="Yukon" {{ old('province', $coordonnees->province ?? '') == 'Yukon' ? 'selected' : '' }}>Yukon</option>
                             </select>
                             @error('province')
                             <span class="text-danger">{{ $message }}
@@ -120,7 +120,7 @@
                             <label for="codePostal" class="titreForm">Code Postal
                                 <small class="text-danger">*</small>
                             </label>
-                            <input type="text" class="form-control" id="codePostal" placeholder="Code postal" name="codePostal" value="{{old('codePostal' , $codePostalNeq)}}">
+                            <input type="text" class="form-control" id="codePostal" placeholder="Code postal" name="codePostal" value="{{old('codePostal', $coordonnees->codePostal)}}">
                             @error('codePostal')
                             <span class="text-danger">{{ $message }}
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
@@ -135,7 +135,7 @@
                             <label for="site" class="titreForm">Site internet
                                 <small class="text-muted">(Optionnel)</small>
                             </label>
-                            <input type="url" class="form-control" id="site" placeholder="Votre site internet" name="site" value="{{old('site')}}">
+                            <input type="url" class="form-control" id="site" placeholder="Votre site internet" name="site" value="{{old('site', $coordonnees->site)}}">
                             @error('site')
                             <span class="text-danger">{{ $message }}
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
@@ -154,9 +154,9 @@
                                 <small class="text-danger">*</small>
                             </label>
                             <select name="typeTel" class="form-control" id="typeTel" name="typeTel">
-                                <option value="Bureau" {{ old('typeTel') == 'Bureau' ? 'selected' : '' }}>Bureau</option>
-                                <option value="Télécopieur" {{ old('typeTel') == 'Télécopieur' ? 'selected' : '' }}>Télécopieur</option>
-                                <option value="Cellulaire" {{ old('typeTel') == 'Cellulaire' ? 'selected' : '' }}>Cellulaire</option>
+                                <option value="Bureau" {{ old('typeTel', $coordonnees->typeTel) == 'Bureau' ? 'selected' : '' }}>Bureau</option>
+                                <option value="Télécopieur" {{ old('typeTel', $coordonnees->typeTel) == 'Télécopieur' ? 'selected' : '' }}>Télécopieur</option>
+                                <option value="Cellulaire" {{ old('typeTel', $coordonnees->typeTel) == 'Cellulaire' ? 'selected' : '' }}>Cellulaire</option>
                             </select>
                             @error('typeTel')
                             <span class="text-danger">{{ $message }}
@@ -172,7 +172,7 @@
                             <label for="numero" class="titreForm">Numero
                                 <small class="text-danger">*</small>
                             </label>
-                            <input type="text" class="form-control telephones" id="numero" placeholder="555-555-5555" name="numero" maxlength="12" value="{{old('numero', $telNeqAff)}}">
+                            <input type="text" class="form-control telephones" id="numero" placeholder="555-555-5555" name="numero" maxlength="12" value="{{old('numero', $coordonnees->numero)}}">
                             @error('numero')
                             <span class="text-danger">{{ $message }}
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
@@ -187,7 +187,7 @@
                             <label for="poste" class="titreForm">Poste
                                 <small class="text-muted">(Optionnel)</small>
                             </label>
-                            <input type="text" class="form-control" id="poste" placeholder="" name="poste" value="{{old('poste')}}">
+                            <input type="text" class="form-control" id="poste" placeholder="" name="poste" value="{{old('poste', $coordonnees->poste)}}">
                             @error('poste')
                             <span class="text-danger">{{ $message }}
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
@@ -204,9 +204,9 @@
                             </label>
                             <select name="typeTel2" class="form-control" id="typeTel2">
                                 <option value="" {{ old('typeTel2') == '' ? 'selected' : '' }}>-- Sélectionnez un type --</option>
-                                <option value="Bureau" {{ old('typeTel2') == 'Bureau' ? 'selected' : '' }}>Bureau</option>
-                                <option value="Télécopieur" {{ old('typeTel2') == 'Télécopieur' ? 'selected' : '' }}>Télécopieur</option>
-                                <option value="Cellulaire" {{ old('typeTel2') == 'Cellulaire' ? 'selected' : '' }}>Cellulaire</option>
+                                <option value="Bureau" {{ old('typeTel2', $coordonnees->typeTel2) == 'Bureau' ? 'selected' : '' }}>Bureau</option>
+                                <option value="Télécopieur" {{ old('typeTel2', $coordonnees->typeTel2) == 'Télécopieur' ? 'selected' : '' }}>Télécopieur</option>
+                                <option value="Cellulaire" {{ old('typeTel2', $coordonnees->typeTel2) == 'Cellulaire' ? 'selected' : '' }}>Cellulaire</option>
                             </select>
                             @error('type')
                             <span class="text-danger">{{ $message }}
@@ -222,7 +222,7 @@
                             <label for="numero2" class="titreForm">Numero
                                 <small class="text-muted">(Optionel)</small>
                             </label>
-                            <input type="text" class="form-control telephones" id="numero2" placeholder="555-555-5555" name="numero2" maxlength="12" value="{{old('numero2')}}">
+                            <input type="text" class="form-control telephones" id="numero2" placeholder="555-555-5555" name="numero2" maxlength="12" value="{{old('numero2', $coordonnees->numero2)}}">
                             @error('numero2')
                             <span class="text-danger">{{ $message }}
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
@@ -237,7 +237,7 @@
                             <label for="poste2" class="titreForm">Poste
                                 <small class="text-muted">(Optionnel)</small>
                             </label>
-                            <input type="text" class="form-control" id="poste2" placeholder="" name="poste2" value="{{old('poste2')}}">
+                            <input type="text" class="form-control" id="poste2" placeholder="" name="poste2" value="{{old('poste2', $coordonnees->poste2)}}">
                             @error('poste2')
                             <span class="text-danger">{{ $message }}
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">

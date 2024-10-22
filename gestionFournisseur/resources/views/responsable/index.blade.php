@@ -17,7 +17,7 @@
 <div class="container-fluid d-flex justify-content-center align-items-center">
   <div class="row">
     <div class="col-md-12">
-      <form method="post" action="{{ route('login.email') }}">
+      <form method="post" action="{{ route('login.email.responsable') }}">
         @csrf
         <fieldset>
           <legend>Authentification</legend>

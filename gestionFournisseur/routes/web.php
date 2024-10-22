@@ -30,13 +30,11 @@ Route::GET('/reinitialisation/{code}',
 Route::POST('/reinitialisation/{code}',
 [AdminController::class, 'resetPassword']) -> name('login.modifier');
 
-
 #Déconnexion
 Route::POST('/logout',
 [PortailFournisseurController::class,'logout'])->name('fournisseur.logout');
 
 # InscriptionIdentification
-
 Route::GET('/inscription',
 [PortailFournisseurController::class,'inscription'])->name('fournisseur.inscription');
 
@@ -48,6 +46,32 @@ Route::GET('/identification',
 
 Route::POST('/identification/store',
 [PortailFournisseurController::class,'storeIdentification'])->name('fournisseur.storeIdentification');
+
+Route::GET('/identification/edit',
+[PortailFournisseurController::class, 'editIdentification'])->name('fournisseur.identification.edit');
+
+Route::POST('/identification/update',
+[PortailFournisseurController::class, 'updateIdentification'])->name('fournisseur.identification.update');
+
+# InscriptionCoordonnées
+Route::GET('/coordonnees',
+[PortailFournisseurController::class,'createCoordo'])->name('fournisseur.coordonnees');
+
+Route::POST('/coordonnees/store',
+[PortailFournisseurController::class,'storeCoordo'])->name('fournisseur.storeCoordonnees');
+
+Route::GET('/coordonnees/edit',
+[PortailFournisseurController::class, 'editCoordonnees'])->name('fournisseur.coordonnees.edit');
+
+Route::POST('/coordonnees/update',
+[PortailFournisseurController::class, 'updateCoordonnees'])->name('fournisseur.coordonnees.update');
+
+# InscriptionContact
+Route::GET('/contact',
+[PortailFournisseurController::class,'contact'])->name('fournisseur.contact');
+
+Route::POST('/contact/store',
+[PortailFournisseurController::class,'storeContact'])->name('fournisseur.storeContact');
 
 # InscriptionUNSPSC
 Route::GET('/UNSPSC',
@@ -65,20 +89,6 @@ Route::GET('/RBQ',
 Route::POST('/RBQ/store',
 [PortailFournisseurController::class,'storeRBQ'])->name('fournisseur.storeRBQ');
 
-# InscriptionCoordonnées
-Route::GET('/coordonnees',
-[PortailFournisseurController::class,'createCoordo'])->name('fournisseur.coordonnees');
-
-Route::POST('/coordonnees/store',
-[PortailFournisseurController::class,'storeCoordo'])->name('fournisseur.storeCoordonnees');
-
-# InscriptionContact
-Route::GET('/contact',
-[PortailFournisseurController::class,'contact'])->name('fournisseur.contact');
-
-Route::POST('/contact/store',
-[PortailFournisseurController::class,'storeContact'])->name('fournisseur.storeContact');
-
 # InscriptionImportation 
 Route::GET('/importation',
 [PortailFournisseurController::class,'importation'])->name('fournisseur.importation');
@@ -89,13 +99,15 @@ Route::PATCH('/importation/store',
 Route::delete('/file/{id}',
 [PortailFournisseurController::class,'deleteFile'])->name('fournisseur.deleteFile');
 
-
 # InscriptionFinance
 Route::GET('/finances',
 [PortailFournisseurController::class,'finances'])->name('fournisseur.finances');
 
 Route::POST('/finances/store',
 [PortailFournisseurController::class,'storeFinances'])->name('fournisseur.storeFinances');
+
+
+
 
 # Information du fournisseur
 Route::GET('/information',
@@ -108,9 +120,6 @@ Route::POST('/information/desactive',
 # Activer la fiche fournisseur
 Route::POST('/information/active',
 [PortailFournisseurController::class,'storeActive'])->name('fournisseur.storeActive');
-
-
-
 
 
 
@@ -133,8 +142,8 @@ Route::POST('/administration/parametre/sauvegarde',
 Route::GET('/responsable',
 [AdminController::class,'index'])->name('responsable.index');
 
-Route::POST('/connexion/email2',
-[AdminController::class,'loginEmail'])->name('login.email');
+Route::POST('/connexion/responsable/email',
+[AdminController::class,'loginEmailResponsable'])->name('login.email.reponsable');
 
 #Affichage
 Route::GET('/affiche',

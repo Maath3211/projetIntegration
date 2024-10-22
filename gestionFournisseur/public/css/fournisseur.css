@@ -3,13 +3,13 @@
 /*  Couleur premiere triade: 1: #78c6e0, 2: #0076d5, 3: #0b2341 */
 
 @font-face {
-    font-family: alumni;
-    src: url("../fonts/AlumniSans-ExtraBold.ttf");
+  font-family: alumni;
+  src: url("../fonts/AlumniSans-ExtraBold.ttf");
 }
 
-  @font-face {
-    font-family: ttHoves;
-    src: url("../fonts/TT-Hoves-Pro-Trial-Medium.ttf");
+@font-face {
+  font-family: ttHoves;
+  src: url("../fonts/TT-Hoves-Pro-Trial-Medium.ttf");
 }
 
 html, body {
@@ -31,11 +31,15 @@ h1 {
   color: #0b2341;
 }
 
+h5 {
+  font-family: alumni;
+  color: #0b2341;
+}
+
 p {
   font-family: ttHoves;
   color: black;
 }
-
 
 fieldset {
   border: 2px solid #ccc;
@@ -52,10 +56,10 @@ legend {
 }
 
 label {
-    font-family: ttHoves;
-    color: #0076d5;
-    display:inline-block;
-    width: 80px;
+  font-family: ttHoves;
+  color: #0076d5;
+  display:inline-block;
+  width: 80px;
 }
 
 .form-group {
@@ -93,6 +97,23 @@ footer {
 h1 {
   margin-bottom: 25px;
 }
+
+/* Page information fournisseur */
+
+.custom-box {
+  border: 1px solid #000;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 5px;
+}
+.icon {
+  font-size: 1.5em;
+  color: green;
+}
+.icon-pdf {
+  font-size: 1.2em;
+  color: red;
+}
   
   /*MEDIA*/
   
@@ -105,20 +126,20 @@ h1 {
   }
 }
 
-  .scroll-container {
-    height: 400px; /* Ajustez la hauteur en fonction de vos besoins */
-    overflow-y: auto; /* Permet le défilement vertical */
-    border: 1px solid #ccc; /* Bordure pour voir les limites du conteneur */
-    padding: 10px;
+.scroll-container {
+  height: 400px; /* Ajustez la hauteur en fonction de vos besoins */
+  overflow-y: auto; /* Permet le défilement vertical */
+  border: 1px solid #ccc; /* Bordure pour voir les limites du conteneur */
+  padding: 10px;
 }
 
 .item {
-    display: flex;
-    margin-bottom: 10px; /* Espacement entre les éléments */
-    background-color: #f0f0f0;
-    padding: 10px;
-    border: 1px solid #ddd;
-  }
+  display: flex;
+  margin-bottom: 10px; /* Espacement entre les éléments */
+  background-color: #f0f0f0;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
   
 #logoV3R{
   position: absolute;

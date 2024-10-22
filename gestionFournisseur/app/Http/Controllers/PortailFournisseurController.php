@@ -18,6 +18,7 @@ use App\Models\Finance;
 use App\Models\Setting;
 use App\Http\Requests\ConnexionRequest;
 use App\Http\Requests\FournisseurNeqRequest;
+use App\Http\Requests\FournisseurEditRequest;
 use App\Http\Requests\FournisseurRequest;
 use App\Http\Requests\UnspscRequest;
 use App\Http\Requests\RBQRequest;
@@ -40,13 +41,43 @@ class PortailFournisseurController extends Controller
         return View('fournisseur.index');
     }
 
+    public function loginNeq(ConnexionRequest $request)
+    {
+        $reussi = Auth::attempt(['neq' => $request->neq, 'password' => $request->password]);
+
+        if ($reussi) 
+        {
+            $fournisseurNeq = Fournisseur::where('neq', $request->neq)->firstOrFail();
+            return redirect()->route('fournisseur.information');
+        } 
+        else 
+        {
+            return redirect()->route('fournisseur.index')->withErrors(['Informations invalides']);
+        }
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('fournisseur.index')->with('message', 'Déconnecté avec succès');
+    }
+
     public function infoLogin()
     {
         $fournisseur = Auth::user();
         $rbq = RBQLicence::where('fournisseur_id', $fournisseur->id)->first();
         $unspsc = Unspsccode::where('fournisseur_id', $fournisseur->id)->first();
         $contact = Contact::where('fournisseur_id', $fournisseur->id)->first();
-        $coordonee = FournisseurCoord::where('fournisseur_id', $fournisseur->id)->first();
+        $coordonnees = FournisseurCoord::where('fournisseur_id', $fournisseur->id)->first();
+        $numero = $coordonnees->numero;
+        $numero = substr($numero, 0, 3) . '-' . substr($numero, 3, 3) . '-' . substr($numero, 6);
+        $numero2 = $coordonnees->numero;
+        $numero2 = substr($numero2, 0, 3) . '-' . substr($numero2, 3, 3) . '-' . substr($numero2, 6);
+        $codePostal = $coordonnees->codePostal;
+        $codePostal = substr($codePostal, 0, 3) . ' ' . substr($codePostal, 3);
         $files = File::where('fournisseur_id', $fournisseur->id)->get();
         $finance = Finance::where('fournisseur_id', $fournisseur->id)->first();
 
@@ -57,7 +88,7 @@ class PortailFournisseurController extends Controller
             return redirect()->route('fournisseur.finances');
         }
 
-        return View('fournisseur.information', compact('fournisseur','rbq','categorie','unspsc','unspscCode', 'contact', 'coordonee', 'files','finance'));
+        return View('fournisseur.information', compact('fournisseur','rbq','categorie','unspsc','unspscCode', 'contact', 'coordonnees', 'files','finance','numero','numero2','codePostal'));
     }
 
     public function storeDesactive()
@@ -110,76 +141,6 @@ class PortailFournisseurController extends Controller
             return redirect()->route('fournisseur.information')->withErrors(['Informations invalides']);
         }
     }
-    
-    public function deleteFile($id)
-    {
-        try {
-            $file = File::findOrFail($id);
-            $filePath = public_path($file->lienFichier);
-
-            if (file_exists($filePath)) {
-                unlink($filePath); 
-            }
-
-            $file->delete(); 
-            
-            return redirect()->route('fournisseur.information')->with('message', 'Fichier supprimé avec succès.');
-        } 
-        catch (\Throwable $e) 
-        {
-            Log::debug($e);
-            return redirect()->route('fournisseur.information')->withErrors(['error' => 'Erreur lors de la suppression du fichier.']);
-        }
-    }
-
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(FournisseurRequest $request, Fournisseur $Request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-
-    /**
-     * INSCRIPTION **** INSCRIPTION **** INSCRIPTION ****INSCRIPTION ****INSCRIPTION ****INSCRIPTION **** INSCRIPTION ****INSCRIPTION ****
-     */
 
     //Identification
 
@@ -255,6 +216,27 @@ class PortailFournisseurController extends Controller
             Log::debug($e);
             return redirect()->route('fournisseur.identification')->withErrors(['Informations invalides']);
         }
+    }
+
+    public function editIdentification()
+    {
+        $fournisseur = Auth::user();
+        $email = $fournisseur->email;
+        $neq = $fournisseur->neq;
+        $entreprise = $fournisseur->entreprise;
+        return view('fournisseur.editIdentification', compact('email','neq','entreprise'));
+    }
+
+    public function updateIdentification(FournisseurEditRequest $request)
+    {
+        $fournisseur = Auth::user();
+        
+        $fournisseur->entreprise = $request->entreprise;
+        $fournisseur->email = $request->email;
+    
+        $fournisseur->save();
+
+        return redirect()->route('fournisseur.information')->with('message', 'Informations mises à jour avec succès.');
     }
 
 
@@ -354,8 +336,8 @@ class PortailFournisseurController extends Controller
                     'ville' => $request->ville,
                     'province' => $request->province,
                     'codePostal' => strtoupper($request->codePostal),
-                    'codeRegion' => $request->codeRegion ?? null,
-                    'nomRegion' => $request->nomRegion ?? null,
+                    'codeRegion' => $codeRegion,
+                    'nomRegion' => $nomRegion,
                     'site' => strtolower($request->site),
                     'typeTel' => $request->typeTel,
                     'numero' => $request->numero,
@@ -373,6 +355,71 @@ class PortailFournisseurController extends Controller
         {
             Log::debug($e);
             return redirect()->route('fournisseur.coordonnees')->withErrors(['Informations invalides']);
+        }
+    }
+
+    public function editCoordonnees()
+    {
+        $response = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22munnom%22%20FROM%20%2219385b4e-5503-4330-9e59-f998f5918363%22');
+
+            if ($response->successful()) 
+            {
+                $villes = collect($response->json()['result']['records'])->pluck('munnom')->all();
+    
+            } else 
+            {
+                $villes = [];
+            }
+        $fournisseur = Auth::user();
+        $coordonnees = $fournisseur->coordonnees;
+        return view('fournisseur.editCoordonnees', compact('coordonnees','villes'));
+    }
+
+    public function updateCoordonnees(FournisseurCoordRequest $request)
+    {
+        try 
+        {
+            $nomRegion = "";
+            $codeRegion = "";
+            $villeChoisie = $request->input('ville');
+            $provinceChoisie = $request->input('province');
+
+            if ($provinceChoisie === 'Québec') 
+            {
+                $responseVille = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22munnom%22,%20%22regadm%22%20FROM%20%2219385b4e-5503-4330-9e59-f998f5918363%22%20WHERE%20%22munnom%22=%27' . urlencode($villeChoisie) . '%27');
+                if ($responseVille->successful() && count($responseVille->json()['result']['records']) > 0) 
+                {
+                    $regionTrouve = $responseVille->json()['result']['records'][0]['regadm'];
+
+                    if (!empty($regionTrouve)) 
+                    {
+                        $nomRegion = rtrim(strtok($regionTrouve, '('));
+                        $codeRegion = trim(strtok('()'));
+                    }
+                }
+            }
+       
+        $fournisseur = Auth::user();
+        $coordonnees = FournisseurCoord::where('fournisseur_id', $fournisseur->id)->first();
+
+        if (!$coordonnees) {
+            return redirect()->route('fournisseur.information')->withErrors(['Coordonnées introuvables pour ce fournisseur']);
+        }
+
+        $coordonnees->fill($request->validated());
+        $coordonnees->codeRegion = $codeRegion; 
+        $coordonnees->nomRegion = $nomRegion;  
+        $coordonnees->codePostal = strtoupper($request->codePostal);
+        $coordonnees->site = strtolower($request->site);
+        $coordonnees->save();
+
+        return redirect()->route('fournisseur.information')->with('message', "Enregistré!");
+
+        } 
+        catch (\Throwable $e) 
+        {
+            Log::debug($e);
+            return redirect()->route('fournisseur.information')->withErrors(['Informations invalides']);
         }
     }
 
@@ -745,6 +792,27 @@ class PortailFournisseurController extends Controller
         }
     }
 
+    public function deleteFile($id)
+    {
+        try {
+            $file = File::findOrFail($id);
+            $filePath = public_path($file->lienFichier);
+
+            if (file_exists($filePath)) {
+                unlink($filePath); 
+            }
+
+            $file->delete(); 
+            
+            return redirect()->route('fournisseur.information')->with('message', 'Fichier supprimé avec succès.');
+        } 
+        catch (\Throwable $e) 
+        {
+            Log::debug($e);
+            return redirect()->route('fournisseur.information')->withErrors(['error' => 'Erreur lors de la suppression du fichier.']);
+        }
+    }
+
     
 
     //Finance
@@ -792,29 +860,4 @@ class PortailFournisseurController extends Controller
             return redirect()->route('fournisseur.index')->withErrors(['Informations invalides']);
         }
     }
-
-    public function loginNeq(ConnexionRequest $request)
-    {
-        $reussi = Auth::attempt(['neq' => $request->neq, 'password' => $request->password]);
-
-        if ($reussi) 
-        {
-            $fournisseurNeq = Fournisseur::where('neq', $request->neq)->firstOrFail();
-            return redirect()->route('fournisseur.information');
-        } 
-        else 
-        {
-            return redirect()->route('fournisseur.index')->withErrors(['Informations invalides']);
-        }
-    }
-
-    public function logout(Request $request)
-    {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect()->route('fournisseur.index')->with('message', 'Déconnecté avec succès');
-    }
-
 }
