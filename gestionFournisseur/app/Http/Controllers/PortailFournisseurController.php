@@ -69,7 +69,7 @@ class PortailFournisseurController extends Controller
     {
         $fournisseur = Auth::user();
         $rbq = RBQLicence::where('fournisseur_id', $fournisseur->id)->first();
-        $unspsc = Unspsccode::where('fournisseur_id', $fournisseur->id)->first();
+        //$unspsc = Unspsccode::where('fournisseur_id', $fournisseur->id)->first();
         $contact = Contact::where('fournisseur_id', $fournisseur->id)->first();
         $coordonnees = FournisseurCoord::where('fournisseur_id', $fournisseur->id)->first();
         $numero = $coordonnees->numero;
@@ -82,13 +82,19 @@ class PortailFournisseurController extends Controller
         $finance = Finance::where('fournisseur_id', $fournisseur->id)->first();
 
         $categorie = Categorie::where('id', $rbq->idCategorie)->first();
-        $unspscCode = UNSPSC::where('id', $unspsc->idUnspsc)->first();
+        //$unspscCode = UNSPSC::where('id', $unspsc->idUnspsc)->first();
+        $unspscFournisseur = DB::table('unspsccodes')->where('fournisseur_id', $fournisseur->id)->get();
+        $unspscCollection = collect();
+        foreach ($unspscFournisseur as $uc) {
+            $unspsc = DB::table('unspsc')->where('id', $uc->idUnspsc)->first();
+            $unspscCollection->push($unspsc);
+        }
 
-        if($fournisseur->statut === "Acceptée"){
+        if($fournisseur->statut === "En attente"){
             return redirect()->route('fournisseur.finances');
         }
 
-        return View('fournisseur.information', compact('fournisseur','rbq','categorie','unspsc','unspscCode', 'contact', 'coordonnees', 'files','finance','numero','numero2','codePostal'));
+        return View('fournisseur.information', compact('fournisseur','rbq','categorie','unspscCollection','unspscFournisseur', 'contact', 'coordonnees', 'files','finance','numero','numero2','codePostal'));
     }
 
     public function storeDesactive()
