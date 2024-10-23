@@ -1,13 +1,5 @@
 @extends('layouts.fournisseur')
-
-@section('title', "Page d'accueil")
-
-<header>
-    <div>
-        <a href="/"><h5 class="compagny">LOGO-VILLE3R</h5></a>
-    </div>
-</header>
-
+@section('title', "Finances")
 @section('contenu')
 <div class="container-fluid">
     <div class="row">

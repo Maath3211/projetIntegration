@@ -1,10 +1,5 @@
 @extends('layouts.fournisseur')
 @section('title',"Identification")
-<header>
-<div>
-    <a href="/"><h5 class="compagny">LOGO-VILLE3R</h5></a>
-</div>
-</header>
 @section('contenu')
 <div class="text-center py-5">
     <h1>Inscription Fournisseur ( IDENTIFICATION )</h1>

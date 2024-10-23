@@ -25,6 +25,7 @@ use App\Http\Requests\RBQRequest;
 use App\Http\Requests\FournisseurCoordRequest;
 use App\Http\Requests\ContactRequest;
 use App\Http\Requests\FinanceRequest;
+use App\Http\Requests\ResetPasswordRequest;
 use App\Mail\recevoirConfirmation;
 use App\Mail\demandeFournisseur;
 use Carbon\Carbon;
@@ -239,7 +240,21 @@ class PortailFournisseurController extends Controller
         
         $fournisseur->entreprise = $request->entreprise;
         $fournisseur->email = $request->email;
-    
+        $fournisseur->save();
+
+        return redirect()->route('fournisseur.information')->with('message', 'Informations mises à jour avec succès.');
+    }
+
+    public function editPassword()
+    {
+        return view('fournisseur.editPassword');
+    }
+
+    public function updatePassword(ResetPasswordRequest $request)
+    {
+        $fournisseur = Auth::user();
+        
+        $fournisseur->password = $request->password;
         $fournisseur->save();
 
         return redirect()->route('fournisseur.information')->with('message', 'Informations mises à jour avec succès.');

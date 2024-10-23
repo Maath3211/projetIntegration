@@ -16,6 +16,47 @@ html, body {
   background-color: whitesmoke;
 }
 
+/* NAV-BAR*/
+
+#logoV3R {
+  position: absolute; 
+  left: 5vw;
+  z-index: 2;
+  width: 6vw; 
+  min-width: 60px;
+  max-width: 150px; 
+}
+
+.navbar {
+  background-color: #0076d5;
+}
+
+.lien {
+  text-decoration: none;
+  color: white;
+}
+
+.ville {
+  margin-top: 40px;
+  background-color: white;
+}
+
+.nav-item .dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: auto;
+  right: 0;  
+  z-index: 3; 
+}
+
+.brand-uni {
+    color: white;
+}
+
+.brand-v3r {
+    color: black;
+}
+
 /* TEXTE DANS LES VIEW */
 
 .text-muted {
@@ -27,6 +68,10 @@ font-size:12px;
 }
 
 h1 {
+  font-family: alumni;
+  color: #0b2341;
+}
+a {
   font-family: alumni;
   color: #0b2341;
 }
@@ -65,7 +110,7 @@ label {
 .form-group {
   font-family: alumni;
   color: #0b2341;
-  position: relative; /* Pour le lien */
+  position: relative; 
   margin-bottom: 20px;
   width: 500px;
 }
@@ -75,30 +120,45 @@ label {
   background-color: #0076d5;
 }
 
-/* LINK */
+/* LINK ACCEUIL */
 
 .link-right {
   position: absolute; 
   right: 12px; 
   bottom: -20px; 
-  font-size: 0.9em; 
+  font-size: 0.9em;
+  color:#0076d5;
 }
 
 /* FOOTER */
 
-footer {
-  padding: 20px;
-  text-align: center;
-  color: green;
-  margin: 10px;
-  margin-top: 200px;
+footer {                               
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  background-color: #0076d5;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 5px;
+  margin-top: 120px;
+  padding-top: 30px;
+  padding-bottom: 30px;
 }
 
-h1 {
-  margin-bottom: 25px;
+#logoV3RFooter {
+  position: absolute;
+  bottom: 70%; 
+  left: 80%; 
+  width: 10vw; 
+  min-width: 60px; 
+  max-width: 150px; 
 }
 
-/* Page information fournisseur */
+.logoFooter {                               
+  margin-top: 80px;
+}
+
+/* PAGE INFROMATION FOURNISSEUR */
 
 .custom-box {
   border: 1px solid #000;
@@ -127,23 +187,18 @@ h1 {
 }
 
 .scroll-container {
-  height: 400px; /* Ajustez la hauteur en fonction de vos besoins */
-  overflow-y: auto; /* Permet le défilement vertical */
-  border: 1px solid #ccc; /* Bordure pour voir les limites du conteneur */
+  height: 400px; 
+  overflow-y: auto; 
+  border: 1px solid #ccc;
   padding: 10px;
 }
 
 .item {
   display: flex;
-  margin-bottom: 10px; /* Espacement entre les éléments */
+  margin-bottom: 10px; 
   background-color: #f0f0f0;
   padding: 10px;
   border: 1px solid #ddd;
 }
-  
-#logoV3R{
-  position: absolute;
-  top: 10px;
-  left: 1%;
-  width: 6%;
-}
+
+

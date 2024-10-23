@@ -1,14 +1,5 @@
 @extends('layouts.fournisseur')
 @section('title',"Page d'accueil responsable")
-<header>
-<div>
-    <a href="/"><h5 class="compagny">logo</h5></a>
-</div>
-<nav class="main-nav d-flex">                 
-    
-</nav>
-  </nav>   
-</header>
 @section('contenu')
 <div class="text-center">
     <h1>Bienvenue sur le site de ville (responsable)</h1>

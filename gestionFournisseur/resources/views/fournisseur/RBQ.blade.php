@@ -1,13 +1,5 @@
 @extends('layouts.fournisseur')
-
 @section('title', "RBQ")
-
-<header>
-    <div>
-        <a href="/"><h5 class="compagny">LOGO-VILLE3R</h5></a>
-    </div>
-</header>
-
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-2"></div>

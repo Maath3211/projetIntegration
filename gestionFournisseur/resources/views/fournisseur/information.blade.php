@@ -1,18 +1,27 @@
 @extends('layouts.fournisseur')
 @section('title',"Informations")
-<header>
-  <div>
-    <a href="/"><h5 class="compagny">LOGO-VILLE3R</h5></a>
-  </div>
-  <nav class="sub-nav">
-    <form action="{{ route('fournisseur.logout') }}" method="post">
-      @csrf
-      <div class="form-group">
-        <button type="submit" class="btn btn-secondary">Déconnexion</button>
-      </div>
-    </form>
-  </nav> 
-</header>
+@section('navbar')
+<li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" href="#" id="userMenu" role="button" data-bs-toggle="dropdown" data-boundary="viewport" aria-expanded="false">
+      <i class="fas fa-user" style="font-size: 1.5rem; color: white;"></i>
+  </a>
+  <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
+      <li>
+          <form action="{{ route('fournisseur.password.edit') }}" method="GET" class="px-3 py-2">
+              @csrf
+              <button type="submit" class="btn btn-secondary w-100">Changer le mot de passe</button>
+          </form>
+      </li>
+      <li><hr class="dropdown-divider"></li>
+      <li>
+          <form action="{{ route('fournisseur.logout') }}" method="POST" class="px-3 py-2">
+              @csrf
+              <button type="submit" class="btn btn-secondary w-100">Déconnexion</button>
+          </form>
+      </li>
+  </ul>
+</li>
+@endsection
 @section('contenu')
 <div class="container">
   <div class="row">
@@ -182,7 +191,7 @@
 </div>
 @endsection
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
 
 
 

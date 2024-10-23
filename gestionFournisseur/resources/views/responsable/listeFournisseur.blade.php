@@ -1,6 +1,6 @@
 @extends('layouts.fournisseur')
 
-@section('title', "Page d'accueil")
+@section('title', "Fournisseurs")
 
 <header>
     <div>

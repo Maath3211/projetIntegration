@@ -1,19 +1,12 @@
 @extends('layouts.fournisseur')
 @section('title',"Page d'accueil")
-<header>
-<div>
-    <a href="/"><h5 class="compagny">logo</h5></a>
-</div>
-<nav class="main-nav d-flex">                 
-    <a href="{{route('fournisseur.inscription')}}">Inscription</a>
-</nav>
-  </nav>   
-</header>
+  @section('navbar')
+    <li class="active"><a class="lien" href="{{ route('fournisseur.inscription') }}">Inscription</a></li>
+  @endsection
 @section('contenu')
 <div class="text-center py-5">
-    <h1>Bienvenue sur le site de ville</h1>
+    <h1>Portail des fournisseurs</h1>
 </div>
-
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-6">

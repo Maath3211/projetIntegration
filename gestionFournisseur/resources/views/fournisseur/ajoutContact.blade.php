@@ -13,6 +13,7 @@
 
 
         @section('contenu')
+        
             <p id="plus1">&#8853;</p>
             <div class="col-md-6 offset-3" id="form1Div">
                 <form action="{{ route('fournisseur.storeContact') }}" method="post" id="form1">

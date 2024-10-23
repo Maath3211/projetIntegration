@@ -30,6 +30,12 @@ Route::GET('/reinitialisation/{code}',
 Route::POST('/reinitialisation/{code}',
 [AdminController::class, 'resetPassword']) -> name('login.modifier');
 
+Route::GET('/password/edit',
+[PortailFournisseurController::class, 'editPassword'])->name('fournisseur.password.edit');
+
+Route::POST('/password/update',
+[PortailFournisseurController::class, 'updatePassword'])->name('fournisseur.password.update');
+
 #Déconnexion
 Route::POST('/logout',
 [PortailFournisseurController::class,'logout'])->name('fournisseur.logout');
@@ -163,7 +169,7 @@ Route::GET('/responsable/listeFournisseur',
 
 
 
-# TODO: A classer mathys
+# TODO: A classer Mathys
 Route::GET('/test',
 [AdminController::class,'demandeFourn']);
 
@@ -181,4 +187,5 @@ Route::POST('/responsable/demandeFournisseur/{neq}/refuser',
 
 Route::GET('/responsable/demandeFournisseur/{neq}/fichier/{idFichier}',
 [AdminController::class, 'telechargerFichier'])->name('responsable.telechargerFichier');
+
 

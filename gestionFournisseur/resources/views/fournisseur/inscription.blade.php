@@ -1,10 +1,5 @@
 @extends('layouts.fournisseur')
-@section('title',"Page d'accueil")
-<header>
-<div>
-    <a href="/"><h5 class="compagny">logo</h5></a>
-</div>
-</header>
+@section('title',"Inscription")
 @section('contenu')
 <div class="text-center py-5">
     <h1>Bienvenue sur le site de ville</h1>

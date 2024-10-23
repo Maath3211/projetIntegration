@@ -1,23 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"
-        integrity="sha384-3LK/3kTpDE/Pkp8gTNp2gR/2gOiwQ6QaO7Td0zV76UFJVhqLl4Vl3KL1We6q6wR9" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="{{ asset('css/fournisseur.css') }}">
     <title>@yield('title')</title>
 </head>
-{{-- TODO: ajouter background blanc (voir site ville) --}}
-<!-- <img src="{{asset('images/logo-v3r-v2.svg')}}" alt="logoV3R" id="logoV3R" class="img-fluid"> -->
 <body>
+<header>
+<img src="{{asset('images/logo-v3r-v2.svg')}}" alt="logoV3R" id="logoV3R" class="img-fluid ville">
+<nav class="navbar d-flex navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">
+                <span class="brand-uni">uni</span><span class="brand-v3r">.v3r.net</span>
+            </a>
+        </div>
+        <ul class="nav navbar-nav">
+            @yield('navbar')
+        </ul>
+    </div>
+</nav>
+</header>
     @if (isset($errors) && $errors->any())
     <div class="alert alert-danger">
         @foreach ($errors->all() as $error)
@@ -32,11 +39,40 @@
     @endif
     @yield('contenu')
     <footer>
-        <p>&copy 2024-2025 Gestion, Inc.</p>
-        <p>Simon Beaulieu &copy 2024</p>
-        <p>Mathys Lessard &copy 2024</p>
-        <p>Xavier Ricard &copy 2024</p>
-    </footer>
+		<div>
+			<aside>
+				<h5>Aide</h5>
+				<p>Centre d'aide</p>
+				<p>FAQ</p>
+				<p>311 / Nous joindre</p>
+			</aside>
+		</div>
+		<div>
+			<aside>
+				<h5>Politiques</h5>
+				<p>Politique de confidentialité</p>
+				<p>Politique d'accessibilité numérique</p>
+                <p>Conditions d'utilisation</p>
+			</aside>
+		</div>
+		<div>
+            <div>
+                <aside>
+                    <img src="{{asset('images/logo-v3r-v2.svg')}}" alt="logoV3R" id="logoV3RFooter" class="img-fluid ville">
+                </aside>
+            </div>
+			<aside class="logoFooter">
+                <a href="#"><i class="fab fa-facebook-square fa-2x logo"></i></a>
+                <a href="#"><i class="fab fa-instagram fa-2x logo"></i></a>
+                <a href="#"><i class="fab fa-twitter fa-2x logo"></i></a>
+                <a href="#"><i class="fab fa-youtube fa-2x logo"></i></a>
+			</aside>
+		</div>
+	</footer>
+<script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"
+    integrity="sha384-3LK/3kTpDE/Pkp8gTNp2gR/2gOiwQ6QaO7Td0zV76UFJVhqLl4Vl3KL1We6q6wR9" crossorigin="anonymous">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 </body>
-
 </html>

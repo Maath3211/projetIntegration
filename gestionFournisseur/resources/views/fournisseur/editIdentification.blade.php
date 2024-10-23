@@ -1,10 +1,5 @@
 @extends('layouts.fournisseur')
-@section('title',"Identification")
-<header>
-<div>
-    <a href="/"><h5 class="compagny">LOGO-VILLE3R</h5></a>
-</div>
-</header>
+@section('title',"MOD Identification")
 @section('contenu')
 <div class="text-center py-5">
     <h1>Mise à jour ( IDENTIFICATION )</h1>
@@ -13,9 +8,7 @@
   @csrf
     <div class="d-flex row justify-content-center">
       <div class="form-group">
-        <label for="neq" class="titreForm">Numéro d'entreprise (NEQ)
-          <small class="text-muted">(ReadOnly)</small>
-        </label>
+        <label for="neq" class="titreForm">Numéro d'entreprise (NEQ)</label>
         <input type="text" class="form-control" maxlength="10" pattern="\d*" inputmode="numeric" id="neq" placeholder="Numéro d'entreprise (NEQ)" name="neq" value="{{old('neq', $neq)}}" readonly>
         @error('neq')
         <span class="text-danger">{{ $message }}
