@@ -23,7 +23,10 @@
 </li>
 @endsection
 @section('contenu')
-<div class="container">
+<div class="text-center py-5">
+  <h1>Informations</h1>
+</div>
+<div class="container-fluid">
   <div class="row">
     <div class="col-md-6">
       <div class="custom-box">
