@@ -82,16 +82,42 @@
       <div class="custom-box">
         <h5>Produits et services offerts</h5>
         <p><strong>Approvisionnements</strong></p>
-        <p>{{$unspscCode->categorie}}</p>
-        <ul>
-          <li>{{$unspscCode->description}}</li>
-        </ul>
+        @php
+                            $codeUtilise = collect();
+                            $dernierCode = null;
+                        @endphp
 
-      </div>
+                        @foreach ($unspscCollection as $uc)
+                            @if ($dernierCode === null || $dernierCode !== $uc->code_categorie)
+                                @if ($dernierCode !== null)
+                                    </ul>
+                                @endif
+                                <h5>{{ $uc->nature }}</h5>
+                                <p>{{ $uc->categorie }}</p>
+                                <ul>
+                                    @php
+                                        $dernierCode = $uc->code_categorie;
+                                    @endphp
+                            @endif
+
+                            @if (!$codeUtilise->contains($uc->code_categorie))
+                                @php
+                                    $codeUtilise->push($uc->code_categorie);
+                                @endphp
+                            @endif
+
+
+                            <li>{{ $uc->code }} - {{ $uc->description }}</li>
+                        @endforeach
+                        @if ($dernierCode !== null)
+                            </ul>
+                        @endif
 
       <div class="custom-box">
         <h5>Détails et spécifications</h5>
-        <p>{{$unspsc->details}}</p>
+        @foreach ($unspscFournisseur as $uf)
+        <p>{{ $uf->details }}</p>
+    @endforeach
       </div>
 
       <div class="custom-box">
