@@ -491,8 +491,55 @@ class PortailFournisseurController extends Controller
 
     public function editUNSPSC()
     {
-        return View('fournisseur.editUNSPSC');
+        $fournisseur = Auth::user();
+        
+        $unspscFournisseur = DB::table('unspsccodes')->where('fournisseur_id', $fournisseur->id)->get();
+        $unspscDetails= DB::table('unspsccodes')->where('fournisseur_id', $fournisseur->id)->first();
+        $unspscChamp = DB::table('unspsccodes')->where('fournisseur_id', $fournisseur->id)->pluck('idUnspsc')->toArray();
+        $codes = Unspsc::limit(500)->get();
+        return View('fournisseur.editUNSPSC', compact('unspscFournisseur', 'codes','unspscChamp', 'unspscDetails'));
     }
+
+    public function updateUNSPSC(UnspscRequest $request)
+    {
+
+    $fournisseur = Auth::user();
+    $unspscData = $request->input('idUnspsc', []); 
+    try {
+        $existingUnspsc = Unspsccode::where('fournisseur_id', $fournisseur->id)->get();
+
+        $existingUnspscIds = $existingUnspsc->pluck('idUnspsc')->toArray();
+
+        foreach ($unspscData as $index => $unspscId) {
+            $unspsc = Unspsccode::where('fournisseur_id', $fournisseur->id)
+                        ->where('idUnspsc', $unspscId)
+                        ->first();
+
+            if ($unspsc) {
+                $unspsc->details = $request->details ?? '';
+            } else {
+                $unspsc = new Unspsccode();
+                $unspsc->fournisseur_id = $fournisseur->id;
+                $unspsc->idUnspsc = $unspscId;
+                $unspsc->details = $request->details ?? '';
+            }
+            $unspsc->save();
+        }
+
+        $unspscToDelete = array_diff($existingUnspscIds, $unspscData);
+        if (!empty($unspscToDelete)) {
+            Unspsccode::where('fournisseur_id', $fournisseur->id)
+                ->whereIn('idUnspsc', $unspscToDelete)
+                ->delete();
+        }
+
+            return redirect()->route('fournisseur.information')->with('message', 'Codes UNSPSC mis à jour avec succès!');
+        } catch (\Throwable $e) {
+            Log::error($e);
+            return redirect()->route('fournisseur.UNSPSC.edit')->withErrors(['Erreur lors de la mise à jour des codes UNSPSC']);
+        }
+    }
+    
 
 
     // Licence RBQ
@@ -575,35 +622,7 @@ class PortailFournisseurController extends Controller
         $fournisseur = Auth::user();
         $rbq = RBQLicence::where('fournisseur_id', $fournisseur->id)->first();
         $codes = Categorie::all();
-        $neq = Auth::user()->neq;
-
-
-        
-        $response = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22Numero%20de%20licence%22,%20%22Statut%20de%20la%20licence%22,%20%22Categorie%22,%20%22Sous-categories%22,%20%22NEQ%22,%20%22Type%20de%20licence%22,%20%22Restriction%22%20FROM%20%2232f6ec46-85fd-45e9-945b-965d9235840a%22%20WHERE%20%22NEQ%22%20=%20%27' . $neq . '%27%20AND%20%22Categorie%22%20%3C%3E%20%27null%27');
-            //$url = 'https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22Numero%20de%20licence%22,%20%22Statut%20de%20la%20licence%22,%20%22Categorie%22,%20%22Sous-categories%22,%20%22Type%20de%20licence%22,%20%22Restriction%22%20FROM%20%2232f6ec46-85fd-45e9-945b-965d9235840a%22%20WHERE%20%22NEQ%22%20=%20%27' . $neqFournisseur . '%27%20AND%20%22Categorie%22%20%3C%3E%20%27null%27';
-    
-            if ($response->successful()) {
-                // Récupérer uniquement le premier enregistrement
-                $record = collect($response->json()['result']['records'])->first();
-    
-                // Extraire les informations si disponibles
-                $numRBQ = $record['Numero de licence'] ?? null;
-                $statutRBQ = $record['Statut de la licence'] ?? null;
-                $typeLicence = $record['Type de licence'] ?? null;
-                $categorie = $record['Categorie'] ?? null;
-                $sousCategories = $record['Sous-categories'] ?? null;
-                $restriction = $record['Restriction'] ?? null;
-            } else {
-                // Valeurs par défaut si l'API ne renvoie rien
-                $numRBQ = null;
-                $statutRBQ = null;
-                $typeLicence = null;
-                $categorie = null;
-                $sousCategories = null;
-                $restriction = null;
-            }
-
-        return View('fournisseur.editRBQ',compact('rbq','codes', 'numRBQ', 'statutRBQ', 'typeLicence', 'categorie', 'sousCategories','restriction','rbqLicence'));
+        return View('fournisseur.editRBQ',compact('rbq','codes',));
     }
 
 

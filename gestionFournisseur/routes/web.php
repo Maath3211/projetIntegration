@@ -86,8 +86,11 @@ Route::GET('/UNSPSC',
 Route::POST('/UNSPSC/store',
 [PortailFournisseurController::class,'storeUnspsc'])->name('fournisseur.storeUnspsc');
 
-Route::GET('/UNSPSC/edit',
+Route::GET('/UNSPSC/{unspsc}/modifier',
 [PortailFournisseurController::class,'editUnspsc'])->name('fournisseur.UNSPSC.edit');
+
+Route::PATCH('/UNSPSC/{unspsc}/modifier',
+[PortailFournisseurController::class,'updateUNSPSC'])->name('fournisseur.UNSPSC.update');
 
 # InscriptionRBQ
 Route::GET('/RBQ',
