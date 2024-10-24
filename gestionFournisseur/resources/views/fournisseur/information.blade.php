@@ -177,6 +177,13 @@
                             </svg>
                         </button>
                     </form>
+                    <div class="custom-box">
+                        <h5>Finances</h5>
+                        <p>TPS: {{$finance->tps ?? 'N/A'}}<br>TVQ: {{$finance->tvq ?? 'N/A'}}</p>
+                        <p><strong>Conditions de paiement</strong><br>{{$finance->paiement ?? 'N/A'}}</p>
+                        <p><strong>Devise :</strong> {{$finance->devise ?? 'N/A'}}</p>
+                        <p><strong>Mode de communication</strong><br>{{$finance->communication ?? 'N/A'}}</p>
+                    </div>
                     @if ($files && count($files) > 0)
                         <div class="custom-box">
                             <h5>Documents</h5>
