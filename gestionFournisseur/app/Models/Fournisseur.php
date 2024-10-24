@@ -37,6 +37,10 @@ class Fournisseur extends Authenticatable
         return $this->hasOne(FournisseurCoord::class, 'fournisseur_id');
     }
 
+    public function contact(){
+        return $this->hasMany(Contact::class, 'fournisseur_id');
+    }
+
 
     /**
      * The attributes that should be hidden for serialization.

@@ -68,7 +68,7 @@ class PortailFournisseurController extends Controller
         $fournisseur = Auth::user();
         $rbq = RBQLicence::where('fournisseur_id', $fournisseur->id)->first();
         $unspsc = Unspsccode::where('fournisseur_id', $fournisseur->id)->first();
-        $contact = Contact::where('fournisseur_id', $fournisseur->id)->first();
+        $contacts = Contact::where('fournisseur_id', $fournisseur->id)->first();
         $coordonnees = FournisseurCoord::where('fournisseur_id', $fournisseur->id)->first();
         $numero = $coordonnees->numero;
         $numero = substr($numero, 0, 3) . '-' . substr($numero, 3, 3) . '-' . substr($numero, 6);
@@ -92,7 +92,7 @@ class PortailFournisseurController extends Controller
             return redirect()->route('fournisseur.finances');
         }
         //dd($unspscFournisseur);
-        return View('fournisseur.information', compact('fournisseur','rbq','categorie','unspscCollection','unspscFournisseur', 'contact', 'coordonnees', 'files','finance','numero','numero2','codePostal','unspscCode'));
+        return View('fournisseur.information', compact('fournisseur','rbq','categorie','unspscCollection','unspscFournisseur', 'contacts', 'coordonnees', 'files','finance','numero','numero2','codePostal','unspscCode'));
     }
 
     public function storeDesactive()
@@ -710,7 +710,7 @@ class PortailFournisseurController extends Controller
                 return redirect()->route('fournisseur.information')->with('message', 'Fichiers importés avec succès.');
             }
 
-            return redirect()->route('fournisseur.importation')->withErrors(['error' => 'Aucun fichier à importer.']);
+             return redirect()->route('fournisseur.importation')->withErrors(['error' => 'Aucun fichier à importer.']);
         }
 
         if ($request->hasFile('images')) {
@@ -749,7 +749,6 @@ class PortailFournisseurController extends Controller
         try {
             $fournisseur = new Fournisseur($fournisseurData);
              $fournisseur->save();
-            //TODO: décommenter
 
             $fournisseurCoord = new FournisseurCoord($coordonneesData);
             $fournisseurCoord->fournisseur_id = $fournisseur->id;
@@ -829,7 +828,8 @@ class PortailFournisseurController extends Controller
 
             session()->forget(['fournisseurNeq', 'fournisseur', 'coordonnees', 'contact', 'RBQ', 'UNSPSC']);
 
-            return redirect()->route('fournisseur.index')->with('message', 'Toutes les informations ont été enregistrées avec succès.');
+            
+             return redirect()->route('fournisseur.index')->with('message', 'Toutes les informations ont été enregistrées avec succès.');
         } catch (\Throwable $e) {
             Log::debug($e);
             return redirect()->route('fournisseur.importation')->withErrors(['error' => 'Erreur lors de la sauvegarde des informations.' . $e->getMessage()]);
