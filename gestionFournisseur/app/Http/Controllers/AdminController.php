@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ModelCourrielRequest;
 use App\Mail\demandeFournisseur;
+use App\Models\ModelCourriel;
 use Crypt;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -43,9 +45,7 @@ class AdminController extends Controller
             session(['responsable' => $responsable]);
 
             return redirect()->route('responsable.listeFournisseur')->with('message', 'Connexion réussie.');
-        }
-        else 
-        {
+        } else {
             return redirect()->route('responsable.index')->withErrors(['Informations invalides.']);
         }
     }
@@ -154,7 +154,7 @@ class AdminController extends Controller
     public function demandeFournisseurView()
     {
 
-        $fnAttentes = DB::table('fournisseurs')->where('statut', 'attente')->get();
+        $fnAttentes = DB::table('fournisseurs')->where('statut', 'En attente')->get();
         return view('admin.demandeFournisseur', compact('fnAttentes'));
     }
 
@@ -185,7 +185,7 @@ class AdminController extends Controller
     {
         try {
             $fn = Fournisseur::where('neq', $neq)->firstOrFail();
-            $fn->statut = 'confirme';
+            $fn->statut = 'Acceptée';
             $fn->dateStatut = Carbon::now();
             $fn->raisonRefus = null;
             $fn->save();
@@ -208,7 +208,7 @@ class AdminController extends Controller
         $fn = Fournisseur::where('neq', $neq)->firstOrFail();
         $fn->dateStatut = Carbon::now();
         $fn->raisonRefus = Crypt::encryptString($request->raisonRefus);
-        $fn->statut = 'refusé';
+        $fn->statut = 'Refusé';
         $fn->save();
         return redirect()->route('responsable.demandeFournisseur')->with('message', 'Le fournisseur a été refusé.');
     }
@@ -224,6 +224,44 @@ class AdminController extends Controller
         } else {
             return back()->withErrors('Fichier introuvable');
         }
+    }
+
+
+    public function afficherModelCourriel()
+    {
+        $modelCourriels = ModelCourriel::all();
+
+        return view('admin.afficherModelCourriel', compact('modelCourriels'));
+    }
+
+    public function getModel(Request $request)
+    {
+        $modelId = $request->input('modelId');
+        $modelCourriel = ModelCourriel::findOrFail($modelId);
+
+        return response()->json([
+            'sujet' => $modelCourriel->sujet,
+            'contenu' => $modelCourriel->contenu
+        ]);
+    }
+
+    public function saveModelCourriel(ModelCourrielRequest $request)
+    {
+        $model = ModelCourriel::where('id', $request->model_courriel)->get()->firstOrFail();
+
+        $model->sujet = $request->sujet;
+        $model->contenu = $request->contenu;
+        $model->save();
+
+        return back();
+    }
+
+
+
+    // TODO: déplacer dans autre controller
+    public function deleteContact($id)
+    {
+        dd($id);
     }
 
 

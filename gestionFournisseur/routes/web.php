@@ -158,21 +158,15 @@ Route::GET('/responsable',
 Route::POST('/connexion/responsable/email',
 [AdminController::class,'loginEmailResponsable'])->name('login.email.reponsable');
 
-#Affichage
+#Affichage TODO: a supprimer [
 Route::GET('/affiche',
 [AdminController::class,'affiche'])->name('responsable.affiche');
+#                           ]
 
 Route::GET('/responsable/listeFournisseur',
 [AdminController::class,'listeFournisseur'])->name('responsable.listeFournisseur');
 
-
-
-
-
-# TODO: A classer Mathys
-Route::GET('/test',
-[AdminController::class,'demandeFourn']);
-
+# Demande de fournisseur
 Route::GET('/responsable/demandeFournisseur',
 [AdminController::class,'demandeFournisseurView'])->name('responsable.demandeFournisseur');
 
@@ -189,3 +183,18 @@ Route::GET('/responsable/demandeFournisseur/{neq}/fichier/{idFichier}',
 [AdminController::class, 'telechargerFichier'])->name('responsable.telechargerFichier');
 
 
+# Modele de courriel
+
+Route::GET('/responsable/modeleCourriel',
+[AdminController::class, 'afficherModelCourriel'])->name('responsable.afficherModelCourriel');
+
+Route::get('/get-template-content', [AdminController::class, 'getModel']);
+
+Route::POST('/responsable/sauvegarderModeleCourriel',
+[AdminController::class, 'sauvegarderModelCourriel'])->name('responsable.sauvegarderModelCourriel');
+
+
+
+# TODO: Classer et ajuster quand déplacer dans le controller
+Route::GET('/contact/supprimer',
+[AdminController::class, 'deleteContact'])->name('fournisseur.deleteContact');
