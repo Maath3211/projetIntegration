@@ -658,18 +658,18 @@ class PortailFournisseurController extends Controller
 
         try {
             $fournisseur = new Fournisseur($fournisseurData);
-            // $fournisseur->save();
+             $fournisseur->save();
             //TODO: décommenter
 
             $fournisseurCoord = new FournisseurCoord($coordonneesData);
             $fournisseurCoord->fournisseur_id = $fournisseur->id;
-            // $fournisseurCoord->save();
+            $fournisseurCoord->save();
 
             foreach ($contactData as $contact) {
+                
                 $contactNew = new Contact($contact);
                 $contactNew->fournisseur_id = $fournisseur->id;
-
-                dd($contact->prenom);
+                
                 $contactNew->save();
             }
 

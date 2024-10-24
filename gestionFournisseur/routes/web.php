@@ -180,3 +180,8 @@ Route::get('/get-template-content', [AdminController::class, 'getModel']);
 Route::POST('/responsable/sauvegarderModeleCourriel',
 [AdminController::class, 'sauvegarderModelCourriel'])->name('responsable.sauvegarderModelCourriel');
 
+
+
+# TODO: Classer et ajuster quand déplacer dans le controller
+Route::GET('/contact/supprimer',
+[AdminController::class, 'deleteContact'])->name('fournisseur.deleteContact');

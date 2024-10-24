@@ -45,9 +45,7 @@ class AdminController extends Controller
             session(['responsable' => $responsable]);
 
             return redirect()->route('responsable.listeFournisseur')->with('message', 'Connexion réussie.');
-        }
-        else 
-        {
+        } else {
             return redirect()->route('responsable.index')->withErrors(['Informations invalides.']);
         }
     }
@@ -229,7 +227,8 @@ class AdminController extends Controller
     }
 
 
-    public function afficherModelCourriel(){
+    public function afficherModelCourriel()
+    {
         $modelCourriels = ModelCourriel::all();
 
         return view('admin.afficherModelCourriel', compact('modelCourriels'));
@@ -239,22 +238,32 @@ class AdminController extends Controller
     {
         $modelId = $request->input('modelId');
         $modelCourriel = ModelCourriel::findOrFail($modelId);
-        
+
         return response()->json([
             'sujet' => $modelCourriel->sujet,
             'contenu' => $modelCourriel->contenu
         ]);
     }
 
-    public function sauvegarderModelCourriel(ModelCourrielRequest $request){
+    public function saveModelCourriel(ModelCourrielRequest $request)
+    {
         $model = ModelCourriel::where('id', $request->model_courriel)->get()->firstOrFail();
-        
+
         $model->sujet = $request->sujet;
         $model->contenu = $request->contenu;
         $model->save();
 
         return back();
     }
+
+
+
+    // TODO: déplacer dans autre controller
+    public function deleteContact($id)
+    {
+        dd($id);
+    }
+
 
 
 
