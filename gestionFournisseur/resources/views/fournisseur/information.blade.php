@@ -130,7 +130,7 @@
         <h5>Détails et spécifications</h5>
         <p>{{$unspscFournisseur->first()->details}}</p>
       </div>
-      <form action="{{ route('fournisseur.UNSPSC.edit') }}" method="GET">
+      <form action="{{ route('fournisseur.UNSPSC.edit', $unspscFournisseur->first()->fournisseur_id) }}" method="GET">
         @csrf
         <button type="submit" class="btn btn-link">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
