@@ -55,5 +55,5 @@
       </div> 
     </div>
 </form>
-@endsection
+@endsection 
 <script src="{{ asset('js/neq.js') }}"></script>

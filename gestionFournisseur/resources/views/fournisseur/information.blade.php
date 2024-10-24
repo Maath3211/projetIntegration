@@ -26,8 +26,69 @@
     </li>
 @endsection
 @section('contenu')
-    <div class="text-center py-5">
-        <h1>Informations</h1>
+<div class="text-center py-5">
+  <h1>INFORMATIONS</h1>
+</div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="custom-box">
+        <h5>État de la demande</h5>
+        <p><span class="icon">✔️</span> {{$fournisseur->statut}}</p>
+        @if ($fournisseur->statut == 'Désactivée')
+          <form action="{{ route('fournisseur.storeActive') }}" method="post">
+              @csrf
+              <div class="form-group">
+                  <button type="submit" class="btn btn-secondary">Réactiver mon compte</button>
+              </div>
+          </form>
+        @else
+          <form action="{{ route('fournisseur.storeDesactive') }}" method="post">
+            @csrf
+            <div class="form-group">
+                <button type="submit" class="btn btn-secondary">Retirer mon compte</button>
+            </div>
+          </form>
+        @endif
+      </div>
+      <div class="custom-box">
+        <h5>Identification</h5>
+        <p>{{$fournisseur->entreprise}}</p>
+        <p>{{$fournisseur->neq}}</p>
+        <p>{{$fournisseur->email}}</p>
+        <form action="{{ route('fournisseur.identification.edit') }}" method="GET">
+          @csrf
+          <button type="submit" class="btn btn-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+              <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+              <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+            </svg>
+          </button>
+        </form>
+      </div>
+
+      <div class="custom-box">
+        <h5>Adresse</h5>
+        <p>{{$coordonnees->noCivic}}, rue {{$coordonnees->rue}}<br>{{$coordonnees->ville}} ({{$coordonnees->province}}) {{$codePostal}}</p>
+        <p>Bureau: {{$coordonnees->bureau}}</p>
+        <p>Site Web: {{$coordonnees->site}}</p>
+        <p>📞 T: {{$coordonnees->typeTel}} N: {{$numero}} P: {{$coordonnees->poste}}</p>
+        <p>📞 T: {{$coordonnees->typeTel2}} N: {{$numero2}} P: {{$coordonnees->poste2}}</p>
+        <form action="{{ route('fournisseur.coordonnees.edit') }}" method="GET">
+          @csrf
+          <button type="submit" class="btn btn-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+              <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+              <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+            </svg>
+          </button>
+        </form>
+      </div>
+
+      <div class="custom-box">
+        <h5>Contacts</h5>
+        <p>{{$contact->prenom}} {{$contact->nom}}<br>{{$contact->fonction}}<br>{{$contact->courriel}}<br>{{$contact->telephone}}</p>
+      </div>
     </div>
     <div class="container-fluid">
         <div class="row">
@@ -223,9 +284,11 @@
                         </div>
                     @endif
                 </div>
-            </div>
-        </div>
-    @endsection
+              @endif
+          </div>
+      @endif
+    </div>
+@endsection
 
 
 

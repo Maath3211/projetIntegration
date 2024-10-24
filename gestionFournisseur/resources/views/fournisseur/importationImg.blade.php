@@ -2,6 +2,9 @@
 @section('title', 'Administration')
 
 @section('contenu')
+<div class="text-center py-5">
+    <h1 class="py-5">IMPORTATIONS</h1>
+</div>
 <form action="{{ route('fournisseur.storeImportation') }}" method="POST" enctype="multipart/form-data">
     @csrf
     @method('PATCH')

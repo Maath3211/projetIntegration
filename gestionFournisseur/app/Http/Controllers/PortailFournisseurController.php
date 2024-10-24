@@ -934,6 +934,8 @@ class PortailFournisseurController extends Controller
         }
     }
 
+    
+
     /**
      * CONNEXION **** CONNEXION **** CONNEXION ****CONNEXION ****CONNEXION****CONNEXION **** CONNEXION ****CONNEXION ****
      */

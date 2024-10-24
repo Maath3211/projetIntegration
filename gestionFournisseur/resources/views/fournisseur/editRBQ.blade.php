@@ -1,13 +1,9 @@
 @extends('layouts.fournisseur')
-
 @section('title', "RBQ")
-
-<header>
-    <div>
-        <a href="/"><h5 class="compagny">LOGO-VILLE3R</h5></a>
-    </div>
-</header>
-
+@section('contenu')
+<div class="text-center py-5">
+    <h1 class="py-5">Mise à jour (RBQ)</h1>
+</div>
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-2"></div>
@@ -122,6 +118,6 @@
         <div class="col-md-2"></div>
     </div>
 </div>
-
+@endsection
 <script src="{{ asset('js/RBQ.js') }}"></script>
 

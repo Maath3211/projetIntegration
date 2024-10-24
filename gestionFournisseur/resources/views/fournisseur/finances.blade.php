@@ -1,6 +1,9 @@
 @extends('layouts.fournisseur')
 @section('title', "Finances")
 @section('contenu')
+<div class="text-center py-5">
+    <h1 class="py-5">FINANCES</h1>
+</div>
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-2"></div>

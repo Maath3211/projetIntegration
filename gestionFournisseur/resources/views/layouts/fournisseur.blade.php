@@ -15,9 +15,15 @@
 <nav class="navbar d-flex navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="/">
+            <a class="navbar-brand" href="/" alt="Accueil du site" title="Accueil du site">
                 <span class="brand-uni">uni</span><span class="brand-v3r">.v3r.net</span>
             </a>
+            <button class="night-mode-toggle" onclick="toggleNightMode()">
+                <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="10" fill="white" stroke="black" stroke-width="2"/>
+                    <path d="M12 2 A10 10 0 0 0 12 22" fill="black"/>
+                </svg>
+            </button> 
         </div>
         <ul class="nav navbar-nav">
             @yield('navbar')
@@ -40,7 +46,7 @@
     @yield('contenu')
     <footer>
 		<div>
-			<aside>
+			<aside class="white">
 				<h5>Aide</h5>
 				<p>Centre d'aide</p>
 				<p>FAQ</p>
@@ -48,7 +54,7 @@
 			</aside>
 		</div>
 		<div>
-			<aside>
+			<aside class="white">
 				<h5>Politiques</h5>
 				<p>Politique de confidentialité</p>
 				<p>Politique d'accessibilité numérique</p>
@@ -62,10 +68,10 @@
                 </aside>
             </div>
 			<aside class="logoFooter">
-                <a href="#"><i class="fab fa-facebook-square fa-2x logo"></i></a>
-                <a href="#"><i class="fab fa-instagram fa-2x logo"></i></a>
-                <a href="#"><i class="fab fa-twitter fa-2x logo"></i></a>
-                <a href="#"><i class="fab fa-youtube fa-2x logo"></i></a>
+                <a href="https://www.facebook.com/villetroisrivieres" target="_blank" alt="Facebook" title="Facebook"><i class="fab fa-facebook-square fa-2x logo"></i></a>
+                <a href="https://www.instagram.com/villedetroisrivieres" target="_blank" alt="Instagram" title="Instgram"><i class="fab fa-instagram fa-2x logo"></i></a>
+                <a href="https://www.linkedin.com/company/ville-de-trois-rivi-res" target="_blank" alt="Linkedin" title="Linkedin"><i class="fab fa-linkedin fa-2x logo"></i></a>
+                <a href="https://www.youtube.com/channel/UC4UyW0CoFiJaFCFaOzoQQ5w" target="_blank" alt="You Tube" title="You Tube"><i class="fab fa-youtube fa-2x logo"></i></a>
 			</aside>
 		</div>
 	</footer>
@@ -74,5 +80,11 @@
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+<script>
+    function toggleNightMode()
+    {
+        document.body.classList.toggle('night-mode');
+    }
+</script>
 </body>
 </html>

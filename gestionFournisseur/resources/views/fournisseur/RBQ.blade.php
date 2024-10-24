@@ -1,5 +1,9 @@
 @extends('layouts.fournisseur')
 @section('title', "RBQ")
+@section('contenu')
+<div class="text-center">
+    <h1>RBQ</h1>
+</div>
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-2"></div>
@@ -113,6 +117,6 @@
         <div class="col-md-2"></div>
     </div>
 </div>
-
+@endsection
 <script src="{{ asset('js/RBQ.js') }}"></script>
 
