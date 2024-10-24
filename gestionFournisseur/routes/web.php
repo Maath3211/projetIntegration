@@ -199,7 +199,7 @@ Route::POST('/responsable/sauvegarderModeleCourriel',
 
 
 # TODO: Classer et ajuster quand déplacer dans le controller
-Route::POST('/contact/supprimer/{id}',
+Route::delete('/contact/supprimer/{id}',
 [AdminController::class, 'deleteContact'])->name('fournisseur.deleteContact');
 
 Route::POST('/contact/editContact/{id}',
