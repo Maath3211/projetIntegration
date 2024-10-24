@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ContactRequest;
 use App\Http\Requests\ModelCourrielRequest;
 use App\Mail\demandeFournisseur;
+use App\Models\Contact;
 use App\Models\ModelCourriel;
 use Crypt;
 use Illuminate\Http\Request;
@@ -261,10 +263,42 @@ class AdminController extends Controller
     // TODO: déplacer dans autre controller
     public function deleteContact($id)
     {
-        dd($id);
+        try {
+            $contact = Contact::where('id', $id)->get()->firstOrFail();
+            $contact->delete();
+            return Redirect::back();
+        } catch (\Throwable $e) {
+            Log::debug($e);
+            return Redirect::back()->withErrors(['Erreur interne']);
+        }
+
     }
 
+    public function editContact($id)
+    {
+        $contact = Contact::where('id', $id)->get()->firstOrFail();
+        
+        return view('fournisseur.editContact', compact('contact'));
+    }
 
+    public function updateContact($id, ContactRequest $request)
+    {
+        try {
+            $contact = Contact::where('id', $id)->get()->firstOrFail();
+            $contact->prenom = $request->prenom;
+            $contact->nom = $request->nom;
+            $contact->fonction = $request->fonction;
+            $contact->courriel = $request->courriel;
+            $contact->typeTelephone = $request->typeTelephone;
+            $contact->telephone = $request->telephone;
+            $contact->poste = $request->poste;
 
+            $contact->save();
 
+            return redirect()->route('responsable.demandeFournisseur');
+        } catch (\Throwable $e) {
+            Log::debug($e);
+            return Redirect::back()->withInput()->withErrors(['Erreur interne']);
+        }
+    }
 }
