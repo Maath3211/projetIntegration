@@ -75,22 +75,6 @@
         <select id="products" class="form-select">
           <option selected>Pelouse</option>
         </select>
-        <div class="form-check mt-2">
-          <input class="form-check-input" type="checkbox" id="option1">
-          <label class="form-check-label" for="option1">Rouleuses pour pelouses et terrains</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="option2">
-          <label class="form-check-label" for="option2">Scarificateur de pelouse</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="option3">
-          <label class="form-check-label" for="option3">Services d'entretien des pelouses</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="option4">
-          <label class="form-check-label" for="option4">Service d'entretien des pelouses d'autoroutes</label>
-        </div>
       </div>
 
       <!-- Categories section -->
@@ -98,19 +82,8 @@
         <label for="categories" class="form-label">Catégories de travaux</label>
         <select id="categories" class="form-select">
           <option selected>Entrepreneur général</option>
+          <option selected>PD</option>
         </select>
-        <div class="form-check mt-2">
-          <input class="form-check-input" type="checkbox" id="category1" checked>
-          <label class="form-check-label" for="category1">1.4 Routes et canalisation</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="category2" checked>
-          <label class="form-check-label" for="category2">1.5 Structures d'ouvrage de génie civil</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="category3">
-          <label class="form-check-label" for="category3">2.5 Excavation et terrassement</label>
-        </div>
       </div>
 
       <!-- Administrative regions section -->
@@ -119,56 +92,56 @@
         <select id="regions" class="form-select">
           <option selected>03 Capitale-Nationale</option>
         </select>
-        <div class="form-check mt-2">
-          <input class="form-check-input" type="checkbox" id="region1">
-          <label class="form-check-label" for="region1">01 Bas-Saint-Laurent</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="region2">
-          <label class="form-check-label" for="region2">02 Saguenay-Lac-Saint-Jean</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="region3" checked>
-          <label class="form-check-label" for="region3">03 Capitale-Nationale</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="region4">
-          <label class="form-check-label" for="region4">04 Mauricie</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="region5">
-          <label class="form-check-label" for="region5">05 Estrie</label>
-        </div>
       </div>
 
       <!-- Cities section -->
       <div class="col-md-3">
-        <label for="cities" class="form-label">Villes</label>
+        <label for="cities" class="form-label">Villes  .ty5456546 </label>
         <select id="cities" class="form-select">
           <option selected>Batiscan</option>
         </select>
-        <div class="form-check mt-2">
-          <input class="form-check-input" type="checkbox" id="city1" checked>
-          <label class="form-check-label" for="city1">Batiscan</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="city2">
-          <label class="form-check-label" for="city2">Beaupré</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="city3">
-          <label class="form-check-label" for="city3">Boischatel</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="city4">
-          <label class="form-check-label" for="city4">Cap-Santé</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="city5">
-          <label class="form-check-label" for="city5">Champlain</label>
-        </div>
       </div>
     </div>
   </div>
 
+
+
+
+  <div class="container">
+        <div class="row">
+            <div class="col-6 offset-3">
+                <div class="text-center py-3">
+                    <h1>Demande de fournisseur</h1>
+
+
+                    <table class="table table-hover table-striped">
+
+                        <tr>
+                            <th scope="col">Entreprise</th>
+                            <th scope="col">Courriel</th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                        </tr>
+
+                        
+                            @foreach ($fnAttentes as $fn)
+                            <tr class="fournisseur-row" data-statut="{{ $fn->statut }}">
+                            <td>{{$fn->entreprise}}</td>
+                            <td>{{$fn->email}}</td>
+                            <td>{{$fn->neq}}</td>
+                            <td>{{$fn->statut}}</td>
+                            <td> <a href="{{ route('responsable.demandeFournisseurZoom', $fn->neq) }}" class="btn btn-info">Plus d'information</a> </td>
+                            </tr>
+                        @endforeach
+                            
+                      </table>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ asset('js/listeFournisseur.js') }}"></script>
 @endsection

@@ -59,7 +59,8 @@ class AdminController extends Controller
 
     public function listeFournisseur()
     {
-        return View('responsable.listeFournisseur');
+        $fnAttentes = DB::table('fournisseurs')->get();
+        return View('responsable.listeFournisseur',compact('fnAttentes'));
     }
 
     // ADMINISTRATION --- ADMINISTRATION --- ADMINISTRATION --- ADMINISTRATION --- ADMINISTRATION --- ADMINISTRATION
