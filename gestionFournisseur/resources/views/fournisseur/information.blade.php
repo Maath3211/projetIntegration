@@ -120,7 +120,6 @@
             
             <div class="custom-box">
                 <h4>Contacts</h4>
-                <a id="plus1" href="{{ route('fournisseur.contact') }}">&#8853;</a>
                 <p>
                     @if ($contacts != null)
                         <ul>
