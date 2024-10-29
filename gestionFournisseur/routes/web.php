@@ -209,6 +209,11 @@ Route::GET('/contact/editContact/{id}',
 Route::POST('/contact/updateContact/{id}',
 [AdminController::class, 'updateContact'])->name('fournisseur.updateContact');
 
+Route::GET('/contact/addContactCreer/{id}',
+[AdminController::class, 'addContactCreer'])->name('fournisseur.addContactCreer');
+
+Route::POST('/contact/storeContactCreer/{id}',
+[AdminController::class, 'storeContactCreer'])->name('fournisseur.storeContactCreer');
 
 
 

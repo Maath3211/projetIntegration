@@ -322,3 +322,7 @@ body.night-mode .file-info {
   }
   
 }
+
+.divContactForm{
+  display: inline-block;
+}
