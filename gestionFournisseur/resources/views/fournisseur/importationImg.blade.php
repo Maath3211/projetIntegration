@@ -1,9 +1,8 @@
-@extends('layouts.layoutAdmin')
-@section('title', 'Administration')
-
+@extends('layouts.fournisseur')
+@section('title', 'Importation')
 @section('contenu')
 <div class="text-center py-5">
-    <h1 class="py-5">IMPORTATIONS</h1>
+    <h1>IMPORTATION</h1>
 </div>
 <form action="{{ route('fournisseur.storeImportation') }}" method="POST" enctype="multipart/form-data">
     @csrf
@@ -33,7 +32,7 @@
         </div>
         <div class="d-flex row justify-content-center">
             <div class="form-group" class="titreForm">
-                <label for="imageID" class="custom-file-upload">Aucun changement</label>
+                <label for="imageID" class="custom-file-upload">Aucun fichier</label>
             </div>
         </div>
         <div class="d-flex row justify-content-center">

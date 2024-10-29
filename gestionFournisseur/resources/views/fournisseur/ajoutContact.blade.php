@@ -2,23 +2,21 @@
 
 @section('title', 'Contact')
 
-
+@section('contenu')
 <div class="container-fluid">
     <div class="row">
 
         <div class="text-center">
-            <h1>Ajouter un contact</h1>
+            <h1>Contact</h1>
         </div>
 
 
 
-        @section('contenu')
+
             {{-- <p id="plus1">&#8853;</p> --}}
             <div class="col-md-6 offset-3" id="form1Div">
                 <form action="{{ route('fournisseur.storeContact') }}" method="post" id="form1">
                     @csrf
-
-                    <h2 class="text-center" id="numContact1">Contact</h2>
                     <div class=" py-3">
                         <div class="d-flex row justify-content-center">
                             <div class="form-group">
