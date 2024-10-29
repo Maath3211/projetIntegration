@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\FournisseurCoord;
 use App\Models\Contact;
+use App\Models\Finances;
 
 
 
@@ -39,6 +40,10 @@ class Fournisseur extends Authenticatable
 
     public function contact(){
         return $this->hasMany(Contact::class, 'fournisseur_id');
+    }
+
+    public function finances(){
+        return $this->hasOne(Finance::class, 'fournisseur_id');
     }
 
 

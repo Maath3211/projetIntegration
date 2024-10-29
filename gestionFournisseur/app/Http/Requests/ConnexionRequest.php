@@ -28,7 +28,6 @@ class ConnexionRequest extends FormRequest
                 'string',
                 'min:10',
                 'max:10',
-                'unique:fournisseurs,neq',
             ],
             'password' => 'required|min:7|max:12',
         ];
@@ -40,8 +39,7 @@ class ConnexionRequest extends FormRequest
             'password.min' => 'Le password doit contenir entre 7 caractères minimum',
             'password.max' => 'Le password doit contenir entre 12 caractères maximum',
             'neq.min' => 'Le neq doit contenir 10 caractères',
-            'neq.max' => 'Le neq doit contenir 10 caractères',
-            'neq.unique' => 'Le NEQ doit être unique.'
+            'neq.max' => 'Le neq doit contenir 10 caractères'
         ];
     }
 }

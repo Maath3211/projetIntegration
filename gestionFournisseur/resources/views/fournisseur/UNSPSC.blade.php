@@ -1,9 +1,9 @@
 {{-- TODO: Améliorer le chargement de la page --}}
 @extends('layouts.fournisseur')
-@section('title',"UNSPSC")>
+@section('title',"UNSPSC")
 @section('contenu')
-<div class="text-center py-3">
-    <h1 class="py-3">UNSPSC</h1>
+<div class="text-center">
+    <h1 class="py-5">UNSPSC</h1>
 </div>
 <div class="container-fluid">
     <div class="row">

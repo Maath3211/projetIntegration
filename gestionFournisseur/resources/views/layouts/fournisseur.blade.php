@@ -43,7 +43,9 @@
             <p>{{ session('message') }}</p>
         </div>
     @endif
-    @yield('contenu')
+    <main>
+        @yield('contenu')
+    </main>
     <footer>
 		<div>
 			<aside class="white">

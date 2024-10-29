@@ -68,7 +68,8 @@ class PortailFournisseurController extends Controller
         $fournisseur = Auth::user();
         $rbq = RBQLicence::where('fournisseur_id', $fournisseur->id)->first();
         $unspsc = Unspsccode::where('fournisseur_id', $fournisseur->id)->first();
-        $contacts = Contact::where('fournisseur_id', $fournisseur->id)->first();
+        $contacts = Contact::where('fournisseur_id', $fournisseur->id)->get();
+        $contacts = DB::table('contact')->where('fournisseur_id', $fournisseur->id)->get();
         $coordonnees = FournisseurCoord::where('fournisseur_id', $fournisseur->id)->first();
         $numero = $coordonnees->numero;
         $numero = substr($numero, 0, 3) . '-' . substr($numero, 3, 3) . '-' . substr($numero, 6);

@@ -22,11 +22,11 @@ class FinanceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'tps' => 'required|regex:/^\d{9}RT\d{4}$/',
-            'tvq' => 'required|regex:/^\d{9}TQ\d{4}$/',
+            'tps' => 'required',
+            'tvq' => 'required',
             'paiement' => 'required|in:Aucune option de paiement,Payable immédiatement sans déduction,Payable immédiatement sans déduction. Date de base au 15 du mois suivant,Dans les 15 jours 2% escompte. dans les 30 jours sans déduction,Après entrée facture jusqu\'au 15 du mois. jusqu\'au 15 du mois suivant,Dans les 15 jours sans déduction,Dans les 30 jours sans déduction,Dans les 45 jours sans déduction,Dans les 60 jours sans déduction,',
             'devise' => 'required|in:CAD,USD',
-            'communication' => 'required|in:courriel,courrielRegulier',
+            'communication' => 'required|in:courriel,courrier régulier',
         ];
     }
 

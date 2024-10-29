@@ -4,20 +4,20 @@
     <li class="active"><a class="lien" href="{{ route('fournisseur.inscription') }}">Inscription</a></li>
   @endsection
 @section('contenu')
-<div class="text-center py-5">
+<div class="text-center">
     <h1>Portail des fournisseurs</h1>
 </div>
 <div class="container-fluid">
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-6 col-index">
       <form method="post" action="{{ route('login.neq') }}">
         @csrf
-        <fieldset>
-          <legend>Authentification</legend>
+        <fieldset class="field-index">
+          <legend>Authentification par numéro NEQ</legend>
           <div class="d-flex flex-column justify-content-center py-5">
             <div class="form-group">
               <label for="neq" class="titreForm">Numéro d'entreprise (NEQ)</label>
-              <input type="text" class="form-control" maxlength="10" pattern="\d*" inputmode="numeric" id="neq" placeholder="Numéro d'entreprise (NEQ)" name="neq">
+              <input type="text" class="form-control control-index" maxlength="10" pattern="\d*" inputmode="numeric" id="neq" placeholder="Numéro d'entreprise (NEQ)" name="neq">
               <a href="{{route('fournisseur.identification')}}" class="link-right">Pas de NEQ?</a>
               @error('neq')
               <span class="text-danger">{{ $message }}</span>
@@ -25,7 +25,7 @@
             </div>
             <div class="form-group">
               <label for="password" class="titreForm">Mot de passe</label>
-              <input type="password" class="form-control" id="password" placeholder="Mot de passe" name="password">
+              <input type="password" class="form-control control-index" id="password" placeholder="Mot de passe" name="password">
               <a href="{{ route('login.resetView') }}" class="link-right">Mot de passe oublié ?</a>
               @error('password')
               <span class="text-danger">{{ $message }}</span>
@@ -38,15 +38,15 @@
         </fieldset>
       </form>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6 col-index">
       <form method="post" action="{{ route('login.email') }}">
         @csrf
-        <fieldset>
-          <legend>Authentification</legend>
+        <fieldset class="field-index">
+          <legend>Authentification par adresse courriel</legend>
           <div class="d-flex flex-column justify-content-center py-5">
             <div class="form-group">
-              <label for="email" class="titreForm">Email</label>
-              <input type="email" class="form-control" id="email" placeholder="Adresse courriel" name="email">
+              <label for="email" class="titreForm">Adresse courriel</label>
+              <input type="email" class="form-control control-index" id="email" placeholder="Adresse courriel" name="email">
               <a href="{{route('fournisseur.inscription')}}" class="link-right">NEQ?</a>
               @error('email')
               <span class="text-danger">{{ $message }}
@@ -58,7 +58,7 @@
             </div>
             <div class="form-group">
               <label for="password" class="titreForm">Mot de passe</label>
-              <input type="password" class="form-control" id="password" placeholder="Mot de passe" name="password">
+              <input type="password" class="form-control control-index" id="password" placeholder="Mot de passe" name="password">
               <a href="{{ route('login.resetView') }}" class="link-right">Mot de passe oublié ?</a>
               @error('password')
               <span class="text-danger">{{ $message }}
