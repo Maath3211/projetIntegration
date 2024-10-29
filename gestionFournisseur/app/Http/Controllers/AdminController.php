@@ -62,33 +62,88 @@ class AdminController extends Controller
 
     public function listeFournisseur()
     {
-
         $response = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22munnom%22%20FROM%20%2219385b4e-5503-4330-9e59-f998f5918363%22');
-
-            if ($response->successful()) {
-                $villes = collect($response->json()['result']['records'])->pluck('munnom')->all();
     
-            } else {
-                $villes = [];
-            }
-
-
+        $villes = $response->successful() ? collect($response->json()['result']['records'])->pluck('munnom')->all() : [];
+    
         $fnAttentes = DB::table('fournisseurs')->get();
         $coordonnees = DB::table('coordonnees')->get();
         $nomRegion = DB::table('coordonnees')->distinct()->pluck('nomRegion');
         $nomVille = DB::table('coordonnees')->distinct()->pluck('ville');
-
-        $unspsc = DB::table('unspsccodes')->get();
-        $unspscodes = $unspsc->pluck('idUnspsc')->unique();
-        $unspscDescription = UNSPSC::whereIn('id', $unspscodes)->distinct()->get(['description']);
-
+    
+        // Récupérer les unspsc pour chaque fournisseur
+        $unspsc = DB::table('unspsccodes')
+            ->join('unspsc', 'unspsccodes.idUnspsc', '=', 'unspsc.id')
+            ->select('unspsccodes.fournisseur_id', 'unspsc.code', 'unspsc.description')
+            ->get()
+            ->groupBy('fournisseur_id');
+    
+        // Récupérer toutes les descriptions UNSPSC
+        $unspscDescription = DB::table('unspsc')->distinct()->get(['description']);
+    
         $rbqCategorie = DB::table('categories')->get();
         $rbq = DB::table('rbqlicences')->get();
         $rbqCategorieIds = $rbq->pluck('idCategorie')->unique();
         $codes = Categorie::whereIn('id', $rbqCategorieIds)->distinct()->get(['codeSousCategorie', 'nom']);
-
-        return View('responsable.listeFournisseur',compact('fnAttentes', 'villes','coordonnees','codes', 'nomRegion','nomVille','rbq', 'rbqCategorie','unspscDescription'));
+    
+        return view('responsable.listeFournisseur', compact('fnAttentes', 'villes', 'coordonnees', 'codes', 'nomRegion', 'nomVille', 'rbq', 'rbqCategorie', 'unspsc', 'unspscDescription'));
     }
+    
+
+    public function exportCsv()
+{
+    $headers = [
+        "Content-Type" => "text/csv",
+        "Content-Disposition" => "attachment; filename=fournisseurs.csv",
+    ];
+
+    $callback = function() {
+        // Ouvrez un flux en mémoire pour générer le fichier CSV
+        $file = fopen('php://output', 'w');
+
+        // Ajoutez l'entête des colonnes
+        fputcsv($file, ['Entreprise', 'Courriel', 'NEQ', 'Statut', 'Ville', 'RBQ ID', 'UNSPSC']);
+
+        // Récupérez les données de votre table (ou utilisez une méthode de requête optimisée si les données sont volumineuses)
+        $fnAttentes = DB::table('fournisseurs')->get();
+        $coordonnees = DB::table('coordonnees')->get();
+        $rbq = DB::table('rbqlicences')->get();
+        $rbqCategorie = DB::table('categories')->get();
+        $unspsc = DB::table('unspsccodes')
+                    ->join('unspsc', 'unspsccodes.idUnspsc', '=', 'unspsc.id')
+                    ->select('unspsccodes.fournisseur_id', 'unspsc.code', 'unspsc.description')
+                    ->get()
+                    ->groupBy('fournisseur_id');
+
+        foreach ($fnAttentes as $fn) {
+            // Récupérez la ville et la catégorie RBQ de chaque fournisseur
+            $coord = $coordonnees->firstWhere('fournisseur_id', $fn->id);
+            $rbqLicence = $rbq->firstWhere('fournisseur_id', $fn->id);
+            $rbqCategorieNom = $rbqLicence ? $rbqCategorie->firstWhere('id', $rbqLicence->idCategorie)->nom ?? 'Non disponible' : 'Non disponible';
+
+            // Récupérez les codes UNSPSC associés
+            $unspscCodes = isset($unspsc[$fn->id]) ? implode(', ', $unspsc[$fn->id]->map(fn($code) => "$code->code - $code->description")->all()) : 'Non disponible';
+
+            // Écrivez la ligne dans le fichier CSV
+            fputcsv($file, [
+                $fn->entreprise,
+                $fn->email,
+                $fn->neq,
+                $fn->statut,
+                $coord ? $coord->ville : 'Non disponible',
+                $rbqCategorieNom,
+                $unspscCodes,
+            ]);
+        }
+
+        fclose($file);
+    };
+
+    return response()->stream($callback, 200, $headers);
+}
+
+    
+    
 
     // ADMINISTRATION --- ADMINISTRATION --- ADMINISTRATION --- ADMINISTRATION --- ADMINISTRATION --- ADMINISTRATION
 

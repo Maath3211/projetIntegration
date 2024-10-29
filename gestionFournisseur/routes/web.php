@@ -214,3 +214,8 @@ Route::GET('/contact/addContactCreer/{id}',
 
 Route::POST('/contact/storeContactCreer/{id}',
 [AdminController::class, 'storeContactCreer'])->name('fournisseur.storeContactCreer');
+
+
+
+Route::get('/export-csv', [AdminController::class, 'exportCsv'])->name('export.csv');
+
