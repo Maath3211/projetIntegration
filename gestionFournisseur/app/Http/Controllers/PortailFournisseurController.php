@@ -92,6 +92,10 @@ class PortailFournisseurController extends Controller
         if ($fournisseur->statut === "En attente") {
             return redirect()->route('fournisseur.finances');
         }
+        // elseif($fournisseur->statut === "Acceptée")
+        // {
+        //     $finance = Finance::where('fournisseur_id', $fournisseur->id)->first();
+        // }
         //dd($unspscFournisseur);
         return View('fournisseur.information', compact('fournisseur','rbq','categorie','unspscCollection','unspscFournisseur', 'contacts', 'coordonnees', 'files','finance','numero','numero2','codePostal','unspscCode'));
     }
@@ -930,6 +934,8 @@ class PortailFournisseurController extends Controller
             return redirect()->route('fournisseur.finances')->withErrors(['Informations invalides']);
         }
     }
+
+    
 
     /**
      * CONNEXION **** CONNEXION **** CONNEXION ****CONNEXION ****CONNEXION****CONNEXION **** CONNEXION ****CONNEXION ****

@@ -53,7 +53,7 @@
           <label class="form-check-label" for="accepted">Acceptées</label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="refused">
+          <input class="form-check-input" type="checkbox" id="refused" checked>
           <label class="form-check-label" for="refused">Refusées</label>
         </div>
         <div class="form-check">
@@ -72,103 +72,107 @@
     <div class="filter-section row">
       <div class="col-md-3">
         <label for="products" class="form-label">Produits et services</label>
-        <select id="products" class="form-select">
-          <option selected>Pelouse</option>
+        <select id="products" class="form-select" multiple>
+        @foreach($unspscDescription as $des)
+            <option>{{ $des->description }}</option>
+        @endforeach
         </select>
-        <div class="form-check mt-2">
-          <input class="form-check-input" type="checkbox" id="option1">
-          <label class="form-check-label" for="option1">Rouleuses pour pelouses et terrains</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="option2">
-          <label class="form-check-label" for="option2">Scarificateur de pelouse</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="option3">
-          <label class="form-check-label" for="option3">Services d'entretien des pelouses</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="option4">
-          <label class="form-check-label" for="option4">Service d'entretien des pelouses d'autoroutes</label>
-        </div>
       </div>
 
       <!-- Categories section -->
       <div class="col-md-3">
         <label for="categories" class="form-label">Catégories de travaux</label>
-        <select id="categories" class="form-select">
-          <option selected>Entrepreneur général</option>
+        <select id="categories" class="form-select" multiple>
+        @foreach($codes as $code)
+            <option>{{ $code->codeSousCategorie }} : {{ $code->nom }}</option>
+        @endforeach
         </select>
-        <div class="form-check mt-2">
-          <input class="form-check-input" type="checkbox" id="category1" checked>
-          <label class="form-check-label" for="category1">1.4 Routes et canalisation</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="category2" checked>
-          <label class="form-check-label" for="category2">1.5 Structures d'ouvrage de génie civil</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="category3">
-          <label class="form-check-label" for="category3">2.5 Excavation et terrassement</label>
-        </div>
       </div>
 
       <!-- Administrative regions section -->
       <div class="col-md-3">
         <label for="regions" class="form-label">Régions administratives</label>
         <select id="regions" class="form-select">
-          <option selected>03 Capitale-Nationale</option>
+          @foreach ($nomRegion as $coo)
+          <option selected>{{ $coo }}</option>
+          @endforeach
         </select>
-        <div class="form-check mt-2">
-          <input class="form-check-input" type="checkbox" id="region1">
-          <label class="form-check-label" for="region1">01 Bas-Saint-Laurent</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="region2">
-          <label class="form-check-label" for="region2">02 Saguenay-Lac-Saint-Jean</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="region3" checked>
-          <label class="form-check-label" for="region3">03 Capitale-Nationale</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="region4">
-          <label class="form-check-label" for="region4">04 Mauricie</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="region5">
-          <label class="form-check-label" for="region5">05 Estrie</label>
-        </div>
       </div>
 
       <!-- Cities section -->
       <div class="col-md-3">
-        <label for="cities" class="form-label">Villes</label>
-        <select id="cities" class="form-select">
-          <option selected>Batiscan</option>
-        </select>
-        <div class="form-check mt-2">
-          <input class="form-check-input" type="checkbox" id="city1" checked>
-          <label class="form-check-label" for="city1">Batiscan</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="city2">
-          <label class="form-check-label" for="city2">Beaupré</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="city3">
-          <label class="form-check-label" for="city3">Boischatel</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="city4">
-          <label class="form-check-label" for="city4">Cap-Santé</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="city5">
-          <label class="form-check-label" for="city5">Champlain</label>
-        </div>
+        <label for="cities" class="form-label">Villes  .ty5456546 </label>
+          <select class="form-control" id="ville" name="ville">
+              <option value="">Sélectionnez une ville</option>
+              @foreach ($nomVille as $ville)
+                <option selected>{{ $ville }}</option>
+              @endforeach
+          </select>
       </div>
     </div>
   </div>
 
+
+
+
+  <div class="container">
+        <div class="row">
+            <div class="col-6 offset-3">
+                <div class="text-center py-3">
+                    <h1>Demande de fournisseur</h1>
+        <table class="table table-hover table-striped">
+          <tr>
+              <th scope="col">Entreprise</th>
+              <th scope="col">Courriel</th>
+              <th scope="col">NEQ</th>
+              <th scope="col">Statut</th>
+              <th scope="col">Ville</th>
+              <th scope="col">RBQ id</th>
+          </tr>
+
+          @foreach ($fnAttentes as $fn)
+          <tr class="fournisseur-row" data-statut="{{ $fn->statut }}">
+              <td>{{ $fn->entreprise }}</td>
+              <td>{{ $fn->email }}</td>
+              <td>{{ $fn->neq }}</td>
+              <td>{{ $fn->statut }}</td>
+
+
+              {{-- Récupère la première coordonnée associée au fournisseur actuel --}}
+              @php
+                  $coord = $coordonnees->firstWhere('fournisseur_id', $fn->id);
+              @endphp
+              <td>{{ $coord ? $coord->ville : 'Non disponible' }}</td>
+
+              {{-- Récupère la première licence RBQ associée au fournisseur actuel --}}
+              @php
+                  // Trouver la licence associée au fournisseur actuel
+                  $rbqLicence = $rbq->firstWhere('fournisseur_id', $fn->id);
+
+                  // Si une licence est trouvée, chercher la catégorie associée
+                  $rbqCategorieNom = null;
+                  if ($rbqLicence) {
+                      $rbqCategorieItem = $rbqCategorie->firstWhere('id', $rbqLicence->idCategorie);
+                      $rbqCategorieNom = $rbqCategorieItem ? $rbqCategorieItem->nom : 'Non disponible';
+                  } else {
+                      $rbqCategorieNom = 'Non disponible';
+                  }
+              @endphp
+
+              <td>{{ $rbqCategorieNom }}</td>
+
+              <td>
+                  <a href="{{ route('responsable.demandeFournisseurZoom', $fn->neq) }}" class="btn btn-info">
+                      Plus d'information
+                  </a>
+              </td>
+          </tr>
+            @endforeach
+
+      </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ asset('js/listeFournisseur.js') }}"></script>
 @endsection

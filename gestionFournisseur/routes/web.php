@@ -125,6 +125,7 @@ Route::POST('/finances/store',
 
 
 
+
 # Information du fournisseur
 Route::GET('/information',
 [PortailFournisseurController::class,'infoLogin'])->name('fournisseur.information');

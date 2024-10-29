@@ -2,7 +2,7 @@
 @section('title',"Identification")
 @section('contenu')
 <div class="text-center py-5">
-    <h1>Inscription Fournisseur ( IDENTIFICATION )</h1>
+    <h1>IDENTIFICATION</h1>
 </div>
 <form method="post" action="{{route('fournisseur.storeIdentification')}}">
   @csrf

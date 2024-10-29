@@ -1,6 +1,9 @@
 @extends('layouts.fournisseur')
 @section('title', "Finances")
 @section('contenu')
+<div class="text-center py-5">
+    <h1 class="py-5">FINANCES</h1>
+</div>
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-2"></div>
@@ -17,7 +20,7 @@
                             </h5>
                         </div>
                         <div class="col-md-12">
-                            <input type="text" class="form-control" id="tps" name="tps" value="{{old('tps')}}">
+                            <input type="text" class="form-control" id="tps" name="tps" placeholder="123456789RT0001" value="{{old('tps')}}" maxlength="15">
                             @error('tps')
                             <span class="text-danger">{{ $message }}
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
@@ -33,7 +36,7 @@
                             </h5>
                         </div>
                         <div class="col-md-12">
-                            <input type="text" class="form-control" id="tvq" name="tvq" value="{{old('tvq')}}">
+                            <input type="text" class="form-control" id="tvq" name="tvq" placeholder="123456789TQ0001" value="{{old('tvq')}}" maxlength="15">
                             @error('tvq')
                             <span class="text-danger">{{ $message }}
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
@@ -121,4 +124,5 @@
         </div>
     </div>
 </div>
+<script src="{{ asset('js/finances.js') }}"></script>
 @endsection

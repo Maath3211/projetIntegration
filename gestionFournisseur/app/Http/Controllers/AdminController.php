@@ -17,6 +17,9 @@ use App\Models\Setting;
 use App\Models\Fournisseur;
 use App\Models\Responsable;
 use App\Models\User;
+use App\Models\Categorie;
+use App\Models\Unspsc;
+use App\Models\Unspsccode;
 use App\Http\Requests\SettingRequest;
 use App\Http\Requests\ResetPasswordRequest;
 use App\Mail\ResetPassword;
@@ -59,7 +62,32 @@ class AdminController extends Controller
 
     public function listeFournisseur()
     {
-        return View('responsable.listeFournisseur');
+
+        $response = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22munnom%22%20FROM%20%2219385b4e-5503-4330-9e59-f998f5918363%22');
+
+            if ($response->successful()) {
+                $villes = collect($response->json()['result']['records'])->pluck('munnom')->all();
+    
+            } else {
+                $villes = [];
+            }
+
+
+        $fnAttentes = DB::table('fournisseurs')->get();
+        $coordonnees = DB::table('coordonnees')->get();
+        $nomRegion = DB::table('coordonnees')->distinct()->pluck('nomRegion');
+        $nomVille = DB::table('coordonnees')->distinct()->pluck('ville');
+
+        $unspsc = DB::table('unspsccodes')->get();
+        $unspscodes = $unspsc->pluck('idUnspsc')->unique();
+        $unspscDescription = UNSPSC::whereIn('id', $unspscodes)->distinct()->get(['description']);
+
+        $rbqCategorie = DB::table('categories')->get();
+        $rbq = DB::table('rbqlicences')->get();
+        $rbqCategorieIds = $rbq->pluck('idCategorie')->unique();
+        $codes = Categorie::whereIn('id', $rbqCategorieIds)->distinct()->get(['codeSousCategorie', 'nom']);
+
+        return View('responsable.listeFournisseur',compact('fnAttentes', 'villes','coordonnees','codes', 'nomRegion','nomVille','rbq', 'rbqCategorie','unspscDescription'));
     }
 
     // ADMINISTRATION --- ADMINISTRATION --- ADMINISTRATION --- ADMINISTRATION --- ADMINISTRATION --- ADMINISTRATION
