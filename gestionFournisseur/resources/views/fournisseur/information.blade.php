@@ -32,7 +32,7 @@
     <div class="row">
         <div class="col-md-6">
             <div class="custom-box">
-                <h5>État de la demande</h5>
+                <h4>État de la demande</h4>
                 <p><span><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
                     <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
                     </svg></span> {{$fournisseur->statut}}
@@ -54,7 +54,7 @@
                 @endif
             </div>
             <div class="custom-box">
-                <h5>Identification</h5>
+                <h4>Identification</h4>
                 <p><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-buildings-fill" viewBox="0 0 16 16">
                     <path d="M15 .5a.5.5 0 0 0-.724-.447l-8 4A.5.5 0 0 0 6 4.5v3.14L.342 9.526A.5.5 0 0 0 0 10v5.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V14h1v1.5a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5zM2 11h1v1H2zm2 0h1v1H4zm-1 2v1H2v-1zm1 0h1v1H4zm9-10v1h-1V3zM8 5h1v1H8zm1 2v1H8V7zM8 9h1v1H8zm2 0h1v1h-1zm-1 2v1H8v-1zm1 0h1v1h-1zm3-2v1h-1V9zm-1 2h1v1h-1zm-2-4h1v1h-1zm3 0v1h-1V7zm-2-2v1h-1V5zm1 0h1v1h-1z"/>
                 </svg>  {{$fournisseur->entreprise}}
@@ -87,7 +87,7 @@
             </div>
 
             <div class="custom-box">
-                <h5>Adresse</h5>
+                <h4>Adresse</h4>
                 <p>{{$coordonnees->noCivic}}, rue {{$coordonnees->rue}}, {{$coordonnees->bureau}}<br>{{$coordonnees->ville}} ({{$coordonnees->province}}) {{$codePostal}}</p>
                 <p><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-browser-edge" viewBox="0 0 16 16">
                     <path d="M9.482 9.341c-.069.062-.17.153-.17.309 0 .162.107.325.3.456.877.613 2.521.54 2.592.538h.002c.667 0 1.32-.18 1.894-.519A3.84 3.84 0 0 0 16 6.819c.018-1.316-.44-2.218-.666-2.664l-.04-.08C13.963 1.487 11.106 0 8 0A8 8 0 0 0 .473 5.29C1.488 4.048 3.183 3.262 5 3.262c2.83 0 5.01 1.885 5.01 4.797h-.004v.002c0 .338-.168.832-.487 1.244l.006-.006z"/>
@@ -117,7 +117,7 @@
                 </form>
             </div>
             <div class="custom-box">
-                <h5>Contacts</h5>
+                <h4>Contacts</h4>
                 <a id="plus1" href="{{ route('fournisseur.contact') }}">&#8853;</a>
                 <p>
                     @if ($contacts != null)
@@ -172,7 +172,7 @@
     <!-- Right side sections -->
         <div class="col-md-6">
             <div class="custom-box">
-                <h5>Produits et services offerts</h5>
+                <h4>Produits et services offerts</h4>
                 <p><strong>Approvisionnements</strong></p>
                 @php
                     $codeUtilise = collect();
@@ -200,7 +200,7 @@
                 @if ($dernierCode !== null)
                     </ul>
                 @endif
-                <h5>Détails et spécifications</h5>
+                <h4>Détails et spécifications</h4>
                 <p>{{ $unspscFournisseur->first()->details }}</p>
                 <form action="{{ route('fournisseur.UNSPSC.edit', $unspscFournisseur->first()->fournisseur_id) }}" method="GET">
                     @csrf
@@ -217,7 +217,7 @@
             </div>
 
             <div class="custom-box">
-                <h5>Licence RBQ</h5>
+                <h4>Licence RBQ</h4>
                 <p>{{ $rbq->licenceRBQ }} – {{ $rbq->typeLicence }}</p>
                 <p><span><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
                     <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
@@ -242,7 +242,7 @@
              </div>
 
             <div class="custom-box">
-                <h5>Finances</h5>
+                <h4>Finances</h4>
                 <p><strong>TPS :</strong> {{$finance->tps ?? 'N/A'}}<br><strong>TVQ :</strong> {{$finance->tvq ?? 'N/A'}}</p>
                 <p><strong>Conditions de paiement</strong><br>{{$finance->paiement ?? 'N/A'}}</p>
                 <p><strong>Devise</strong><br>{{$finance->devise ?? 'N/A'}}</p>
@@ -263,7 +263,7 @@
 
             @if ($files && count($files) > 0)
                 <div class="custom-box">
-                    <h5>Documents</h5>
+                    <h4>Documents</h4>
                     @foreach ($files as $file)
                         <p>
                             <form action="{{ route('fournisseur.deleteFile', $file->id) }}" method="POST"
@@ -289,7 +289,7 @@
                 </div>
             @else
                 <div class="custom-box">
-                    <h5>Document</h5>
+                    <h4>Document</h4>
                     <p>Aucun document disponible.</p>
                     @if ($fournisseur->statut != 'Désactivée')
                         <div class="form-group">
