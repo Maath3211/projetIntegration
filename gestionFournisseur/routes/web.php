@@ -203,7 +203,7 @@ Route::POST('/responsable/sauvegarderModeleCourriel',
 Route::delete('/contact/supprimer/{id}',
 [AdminController::class, 'deleteContact'])->name('fournisseur.deleteContact');
 
-Route::POST('/contact/editContact/{id}',
+Route::GET('/contact/editContact/{id}',
 [AdminController::class, 'editContact'])->name('fournisseur.editContact');
 
 Route::POST('/contact/updateContact/{id}',

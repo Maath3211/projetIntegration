@@ -39,11 +39,11 @@
                 <div class="col-md-6">
                     <div class="custom-box">
                         <h5>État de la demande</h5>
-                        @if ($fn->statut == 'attente')
+                        @if ($fn->statut == 'En attente')
                             En attente
-                        @elseif($fn->statut == 'confirme')
+                        @elseif($fn->statut == 'Confirme')
                             ✔️ Acceptée le {{ $fn->dateStatut }}
-                        @elseif($fn->statut == 'refusé')
+                        @elseif($fn->statut == 'Refusé')
                             Refusé le {{ $fn->dateStatut }}
                             @if ($fn->raisonRefus)
                                 <p>Raison de refus: {{ $fn->raisonRefus }}</p>

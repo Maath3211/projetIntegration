@@ -288,6 +288,9 @@ class AdminController extends Controller
 
 
 
+
+    
+
     // TODO: déplacer dans autre controller
     public function deleteContact($id)
     {
@@ -304,6 +307,7 @@ class AdminController extends Controller
 
     public function editContact($id)
     {
+        session(['return_to' => url()->previous()]);
         $contact = Contact::where('id', $id)->get()->firstOrFail();
         
         return view('fournisseur.editContact', compact('contact'));
@@ -312,6 +316,7 @@ class AdminController extends Controller
     public function updateContact($id, ContactRequest $request)
     {
         try {
+            $return_url = session('return_to');
             $contact = Contact::where('id', $id)->get()->firstOrFail();
             $contact->prenom = $request->prenom;
             $contact->nom = $request->nom;
@@ -322,8 +327,8 @@ class AdminController extends Controller
             $contact->poste = $request->poste;
 
             $contact->save();
-
-            return redirect()->route('responsable.demandeFournisseur');
+            session()->forget('return_to');
+            return redirect($return_url);
         } catch (\Throwable $e) {
             Log::debug($e);
             return Redirect::back()->withInput()->withErrors(['Erreur interne']);
