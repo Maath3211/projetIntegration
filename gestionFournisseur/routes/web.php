@@ -208,3 +208,9 @@ Route::POST('/contact/editContact/{id}',
 
 Route::POST('/contact/updateContact/{id}',
 [AdminController::class, 'updateContact'])->name('fournisseur.updateContact');
+
+
+
+
+Route::get('/export-csv', [AdminController::class, 'exportCsv'])->name('export.csv');
+

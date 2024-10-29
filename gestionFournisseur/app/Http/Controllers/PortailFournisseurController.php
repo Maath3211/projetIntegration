@@ -465,7 +465,7 @@ class PortailFournisseurController extends Controller
             return redirect()->route('fournisseur.contact')->withErrors(['Les informations du fournisseur, des coordonnées ou du contact sont manquantes.']);
         }
 
-        $codes = Unspsc::limit(500)->get();
+        $codes = Unspsc::limit(20904)->get();
 
         //$codes = Unspsc::paginate(1000);
 
