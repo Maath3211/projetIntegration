@@ -47,6 +47,10 @@ main {
   color: white;
 }
 
+.uni{
+  font-size: 1.5rem;
+}
+
 .navbar {
   background-color: #0076d5;
   box-shadow: 2px 2px 2px 3px rgb(45, 45, 45);
@@ -88,6 +92,14 @@ h4 {
 
 /* TEXTE DANS LES VIEW */
 
+.inscription {
+  font-size: 26px;
+}
+
+.portail {
+  font-size: 60px;
+}
+
 .text-muted {
     font-size: 12px;
 }
@@ -107,7 +119,6 @@ a {
     color: #0b2341;
 }
 
-
 fieldset {
     border: 2px solid #ccc;
     padding: 0 10px 20px 10px;
@@ -115,7 +126,8 @@ fieldset {
 
 legend {
     font-family: ttHoves;
-    color: #0076d5;
+    color: #333;
+    font-weight: 700;
 }
 
 .titreForm {
@@ -288,10 +300,8 @@ body.night-mode .file-info {
 }
 
 
-
   /*MEDIA*/
   
-
 @media (min-width: 1001px) {
   .col-index {
     max-width: 45%; 
@@ -310,6 +320,5 @@ body.night-mode .file-info {
     width: 100%;
     margin-bottom: 20px; 
   }
-  
   
 }

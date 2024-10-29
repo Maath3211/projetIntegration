@@ -16,7 +16,7 @@
     <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand" href="/" alt="Accueil du site" title="Accueil du site">
-                <span class="brand-uni">uni</span><span class="brand-v3r">.v3r.net</span>
+                <span class="brand-uni uni">uni</span><span class="brand-v3r uni">.v3r.net</span>
             </a>
             <button class="night-mode-toggle" onclick="toggleNightMode()">
                 <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
