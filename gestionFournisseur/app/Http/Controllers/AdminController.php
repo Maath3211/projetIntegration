@@ -305,6 +305,34 @@ class AdminController extends Controller
 
     }
 
+    public function addContactCreer($id){
+        session(['return_to' => url()->previous()]);
+        $fournisseur = Fournisseur::where('id', $id)->firstOrFail();
+        return view('fournisseur.ajoutContactCreer', compact('fournisseur'));
+    }
+
+    public function storeContactCreer($id, ContactRequest $request){
+        try{
+        $contact = new Contact();
+
+        $contact->prenom = $request->prenom;
+        $contact->nom = $request->nom;
+        $contact->fonction = $request->fonction;
+        $contact->courriel = $request->courriel;
+        $contact->typeTelephone = $request->typeTelephone;
+        $contact->telephone = $request->telephone;
+        $contact->poste = $request->poste;
+        $contact->fournisseur_id = $id;
+        $contact->save();
+        $return_url = session('return_to');
+        session()->forget('return_to');
+        return redirect($return_url);
+    }catch (\Throwable $e) {
+        Log::debug($e);
+        return Redirect::back()->withInput()->withErrors(['Erreur interne']);
+    }
+    }
+
     public function editContact($id)
     {
         session(['return_to' => url()->previous()]);

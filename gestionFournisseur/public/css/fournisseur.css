@@ -301,3 +301,7 @@ body.night-mode h1 {
   
   
 }
+
+.divContactForm{
+  display: inline-block;
+}
