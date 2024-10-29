@@ -17,16 +17,16 @@
                     </div>
                     <div class="col-md-4">
                         <input type="text" class="form-control" maxlength="80" id="search-input" name="recherche" placeholder="Rechercher...">
+                        <small id="search-message" class="text-muted">Effectuer une recherche</small>
                     </div>
                 </div>
                 <div class="row">
-                    <h5 class="pl-5">S14 - Services Publics</h5>
                     <form method="POST" action="{{ route('fournisseur.storeUnspsc') }}">
                         <div class="col-md-1">
                         </div>
                         @csrf
                         @if (count($codes))
-                            <div class="scroll-container">
+                            <div class="scroll-container" id="unspsc-items" style="display: none;">
                                 @foreach($codes as $code)
                                     <div class="item">
                                         <div class="col-md-1">
@@ -44,6 +44,7 @@
                                     </div>
                                 @endforeach
                             </div>
+                            <p id="no-results-message" class="text-muted" style="display: none;">Effectuer une recherche</p>
                         @else
                             <p>Erreur : aucun service public proposé</p>
                         @endif
@@ -72,12 +73,12 @@
                             </div>                            
                             <div class="col-md-1"></div>
                         </div>
-                        <div class="row mt-4">
+                        <div class="row mt-5">
                             <div class="col-md-3">
                                 <button type="submit" class="btn btn-secondary">Précédent</button>
                             </div>
-                            <div class="col-md-6"></div>
-                            <div class="col-md-3">
+                            <div class="col-md-7"></div>
+                            <div class="col-md-2">
                                 <button type="submit" class="btn btn-secondary">Suivant</button>
                             </div>
                         </div>
