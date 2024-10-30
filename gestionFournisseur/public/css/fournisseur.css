@@ -295,7 +295,14 @@ body.night-mode li {
 }
 
 body.night-mode .file-info {                               
-  font-family: ttHoves;
+  color: #fff;
+}
+
+body.night-mode label {                               
+  color: #fff;
+}
+
+body.night-mode legend {                               
   color: #fff;
 }
 
