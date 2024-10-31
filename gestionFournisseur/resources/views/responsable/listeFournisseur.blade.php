@@ -74,9 +74,11 @@
         <label for="products" class="form-label">Produits et services</label>
         <select id="unspsc" name="unspsc" class="form-select" multiple>
           <option value="" selected>Aucun</option>
-        @foreach($unspscDescription as $des)
-            <option>{{ $des->description }}</option>
-        @endforeach
+          @foreach($unspsc as $supplierUnspscCollection)
+          @foreach($supplierUnspscCollection as $des)
+              <option>{{ $des->description }}</option>
+          @endforeach
+      @endforeach
         </select>
       </div>
 

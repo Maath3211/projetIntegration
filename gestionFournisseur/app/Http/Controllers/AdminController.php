@@ -79,13 +79,14 @@ class AdminController extends Controller
             ->groupBy('fournisseur_id');
     
         // Récupérer toutes les descriptions UNSPSC
+
         $unspscDescription = DB::table('unspsc')->distinct()->get(['description']);
-    
+
         $rbqCategorie = DB::table('categories')->get();
         $rbq = DB::table('rbqlicences')->get();
         $rbqCategorieIds = $rbq->pluck('idCategorie')->unique();
         $codes = Categorie::whereIn('id', $rbqCategorieIds)->distinct()->get(['codeSousCategorie', 'nom']);
-    
+            
         return view('responsable.listeFournisseur', compact('fnAttentes', 'villes', 'coordonnees', 'codes', 'nomRegion', 'nomVille', 'rbq', 'rbqCategorie', 'unspsc', 'unspscDescription'));
     }
     

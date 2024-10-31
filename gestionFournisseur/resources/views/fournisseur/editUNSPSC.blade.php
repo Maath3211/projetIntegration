@@ -3,7 +3,7 @@
 @section('title',"MOD UNSPSC")
 @section('contenu')
 <div class="text-center">
-    <h1 class="py-5">UNSPSC</h1>
+    <h1 class="py-5">Mise à jour UNSPSC</h1>
 </div>
 <div class="container-fluid">
     <div class="row">
@@ -13,14 +13,12 @@
                 <legend>Produits et services offerts</legend>
                 <div class="row">
                     <div class="col-md-7">
-                        <h1>Services</h1>
                     </div>
                     <div class="col-md-4">
-                        <input type="text" class="form-control" maxlength="80" id="search-input" name="recherche" placeholder="Rechercher...">
+                        <input type="text" class="form-control mb-3" maxlength="80" id="search-input" name="recherche" placeholder="Rechercher...">
                     </div>
                 </div>
                 <div class="row">
-                    <h5 class="pl-5">S14 - Services Publics</h5>
                     <form method="POST" action="{{ route('fournisseur.UNSPSC.update', $unspscFournisseur->first()->idUnspsc) }}">
                         <div class="col-md-1">
                         </div>
