@@ -333,3 +333,10 @@ body.night-mode legend {
 .divContactForm{
   display: inline-block;
 }
+#btsContacts{
+  display: flex;
+}
+
+#showAllContacts{
+  margin-left: 10px;
+}
