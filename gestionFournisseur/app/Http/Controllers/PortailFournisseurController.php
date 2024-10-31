@@ -30,6 +30,7 @@ use Carbon\Carbon;
 use Mail;
 use DB;
 use Illuminate\Contracts\View\View;
+use Redirect;
 
 class PortailFournisseurController extends Controller
 {
@@ -97,7 +98,7 @@ class PortailFournisseurController extends Controller
         // elseif($fournisseur->statut === "Acceptée")
         // {
         //     $finance = Finance::where('fournisseur_id', $fournisseur->id)->first();
-        // }
+        // }s
         //dd($unspscFournisseur);
         return View('fournisseur.information', compact('fournisseur','rbq','categorie','unspscCollection','unspscFournisseur', 'contacts', 'coordonnees', 'files','finance','numero','numero2','codePostal','unspscCode'));
     }
@@ -1027,6 +1028,79 @@ class PortailFournisseurController extends Controller
         else 
         {
             return redirect()->route('fournisseur.index')->withErrors(['Informations invalides']);
+        }
+    }
+    
+
+    
+    public function deleteContact($id)
+    {
+        try {
+            $contact = Contact::where('id', $id)->get()->firstOrFail();
+            $contact->delete();
+            return Redirect::back();
+        } catch (\Throwable $e) {
+            Log::debug($e);
+            return Redirect::back()->withErrors(['Erreur interne']);
+        }
+
+    }
+
+    public function addContactCreer($id){
+        session(['return_to' => url()->previous()]);
+        $fournisseur = Fournisseur::where('id', $id)->firstOrFail();
+        return view('fournisseur.ajoutContactCreer', compact('fournisseur'));
+    }
+
+    public function storeContactCreer($id, ContactRequest $request){
+        try{
+        $contact = new Contact();
+
+        $contact->prenom = $request->prenom;
+        $contact->nom = $request->nom;
+        $contact->fonction = $request->fonction;
+        $contact->courriel = $request->courriel;
+        $contact->typeTelephone = $request->typeTelephone;
+        $contact->telephone = $request->telephone;
+        $contact->poste = $request->poste;
+        $contact->fournisseur_id = $id;
+        $contact->save();
+        $return_url = session('return_to');
+        session()->forget('return_to');
+        return redirect($return_url);
+    }catch (\Throwable $e) {
+        Log::debug($e);
+        return Redirect::back()->withInput()->withErrors(['Erreur interne']);
+    }
+    }
+
+    public function editContact($id)
+    {
+        session(['return_to' => url()->previous()]);
+        $contact = Contact::where('id', $id)->get()->firstOrFail();
+        
+        return view('fournisseur.editContact', compact('contact'));
+    }
+
+    public function updateContact($id, ContactRequest $request)
+    {
+        try {
+            $return_url = session('return_to');
+            $contact = Contact::where('id', $id)->get()->firstOrFail();
+            $contact->prenom = $request->prenom;
+            $contact->nom = $request->nom;
+            $contact->fonction = $request->fonction;
+            $contact->courriel = $request->courriel;
+            $contact->typeTelephone = $request->typeTelephone;
+            $contact->telephone = $request->telephone;
+            $contact->poste = $request->poste;
+
+            $contact->save();
+            session()->forget('return_to');
+            return redirect($return_url);
+        } catch (\Throwable $e) {
+            Log::debug($e);
+            return Redirect::back()->withInput()->withErrors(['Erreur interne']);
         }
     }
 }

@@ -33,7 +33,7 @@ main {
 
 #logoV3R {
   position: absolute; 
-  left: 9vw;
+  left: 12vw;
   z-index: 2;
   top: 0.03%; 
   width: 4vw; 
@@ -339,4 +339,8 @@ body.night-mode legend {
 
 #showAllContacts{
   margin-left: 10px;
+}
+
+.imgFormat {
+  width: 2%;
 }
