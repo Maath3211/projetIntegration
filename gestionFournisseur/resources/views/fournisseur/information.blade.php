@@ -237,7 +237,7 @@
                 </p>
                 <p><strong>Catégories autorisées</strong></p>
                 <ul>
-                    <li>{{ $categorie->codeSousCategorie }} {{ $categorie->nom }}</li>
+                    <li>{{ $categorie->codeSousCategorie ?? 'N/A' }} {{ $categorie->nom ?? 'N/A' }}</li>
                 </ul>
                 <form action="{{ route('fournisseur.RBQ.edit', [$rbq]) }}" method="GET">
                     @csrf

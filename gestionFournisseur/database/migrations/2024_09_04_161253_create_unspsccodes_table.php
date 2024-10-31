@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('unspsccodes', function (Blueprint $table) {
             $table->id();
-            $table->string('details',500);
+            $table->string('details',500)->default('Rien');
             $table->unsignedBigInteger('idUnspsc');
             $table->foreign('idUnspsc')->references('id')->on('unspsc')->onDelete('cascade');
             $table->unsignedBigInteger('fournisseur_id');
