@@ -543,7 +543,7 @@ class PortailFournisseurController extends Controller
     public function updateUNSPSC(UnspscRequest $request)
     {
 
-    $fournisseur = Auth::user();
+    $fournisseur = Fournisseur::find(Auth::id());
     $unspscData = $request->input('idUnspsc', []); 
     try {
         $existingUnspsc = Unspsccode::where('fournisseur_id', $fournisseur->id)->get();
@@ -573,6 +573,7 @@ class PortailFournisseurController extends Controller
                 ->delete();
         }
 
+            $fournisseur->touch();
             return redirect()->route('fournisseur.information')->with('message', 'Codes UNSPSC mis à jour avec succès!');
         } catch (\Throwable $e) {
             Log::error($e);
@@ -659,7 +660,7 @@ class PortailFournisseurController extends Controller
 
     public function editRBQ(RBQLicence $rbqLicence)
     {
-        $fournisseur = Auth::user();
+        $fournisseur = Fournisseur::find(Auth::id());
         $rbq = RBQLicence::where('fournisseur_id', $fournisseur->id)->first();
         $codes = Categorie::all();
         $neq = Auth::user()->neq;
@@ -690,6 +691,7 @@ class PortailFournisseurController extends Controller
             $restriction = null;
         }
 
+
         return View('fournisseur.editRBQ', compact('rbq', 'codes', 'numRBQ', 'statutRBQ', 'typeLicence', 'categorie', 'sousCategories', 'restriction', 'rbqLicence'));
     }
 
@@ -697,7 +699,7 @@ class PortailFournisseurController extends Controller
     public function updateRBQ(RBQRequest $request, $id)
     {
         // Récupérer l'utilisateur authentifié
-        $fournisseur = Auth::user();
+        $fournisseur = Fournisseur::find(Auth::id());
 
         // Récupérer l'enregistrement RBQLicence existant via l'ID
         $rbq = RBQLicence::where('fournisseur_id', $fournisseur->id)->find($id);
@@ -717,7 +719,7 @@ class PortailFournisseurController extends Controller
 
             // Sauvegarder les modifications
             $rbq->save();
-
+            $fournisseur->touch();
             // Rediriger avec un message de succès
             return redirect()->route('fournisseur.information')->with('message', 'Licence RBQ mise à jour avec succès');
         } catch (\Throwable $e) {

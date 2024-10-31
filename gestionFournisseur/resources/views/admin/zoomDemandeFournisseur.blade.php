@@ -49,6 +49,8 @@
                                 <p>Raison de refus: {{ $fn->raisonRefus }}</p>
                             @endif
                         @endif
+                        <p>Date de création : {{substr($fn->created_at,0,10)}}</p>
+                        <p>Dernière modification : {{substr($fn->updated_at,0,10)}}</p>
                     </div>
 
                     <div class="custom-box">

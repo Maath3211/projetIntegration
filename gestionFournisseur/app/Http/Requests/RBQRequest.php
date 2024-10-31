@@ -23,8 +23,8 @@ class RBQRequest extends FormRequest
     {
         return [
             // 'licenceRBQ' => 'required|min:10',
-            'statut' => 'in:Valide,Valide avec restriction,Non valide',
-            'typeLicence' => 'in:Entrepreneur,Constructeur-Propriétaire',
+            'statut' => 'in:Aucun,Valide,Valide avec restriction,Non valide',
+            'typeLicence' => 'in:Aucun,Entrepreneur,Constructeur-Propriétaire',
             // 'idCategorie' => 'required'
         ];
     }

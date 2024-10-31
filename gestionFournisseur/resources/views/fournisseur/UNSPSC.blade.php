@@ -58,7 +58,6 @@
                         {{-- {{ $codes->links() }} --}}
                         <div class="row">
                             <h5 class="pl-5">Détails et spécifications
-                                <small class="text-danger">*</small>
                             </h5>
                             <div class="col-md-1"></div>
                             <div class="col-md-10">
