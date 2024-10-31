@@ -15,38 +15,38 @@ class ResponsableSeeder extends Seeder
     {
         DB::table('responsables')->insert([
             'id' => 1,
-            'email' => 'commis@commis.com',
+            'email' => 'commis@v3r.net',
             'role' => 'Commis'
         ]);
 
         DB::table('responsables')->insert([
             'id' => 2,
-            'email' => 'commis2@commis.com',
+            'email' => 'commis2@v3r.net',
             'role' => 'Commis'
         ]);
 
         DB::table('responsables')->insert([
             'id' => 3,
-            'email' => 'responsable@responsable.com',
+            'email' => 'responsable@v3r.net',
             'role' => 'Responsable'
         ]);
 
         DB::table('responsables')->insert([
             'id' => 4,
-            'email' => 'responsable2@responsable.com',
+            'email' => 'responsable2@v3r.net',
             'role' => 'Responsable'
         ]);
 
         DB::table('responsables')->insert([
             'id' => 5,
-            'email' => 'gestionnaire@rgestionnaire.com',
-            'role' => 'Gestionnaire'
+            'email' => 'administrateur@v3r.net',
+            'role' => 'Administrateur'
         ]);
 
         DB::table('responsables')->insert([
             'id' => 6,
-            'email' => 'gestionnaire2@rgestionnaire.com',
-            'role' => 'Gestionnaire'
+            'email' => 'administrateur@v3r.net',
+            'role' => 'Administrateur'
         ]);
     }
 }
