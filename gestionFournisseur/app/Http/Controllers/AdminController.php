@@ -65,7 +65,7 @@ class AdminController extends Controller
     {
         $response = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22munnom%22%20FROM%20%2219385b4e-5503-4330-9e59-f998f5918363%22');
     
-        $villes = $response->successful() ? collect($response->json()['result']['records'])->pluck('munnom')->all() : [];
+        $villes = $response->successful() ? collect($response->json()['result']['records'])->pluck('munnom')->sort()->all() : []; // Sort the cities alphabetically
     
         $fnAttentes = DB::table('fournisseurs')->get();
         $coordonnees = DB::table('coordonnees')->get();
@@ -80,9 +80,8 @@ class AdminController extends Controller
             ->groupBy('fournisseur_id');
     
         // Récupérer toutes les descriptions UNSPSC
-
         $unspscDescription = DB::table('unspsc')->distinct()->get(['description']);
-
+    
         $rbqCategorie = DB::table('categories')->get();
         $rbq = DB::table('rbqlicences')->get();
         $rbqCategorieIds = $rbq->pluck('idCategorie')->unique();
@@ -90,6 +89,7 @@ class AdminController extends Controller
             
         return view('responsable.listeFournisseur', compact('fnAttentes', 'villes', 'coordonnees', 'codes', 'nomRegion', 'nomVille', 'rbq', 'rbqCategorie', 'unspsc', 'unspscDescription'));
     }
+    
     
 
     public function exportCsv()
