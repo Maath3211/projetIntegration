@@ -22,10 +22,10 @@ class RBQRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'licenceRBQ' => 'required|min:10',
-            'statut' => 'required|in:Valide,Valide avec restriction,Non valide',
-            'typeLicence' => 'required|in:Entrepreneur,Constructeur-Propriétaire',
-            'idCategorie' => 'required'
+            // 'licenceRBQ' => 'required|min:10',
+            'statut' => 'in:Valide,Valide avec restriction,Non valide',
+            'typeLicence' => 'in:Entrepreneur,Constructeur-Propriétaire',
+            // 'idCategorie' => 'required'
         ];
     }
 
@@ -39,10 +39,10 @@ class RBQRequest extends FormRequest
 
     public function messages(){
         return[
-            'licenceRBQ.required' => 'Il manque un numéro de licence',
-            'licenceRBQ.min' => 'Numéro de licence incomplète',
-            'idCategorie.required' => 'Choisir une catégorie',
-            'typeLicence.required' => 'Il manque un type de licence',
+            // 'licenceRBQ.required' => 'Il manque un numéro de licence',
+            // 'licenceRBQ.min' => 'Numéro de licence incomplète',
+            // 'idCategorie.required' => 'Choisir une catégorie',
+            // 'typeLicence.required' => 'Il manque un type de licence',
         ];
     }
 }

@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('RBQLicences', function (Blueprint $table) {
             $table->id();
-            $table->string('licenceRBQ',10);
-            $table->string('statut',25);
-            $table->string('typeLicence',250);
-            $table->foreignId('idCategorie')->constrained('categories');
+            $table->string('licenceRBQ',10)->default('Rien');
+            $table->string('statut',25)->default('Rien');
+            $table->string('typeLicence',250)->default('Rien');
+            $table->foreignId('idCategorie')->nullable()->constrained('categories');
             $table->unsignedBigInteger('fournisseur_id');
             $table->foreign('fournisseur_id')->references('id')->on('fournisseurs');
             $table->timestamps();

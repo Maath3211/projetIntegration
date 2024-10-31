@@ -22,7 +22,7 @@ class UnspscRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'details' => 'required|max:500|min:5',
+            'details' => 'max:500',
             'idUnspsc' => 'required|array|min:1', 
             /*'idUnspsc.*' => 'integer|exists:unspsccodes,id',*/
         ];
@@ -30,9 +30,7 @@ class UnspscRequest extends FormRequest
 
     public function messages(){
         return[
-            'details.required' => 'Champ obligatoire',
             'details.max' => 'Détails trop grands',
-            'details.min' => 'Détails trop petits',
             'idUnspsc.required' => 'Aucun code Unspsc sélectionné',
             'idUnspsc.array' => 'Sélection invalide',
             'idUnspsc.min' => 'Sélectionnez au moins un code',
