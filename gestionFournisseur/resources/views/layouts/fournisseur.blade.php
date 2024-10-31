@@ -8,6 +8,7 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('css/fournisseur.css') }}">
     <title>@yield('title')</title>
+    @stack('scripts')
 </head>
 <body>
 <header>
@@ -31,6 +32,7 @@
     </div>
 </nav>
 </header>
+
     @if (isset($errors) && $errors->any())
     <div class="alert alert-danger">
         @foreach ($errors->all() as $error)
