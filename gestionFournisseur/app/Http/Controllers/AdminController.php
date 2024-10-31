@@ -43,14 +43,15 @@ class AdminController extends Controller
 
     public function loginEmailResponsable(ConnexionResponsableRequest $request)
     {
-
         $responsable = Responsable::where('email', $request->email)->where('role', $request->role)->first();
 
-        if ($responsable) {
+        if ($responsable) 
+        {
             session(['responsable' => $responsable]);
-
             return redirect()->route('responsable.listeFournisseur')->with('message', 'Connexion réussie.');
-        } else {
+        } 
+        else 
+        {
             return redirect()->route('responsable.index')->withErrors(['Informations invalides.']);
         }
     }
