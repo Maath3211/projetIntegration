@@ -58,7 +58,7 @@
         </div>
         <div class="form-check">
           <input class="form-check-input" type="checkbox" id="to-review" checked>
-          <label class="form-check-label" for="to-review">À réviser</label>
+          <label class="form-check-label" for="to-review">En attente</label>
         </div>
       </div>
 
@@ -88,7 +88,7 @@
         <select id="rbq" name="rbq" class="form-select" multiple>
           <option value="" selected>Aucun</option>
         @foreach($codes as $code)
-            <option>{{ $code->codeSousCategorie }} : {{ $code->nom }}</option>
+            <option>{{ $code->nom }}</option>
         @endforeach
         </select>
       </div>
@@ -155,7 +155,7 @@
               <td>{{ $rbqCategorieNom }}</td>
       
               <!-- Afficher les codes UNSPSC associés -->
-              <td hidden>
+              <td >
                   @if (isset($unspsc[$fn->id]))
                       @foreach ($unspsc[$fn->id] as $code)
                           {{ $code->code }} - {{ $code->description }}<br>

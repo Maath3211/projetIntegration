@@ -1,57 +1,82 @@
-// Get references to the table and search controls
+// Get references to the table and filter controls
 const table = document.querySelector('table');
 const searchInput = document.querySelector('.search-input');
 const searchButton = document.querySelector('.search-button');
+const unspscSelect = document.querySelector('#unspsc');
+const rbqSelect = document.querySelector('#rbq');
+const citySelect = document.querySelector('#villes');
 
-// Function to filter the table rows based on search input
+// Function to filter table rows based on all active filters
 function filterTable() {
-  const searchTerm = searchInput.value.toLowerCase();
-
-  // Hide/show rows based on search term
-  document.querySelectorAll('.fournisseur-row').forEach(row => {
-    const cells = row.querySelectorAll('td');
-    let matchFound = false;
-
-    // Check if any cell content matches the search term
-    for (let i = 0; i < cells.length; i++) {
-      if (cells[i].textContent.toLowerCase().includes(searchTerm)) {
-        matchFound = true;
-        break;
-      }
-    }
-
-    // Show the row if a match is found, hide it otherwise
-    row.style.display = matchFound ? '' : 'none';
-  });
-}
-
-// Add event listeners to the search controls
-searchInput.addEventListener('input', filterTable);
-searchButton.addEventListener('click', filterTable);
-
-// Update the display based on the checkboxes (existing code)
-function updateDisplay() {
+  // First filter by status
   const showPending = document.querySelector('#pending').checked;
   const showAccepted = document.querySelector('#accepted').checked;
   const showRefused = document.querySelector('#refused').checked;
+  const showToReview = document.querySelector('#to-review').checked;
 
+  const rowsToDisplay = [];
+
+  // Filter based on status
   document.querySelectorAll('.fournisseur-row').forEach(row => {
     const statut = row.dataset.statut;
+    const shouldDisplay =
+      (statut === 'En attente' && showPending) ||
+      (statut === 'Acceptée' && showAccepted) ||
+      (statut === 'Refusée' && showRefused) ||
+      (statut === 'En attente' && showToReview);
 
-    if ((statut === 'En attente' && showPending) ||
-        (statut === 'Acceptée' && showAccepted) ||
-        (statut === 'Refusées' && showRefused)) {
-      row.style.display = '';
+    // Store rows that match the status filter
+    if (shouldDisplay) {
+      rowsToDisplay.push(row);
     } else {
-      row.style.display = 'none';
+      row.style.display = 'none'; // Hide rows that don't match status
     }
+  });
+
+  // Get search term and selected options
+  const searchTerm = searchInput.value.toLowerCase();
+  const selectedUnspsc = Array.from(unspscSelect.selectedOptions).map(option => option.value);
+  const selectedRbq = Array.from(rbqSelect.selectedOptions).map(option => option.value);
+  const selectedCity = citySelect.value;
+
+  // Now filter the visible rows based on other filters
+  rowsToDisplay.forEach(row => {
+    const cells = row.querySelectorAll('td');
+    const cityCell = cells[4].textContent.trim(); // Column index for city cell
+    const unspscCell = cells[6].textContent.toLowerCase(); // Column index for UNSPSC cell
+    const rbqCell = cells[5].textContent.toLowerCase(); // Column index for RBQ cell
+
+    // Check if row matches search term
+    const searchMatch = searchTerm === "" || Array.from(cells).some(cell => cell.textContent.toLowerCase().includes(searchTerm));
+
+    // Check if row matches UNSPSC selection (skip filter if "Aucun" selected)
+    const unspscMatch = selectedUnspsc.includes("") || selectedUnspsc.some(unspsc => unspscCell.includes(unspsc.toLowerCase()));
+
+    // Check if row matches RBQ selection (skip filter if "Aucun" selected)
+    const rbqMatch = selectedRbq.includes("") || selectedRbq.some(rbq => rbqCell.includes(rbq.toLowerCase()));
+
+    // Check if row matches city selection (skip filter if "Aucun" selected)
+    const cityMatch = selectedCity === "" || cityCell === selectedCity;
+
+    // Show row if all conditions are met
+    row.style.display = (searchMatch && unspscMatch && rbqMatch && cityMatch) ? '' : 'none';
   });
 }
 
-// Attach event listeners to the checkboxes (existing code)
-document.querySelector('#pending').addEventListener('change', updateDisplay);
-document.querySelector('#accepted').addEventListener('change', updateDisplay);
-document.querySelector('#refused').addEventListener('change', updateDisplay);
+// Attach event listeners to the search controls
+searchInput.addEventListener('input', filterTable);
+searchButton.addEventListener('click', filterTable);
 
-// Initial update of the display (existing code)
-updateDisplay();
+// Attach event listeners to the filter dropdowns
+unspscSelect.addEventListener('change', filterTable);
+rbqSelect.addEventListener('change', filterTable);
+citySelect.addEventListener('change', filterTable);
+
+// Attach event listeners to the status checkboxes
+document.querySelector('#pending').addEventListener('change', filterTable);
+document.querySelector('#accepted').addEventListener('change', filterTable);
+document.querySelector('#refused').addEventListener('change', filterTable);
+document.querySelector('#to-review').addEventListener('change', filterTable);
+
+// Initial display setup
+filterTable();
