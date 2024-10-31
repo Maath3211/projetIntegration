@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\PortailFournisseurController;
 use App\Http\Controllers\AdminController;
 
@@ -174,7 +173,7 @@ Route::POST('/administration/parametre/sauvegarde',
 
 
 
-# RESPONSABLE
+# RESPONSABLE / ADMIN / COMMIS
 
 # Page acceuil connexion
 Route::GET('/responsable',
@@ -209,7 +208,6 @@ Route::GET('/responsable/demandeFournisseur/{neq}/fichier/{idFichier}',
 
 
 # Modele de courriel
-
 Route::GET('/responsable/modeleCourriel',
 [AdminController::class, 'afficherModelCourriel'])->name('responsable.afficherModelCourriel');
 
@@ -219,9 +217,6 @@ Route::POST('/responsable/sauvegarderModeleCourriel',
 [AdminController::class, 'sauvegarderModelCourriel'])->name('responsable.sauvegarderModelCourriel');
 
 
-
-
-
-
+# Exportation
 Route::get('/export-csv', [AdminController::class, 'exportCsv'])->name('export.csv');
 
