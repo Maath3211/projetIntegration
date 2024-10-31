@@ -26,7 +26,7 @@ class FournisseurNeqRequest extends FormRequest
                 'required', 
                 'string',
                 'size:10',
-                'regex:/^(11|22|33|88)[3-9]\d{7}$/', 
+                'regex:/^(11|22|33|88)\d{8}$/', 
                 'unique:fournisseurs,neq',
             ]
         ];
@@ -36,7 +36,7 @@ class FournisseurNeqRequest extends FormRequest
     {
         return [
             'neq.size' => 'Le NEQ doit contenir exactement 10 caractères.',
-            'neq.regex' => 'Le NEQ doit commencer par 11, 22, 33, ou 88 et le troisième caractère doit être entre 3 et 9.',
+            'neq.regex' => 'Le NEQ doit commencer par 11, 22, 33, ou 88',
             'neq.unique' => 'Le NEQ doit être unique.',
         ];
     }

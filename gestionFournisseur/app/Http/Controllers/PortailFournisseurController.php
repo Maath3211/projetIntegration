@@ -98,7 +98,7 @@ class PortailFournisseurController extends Controller
         // elseif($fournisseur->statut === "Acceptée")
         // {
         //     $finance = Finance::where('fournisseur_id', $fournisseur->id)->first();
-        // }
+        // }s
         //dd($unspscFournisseur);
         return View('fournisseur.information', compact('fournisseur','rbq','categorie','unspscCollection','unspscFournisseur', 'contacts', 'coordonnees', 'files','finance','numero','numero2','codePostal','unspscCode'));
     }
