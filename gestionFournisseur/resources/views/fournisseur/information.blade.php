@@ -171,7 +171,7 @@
                                     </div>
                                 @endforeach
                             </div>
-            
+                        </ul>
             
             
             
@@ -210,7 +210,7 @@
                     @endif
                 </div>
             </div>
-            </div>
+        </div>
             
     <!-- Right side sections -->
         <div class="col-md-6">
@@ -320,10 +320,31 @@
                                     </svg>
                                 </button>
                             </form>
-                            <span><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-file-earmark" viewBox="0 0 16 16">
+                            {{-- <span><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-file-earmark" viewBox="0 0 16 16">
+                                <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5z"/>
+                              </svg> --}}
+
+                              <a href="{{ route('responsable.telechargerFichier', [$fournisseur->neq, $file->id]) }}">
+                              <?php $extension = pathinfo($file->nomFichier, PATHINFO_EXTENSION); ?>
+                            @if ($extension == 'png')
+                                <img src="{{ asset('images/icons/png.png') }}" class="imgFormat">
+                            @elseif($extension == 'pdf')
+                                <img src="{{ asset('images/icons/pdf.png') }}" class="imgFormat">
+                            @elseif($extension == 'jpg' || $extension == 'jpeg')
+                                <img src="{{ asset('images/icons/jpg.png') }}" class="imgFormat">
+                            @elseif($extension == 'txt' || $extension == 'doc' || $extension == 'docx')
+                                <img src="{{ asset('images/icons/txt.png') }}" class="imgFormat">
+                            @elseif($extension == 'xls' || $extension == 'xlsx' || $extension == 'csv')
+                                <img src="{{ asset('images/icons/xls.png') }}" class="imgFormat">
+                            @else
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-file-earmark" viewBox="0 0 16 16">
                                 <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5z"/>
                               </svg>
-                              <span class="file-info">{{ $file->nomFichier }} {{ $file->tailleFichier_KO }} Ko {{ $file->created_at }}</span>
+                            @endif
+                              
+                                <span class="file-info">{{ $file->nomFichier }} {{ $file->tailleFichier_KO }} Ko {{ $file->created_at }}</span></a>
+
+                              
                         </p>
                     @endforeach
                     <div class="form-group">

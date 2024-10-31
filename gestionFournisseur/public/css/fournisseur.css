@@ -340,3 +340,7 @@ body.night-mode legend {
 #showAllContacts{
   margin-left: 10px;
 }
+
+.imgFormat {
+  width: 2%;
+}
