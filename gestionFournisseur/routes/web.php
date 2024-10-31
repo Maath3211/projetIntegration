@@ -122,6 +122,12 @@ Route::GET('/finances',
 Route::POST('/finances/store',
 [PortailFournisseurController::class,'storeFinances'])->name('fournisseur.storeFinances');
 
+Route::GET('/finances/edit',
+[PortailFournisseurController::class, 'editFinances'])->name('fournisseur.finances.edit');
+
+Route::POST('/finances/update',
+[PortailFournisseurController::class, 'updateFinances'])->name('fournisseur.finances.update');
+
 
 
 
