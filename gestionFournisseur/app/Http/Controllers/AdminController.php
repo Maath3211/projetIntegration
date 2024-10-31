@@ -43,6 +43,31 @@ class AdminController extends Controller
 
     public function loginEmailResponsable(ConnexionResponsableRequest $request)
     {
+        $courrielEnvoye = false;
+        $fournisseurs = Fournisseur::where("statut", 'Refusée')->get()->all();
+        $parametre = DB::table('setting')->get()->firstOrFail();
+        $responsables = Responsable::where('role', ['Administrateur', 'Responsable'])->get();
+            foreach($fournisseurs as $fournisseur){
+            $date = Carbon::parse($fournisseur->dateStatut);
+            if($date->lt(Carbon::now()->subMonths($parametre->delaiRev))){
+                $fournisseur->statut = 'Révision';
+                $fournisseur->dateStatut = Carbon::now();
+                $fournisseur->save();
+                if(!$courrielEnvoye){
+                    foreach ($responsables as $responsable) 
+                    {
+                        if ($responsable->email == 'mathys.lessard.02@edu.cegeptr.qc.ca' || $responsable->email == 'simon.beaulieu.04@edu.cegeptr.qc.ca') 
+                        {
+                            Mail::to($responsable->email)->send(new demandeFournisseur());
+                        }
+                        $courrielEnvoye = true;
+                    }
+                }   
+                
+            }
+            
+        }
+
         $responsable = Responsable::where('email', $request->email)->where('role', $request->role)->first();
 
         if ($responsable) 
@@ -247,25 +272,25 @@ class AdminController extends Controller
 
     public function demandeFournisseurZoom($neq)
     {
-        $fn = DB::table('fournisseurs')->where('neq', $neq)->first();
-        $contacts = DB::table('contact')->where('fournisseur_id', $fn->id)->get();
-        $coord = DB::table('coordonnees')->where('fournisseur_id', $fn->id)->get()->firstOrFail();
-        $files = DB::table('file')->where('fournisseur_id', $fn->id)->get();
-        $rbq = DB::table('rbqlicences')->where('fournisseur_id', $fn->id)->get()->firstOrFail();
+        $fournisseur = DB::table('fournisseurs')->where('neq', $neq)->first();
+        $contacts = DB::table('contact')->where('fournisseur_id', $fournisseur->id)->get();
+        $coordonnees = DB::table('coordonnees')->where('fournisseur_id', $fournisseur->id)->get()->firstOrFail();
+        $files = DB::table('file')->where('fournisseur_id', $fournisseur->id)->get();
+        $rbq = DB::table('rbqlicences')->where('fournisseur_id', $fournisseur->id)->get()->firstOrFail();
         $categories = DB::table('categories')->where('id', $rbq->idCategorie)->get()->firstOrFail();
-        $unspscFournisseur = DB::table('unspsccodes')->where('fournisseur_id', $fn->id)->get();
+        $unspscFournisseur = DB::table('unspsccodes')->where('fournisseur_id', $fournisseur->id)->get();
         $unspscCollection = collect();
         foreach ($unspscFournisseur as $uc) {
             $unspsc = DB::table('unspsc')->where('id', $uc->idUnspsc)->first();
             $unspscCollection->push($unspsc);
         }
-        $fn->dateStatut = Carbon::parse($fn->dateStatut)->toDateString();
-        $fn->created_at = Carbon::parse($fn->created_at)->toDateString();
-        $fn->updated_at = Carbon::parse($fn->updated_at)->toDateString();
-        if ($fn->raisonRefus)
-            $fn->raisonRefus = Crypt::decryptString($fn->raisonRefus);
+        $fournisseur->dateStatut = Carbon::parse($fournisseur->dateStatut)->toDateString();
+        $fournisseur->created_at = Carbon::parse($fournisseur->created_at)->toDateString();
+        $fournisseur->updated_at = Carbon::parse($fournisseur->updated_at)->toDateString();
+        if ($fournisseur->raisonRefus)
+            $fournisseur->raisonRefus = Crypt::decryptString($fournisseur->raisonRefus);
 
-        return view('admin.zoomDemandeFournisseur', compact('fn', 'contacts', 'coord', 'files', 'rbq', 'categories', 'unspscFournisseur', 'unspscCollection'));
+        return view('admin.zoomDemandeFournisseur', compact('fournisseur', 'contacts', 'coordonnees', 'files', 'rbq', 'categories', 'unspscFournisseur', 'unspscCollection'));
     }
 
     public function accepterFournisseur($neq)

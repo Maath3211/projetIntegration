@@ -180,7 +180,7 @@ Route::GET('/responsable',
 [AdminController::class,'index'])->name('responsable.index');
 
 Route::POST('/connexion/responsable/email',
-[AdminController::class,'loginEmailResponsable'])->name('login.email.reponsable');
+[AdminController::class,'loginEmailResponsable'])->name('login.email.responsable');
 
 #Affichage TODO: a supprimer [
 Route::GET('/affiche',
