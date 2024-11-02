@@ -158,7 +158,6 @@
                       $rbqCategorieNom = 'Non disponible';
                   }
               @endphp
-
               <td>{{ $rbqCategorieNom }}</td>
 
               <td>
