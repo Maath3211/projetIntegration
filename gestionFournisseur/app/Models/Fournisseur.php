@@ -38,7 +38,7 @@ class Fournisseur extends Authenticatable
         return $this->hasOne(FournisseurCoord::class, 'fournisseur_id');
     }
 
-    public function contact(){
+    public function contacts(){
         return $this->hasMany(Contact::class, 'fournisseur_id');
     }
 

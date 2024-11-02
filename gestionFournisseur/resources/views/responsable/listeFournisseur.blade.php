@@ -134,6 +134,7 @@
               <th scope="col">Ville</th>
               <th scope="col">RBQ id</th>
               <th scope="col">unspsc</th>
+              <th scope="col">Selectioner</th>
           </tr>
 
           @foreach ($fnAttentes as $fn)
@@ -164,6 +165,7 @@
                       Non disponible
                   @endif
               </td>
+              <td><input type="checkbox" class="select-fournisseur" value='{{$fn->id}}'></td>
       
               <td>
                   <a href="{{ route('responsable.demandeFournisseurZoom', $fn->neq) }}" class="btn btn-info">
@@ -176,7 +178,7 @@
       
 
       </table>
-      <a href="{{ route('export.csv') }}" class="btn btn-primary mb-3">Exporter en CSV</a>
+      <button id="showSelectedBtn" class="btn btn-primary mb-3">Afficher les informations des fournisseurs sélectionnés</button>
                 </div>
             </div>
         </div>

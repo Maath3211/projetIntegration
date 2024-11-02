@@ -190,6 +190,10 @@ Route::GET('/affiche',
 Route::GET('/responsable/listeFournisseur',
 [AdminController::class,'listeFournisseur'])->name('responsable.listeFournisseur');
 
+Route::get('/responsable/fournisseurs/details', 
+[AdminController::class, 'detailsFournisseurs'])->name('responsable.detailsFournisseurs');
+
+
 # Demande de fournisseur
 Route::GET('/responsable/demandeFournisseur',
 [AdminController::class,'demandeFournisseurView'])->name('responsable.demandeFournisseur');

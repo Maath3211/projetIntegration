@@ -1,3 +1,16 @@
+
+document.getElementById('showSelectedBtn').addEventListener('click', function () {
+  const selectedFournisseurs = Array.from(document.querySelectorAll('.select-fournisseur:checked'))
+      .map(checkbox => checkbox.value);
+
+  if (selectedFournisseurs.length > 0) {
+      const url = `/responsable/fournisseurs/details?ids=${selectedFournisseurs.join(',')}`;
+      window.location.href = url;
+  } else {
+      alert('Veuillez sélectionner au moins un fournisseur.');
+  }
+});
+
 // Get references to the table and filter controls
 const table = document.querySelector('table');
 const searchInput = document.querySelector('.search-input');
@@ -80,3 +93,5 @@ document.querySelector('#to-review').addEventListener('change', filterTable);
 
 // Initial display setup
 filterTable();
+
+

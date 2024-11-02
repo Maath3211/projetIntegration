@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Setting;
 use App\Models\Fournisseur;
+use App\Models\FournisseurCoord;
 use App\Models\Responsable;
 use App\Models\User;
 use App\Models\Categorie;
@@ -24,6 +25,7 @@ use App\Http\Requests\SettingRequest;
 use App\Http\Requests\ResetPasswordRequest;
 use App\Mail\ResetPassword;
 use App\Http\Requests\ConnexionResponsableRequest;
+use App\Models\RBQLicence;
 use Carbon\Carbon;
 use Mail;
 use Str;
@@ -114,60 +116,85 @@ class AdminController extends Controller
             
         return view('responsable.listeFournisseur', compact('fnAttentes', 'villes', 'coordonnees', 'codes', 'nomRegion', 'nomVille', 'rbq', 'rbqCategorie', 'unspsc', 'unspscDescription'));
     }
+
+    public function detailsFournisseurs(Request $request)
+    {
+        $ids = explode(',', $request->query('ids', ''));
+        
+        // Load fournisseurs with related contacts and coordonnees
+        $fournisseurs = Fournisseur::whereIn('id', $ids)
+            ->with(['contacts', 'coordonnees'])
+            ->get();
+    
+            
+        return view('responsable.detailsFournisseurs', compact('fournisseurs'));
+    }
+    
+
     
     
 
-    public function exportCsv()
-{
-    $headers = [
-        "Content-Type" => "text/csv",
-        "Content-Disposition" => "attachment; filename=fournisseurs.csv",
-    ];
+    public function exportCsv(Request $request)
+    {
+        $supplierIds = explode(',', $request->query('supplier_ids'));
+    
+        $headers = [
+            "Content-Type" => "text/csv",
+            "Content-Disposition" => "attachment; filename=fournisseurs.csv",
+        ];
+    
+        $callback = function() use ($supplierIds) {
+            $file = fopen('php://output', 'w');
+    
+            // Add the header row
+            fputcsv($file, ['Entreprise', 'Courriel', 'Telephone', 'Contacts', 'Statut']);
+    
+            // Fetch only selected suppliers
+            $fnAttentes = DB::table('fournisseurs')->whereIn('id', $supplierIds)->get();
+            $coordonnees = DB::table('coordonnees')->whereIn('fournisseur_id', $supplierIds)->get();
+            $rbq = DB::table('rbqlicences')->whereIn('fournisseur_id', $supplierIds)->get();
+            $contacts = DB::table('contact')->whereIn('fournisseur_id', $supplierIds)->get();
+            $rbqCategorie = DB::table('categories')->get();
+            $unspsc = DB::table('unspsccodes')
+                        ->join('unspsc', 'unspsccodes.idUnspsc', '=', 'unspsc.id')
+                        ->select('unspsccodes.fournisseur_id', 'unspsc.code', 'unspsc.description')
+                        ->whereIn('unspsccodes.fournisseur_id', $supplierIds)
+                        ->get()
+                        ->groupBy('fournisseur_id');
+    
+            foreach ($fnAttentes as $fn) {
+                $coord = $coordonnees->firstWhere('fournisseur_id', $fn->id);
+                $rbqLicence = $rbq->firstWhere('fournisseur_id', $fn->id);
+                $rbqCategorieNom = $rbqLicence ? $rbqCategorie->firstWhere('id', $rbqLicence->idCategorie)->nom ?? 'Non disponible' : 'Non disponible';
+    
+                // Récupérer et concaténer les contacts
+                $contactsForSupplier = $contacts->where('fournisseur_id', $fn->id);
+                $contactDetails = $contactsForSupplier->map(function($contact) {
+                    return $contact->prenom . ' ' . $contact->nom . ' (' . $contact->courriel . ', ' . $contact->telephone . ')';
+                })->implode('; ');
+    
+                $unspscCodes = isset($unspsc[$fn->id]) ? implode(', ', $unspsc[$fn->id]->map(fn($code) => "$code->code - $code->description")->all()) : 'Non disponible';
+    
+                fputcsv($file, [
+                    $fn->entreprise,
+                    $fn->email,
+                    $coord->numero ?? 'Non disponible',
+                    $contactDetails ?: 'Non disponible',
+                    // $fn->neq,
+                    $fn->statut,
+                    // $coord ? $coord->ville : 'Non disponible',
+                    // $rbqCategorieNom,
+                    // $unspscCodes,
+                ]);
+            }
+    
+            fclose($file);
+        };
+    
+        return response()->stream($callback, 200, $headers);
+    }
+    
 
-    $callback = function() {
-        // Ouvrez un flux en mémoire pour générer le fichier CSV
-        $file = fopen('php://output', 'w');
-
-        // Ajoutez l'entête des colonnes
-        fputcsv($file, ['Entreprise', 'Courriel', 'NEQ', 'Statut', 'Ville', 'RBQ ID', 'UNSPSC']);
-
-        // Récupérez les données de votre table (ou utilisez une méthode de requête optimisée si les données sont volumineuses)
-        $fnAttentes = DB::table('fournisseurs')->get();
-        $coordonnees = DB::table('coordonnees')->get();
-        $rbq = DB::table('rbqlicences')->get();
-        $rbqCategorie = DB::table('categories')->get();
-        $unspsc = DB::table('unspsccodes')
-                    ->join('unspsc', 'unspsccodes.idUnspsc', '=', 'unspsc.id')
-                    ->select('unspsccodes.fournisseur_id', 'unspsc.code', 'unspsc.description')
-                    ->get()
-                    ->groupBy('fournisseur_id');
-
-        foreach ($fnAttentes as $fn) {
-            // Récupérez la ville et la catégorie RBQ de chaque fournisseur
-            $coord = $coordonnees->firstWhere('fournisseur_id', $fn->id);
-            $rbqLicence = $rbq->firstWhere('fournisseur_id', $fn->id);
-            $rbqCategorieNom = $rbqLicence ? $rbqCategorie->firstWhere('id', $rbqLicence->idCategorie)->nom ?? 'Non disponible' : 'Non disponible';
-
-            // Récupérez les codes UNSPSC associés
-            $unspscCodes = isset($unspsc[$fn->id]) ? implode(', ', $unspsc[$fn->id]->map(fn($code) => "$code->code - $code->description")->all()) : 'Non disponible';
-
-            // Écrivez la ligne dans le fichier CSV
-            fputcsv($file, [
-                $fn->entreprise,
-                $fn->email,
-                $fn->neq,
-                $fn->statut,
-                $coord ? $coord->ville : 'Non disponible',
-                $rbqCategorieNom,
-                $unspscCodes,
-            ]);
-        }
-
-        fclose($file);
-    };
-
-    return response()->stream($callback, 200, $headers);
-}
 
     
     

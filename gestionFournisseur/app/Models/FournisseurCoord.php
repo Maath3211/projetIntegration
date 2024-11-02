@@ -36,7 +36,7 @@ class FournisseurCoord extends Model
 
     public function fournisseur()
     {
-        return $this->belongsTo(Fournisseur::class);
+        return $this->belongsTo(Fournisseur::class, 'fournisseur_id');
     }
 
 
