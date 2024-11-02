@@ -1,9 +1,6 @@
 @extends('layouts.layoutAdmin')
-@section('title', 'Administration')
 
 <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
-
-
 
 @section('contenu')
 

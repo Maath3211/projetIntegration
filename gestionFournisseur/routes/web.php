@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\PortailFournisseurController;
 use App\Http\Controllers\AdminController;
 
@@ -122,6 +121,12 @@ Route::GET('/finances',
 Route::POST('/finances/store',
 [PortailFournisseurController::class,'storeFinances'])->name('fournisseur.storeFinances');
 
+Route::GET('/finances/edit',
+[PortailFournisseurController::class, 'editFinances'])->name('fournisseur.finances.edit');
+
+Route::POST('/finances/update',
+[PortailFournisseurController::class, 'updateFinances'])->name('fournisseur.finances.update');
+
 
 
 
@@ -138,6 +143,21 @@ Route::POST('/information/desactive',
 Route::POST('/information/active',
 [PortailFournisseurController::class,'storeActive'])->name('fournisseur.storeActive');
 
+#Contact page informations
+Route::delete('/contact/supprimer/{id}',
+[PortailFournisseurController::class, 'deleteContact'])->name('fournisseur.deleteContact');
+
+Route::GET('/contact/editContact/{id}',
+[PortailFournisseurController::class, 'editContact'])->name('fournisseur.editContact');
+
+Route::POST('/contact/updateContact/{id}',
+[PortailFournisseurController::class, 'updateContact'])->name('fournisseur.updateContact');
+
+Route::GET('/contact/addContactCreer/{id}',
+[PortailFournisseurController::class, 'addContactCreer'])->name('fournisseur.addContactCreer');
+
+Route::POST('/contact/storeContactCreer/{id}',
+[PortailFournisseurController::class, 'storeContactCreer'])->name('fournisseur.storeContactCreer');
 
 
 
@@ -153,14 +173,14 @@ Route::POST('/administration/parametre/sauvegarde',
 
 
 
-# RESPONSABLE
+# RESPONSABLE / ADMIN / COMMIS
 
 # Page acceuil connexion
 Route::GET('/responsable',
 [AdminController::class,'index'])->name('responsable.index');
 
 Route::POST('/connexion/responsable/email',
-[AdminController::class,'loginEmailResponsable'])->name('login.email.reponsable');
+[AdminController::class,'loginEmailResponsable'])->name('login.email.responsable');
 
 #Affichage TODO: a supprimer [
 Route::GET('/affiche',
@@ -188,7 +208,6 @@ Route::GET('/responsable/demandeFournisseur/{neq}/fichier/{idFichier}',
 
 
 # Modele de courriel
-
 Route::GET('/responsable/modeleCourriel',
 [AdminController::class, 'afficherModelCourriel'])->name('responsable.afficherModelCourriel');
 
@@ -198,13 +217,6 @@ Route::POST('/responsable/sauvegarderModeleCourriel',
 [AdminController::class, 'sauvegarderModelCourriel'])->name('responsable.sauvegarderModelCourriel');
 
 
+# Exportation
+Route::get('/export-csv', [AdminController::class, 'exportCsv'])->name('export.csv');
 
-# TODO: Classer et ajuster quand déplacer dans le controller
-Route::delete('/contact/supprimer/{id}',
-[AdminController::class, 'deleteContact'])->name('fournisseur.deleteContact');
-
-Route::POST('/contact/editContact/{id}',
-[AdminController::class, 'editContact'])->name('fournisseur.editContact');
-
-Route::POST('/contact/updateContact/{id}',
-[AdminController::class, 'updateContact'])->name('fournisseur.updateContact');

@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('finances', function (Blueprint $table) {
             $table->id();
-            $table->string('tps',250);
-            $table->string('tvq',250);
-            $table->string('paiement',500);
-            $table->string('devise',500);
-            $table->string('communication',500);
+            $table->string('tps',250)->nullable();
+            $table->string('tvq',250)->nullable();
+            $table->string('paiement',500)->nullable();
+            $table->string('devise',500)->nullable();
+            $table->string('communication',500)->nullable();
             $table->unsignedBigInteger('fournisseur_id');
             $table->foreign('fournisseur_id')->references('id')->on('fournisseurs');
             $table->timestamps();

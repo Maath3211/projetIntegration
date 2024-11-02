@@ -2,7 +2,7 @@
 @section('title', "Finances")
 @section('contenu')
 <div class="text-center py-5">
-    <h1 class="py-5">FINANCES</h1>
+    <h1>FINANCES</h1>
 </div>
 <div class="container-fluid">
     <div class="row">
@@ -100,7 +100,7 @@
                             <input type="radio" id="communication" name="communication" value="courriel" {{ old('communication') == 'courriel' ? 'checked' : '' }}> Courriel
                         </div>
                         <div class="col-md-6">
-                            <input type="radio" id="communication" name="communication" value="courrielRegulier" {{ old('communication') == 'courrielRegulier' ? 'checked' : '' }}> Courriel régulier
+                            <input type="radio" id="communication" name="communication" value="courrier régulier" {{ old('communication') == 'courrier régulier' ? 'checked' : '' }}> Courrier régulier
                         </div>
                         @error('communication')
                         <span class="text-danger">{{ $message }}

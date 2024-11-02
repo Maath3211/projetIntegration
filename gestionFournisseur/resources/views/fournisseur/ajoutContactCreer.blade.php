@@ -15,7 +15,7 @@
 
             {{-- <p id="plus1">&#8853;</p> --}}
             <div class="col-md-6 offset-3" id="form1Div">
-                <form action="{{ route('fournisseur.storeContact') }}" method="post" id="form1">
+                <form action="{{ route('fournisseur.storeContactCreer', $fournisseur->id) }}" method="post" id="form1">
                     @csrf
                     <div class=" py-3">
                         <div class="d-flex row justify-content-center">
@@ -162,9 +162,10 @@
             <br>
             <div class="d-flex row justify-content-center">
                 <div class="form-group">
-                    <button type="submit" name="action" value="save_another" {{-- onclick="submitForms()" --}}
-                        class="btn btn-warning">Enregistrer et ajouter un autre</button>
-                    <button type="submit" name="action" value="save_next" {{-- onclick="submitForms()" --}}
+                    {{-- TODO: ajouter plus --}}
+                    {{-- <button type="submit" name="action" value="save_another"
+                        class="btn btn-warning">Enregistrer et ajouter un autre</button> --}}
+                    <button type="submit" name="action" value="save_next"
                         class="btn btn-secondary">Enregistrer et continuer</button>
                 </div>
             </div>

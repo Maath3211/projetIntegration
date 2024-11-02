@@ -17,7 +17,6 @@
                     <div class="row">
                         <div class="col-md-6">
                             <h5>Numéro de licence RBQ
-                                <small class="text-danger">*</small>
                             </h5>
                             <input type="text" value="{{  old('licenceRBQ', $rbq->licenceRBQ) }}" id="search-input" name="licenceRBQ" class="form-control" maxlength="12" placeholder="####-####-##">
                             @error('licenceRBQ')
@@ -31,9 +30,9 @@
 
                         <div class="col-md-6">
                             <h5>Statut
-                                <small class="text-danger">*</small>
                             </h5>
                             <select class="form-control" name="statut">
+                                <option value="Aucun" {{ $typeLicence == 'Aucun' ? 'selected' : '' }}>Aucun</option>
                                 <option value="Valide" {{ $rbq->statut == 'Active' ? 'selected' : '' }}>Valide</option>
                                 <option value="Valide avec restriction" {{ $rbq->statut == 'Valide avec restriction' ? 'selected' : '' }}>Valide avec restriction</option>
                                 <option value="Non valide" {{ $rbq->statut == 'Non valide' ? 'selected' : '' }}>Non valide</option>
@@ -51,11 +50,11 @@
                     <div class="row mt-5">
                         <div class="col-md-5">
                             <h5>Type de licence
-                                <small class="text-danger">*</small>
                             </h5>
                         </div>
                         <div class="col-md-7">
                             <select class="form-control" name="typeLicence">
+                                <option value="Aucun" {{ $typeLicence == 'Aucun' ? 'selected' : '' }}>Aucun</option>
                                 <option value="Entrepreneur" {{ $rbq->typeLicence == 'Entrepreneur' ? 'selected' : '' }}>Entrepreneur</option>
                                 <option value="Constructeur-Propriétaire" {{ $rbq->typeLicence == 'Constructeur-Propriétaire'  ? 'selected' : '' }}>Constructeur-propriétaire</option>
                             </select>
@@ -71,7 +70,6 @@
 
                     <div class="row py-5">
                         <h5 class="pl-5">Catégories et sous-catégories autorisées
-                            <small class="text-danger">*</small>
                         </h5>
                         
                         @if (count($codes)) 

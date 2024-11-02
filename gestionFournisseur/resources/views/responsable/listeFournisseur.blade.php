@@ -58,13 +58,13 @@
         </div>
         <div class="form-check">
           <input class="form-check-input" type="checkbox" id="to-review" checked>
-          <label class="form-check-label" for="to-review">À réviser</label>
+          <label class="form-check-label" for="to-review">En attente</label>
         </div>
       </div>
 
       <div class="search-bar">
-        <input type="text" class="form-control" placeholder="Rechercher">
-        <button class="btn btn-outline-secondary" type="button">Rechercher</button>
+        <input type="text" class="form-control search-input" placeholder="Rechercher">
+        <button class="btn btn-outline-secondary search-button" type="button">Rechercher</button>
       </div>
     </div>
 
@@ -72,19 +72,23 @@
     <div class="filter-section row">
       <div class="col-md-3">
         <label for="products" class="form-label">Produits et services</label>
-        <select id="products" class="form-select" multiple>
-        @foreach($unspscDescription as $des)
-            <option>{{ $des->description }}</option>
-        @endforeach
+        <select id="unspsc" name="unspsc" class="form-select" multiple>
+          <option value="" selected>Aucun</option>
+          @foreach($unspsc as $supplierUnspscCollection)
+          @foreach($supplierUnspscCollection as $des)
+              <option>{{ $des->description }}</option>
+          @endforeach
+      @endforeach
         </select>
       </div>
 
       <!-- Categories section -->
       <div class="col-md-3">
         <label for="categories" class="form-label">Catégories de travaux</label>
-        <select id="categories" class="form-select" multiple>
+        <select id="rbq" name="rbq" class="form-select" multiple>
+          <option value="" selected>Aucun</option>
         @foreach($codes as $code)
-            <option>{{ $code->codeSousCategorie }} : {{ $code->nom }}</option>
+            <option>{{ $code->nom }}</option>
         @endforeach
         </select>
       </div>
@@ -92,9 +96,10 @@
       <!-- Administrative regions section -->
       <div class="col-md-3">
         <label for="regions" class="form-label">Régions administratives</label>
-        <select id="regions" class="form-select">
+        <select id="regions" name="regions" class="form-select">
+          <option value="">Aucun</option>
           @foreach ($nomRegion as $coo)
-          <option selected>{{ $coo }}</option>
+          <option >{{ $coo }}</option>
           @endforeach
         </select>
       </div>
@@ -102,10 +107,10 @@
       <!-- Cities section -->
       <div class="col-md-3">
         <label for="cities" class="form-label">Villes  .ty5456546 </label>
-          <select class="form-control" id="ville" name="ville">
-              <option value="">Sélectionnez une ville</option>
-              @foreach ($nomVille as $ville)
-                <option selected>{{ $ville }}</option>
+          <select class="form-control" id="villes" name="villes">
+              <option value="">Aucun</option>
+              @foreach ($villes as $ville)
+                <option >{{ $ville }}</option>
               @endforeach
           </select>
       </div>
@@ -128,6 +133,7 @@
               <th scope="col">Statut</th>
               <th scope="col">Ville</th>
               <th scope="col">RBQ id</th>
+              <th scope="col">unspsc</th>
           </tr>
 
           @foreach ($fnAttentes as $fn)
@@ -136,39 +142,41 @@
               <td>{{ $fn->email }}</td>
               <td>{{ $fn->neq }}</td>
               <td>{{ $fn->statut }}</td>
-
-
-              {{-- Récupère la première coordonnée associée au fournisseur actuel --}}
+      
               @php
                   $coord = $coordonnees->firstWhere('fournisseur_id', $fn->id);
               @endphp
               <td>{{ $coord ? $coord->ville : 'Non disponible' }}</td>
-
-              {{-- Récupère la première licence RBQ associée au fournisseur actuel --}}
+      
               @php
-                  // Trouver la licence associée au fournisseur actuel
                   $rbqLicence = $rbq->firstWhere('fournisseur_id', $fn->id);
-
-                  // Si une licence est trouvée, chercher la catégorie associée
-                  $rbqCategorieNom = null;
-                  if ($rbqLicence) {
-                      $rbqCategorieItem = $rbqCategorie->firstWhere('id', $rbqLicence->idCategorie);
-                      $rbqCategorieNom = $rbqCategorieItem ? $rbqCategorieItem->nom : 'Non disponible';
-                  } else {
-                      $rbqCategorieNom = 'Non disponible';
-                  }
+                  $rbqCategorieNom = $rbqLicence ? $rbqCategorie->firstWhere('id', $rbqLicence->idCategorie)->nom ?? 'Non disponible' : 'Non disponible';
               @endphp
               <td>{{ $rbqCategorieNom }}</td>
-
+      
+              <!-- Afficher les codes UNSPSC associés -->
+              <td >
+                  @if (isset($unspsc[$fn->id]))
+                      @foreach ($unspsc[$fn->id] as $code)
+                          {{ $code->code }} - {{ $code->description }}<br>
+                      @endforeach
+                  @else
+                      Non disponible
+                  @endif
+              </td>
+      
               <td>
                   <a href="{{ route('responsable.demandeFournisseurZoom', $fn->neq) }}" class="btn btn-info">
                       Plus d'information
                   </a>
               </td>
           </tr>
-            @endforeach
+      @endforeach
+      
+      
 
       </table>
+      <a href="{{ route('export.csv') }}" class="btn btn-primary mb-3">Exporter en CSV</a>
                 </div>
             </div>
         </div>

@@ -1,23 +1,34 @@
 @extends('layouts.fournisseur')
 @section('title',"Page d'accueil")
-  @section('navbar')
-    <li class="active"><a class="lien" href="{{ route('fournisseur.inscription') }}">Inscription</a></li>
-  @endsection
 @section('contenu')
-<div class="text-center py-5">
-    <h1>Portail des fournisseurs</h1>
+<div class="text-center">
+    <h1 class="portail">Portail des fournisseurs</h1>
 </div>
+<form action="{{ route('fournisseur.inscription') }}" method="GET">
+  @csrf
+  <div class="d-flex row justify-content-center text-center">
+    <div class="form-group">
+        <button type="submit" class="btn btn-secondary inscription">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-pencil-square me-2" viewBox="0 0 16 16">
+                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+            </svg>
+            Pas inscrit ?
+        </button>
+    </div>
+  </div>
+</form>
 <div class="container-fluid">
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-6 col-index">
       <form method="post" action="{{ route('login.neq') }}">
         @csrf
-        <fieldset>
-          <legend>Authentification</legend>
+        <fieldset class="field-index">
+          <legend>Authentification par numéro NEQ</legend>
           <div class="d-flex flex-column justify-content-center py-5">
             <div class="form-group">
               <label for="neq" class="titreForm">Numéro d'entreprise (NEQ)</label>
-              <input type="text" class="form-control" maxlength="10" pattern="\d*" inputmode="numeric" id="neq" placeholder="Numéro d'entreprise (NEQ)" name="neq">
+              <input type="text" class="form-control control-index" maxlength="10" pattern="\d*" inputmode="numeric" id="neq" placeholder="Numéro d'entreprise (NEQ)" name="neq">
               <a href="{{route('fournisseur.identification')}}" class="link-right">Pas de NEQ?</a>
               @error('neq')
               <span class="text-danger">{{ $message }}</span>
@@ -25,7 +36,7 @@
             </div>
             <div class="form-group">
               <label for="password" class="titreForm">Mot de passe</label>
-              <input type="password" class="form-control" id="password" placeholder="Mot de passe" name="password">
+              <input type="password" class="form-control control-index" id="password" placeholder="Mot de passe" name="password">
               <a href="{{ route('login.resetView') }}" class="link-right">Mot de passe oublié ?</a>
               @error('password')
               <span class="text-danger">{{ $message }}</span>
@@ -38,15 +49,15 @@
         </fieldset>
       </form>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6 col-index">
       <form method="post" action="{{ route('login.email') }}">
         @csrf
-        <fieldset>
-          <legend>Authentification</legend>
+        <fieldset class="field-index">
+          <legend>Authentification par adresse courriel</legend>
           <div class="d-flex flex-column justify-content-center py-5">
             <div class="form-group">
-              <label for="email" class="titreForm">Email</label>
-              <input type="email" class="form-control" id="email" placeholder="Adresse courriel" name="email">
+              <label for="email" class="titreForm">Adresse courriel</label>
+              <input type="email" class="form-control control-index" id="email" placeholder="Adresse courriel" name="email">
               <a href="{{route('fournisseur.inscription')}}" class="link-right">NEQ?</a>
               @error('email')
               <span class="text-danger">{{ $message }}
@@ -58,7 +69,7 @@
             </div>
             <div class="form-group">
               <label for="password" class="titreForm">Mot de passe</label>
-              <input type="password" class="form-control" id="password" placeholder="Mot de passe" name="password">
+              <input type="password" class="form-control control-index" id="password" placeholder="Mot de passe" name="password">
               <a href="{{ route('login.resetView') }}" class="link-right">Mot de passe oublié ?</a>
               @error('password')
               <span class="text-danger">{{ $message }}

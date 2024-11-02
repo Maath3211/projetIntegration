@@ -8,15 +8,18 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('css/fournisseur.css') }}">
     <title>@yield('title')</title>
+    @stack('scripts')
 </head>
 <body>
 <header>
-<img src="{{asset('images/logo-v3r-v2.svg')}}" alt="logoV3R" id="logoV3R" class="img-fluid ville">
+<a href="/" alt="Accueil du site" title="Accueil du site">
+    <img src="{{asset('images/logo-v3r-v2.svg')}}" alt="logoV3R" id="logoV3R" class="img-fluid ville">
+</a>
 <nav class="navbar d-flex navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand" href="/" alt="Accueil du site" title="Accueil du site">
-                <span class="brand-uni">uni</span><span class="brand-v3r">.v3r.net</span>
+                <span class="brand-uni uni">uni</span><span class="brand-v3r uni">.v3r.net</span>
             </a>
             <button class="night-mode-toggle" onclick="toggleNightMode()">
                 <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -31,6 +34,7 @@
     </div>
 </nav>
 </header>
+
     @if (isset($errors) && $errors->any())
     <div class="alert alert-danger">
         @foreach ($errors->all() as $error)
@@ -43,7 +47,9 @@
             <p>{{ session('message') }}</p>
         </div>
     @endif
-    @yield('contenu')
+    <main>
+        @yield('contenu')
+    </main>
     <footer>
 		<div>
 			<aside class="white">
@@ -64,7 +70,9 @@
 		<div>
             <div>
                 <aside>
-                    <img src="{{asset('images/logo-v3r-v2.svg')}}" alt="logoV3R" id="logoV3RFooter" class="img-fluid ville">
+                    <a href="/" alt="Accueil du site" title="Accueil du site">
+                        <img src="{{asset('images/logo-v3r-v2.svg')}}" alt="logoV3R" id="logoV3RFooter" class="img-fluid ville">  
+                    </a>
                 </aside>
             </div>
 			<aside class="logoFooter">
