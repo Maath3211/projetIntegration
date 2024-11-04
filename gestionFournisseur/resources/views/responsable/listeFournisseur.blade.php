@@ -132,8 +132,8 @@
               <th scope="col">NEQ</th>
               <th scope="col">Statut</th>
               <th scope="col">Ville</th>
-              <th scope="col">RBQ id</th>
-              <th scope="col">unspsc</th>
+              <th scope="col" hidden>RBQ id</th>
+              <th scope="col" hidden>unspsc</th>
               <th scope="col">Selectioner</th>
           </tr>
 
@@ -153,10 +153,10 @@
                   $rbqLicence = $rbq->firstWhere('fournisseur_id', $fn->id);
                   $rbqCategorieNom = $rbqLicence ? $rbqCategorie->firstWhere('id', $rbqLicence->idCategorie)->nom ?? 'Non disponible' : 'Non disponible';
               @endphp
-              <td>{{ $rbqCategorieNom }}</td>
+              <td hidden>{{ $rbqCategorieNom }}</td>
       
               <!-- Afficher les codes UNSPSC associés -->
-              <td >
+              <td hidden>
                   @if (isset($unspsc[$fn->id]))
                       @foreach ($unspsc[$fn->id] as $code)
                           {{ $code->code }} - {{ $code->description }}<br>
