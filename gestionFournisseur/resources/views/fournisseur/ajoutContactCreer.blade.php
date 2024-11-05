@@ -44,7 +44,6 @@
                     @enderror
                 </div>
             </div>
-
             <div class="d-flex row justify-content-center">
                 <div class="form-group">
                     <label>Fonction
@@ -63,7 +62,6 @@
                     @enderror
                 </div>
             </div>
-
             <div class="d-flex row justify-content-center">
                 <div class="form-group">
                     <label>Courriel
@@ -82,10 +80,6 @@
                     @enderror
                 </div>
             </div>
-
-
-
-
             <div class="d-flex row justify-content-center">
                 <div class="form-group">
                     <label for="typeTelephone" class="titreForm">Type
@@ -107,7 +101,6 @@
                     @enderror
                 </div>
             </div>
-
             <div class="d-flex row justify-content-center">
                 <div class="form-group">
                     <label for="telephone" class="titreForm">Telephone
@@ -126,7 +119,6 @@
                     @enderror
                 </div>
             </div>
-
             <div class="d-flex row justify-content-center">
                 <div class="form-group">
                     <label for="poste" class="titreForm">Poste
