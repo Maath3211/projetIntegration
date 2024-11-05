@@ -182,10 +182,18 @@ Route::GET('/responsable',
 Route::POST('/connexion/responsable/email',
 [AdminController::class,'loginEmailResponsable'])->name('login.email.responsable');
 
-#Affichage TODO: a supprimer [
-Route::GET('/affiche',
-[AdminController::class,'affiche'])->name('responsable.affiche');
-#                           ]
+Route::GET('/responsable/gerer',
+[AdminController::class,'gererResponsable'])->name('responsable.gererResponsable');
+
+Route::POST('/responsable/gerer/edit/{id}',
+[AdminController::class,'editResponsable'])->name('responsable.editResponsable');
+
+Route::GET('/responsable/ajouter',
+[AdminController::class,'addResponsable'])->name('responsable.addResponsable');
+
+Route::POST('/responsable/storeResponsable',
+[AdminController::class,'storeResponsable'])->name('responsable.storeResponsable');
+
 
 Route::GET('/responsable/listeFournisseur',
 [AdminController::class,'listeFournisseur'])->name('responsable.listeFournisseur');

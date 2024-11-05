@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ContactRequest;
 use App\Http\Requests\ModelCourrielRequest;
+use App\Http\Requests\ResponsableRequest;
 use App\Mail\demandeFournisseur;
 use App\Models\Contact;
 use App\Models\ModelCourriel;
@@ -60,6 +61,7 @@ class AdminController extends Controller
                     {
                         if ($responsable->email == 'mathys.lessard.02@edu.cegeptr.qc.ca' || $responsable->email == 'simon.beaulieu.04@edu.cegeptr.qc.ca') 
                         {
+                            // !!! CHANGER TEMPLATE !!! //
                             Mail::to($responsable->email)->send(new demandeFournisseur());
                         }
                         $courrielEnvoye = true;
@@ -394,6 +396,36 @@ class AdminController extends Controller
 
         return back();
     }
+
+    public function gererResponsable(){
+        $responsables = Responsable::get()->all();
+        return view('admin.role', compact('responsables'));
+    }
+    public function editResponsable(ResponsableRequest $request){
+        
+
+        return back();
+    }
+
+    public function addResponsable(){
+        return view('admin.addResponsable');
+    }
+    public function storeResponsable(ResponsableRequest $request){
+        $responsable = new Responsable();
+        $responsable->email = $request->email;
+        $responsable->role = $request->role;
+        $responsable->save();
+
+        return back();
+    }
+
+    public function deleteResponsable(ResponsableRequest $request){
+        
+
+        return back();
+    }
+
+
 
 
 }

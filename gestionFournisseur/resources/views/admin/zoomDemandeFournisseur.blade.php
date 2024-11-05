@@ -240,24 +240,25 @@
                         @if ($contacts->count() > 3)
                             <div class="text-center">
                                 <button id="showAllContacts" class="btn btn-primary">
-                                    Voir plus ({{ ($contacts->count() - 3) == 1 ? ($contacts->count() - 3) . " autre" : ($contacts->count() - 3) . " autres" }})
+                                    Voir plus
+                                    ({{ $contacts->count() - 3 == 1 ? $contacts->count() - 3 . ' autre' : $contacts->count() - 3 . ' autres' }})
                                 </button>
                             </div>
                         @endif
                     </div>
 
                 </div>
-
-                <form action="{{ route('responsable.accepterFournisseur', $fournisseur->neq) }}" method="post">
-                    @csrf
-                    <button type="submit" class="btn btn-success" id="btAccepter">Accepter</button>
-                </form>
-                <form action="{{ route('responsable.refuserFournisseur', $fournisseur->neq) }}" method="post"
-                    id="form1">
-                    @csrf
-                    <a class="btn btn-danger" id="btRefuser">Refuser</a>
-                </form>
-
+                @if ($fournisseur->statut == 'En attente' || $fournisseur->statut == 'En révision')
+                    <form action="{{ route('responsable.accepterFournisseur', $fournisseur->neq) }}" method="post">
+                        @csrf
+                        <button type="submit" class="btn btn-success" id="btAccepter">Accepter</button>
+                    </form>
+                    <form action="{{ route('responsable.refuserFournisseur', $fournisseur->neq) }}" method="post"
+                        id="form1">
+                        @csrf
+                        <a class="btn btn-danger" id="btRefuser">Refuser</a>
+                    </form>
+                @endif
             </div>
 
             <!-- Right side sections -->
