@@ -220,6 +220,15 @@ footer {
 
 /* PAGE INFROMATION FOURNISSEUR */
 
+.form-control:hover {
+  background-color: #ccc;
+}
+
+a:hover {
+  color: #ccc;
+}
+
+
 .custom-box {
     border: 1px solid #000;
     padding: 10px;
