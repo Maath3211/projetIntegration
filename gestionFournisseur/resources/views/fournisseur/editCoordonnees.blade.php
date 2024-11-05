@@ -4,7 +4,6 @@
 <div class="text-center">
     <h1>Coordonnées</h1>
 </div>
-
 <form method="post" action="{{ route('fournisseur.coordonnees.update') }}">
     @csrf
     <div class="container-fluid bordure">
