@@ -322,7 +322,7 @@
                     </p>
                     <p><strong>Catégories autorisées</strong></p>
                     <ul>
-                        <li>{{ $categorie->codeSousCategorie ?? 'N/A' }} {{ $categorie->nom ?? 'N/A' }}</li>
+                        <li>{{ $categories->codeSousCategorie ?? 'N/A' }} {{ $categories->nom ?? 'N/A' }}</li>
                     </ul>
                     <form action="{{ route('fournisseur.RBQ.edit', [$rbq->fournisseur_id]) }}" method="GET">
                         @csrf

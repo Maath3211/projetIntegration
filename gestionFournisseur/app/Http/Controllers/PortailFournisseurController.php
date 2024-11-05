@@ -530,9 +530,12 @@ class PortailFournisseurController extends Controller
         }
     }
 
-    public function editUNSPSC()
+    public function editUNSPSC($id)
     {
         $fournisseur = Auth::user();
+        if($fournisseur == null){
+            $fournisseur = Fournisseur::where('id',$id)->first();
+        }
         
         $unspscFournisseur = DB::table('unspsccodes')->where('fournisseur_id', $fournisseur->id)->get();
         $unspscDetails= DB::table('unspsccodes')->where('fournisseur_id', $fournisseur->id)->first();
@@ -541,10 +544,14 @@ class PortailFournisseurController extends Controller
         return View('fournisseur.editUNSPSC', compact('unspscFournisseur', 'codes','unspscChamp', 'unspscDetails'));
     }
 
-    public function updateUNSPSC(UnspscRequest $request)
+    public function updateUNSPSC(UnspscRequest $request, $id)
     {
-
+        dd($id);
     $fournisseur = Fournisseur::find(Auth::id());
+    if($fournisseur == null){
+        $fournisseur = Fournisseur::where('id',$id)->first();
+    }
+
     $unspscData = $request->input('idUnspsc', []); 
     try {
         $existingUnspsc = Unspsccode::where('fournisseur_id', $fournisseur->id)->get();
@@ -578,7 +585,7 @@ class PortailFournisseurController extends Controller
             return redirect()->route('fournisseur.information')->with('message', 'Codes UNSPSC mis à jour avec succès!');
         } catch (\Throwable $e) {
             Log::error($e);
-            return redirect()->route('fournisseur.UNSPSC.edit')->withErrors(['Erreur lors de la mise à jour des codes UNSPSC']);
+            return redirect()->route('fournisseur.UNSPSC.edit',[$fournisseur->id])->withErrors(['Erreur lors de la mise à jour des codes UNSPSC']);
         }
     }
     
@@ -659,12 +666,17 @@ class PortailFournisseurController extends Controller
         }
     }
 
-    public function editRBQ(RBQLicence $rbqLicence)
+    public function editRBQ(RBQLicence $rbqLicence, $id)
     {
+
         $fournisseur = Fournisseur::find(Auth::id());
+        if($fournisseur == null){
+            $fournisseur = Fournisseur::where('id',$id)->first();
+        }
+
         $rbq = RBQLicence::where('fournisseur_id', $fournisseur->id)->first();
         $codes = Categorie::all();
-        $neq = Auth::user()->neq;
+        $neq = $fournisseur->neq;
 
 
 
@@ -699,11 +711,18 @@ class PortailFournisseurController extends Controller
 
     public function updateRBQ(RBQRequest $request, $id)
     {
+        $responsable = false;
         // Récupérer l'utilisateur authentifié
         $fournisseur = Fournisseur::find(Auth::id());
+        if($fournisseur == null){
+            $responsable = true;
+            $fournisseur = Fournisseur::where('id',$id)->first();
+            
+        }
 
         // Récupérer l'enregistrement RBQLicence existant via l'ID
-        $rbq = RBQLicence::where('fournisseur_id', $fournisseur->id)->find($id);
+        $rbq = RBQLicence::where('fournisseur_id', $fournisseur->id)->first();
+
 
         // Vérifier si l'enregistrement existe avant de procéder à la mise à jour
         if (!$rbq) {
@@ -722,7 +741,13 @@ class PortailFournisseurController extends Controller
             $rbq->save();
             $fournisseur->touch();
             // Rediriger avec un message de succès
-            return redirect()->route('fournisseur.information')->with('message', 'Licence RBQ mise à jour avec succès');
+
+            if($responsable){
+                return redirect()->route('responsable.demandeFournisseurZoom', [$fournisseur->neq])->with('message', 'Licence RBQ mise à jour avec succès');
+            }
+            else{
+                return redirect()->route('fournisseur.information')->with('message', 'Licence RBQ mise à jour avec succès');
+            }
         } catch (\Throwable $e) {
             // En cas d'erreur, enregistrer l'exception dans les logs et rediriger avec une erreur
             Log::debug($e);

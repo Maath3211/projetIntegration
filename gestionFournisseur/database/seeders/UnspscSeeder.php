@@ -13,45 +13,31 @@ class UnspscSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('unspsc')->insert([
+        // Chemin vers le fichier CSV
+        $csvFile = public_path('csv/unspsc_codes.csv');
 
-        //     [
-        //    'code'=>72101504,
-        //     'description'=>"Services de prévoyance et de mise à l'épreuve de catastrophe",
+        // Ouvrir le fichier en lecture
+        if (($handle = fopen($csvFile, 'r')) !== false) {
+            // Lire la première ligne pour ignorer les en-têtes
+            fgetcsv($handle, 1000, ',');
 
-        //     ],
+            // Boucle pour lire chaque ligne
+            while (($data = fgetcsv($handle, 1000, ';')) !== false) {
+                // Insertion dans la table `unspsc`
+                DB::table('unspsc')->insert([
+                    'nature' => mb_convert_encoding($data[0] ?? null, 'UTF-8', 'auto'),
+                    'code_categorie' => mb_convert_encoding($data[1] ?? null, 'UTF-8', 'auto'),
+                    'categorie' => mb_convert_encoding($data[2] ?? null, 'UTF-8', 'auto'),
+                    'code' => isset($data[3]) ? (int) $data[3] : null,
+                    'description' => mb_convert_encoding($data[4] ?? null, 'UTF-8', 'auto'),
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+                
+            }
 
-        //     [
-        //     'code'=>72101506,
-        //     'description'=>"Services de maintenance d'ascenseurs",
-
-        //     ],
-
-        //     [
-        //         'code'=>72101506,
-        //         'description'=>"Services de maintenance d'ascenseurs",
-    
-        //     ],    
-            
-        //     [
-        //         'code'=>72101504,
-        //         'description'=>"Services de prévoyance et de mise à l'épreuve de catastrophe",
-     
-        //     ],
-     
-        //     [
-        //         'code'=>72101506,
-        //         'description'=>"Services de maintenance d'ascenseurs",
-     
-        //     ],
-     
-        //     [
-        //         'code'=>72101506,
-        //         'description'=>"Services de maintenance d'ascenseurs",
-         
-        //     ], 
-            
-
-        ]);
+            // Fermer le fichier après lecture
+            fclose($handle);
+        }
     }
 }

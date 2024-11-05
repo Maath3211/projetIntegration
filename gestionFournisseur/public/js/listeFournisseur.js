@@ -1,4 +1,6 @@
 
+
+//Code qui regarde si un fournisseur est sélectionner
 document.getElementById('showSelectedBtn').addEventListener('click', function () {
   const selectedFournisseurs = Array.from(document.querySelectorAll('.select-fournisseur:checked'))
       .map(checkbox => checkbox.value);

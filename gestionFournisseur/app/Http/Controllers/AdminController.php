@@ -90,6 +90,7 @@ class AdminController extends Controller
 
     public function listeFournisseur()
     {
+        Auth::logout();
         $response = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22munnom%22%20FROM%20%2219385b4e-5503-4330-9e59-f998f5918363%22');
     
         $villes = $response->successful() ? collect($response->json()['result']['records'])->pluck('munnom')->sort()->all() : []; // Sort the cities alphabetically
