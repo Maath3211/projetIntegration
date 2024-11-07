@@ -307,6 +307,12 @@ class AdminController extends Controller
         $fournisseur = DB::table('fournisseurs')->where('neq', $neq)->first();
         $contacts = DB::table('contact')->where('fournisseur_id', $fournisseur->id)->get();
         $coordonnees = DB::table('coordonnees')->where('fournisseur_id', $fournisseur->id)->get()->firstOrFail();
+        $numero = $coordonnees->numero;
+        $numero = substr($numero, 0, 3) . '-' . substr($numero, 3, 3) . '-' . substr($numero, 6);
+        $numero2 = $coordonnees->numero;
+        $numero2 = substr($numero2, 0, 3) . '-' . substr($numero2, 3, 3) . '-' . substr($numero2, 6);
+        $codePostal = $coordonnees->codePostal;
+        $codePostal = substr($codePostal, 0, 3) . ' ' . substr($codePostal, 3);
         $files = DB::table('file')->where('fournisseur_id', $fournisseur->id)->get();
         $rbq = DB::table('rbqlicences')->where('fournisseur_id', $fournisseur->id)->get()->firstOrFail();
         $categories = DB::table('categories')->where('id', $rbq->idCategorie)->get()->firstOrFail();
@@ -322,7 +328,7 @@ class AdminController extends Controller
         if ($fournisseur->raisonRefus)
             $fournisseur->raisonRefus = Crypt::decryptString($fournisseur->raisonRefus);
 
-        return view('admin.zoomDemandeFournisseur', compact('fournisseur', 'contacts', 'coordonnees', 'files', 'rbq', 'categories', 'unspscFournisseur', 'unspscCollection'));
+        return view('admin.zoomDemandeFournisseur', compact('fournisseur', 'contacts', 'coordonnees', 'files', 'rbq', 'categories', 'unspscFournisseur', 'unspscCollection','numero','numero2','codePostal'));
     }
 
     public function accepterFournisseur($neq)

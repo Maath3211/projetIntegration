@@ -173,7 +173,7 @@ class PortailFournisseurController extends Controller
                 ]
             ]);
 
-            
+
 
             return redirect()->route('fournisseur.identification')->with('message', "Enregistré!");
         } 
@@ -504,8 +504,8 @@ class PortailFournisseurController extends Controller
             return redirect()->route('fournisseur.contact')->withErrors(['Les informations du fournisseur, des coordonnées ou du contact sont manquantes.']);
         }
 
-        $codes = Unspsc::limit(20904)->get();
-
+        $codes = Unspsc::limit(500)->get();
+        //20904
         //$codes = Unspsc::paginate(1000);
 
 
@@ -932,6 +932,7 @@ class PortailFournisseurController extends Controller
                         $file->save();
 
                         \Log::info("Fichiers importés avec succès: " . $uniqueFileName);
+                        
                     } 
                     catch (\Exception $e) 
                     {
