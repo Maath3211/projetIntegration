@@ -11,7 +11,7 @@
             <fieldset>
                 <legend>Licence RBQ</legend>
 
-                <form method="POST" action="{{ route('fournisseur.RBQ.update', [$rbq->id]) }}">
+                <form method="POST" action="{{ route('fournisseur.RBQ.update', [$rbq->fournisseur_id]) }}">
                     @csrf
                     @method('PATCH')
                     <div class="row">

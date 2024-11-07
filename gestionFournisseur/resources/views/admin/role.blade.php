@@ -37,23 +37,37 @@
 
                 <ul class="list-group">
                     @foreach ($responsables as $responsable)
-                        <li class="list-group-item d-flex justify-content-between">
+                        <form class="roleForm" action="{{ route('responsable.editResponsable', $responsable->id) }}" method="post">
+                            @csrf
+                            <li class="list-group-item d-flex justify-content-between">
                                 <h5 class="mb-1">{{ $responsable->email }}</h5>
-                                <select id="selectRoles" class="form-control" name="role">
+                                <select id="selectRoles" class="form-control role-select" name="role">
                                     <option value="Commis" {{ $responsable->role == 'Commis' ? 'selected' : '' }}>Commis
                                     </option>
                                     <option value="Responsable" {{ $responsable->role == 'Responsable' ? 'selected' : '' }}>
                                         Responsable</option>
-                                    <option value="Gestionnaire"
-                                        {{ $responsable->role == 'Gestionnaire' ? 'selected' : '' }}>Gestionnaire</option>
+                                    <option value="Administrateur"
+                                        {{ $responsable->role == 'Administrateur' ? 'selected' : '' }}>
+                                        Administrateur</option>
                                 </select>
-                        </li>
+                            </li>
+                        </form>
                     @endforeach
                 </ul>
-                <form action="{{ route('responsable.addResponsable') }}" method="GET" >
+                <form action="{{ route('responsable.addResponsable') }}" method="GET">
                     @csrf
                     <button type="submit" class="btn btn-secondary">Ajouter</button>
                 </form>
+
+                <button class="btn btn-success" onclick="submitForms()">Enregistrer</button>
+
+                <button id="showPopup" class="btn btn-danger">Supprimer</button>
+                <div id="popup" class="popup" style="display: none;">
+                    <div class="popup-content">
+                        <span class="close-button">&times;</span>
+                        <div id="popupContent"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -64,5 +78,5 @@
 
 
 
-
+    <script src="{{ asset('js/role.js') }}"></script>
 @endsection
