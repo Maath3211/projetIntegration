@@ -376,6 +376,13 @@ body.night-mode legend {
   color: #fff;
 }
 
+body.night-mode td{
+  color: #fff;
+}
+
+body.night-mode .filter-section{
+  border-color: #fff;
+}
 
   /*MEDIA*/
   

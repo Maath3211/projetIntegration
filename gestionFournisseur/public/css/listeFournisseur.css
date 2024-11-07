@@ -1,0 +1,40 @@
+
+.custom-box {
+  border: 1px solid #000;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 5px;
+}
+.checkbox-group {
+  display: flex;
+  gap: 10px;
+
+  flex-wrap: wrap;
+}
+.form-check {
+  margin: 5px 10px;
+}
+.form-select, .form-control {
+  width: 100%;
+}
+.filter-section {
+  border: 1px solid #000;
+  padding: 10px;
+  margin-top: 10px;
+}
+.filter-section > div {
+  margin-bottom: 15px;
+}
+.search-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+@media (max-width: 767px) {
+    .checkbox-group {
+        flex-direction: column;
+    }
+    .filter-section {
+        padding: 15px;
+    }
+}
