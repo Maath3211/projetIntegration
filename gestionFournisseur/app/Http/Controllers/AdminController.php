@@ -106,7 +106,7 @@ class AdminController extends Controller
         // Récupérer les unspsc pour chaque fournisseur
         $unspsc = DB::table('unspsccodes')
             ->join('unspsc', 'unspsccodes.idUnspsc', '=', 'unspsc.id')
-            ->select('unspsccodes.fournisseur_id', 'unspsc.code', 'unspsc.description')
+            ->select('unspsccodes.fournisseur_id', 'unspsc.code', 'unspsc.description', 'unspsc.id')
             ->get()
             ->groupBy('fournisseur_id');
     

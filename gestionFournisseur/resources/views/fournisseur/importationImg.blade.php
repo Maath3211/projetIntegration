@@ -4,8 +4,9 @@
 <div class="text-center">
     <h1>IMPORTATION</h1>
 </div>
-<form action="{{ route('fournisseur.storeImportation') }}" method="PATCH" enctype="multipart/form-data">
+<form action="{{ route('fournisseur.storeImportation') }}" method="POST" enctype="multipart/form-data">
     @csrf
+    @method("patch")
     <div class="container-fluid bordure">
         <fieldset class="border p-3">
             <legend>Importation de fichiers</legend>

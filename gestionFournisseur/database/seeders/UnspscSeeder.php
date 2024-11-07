@@ -18,11 +18,11 @@ class UnspscSeeder extends Seeder
 
         // Ouvrir le fichier en lecture
         if (($handle = fopen($csvFile, 'r')) !== false) {
-            // Lire la première ligne pour ignorer les en-têtes
-            fgetcsv($handle, 1000, ',');
-
             // Boucle pour lire chaque ligne
             while (($data = fgetcsv($handle, 1000, ';')) !== false) {
+                // Vérifier et supprimer le BOM dans le premier champ 'nature'
+                $data[0] = preg_replace('/^\xEF\xBB\xBF/', '', $data[0] ?? null);
+
                 // Insertion dans la table `unspsc`
                 DB::table('unspsc')->insert([
                     'nature' => mb_convert_encoding($data[0] ?? null, 'UTF-8', 'auto'),
@@ -33,7 +33,6 @@ class UnspscSeeder extends Seeder
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
-                
             }
 
             // Fermer le fichier après lecture

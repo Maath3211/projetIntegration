@@ -58,7 +58,7 @@
         </div>
         <div class="form-check">
           <input class="form-check-input" type="checkbox" id="to-review" checked>
-          <label class="form-check-label" for="to-review">En attente</label>
+          <label class="form-check-label" for="to-review">À réviser</label>
         </div>
       </div>
 
