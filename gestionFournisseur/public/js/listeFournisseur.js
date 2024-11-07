@@ -36,9 +36,9 @@ function filterTable() {
     const statut = row.dataset.statut;
     const shouldDisplay =
       (statut === 'En attente' && showPending) ||
-      (statut === 'Acceptée' && showAccepted) ||
-      (statut === 'Refusée' && showRefused) ||
-      (statut === 'En attente' && showToReview);
+      (statut === 'Acceptées' && showAccepted) ||
+      (statut === 'Refusées' && showRefused) ||
+      (statut === 'À réviser' && showToReview);
 
     // Store rows that match the status filter
     if (shouldDisplay) {
