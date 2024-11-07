@@ -2,8 +2,23 @@
 @extends('layouts.fournisseur')
 @section('title',"UNSPSC")
 @section('contenu')
+<div class="stepper mb-5">
+    <a href="" class="stepCompleted">1</a>
+    <div class="lineCompleted"></div>
+    <a href="" class="stepCompleted">2</a>
+    <div class="lineCompleted"></div>
+    <a href="" class="stepCompleted">3</a>
+    <div class="lineCompleted"></div>
+    <a href="" class="stepCompleted">4</a>
+    <div class="lineCompleted"></div>
+    <div class="stepCurrent">5</div>
+    <div class="line"></div>
+    <div class="step">6</div>
+    <div class="line"></div>
+    <div class="step">7</div>
+</div>
 <div class="text-center">
-    <h1 class="py-5">UNSPSC</h1>
+    <h1>UNSPSC</h1>
 </div>
 <div class="container-fluid">
     <div class="row">

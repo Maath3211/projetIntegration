@@ -1,6 +1,21 @@
 @extends('layouts.fournisseur')
 @section('title',"Identification")
 @section('contenu')
+<div class="stepper mb-5">
+  <a href="" class="stepCompleted">1</a>
+  <div class="lineCompleted"></div>
+  <div class="stepCurrent">2</div>
+  <div class="line"></div>
+  <div class="step">3</div>
+  <div class="line"></div>
+  <div class="step">4</div>
+  <div class="line"></div>
+  <div class="step">5</div>
+  <div class="line"></div>
+  <div class="step">6</div>
+  <div class="line"></div>
+  <div class="step">7</div>
+</div>
 <div class="text-center">
     <h1>Identification</h1>
 </div>
@@ -84,7 +99,14 @@
         </div> 
       </div> 
       <div class="d-flex row justify-content-center">
-        <div class="form-group">
+        <div class="col-md-1"></div>
+        <div class="form-group col-md-5 btnleft">
+          <a href="{{route('fournisseur.index')}}" alt="Accueil du site" title="Accueil du site">
+            <button type="button" class="btn btn-secondary">Précédent</button>
+          </a>
+        </div>
+        <div class="col-md-3"></div>
+        <div class="form-group col-md-3">
           <button type="submit" class="btn btn-secondary">Suivant</button>
         </div> 
       </div>
