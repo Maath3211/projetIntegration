@@ -21,11 +21,14 @@ class ResponsableRequest extends FormRequest
      */
     public function rules(): array
     {
+        
         return [
            
-            'email' => 'required|email|max:64|unique:responsables,email',
-            'role' => 'required|in:Commis,Responsable,Gestionnaire',
+            'email' => 'sometimes|required|email|max:64|unique:responsables,email',
+            'role' => 'required|in:Commis,Responsable,Administrateur',
         ];
+
+        
     }
 
     public function messages()

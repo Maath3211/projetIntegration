@@ -404,26 +404,45 @@ class AdminController extends Controller
         $responsables = Responsable::get()->all();
         return view('admin.role', compact('responsables'));
     }
-    public function editResponsable($id, Request $request){
+    public function editResponsable($id, ResponsableRequest $request){
+        
         $listeResponsable = Responsable::all();
         $nbAdministrateur = 0;
+        $nbResponsable = 0;
         foreach($listeResponsable as $respo){
             if($respo->role == 'Administrateur')
                 $nbAdministrateur++;
+            elseif($respo->role == 'Responsable')
+                $nbResponsable++;
         }
-        //TODO: VALIDER INFO
         $responsable = Responsable::where('id', $id)->get()->firstOrFail();
-        if($responsable->role != 'Administrateur' || $responsable->role == 'Administrateur' && $nbAdministrateur > 1){
-            $responsable->role = $request->role;
-            $responsable->save();
-            return back();
-        }
-        else{
-            return back()->withErrors('Impossible d\'enlever le dernier administrateur');
-        }
-        
+        switch($responsable->role){
+            case('Commis'):
+                $responsable->role = $request->role;
+                    $responsable->save();
+                    return back();
 
-        
+            case('Responsable'):
+                if($responsable->role == 'Responsable' && $nbResponsable > 1){
+                    $responsable->role = $request->role;
+                    $responsable->save();
+                    return back();
+                }
+                else{
+                    return back()->withErrors('Impossible d\'enlever le dernier responsable');
+                }
+
+            case('Administrateur'):
+                if($responsable->role == 'Administrateur' && $nbAdministrateur > 1){
+                    $responsable->role = $request->role;
+                    $responsable->save();
+                    return back();
+                }
+                else{
+                    return back()->withErrors('Impossible d\'enlever le dernier administrateur');
+                }
+        }
+
     }
 
     public function addResponsable(){
