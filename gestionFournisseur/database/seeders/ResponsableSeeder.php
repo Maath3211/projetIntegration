@@ -39,14 +39,14 @@ class ResponsableSeeder extends Seeder
 
         DB::table('responsables')->insert([
             'id' => 5,
-            'email' => 'Gestionnair@v3r.net',
-            'role' => 'Gestionnaire'
+            'email' => 'Administrateur@v3r.net',
+            'role' => 'Administrateur'
         ]);
 
         // DB::table('responsables')->insert([
         //     'id' => 6,
-        //     'email' => 'gestionnaire2@v3r.net',
-        //     'role' => 'Gestionnaire'
+        //     'email' => 'Administrateur2@v3r.net',
+        //     'role' => 'Administrateur'
         // ]);
     }
 }

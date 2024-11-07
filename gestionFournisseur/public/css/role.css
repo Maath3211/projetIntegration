@@ -1,3 +1,60 @@
 #selectRoles{
     width: 30%;
 }
+
+#formSupprimer{
+    right: 0;
+}
+
+.list-group-item {
+    display: flex;
+    align-items: center; /* Aligns items vertically */
+
+}
+
+#role {
+    text-align: center;
+    margin: 0 auto;
+    padding-left: 100px; /* Adds space between email and role */
+}
+
+
+
+.popup {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup-content {
+    background-color: #fefefe;
+    padding: 20px;
+    padding-bottom: 2%;
+    margin-bottom: 5%;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 80%;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}

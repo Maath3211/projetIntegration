@@ -1,9 +1,24 @@
 @extends('layouts.fournisseur')
 @section('title',"Contacts")
+@section('contenu')
+<div class="stepper mb-5">
+    <a href="" class="stepCompleted">1</a>
+    <div class="lineCompleted"></div>
+    <a href="" class="stepCompleted">2</a>
+    <div class="lineCompleted"></div>
+    <a href="" class="stepCompleted">3</a>
+    <div class="lineCompleted"></div>
+    <div class="stepCurrent">4</div>
+    <div class="line"></div>
+    <div class="step">5</div>
+    <div class="line"></div>
+    <div class="step">6</div>
+    <div class="line"></div>
+    <div class="step">7</div>
+</div>
 <div class="text-center">
     <h1>Contact</h1>
 </div>
-@section('contenu')
 <form action="{{ route('fournisseur.storeContact') }}" method="POST" id="form1">
     @csrf
     <div class="container-fluid bordure">

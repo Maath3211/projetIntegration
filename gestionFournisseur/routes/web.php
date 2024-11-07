@@ -194,6 +194,11 @@ Route::GET('/responsable/ajouter',
 Route::POST('/responsable/storeResponsable',
 [AdminController::class,'storeResponsable'])->name('responsable.storeResponsable');
 
+Route::GET('/responsable/deleteResponsableListe',
+[AdminController::class,'deleteResponsableListe'])->name('responsable.deleteResponsableListe');
+
+Route::DELETE('/responsable/deleteResponsable/{id}',
+[AdminController::class,'deleteResponsable'])->name('responsable.deleteResponsable');
 
 Route::GET('/responsable/listeFournisseur',
 [AdminController::class,'listeFournisseur'])->name('responsable.listeFournisseur');

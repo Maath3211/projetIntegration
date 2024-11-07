@@ -90,6 +90,67 @@ h4 {
   font-weight: bold;
 }
 
+/* Progess bar */
+
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.step {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #ccc;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+}
+
+.stepCompleted {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #ccc;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  background-color: #0b2341;
+  text-decoration: none;
+}
+
+.stepCurrent {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #ccc;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  background-color: #0076d5;
+  text-decoration: none;
+}
+
+.line {
+  flex: 1;
+  height: 2px;
+  background-color: #ccc;
+}
+
+.lineCompleted {
+  flex: 1;
+  height: 2px;
+  background-color: #ccc;
+  background-color: #0b2341;
+}
+
 /* TEXTE DANS LES VIEW */
 
 .inscription {

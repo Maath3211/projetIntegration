@@ -29,6 +29,7 @@ use App\Http\Requests\ConnexionResponsableRequest;
 use App\Models\RBQLicence;
 use Carbon\Carbon;
 use Mail;
+use Response;
 use Str;
 use DB;
 use Redirect;
@@ -403,10 +404,45 @@ class AdminController extends Controller
         $responsables = Responsable::get()->all();
         return view('admin.role', compact('responsables'));
     }
-    public function editResponsable(ResponsableRequest $request){
+    public function editResponsable($id, ResponsableRequest $request){
         
+        $listeResponsable = Responsable::all();
+        $nbAdministrateur = 0;
+        $nbResponsable = 0;
+        foreach($listeResponsable as $respo){
+            if($respo->role == 'Administrateur')
+                $nbAdministrateur++;
+            elseif($respo->role == 'Responsable')
+                $nbResponsable++;
+        }
+        $responsable = Responsable::where('id', $id)->get()->firstOrFail();
+        switch($responsable->role){
+            case('Commis'):
+                $responsable->role = $request->role;
+                    $responsable->save();
+                    return back();
 
-        return back();
+            case('Responsable'):
+                if($responsable->role == 'Responsable' && $nbResponsable > 1){
+                    $responsable->role = $request->role;
+                    $responsable->save();
+                    return back();
+                }
+                else{
+                    return back()->withErrors('Impossible d\'enlever le dernier responsable');
+                }
+
+            case('Administrateur'):
+                if($responsable->role == 'Administrateur' && $nbAdministrateur > 1){
+                    $responsable->role = $request->role;
+                    $responsable->save();
+                    return back();
+                }
+                else{
+                    return back()->withErrors('Impossible d\'enlever le dernier administrateur');
+                }
+        }
+
     }
 
     public function addResponsable(){
@@ -417,17 +453,22 @@ class AdminController extends Controller
         $responsable->email = $request->email;
         $responsable->role = $request->role;
         $responsable->save();
+        return back();
+    }
+
+    public function deleteResponsableListe(){
+        $responsables = Responsable::get()->all();
+        return view('admin.deleteResponsableListe', compact('responsables'));
+    }
+
+    public function deleteResponsable($id){
+        $responsable = Responsable::where('id', $id);
+        $responsable->delete();
 
         return back();
     }
 
-    public function deleteResponsable(ResponsableRequest $request){
-        
-
-        return back();
-    }
-
-
+    
 
 
 }

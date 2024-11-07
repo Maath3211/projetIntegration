@@ -173,6 +173,8 @@ class PortailFournisseurController extends Controller
                 ]
             ]);
 
+            
+
             return redirect()->route('fournisseur.identification')->with('message', "Enregistré!");
         } 
         catch (\Throwable $e) 

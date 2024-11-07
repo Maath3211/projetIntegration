@@ -1,6 +1,21 @@
 @extends('layouts.fournisseur')
 @section('title', 'Importation')
 @section('contenu')
+<div class="stepper mb-5">
+    <a href="" class="stepCompleted">1</a>
+    <div class="lineCompleted"></div>
+    <a href="" class="stepCompleted">2</a>
+    <div class="lineCompleted"></div>
+    <a href="" class="stepCompleted">3</a>
+    <div class="lineCompleted"></div>
+    <a href="" class="stepCompleted">4</a>
+    <div class="lineCompleted"></div>
+    <a href="" class="stepCompleted">5</a>
+    <div class="lineCompleted"></div>
+    <a href="" class="stepCompleted">6</a>
+    <div class="lineCompleted"></div>
+    <div class="stepCurrent">7</div>
+</div>
 <div class="text-center">
     <h1>IMPORTATION</h1>
 </div>

@@ -1,6 +1,21 @@
 @extends('layouts.fournisseur')
 @section('title',"Inscription")
 @section('contenu')
+<div class="stepper mb-5">
+  <div class="stepCurrent">1</div>
+  <div class="line"></div>
+  <div class="step">2</div>
+  <div class="line"></div>
+  <div class="step">3</div>
+  <div class="line"></div>
+  <div class="step">4</div>
+  <div class="line"></div>
+  <div class="step">5</div>
+  <div class="line"></div>
+  <div class="step">6</div>
+  <div class="line"></div>
+  <div class="step">7</div>
+</div>
 <div class="text-center">
     <h1>Numéro NEQ</h1>
 </div>
