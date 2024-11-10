@@ -548,7 +548,7 @@ class PortailFournisseurController extends Controller
 
     public function updateUNSPSC(UnspscRequest $request, $id)
     {
-        dd($id);
+
     $fournisseur = Fournisseur::find(Auth::id());
     if($fournisseur == null){
         $fournisseur = Fournisseur::where('id',$id)->first();
