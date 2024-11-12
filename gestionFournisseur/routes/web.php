@@ -20,13 +20,13 @@ Route::GET('/reinitialisation',
 [AdminController::class, 'sendResetPasswordView'])->name('login.resetView');
 
 Route::POST('/reinitialisation',
-[AdminController::class, 'sendResetPassword']) -> name('login.reset');
+[AdminController::class, 'sendResetPassword'])->name('login.reset');
 
 Route::GET('/reinitialisation/{code}',
 [AdminController::class, 'resetPasswordView'])->name('login.modifierView');
 
 Route::POST('/reinitialisation/{code}',
-[AdminController::class, 'resetPassword']) -> name('login.modifier');
+[AdminController::class, 'resetPassword'])->name('login.modifier');
 
 Route::GET('/password/edit',
 [PortailFournisseurController::class, 'editPassword'])->name('fournisseur.password.edit');
@@ -134,10 +134,10 @@ Route::POST('/finances/store',
 [PortailFournisseurController::class,'storeFinances'])->name('fournisseur.storeFinances');
 
 Route::GET('/finances/edit',
-[PortailFournisseurController::class, 'editFinances'])->name('fournisseur.finances.edit');
+[PortailFournisseurController::class,'editFinances'])->name('fournisseur.finances.edit');
 
 Route::POST('/finances/update',
-[PortailFournisseurController::class, 'updateFinances'])->name('fournisseur.finances.update');
+[PortailFournisseurController::class,'updateFinances'])->name('fournisseur.finances.update');
 
 
 
