@@ -43,7 +43,7 @@ class PortailFournisseurController extends Controller
 
     public function loginNeq(ConnexionRequest $request)
     {
-        $reussi = Auth::attempt(['neq' => $request->neq, 'password' => $request->password]);
+        $reussi = Auth::guard('users')->attempt( ['neq' => $request->neq, 'password' => $request->password]);
 
         if ($reussi) 
         {
@@ -383,7 +383,7 @@ class PortailFournisseurController extends Controller
         }
     }
 
-    public function editCoordonnees()
+    public function editCoordonnees($id = null)
     {
         $response = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22munnom%22%20FROM%20%2219385b4e-5503-4330-9e59-f998f5918363%22');
 
@@ -395,13 +395,37 @@ class PortailFournisseurController extends Controller
         {
             $villes = [];
         }
-        $fournisseur = Auth::user();
+
+        // nouveau code teste //
+        $fournisseur = $id ? Fournisseur::findOrFail($id) : Auth::user();
+        if (!$fournisseur) {
+            return redirect()->route('fournisseur.information')->withErrors(['Fournisseur introuvable']);
+        }
+        // nouveau code teste //
+        //$fournisseur = Auth::user(); 
         $coordonnees = $fournisseur->coordonnees;
-        return view('fournisseur.editCoordonnees', compact('coordonnees', 'villes'));
+        $numero = $coordonnees->numero;
+        $numero = substr($numero, 0, 3) . '-' . substr($numero, 3, 3) . '-' . substr($numero, 6);
+        $numero2 = $coordonnees->numero;
+        $numero2 = substr($numero2, 0, 3) . '-' . substr($numero2, 3, 3) . '-' . substr($numero2, 6);
+        $codePostal = $coordonnees->codePostal;
+        $codePostal = substr($codePostal, 0, 3) . ' ' . substr($codePostal, 3);
+    
+        return view('fournisseur.editCoordonnees', compact('coordonnees', 'villes','fournisseur','numero','numero2','codePostal')); //founisseur ajouté
     }
 
-    public function updateCoordonnees(FournisseurCoordRequest $request)
+    public function updateCoordonnees(FournisseurCoordRequest $request, $id = null)
     {
+        // nouveau code //
+        $responsable = false;
+        $fournisseur = null;
+        $fournisseur = Fournisseur::find(Auth::id());
+        if($fournisseur == null){
+            $responsable = true;
+            $fournisseur = Fournisseur::where('id',$id)->first();
+            
+        }
+        // nouveau code //
         try 
         {
             $nomRegion = "";
@@ -422,8 +446,14 @@ class PortailFournisseurController extends Controller
                     }
                 }
             }
-
-            $fournisseur = Auth::user();
+            // nouveau code ici //
+           // $fournisseur = $id ? Fournisseur::findOrFail($id) : Auth::user();
+        
+            if (!$fournisseur) {
+                return redirect()->route('fournisseur.information')->withErrors(['Fournisseur introuvable']);
+            }
+            // nouveau code ici //
+            //$fournisseur = Auth::user();
             $coordonnees = FournisseurCoord::where('fournisseur_id', $fournisseur->id)->first();
 
             if (!$coordonnees) 
@@ -437,8 +467,16 @@ class PortailFournisseurController extends Controller
             $coordonnees->codePostal = strtoupper($request->codePostal);
             $coordonnees->site = strtolower($request->site);
             $coordonnees->save();
-
-            return redirect()->route('fournisseur.information')->with('message', "Enregistré!");
+            $fournisseur->touch(); // nouveau code //
+            //return redirect()->route('fournisseur.information')->with('message', "Enregistré!");
+            // nouvau code //
+            if($responsable){
+                return redirect()->route('responsable.demandeFournisseurZoom', [$fournisseur->neq])->with('message', 'Coordonnées à jour');
+            }
+            else{
+                return redirect()->route('fournisseur.information')->with('message', 'Coordonnées à jour');
+            }
+            // nouvau code //
         } 
         catch (\Throwable $e) 
         {
@@ -547,6 +585,7 @@ class PortailFournisseurController extends Controller
 
     public function updateUNSPSC(UnspscRequest $request, $id)
     {
+    
 
     $fournisseur = Fournisseur::find(Auth::id());
     if($fournisseur == null){
@@ -756,15 +795,70 @@ class PortailFournisseurController extends Controller
         }
     }
 
+    public function editImportation()
+    {
+        $fournisseur = Auth::user();
+        return view('fournisseur.editImportation', compact('fournisseur'));
+    }
+
+    public function updateImportation(Request $request)
+    {
+ 
+        if ($request->hasFile('images')) 
+        {
+            $maxSize = Setting::latest()->first()->tailleMax * 1024;
+
+            foreach ($request->file('images') as $key => $image) 
+            {
+                try 
+                {
+                    $request->validate([
+                        "images.{$key}" => 'required|max:' . $maxSize . '|mimes:pdf,doc,docx,jpg,jpeg,png,xlsx,xls,csv,svg',
+                    ], [
+                        "images.{$key}.max" => 'Le fichier est au-dessus de la limite définie',
+                        "images.{$key}.required" => 'L\'image est requise',
+                        "images.{$key}.mimes" => 'Le fichier doit être dans un format imprimable: JPG, PNG, DOCX, DOC, PDF, XLSX, XLS, CSV'
+                    ]);
+
+                    $uniqueFileName = str_replace(' ', '_', Auth::user()->id) . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
+                    $fileSize = $image->getSize();
+
+                    if ($fileSize === false || $fileSize === 0) 
+                    {
+                        throw new \RuntimeException("Impossible de trouver la taille pour: " . $image->getClientOriginalName());
+                    }
+
+                    $image->move(public_path('images/fournisseurs'), $uniqueFileName);
+
+                    $file = new File();
+                    $file->nomFichier = $image->getClientOriginalName();
+                    $file->lienFichier = '/images/fournisseurs/' . $uniqueFileName;
+                    $file->tailleFichier_KO = $fileSize;
+                    $file->fournisseur_id = Auth::user()->id;
+                    $file->save();
+
+                    \Log::info("Fichier importé avec succès: " . $uniqueFileName);
+                } 
+                catch (\Exception $e) 
+                {
+                    \Log::error("Erreur pendant l'importation: " . $image->getClientOriginalName(), [
+                        'error' => $e->getMessage(),
+                        'trace' => $e->getTraceAsString()
+                    ]);
+                    return redirect()->route('fournisseur.importation')->withErrors(['error' => 'Erreur lors du téléversement du fichier: ' . $e->getMessage()]);
+                }
+            }
+
+            return redirect()->route('fournisseur.information')->with('message', 'Fichiers importés avec succès.');
+        }
+
+            return redirect()->route('fournisseur.importation')->withErrors(['error' => 'Aucun fichier à importer.']);
+        
+    }
 
     // Importation
     public function importation()
     {
-        if (Auth::check()) 
-        {
-            return view('fournisseur.importationImg');
-        }
-
         $fournisseurData = session('fournisseur');
         $coordonneesData = session('coordonnees');
         $contactData[] = session('contact');
@@ -781,59 +875,6 @@ class PortailFournisseurController extends Controller
 
     public function storeImportation(Request $request)
     {
-
-        if (Auth::check()) 
-        {
-            if ($request->hasFile('images')) 
-            {
-                $maxSize = Setting::latest()->first()->tailleMax * 1024;
-
-                foreach ($request->file('images') as $key => $image) 
-                {
-                    try 
-                    {
-                        $request->validate([
-                            "images.{$key}" => 'required|max:' . $maxSize . '|mimes:pdf,doc,docx,jpg,jpeg,png,xlsx,xls,csv,svg',
-                        ], [
-                            "images.{$key}.max" => 'Le fichier est au-dessus de la limite définie',
-                            "images.{$key}.required" => 'L\'image est requise',
-                            "images.{$key}.mimes" => 'Le fichier doit être dans un format imprimable: JPG, PNG, DOCX, DOC, PDF, XLSX, XLS, CSV'
-                        ]);
-
-                        $uniqueFileName = str_replace(' ', '_', Auth::user()->id) . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
-                        $fileSize = $image->getSize();
-
-                        if ($fileSize === false || $fileSize === 0) 
-                        {
-                            throw new \RuntimeException("Impossible de trouver la taille pour: " . $image->getClientOriginalName());
-                        }
-
-                        $image->move(public_path('images/fournisseurs'), $uniqueFileName);
-
-                        $file = new File();
-                        $file->nomFichier = $image->getClientOriginalName();
-                        $file->lienFichier = '/images/fournisseurs/' . $uniqueFileName;
-                        $file->tailleFichier_KO = $fileSize;
-                        $file->fournisseur_id = Auth::user()->id;
-                        $file->save();
-
-                        \Log::info("Fichier importé avec succès: " . $uniqueFileName);
-                    } 
-                    catch (\Exception $e) 
-                    {
-                        \Log::error("Erreur pendant l'importation: " . $image->getClientOriginalName(), [
-                            'error' => $e->getMessage(),
-                            'trace' => $e->getTraceAsString()
-                        ]);
-                        return redirect()->route('fournisseur.importation')->withErrors(['error' => 'Erreur lors du téléversement du fichier: ' . $e->getMessage()]);
-                    }
-                }
-
-                return redirect()->route('fournisseur.information')->with('message', 'Fichiers importés avec succès.');
-            }
-
-             return redirect()->route('fournisseur.importation')->withErrors(['error' => 'Aucun fichier à importer.']);
-        }
 
         if ($request->hasFile('images')) 
         {

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('fournisseurs', function (Blueprint $table) {
             $table->id();
             $table->string('email', 64);
-            $table->string('neq', 10)->unique();
+            $table->string('neq', 10)->unique()->nullable();
             $table->string('entreprise', 64);
             $table->string('password', 255); /* Plus grand pour encryptage */
             $table->string('statut')->default('En attente');

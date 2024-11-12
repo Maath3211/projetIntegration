@@ -48,11 +48,13 @@ class AdminController extends Controller
 
     public function loginEmailResponsable(ConnexionResponsableRequest $request)
     {
+        
+
         $courrielEnvoye = false;
         $fournisseurs = Fournisseur::where("statut", 'Refusée')->get()->all();
         $parametre = DB::table('setting')->get()->firstOrFail();
         $responsables = Responsable::where('role', ['Administrateur', 'Responsable'])->get();
-            foreach($fournisseurs as $fournisseur){
+        foreach($fournisseurs as $fournisseur){
             $date = Carbon::parse($fournisseur->dateStatut);
             if($date->lt(Carbon::now()->subMonths($parametre->delaiRev))){
                 $fournisseur->statut = 'Révision';
@@ -75,14 +77,16 @@ class AdminController extends Controller
         }
 
         $responsable = Responsable::where('email', $request->email)->where('role', $request->role)->first();
-
-        if ($responsable) 
+        if($responsable)
+            $reussi = Auth::guard('responsables')->login( $responsable);
+        if ($responsable ) 
         {
             session(['responsable' => $responsable]);
             return redirect()->route('responsable.listeFournisseur')->with('message', 'Connexion réussie.');
         } 
         else 
         {
+            
             return redirect()->route('responsable.index')->withErrors(['Informations invalides.']);
         }
     }
@@ -302,9 +306,9 @@ class AdminController extends Controller
         return view('admin.demandeFournisseur', compact('fnAttentes'));
     }
 
-    public function demandeFournisseurZoom($neq)
+    public function demandeFournisseurZoom($email)
     {
-        $fournisseur = DB::table('fournisseurs')->where('neq', $neq)->first();
+        $fournisseur = DB::table('fournisseurs')->where('email', $email)->first();
         $contacts = DB::table('contact')->where('fournisseur_id', $fournisseur->id)->get();
         $coordonnees = DB::table('coordonnees')->where('fournisseur_id', $fournisseur->id)->get()->firstOrFail();
         $numero = $coordonnees->numero;

@@ -111,8 +111,8 @@
                 @endif
 
 
-                
-                <form action="{{ route('fournisseur.coordonnees.edit') }}" method="GET">
+                </svg>
+                <form action="{{ route('fournisseur.coordonnees.edit', ['id' => $fournisseur->id]) }}" method="GET"> <!-- MOD ICI aussi -->
                     @csrf
                     <div class="form-group">
                         <button type="submit" class="btn btn-secondary">
@@ -372,7 +372,7 @@
                     <p>Aucun document disponible.</p>
                     @if ($fournisseur->statut != 'Désactivée')
                         <div class="form-group">
-                            <a href="{{ route('fournisseur.importation') }}" class="btn btn-secondary">
+                            <a href="{{ route('fournisseur.importation.edit') }}" class="btn btn-secondary">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
                                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
                                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
