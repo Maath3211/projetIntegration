@@ -4,8 +4,9 @@
 <div class="text-center">
     <h1>Coordonnées</h1>
 </div>
-<form method="post" action="{{ route('fournisseur.coordonnees.update') }}">
+<form method="post" action="{{ route('fournisseur.coordonnees.update', ['id' => $fournisseur->id]) }}"> <!-- MOD ICI -->
     @csrf
+    <input type="hidden" name="fournisseur_id" value="{{ $fournisseur->id }}">
     <div class="container-fluid bordure">
         <fieldset class="border p-3">
             <legend>Adresse</legend>
@@ -113,7 +114,7 @@
                     <label for="codePostal" class="titreForm">Code Postal
                         <small class="text-danger">*</small>
                     </label>
-                    <input type="text" class="form-control" id="codePostal" placeholder="Code postal" name="codePostal" value="{{old('codePostal', $coordonnees->codePostal)}}">
+                    <input type="text" class="form-control" id="codePostal" placeholder="Code postal" name="codePostal" value="{{old('codePostal', $codePostal)}}">
                     @error('codePostal')
                     <span class="text-danger">{{ $message }}
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
@@ -165,7 +166,7 @@
                     <label for="numero" class="titreForm">Numero
                         <small class="text-danger">*</small>
                     </label>
-                    <input type="text" class="form-control telephones" id="numero" placeholder="555-555-5555" name="numero" maxlength="12" value="{{old('numero', $coordonnees->numero)}}">
+                    <input type="text" class="form-control telephones" id="numero" placeholder="555-555-5555" name="numero" maxlength="12" value="{{old('numero', $numero)}}">
                     @error('numero')
                     <span class="text-danger">{{ $message }}
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
@@ -215,7 +216,7 @@
                     <label for="numero2" class="titreForm">Numero
                         <small class="text-muted">(Optionel)</small>
                     </label>
-                    <input type="text" class="form-control telephones" id="numero2" placeholder="555-555-5555" name="numero2" maxlength="12" value="{{old('numero2', $coordonnees->numero2)}}">
+                    <input type="text" class="form-control telephones" id="numero2" placeholder="555-555-5555" name="numero2" maxlength="12" value="{{old('numero2', $numero2)}}">
                     @error('numero2')
                     <span class="text-danger">{{ $message }}
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">

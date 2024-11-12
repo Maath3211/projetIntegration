@@ -65,11 +65,18 @@ Route::GET('/coordonnees',
 Route::POST('/coordonnees/store',
 [PortailFournisseurController::class,'storeCoordo'])->name('fournisseur.storeCoordonnees');
 
-Route::GET('/coordonnees/edit',
+//Route::GET('/coordonnees/edit',
+//[PortailFournisseurController::class, 'editCoordonnees'])->name('fournisseur.coordonnees.edit');
+
+//Route::POST('/coordonnees/update',
+//[PortailFournisseurController::class, 'updateCoordonnees'])->name('fournisseur.coordonnees.update');
+
+Route::get('/coordonnees/{id}/edit',
 [PortailFournisseurController::class, 'editCoordonnees'])->name('fournisseur.coordonnees.edit');
 
-Route::POST('/coordonnees/update',
+Route::post('/coordonnees/{id}/update',
 [PortailFournisseurController::class, 'updateCoordonnees'])->name('fournisseur.coordonnees.update');
+
 
 # InscriptionContact
 Route::GET('/contact',

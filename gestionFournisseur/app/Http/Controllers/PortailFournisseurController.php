@@ -384,7 +384,7 @@ class PortailFournisseurController extends Controller
         }
     }
 
-    public function editCoordonnees()
+    public function editCoordonnees($id = null)
     {
         $response = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22munnom%22%20FROM%20%2219385b4e-5503-4330-9e59-f998f5918363%22');
 
@@ -396,13 +396,37 @@ class PortailFournisseurController extends Controller
         {
             $villes = [];
         }
-        $fournisseur = Auth::user();
+
+        // nouveau code teste //
+        $fournisseur = $id ? Fournisseur::findOrFail($id) : Auth::user();
+        if (!$fournisseur) {
+            return redirect()->route('fournisseur.information')->withErrors(['Fournisseur introuvable']);
+        }
+        // nouveau code teste //
+        //$fournisseur = Auth::user(); 
         $coordonnees = $fournisseur->coordonnees;
-        return view('fournisseur.editCoordonnees', compact('coordonnees', 'villes'));
+        $numero = $coordonnees->numero;
+        $numero = substr($numero, 0, 3) . '-' . substr($numero, 3, 3) . '-' . substr($numero, 6);
+        $numero2 = $coordonnees->numero;
+        $numero2 = substr($numero2, 0, 3) . '-' . substr($numero2, 3, 3) . '-' . substr($numero2, 6);
+        $codePostal = $coordonnees->codePostal;
+        $codePostal = substr($codePostal, 0, 3) . ' ' . substr($codePostal, 3);
+    
+        return view('fournisseur.editCoordonnees', compact('coordonnees', 'villes','fournisseur','numero','numero2','codePostal')); //founisseur ajouté
     }
 
-    public function updateCoordonnees(FournisseurCoordRequest $request)
+    public function updateCoordonnees(FournisseurCoordRequest $request, $id = null)
     {
+        // nouveau code //
+        $responsable = false;
+        $fournisseur = null;
+        $fournisseur = Fournisseur::find(Auth::id());
+        if($fournisseur == null){
+            $responsable = true;
+            $fournisseur = Fournisseur::where('id',$id)->first();
+            
+        }
+        // nouveau code //
         try 
         {
             $nomRegion = "";
@@ -423,8 +447,14 @@ class PortailFournisseurController extends Controller
                     }
                 }
             }
-
-            $fournisseur = Auth::user();
+            // nouveau code ici //
+           // $fournisseur = $id ? Fournisseur::findOrFail($id) : Auth::user();
+        
+            if (!$fournisseur) {
+                return redirect()->route('fournisseur.information')->withErrors(['Fournisseur introuvable']);
+            }
+            // nouveau code ici //
+            //$fournisseur = Auth::user();
             $coordonnees = FournisseurCoord::where('fournisseur_id', $fournisseur->id)->first();
 
             if (!$coordonnees) 
@@ -438,8 +468,16 @@ class PortailFournisseurController extends Controller
             $coordonnees->codePostal = strtoupper($request->codePostal);
             $coordonnees->site = strtolower($request->site);
             $coordonnees->save();
-
-            return redirect()->route('fournisseur.information')->with('message', "Enregistré!");
+            $fournisseur->touch(); // nouveau code //
+            //return redirect()->route('fournisseur.information')->with('message', "Enregistré!");
+            // nouvau code //
+            if($responsable){
+                return redirect()->route('responsable.demandeFournisseurZoom', [$fournisseur->neq])->with('message', 'Coordonnées à jour');
+            }
+            else{
+                return redirect()->route('fournisseur.information')->with('message', 'Coordonnées à jour');
+            }
+            // nouvau code //
         } 
         catch (\Throwable $e) 
         {
@@ -548,6 +586,7 @@ class PortailFournisseurController extends Controller
 
     public function updateUNSPSC(UnspscRequest $request, $id)
     {
+    
 
     $fournisseur = Fournisseur::find(Auth::id());
     if($fournisseur == null){
