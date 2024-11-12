@@ -201,7 +201,7 @@ Route::DELETE('/responsable/deleteResponsable/{id}',
 [AdminController::class,'deleteResponsable'])->name('responsable.deleteResponsable');
 
 Route::GET('/responsable/listeFournisseur',
-[AdminController::class,'listeFournisseur'])->name('responsable.listeFournisseur');
+[AdminController::class,'listeFournisseur'])->name('responsable.listeFournisseur')->middleware();
 
 Route::get('/responsable/fournisseurs/details', 
 [AdminController::class, 'detailsFournisseurs'])->name('responsable.detailsFournisseurs');
