@@ -20,7 +20,7 @@ class ConnexionResponsableRequest extends FormRequest
     {
         return [
             'email' => 'required|email|exists:responsables,email',
-            'role' => 'required|in:Commis,Responsable,Gestionnaire'
+            'role' => 'required|in:Commis,Responsable,Administrateur'
         ];
     }
 

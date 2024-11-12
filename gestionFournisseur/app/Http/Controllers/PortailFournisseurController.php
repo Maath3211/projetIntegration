@@ -43,7 +43,7 @@ class PortailFournisseurController extends Controller
 
     public function loginNeq(ConnexionRequest $request)
     {
-        $reussi = Auth::attempt(['neq' => $request->neq, 'password' => $request->password]);
+        $reussi = Auth::guard('users')->attempt( ['neq' => $request->neq, 'password' => $request->password]);
 
         if ($reussi) 
         {
