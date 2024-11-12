@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PortailFournisseurController;
 use App\Http\Controllers\AdminController;
-
 #FOURNISSEUR
 
 # Connexion 
@@ -165,10 +164,10 @@ Route::POST('/contact/storeContactCreer/{id}',
 
 # Settings
 Route::GET('/administration/parametre',
-[AdminController::class,'setting'])->name('admin.setting');
+[AdminController::class,'setting'])->name('admin.setting')->middleware('check.role:Administrateur');
 
 Route::POST('/administration/parametre/sauvegarde',
-[AdminController::class,'update'])->name('admin.saveSetting');
+[AdminController::class,'update'])->name('admin.saveSetting')->middleware('check.role:Administrateur');
 
 
 
@@ -183,25 +182,25 @@ Route::POST('/connexion/responsable/email',
 [AdminController::class,'loginEmailResponsable'])->name('login.email.responsable');
 
 Route::GET('/responsable/gerer',
-[AdminController::class,'gererResponsable'])->name('responsable.gererResponsable');
+[AdminController::class,'gererResponsable'])->name('responsable.gererResponsable')->middleware('check.role:Administrateur');
 
 Route::POST('/responsable/gerer/edit/{id}',
-[AdminController::class,'editResponsable'])->name('responsable.editResponsable');
+[AdminController::class,'editResponsable'])->name('responsable.editResponsable')->middleware('check.role:Administrateur');
 
 Route::GET('/responsable/ajouter',
-[AdminController::class,'addResponsable'])->name('responsable.addResponsable');
+[AdminController::class,'addResponsable'])->name('responsable.addResponsable')->middleware('check.role:Administrateur');
 
 Route::POST('/responsable/storeResponsable',
-[AdminController::class,'storeResponsable'])->name('responsable.storeResponsable');
+[AdminController::class,'storeResponsable'])->name('responsable.storeResponsable')->middleware('check.role:Administrateur');
 
 Route::GET('/responsable/deleteResponsableListe',
-[AdminController::class,'deleteResponsableListe'])->name('responsable.deleteResponsableListe');
+[AdminController::class,'deleteResponsableListe'])->name('responsable.deleteResponsableListe')->middleware('check.role:Administrateur');
 
 Route::DELETE('/responsable/deleteResponsable/{id}',
-[AdminController::class,'deleteResponsable'])->name('responsable.deleteResponsable');
+[AdminController::class,'deleteResponsable'])->name('responsable.deleteResponsable')->middleware('check.role:Administrateur');
 
 Route::GET('/responsable/listeFournisseur',
-[AdminController::class,'listeFournisseur'])->name('responsable.listeFournisseur')->middleware();
+[AdminController::class,'listeFournisseur'])->name('responsable.listeFournisseur')->middleware('check.role:Commis,Gestionnaire,Administrateur');
 
 Route::get('/responsable/fournisseurs/details', 
 [AdminController::class, 'detailsFournisseurs'])->name('responsable.detailsFournisseurs');
@@ -226,12 +225,12 @@ Route::GET('/responsable/demandeFournisseur/{neq}/fichier/{idFichier}',
 
 # Modele de courriel
 Route::GET('/responsable/modeleCourriel',
-[AdminController::class, 'afficherModelCourriel'])->name('responsable.afficherModelCourriel');
+[AdminController::class, 'afficherModelCourriel'])->name('responsable.afficherModelCourriel')->middleware('check.role:Administrateur');
 
 Route::get('/get-template-content', [AdminController::class, 'getModel']);
 
 Route::POST('/responsable/sauvegarderModeleCourriel',
-[AdminController::class, 'sauvegarderModelCourriel'])->name('responsable.sauvegarderModelCourriel');
+[AdminController::class, 'sauvegarderModelCourriel'])->name('responsable.sauvegarderModelCourriel')->middleware('check.role:Administrateur');
 
 
 # Exportation
