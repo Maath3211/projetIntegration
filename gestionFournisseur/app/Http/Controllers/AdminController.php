@@ -306,9 +306,9 @@ class AdminController extends Controller
         return view('admin.demandeFournisseur', compact('fnAttentes'));
     }
 
-    public function demandeFournisseurZoom($neq)
+    public function demandeFournisseurZoom($email)
     {
-        $fournisseur = DB::table('fournisseurs')->where('neq', $neq)->first();
+        $fournisseur = DB::table('fournisseurs')->where('email', $email)->first();
         $contacts = DB::table('contact')->where('fournisseur_id', $fournisseur->id)->get();
         $coordonnees = DB::table('coordonnees')->where('fournisseur_id', $fournisseur->id)->get()->firstOrFail();
         $numero = $coordonnees->numero;

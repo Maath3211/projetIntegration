@@ -217,16 +217,16 @@ Route::get('/responsable/fournisseurs/details',
 Route::GET('/responsable/demandeFournisseur',
 [AdminController::class,'demandeFournisseurView'])->name('responsable.demandeFournisseur');
 
-Route::GET('/responsable/demandeFournisseur/{neq}',
+Route::GET('/responsable/demandeFournisseur/{email}',
 [AdminController::class,'demandeFournisseurZoom'])->name('responsable.demandeFournisseurZoom');
 
-Route::POST('/responsable/demandeFournisseur/{neq}/accepter',
+Route::POST('/responsable/demandeFournisseur/{email}/accepter',
 [AdminController::class, 'accepterFournisseur'])->name('responsable.accepterFournisseur');
 
-Route::POST('/responsable/demandeFournisseur/{neq}/refuser',
+Route::POST('/responsable/demandeFournisseur/{email}/refuser',
 [AdminController::class, 'refuserFournisseur'])->name('responsable.refuserFournisseur');
 
-Route::GET('/responsable/demandeFournisseur/{neq}/fichier/{idFichier}',
+Route::GET('/responsable/demandeFournisseur/{email}/fichier/{idFichier}',
 [AdminController::class, 'telechargerFichier'])->name('responsable.telechargerFichier');
 
 
