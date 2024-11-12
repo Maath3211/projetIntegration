@@ -35,7 +35,7 @@
                 <select name="role" class="form-control" id="role" name="role">
                     <option value="Commis" {{ old('role') == 'Commis' ? 'selected' : '' }}>Commis</option>
                     <option value="Responsable" {{ old('role') == 'Responsable' ? 'selected' : '' }}>Responsable</option>
-                    <option value="Gestionnaire" {{ old('role') == 'Gestionnaire' ? 'selected' : '' }}>Gestionnaire</option>
+                    <option value="Administrateur" {{ old('role') == 'Administrateur' ? 'selected' : '' }}>Administrateur</option>
                 </select>
                 @error('role')
                 <span class="text-danger">{{ $message }}

@@ -1,3 +1,5 @@
+
+@role('Commis')
 @extends('layouts.fournisseur')
 @section('title', 'Informations')
 @section('navbar')
@@ -424,3 +426,4 @@
 
 
 <script src="{{ asset('js/showContacts.js') }}"></script>
+@endrole

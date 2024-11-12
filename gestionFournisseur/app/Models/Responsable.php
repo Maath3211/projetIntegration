@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 
 
-class Responsable extends Model
+class Responsable extends Authenticatable
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -18,5 +19,12 @@ class Responsable extends Model
      */
     protected $table = "responsables";
     protected $fillable = ['email', 'role'];
+
+
+    public function hasRole($role)
+    {
+        return $this->role === $role;
+    }
+
 
 }
