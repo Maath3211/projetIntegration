@@ -2,7 +2,7 @@
 @section('title',"Ajouter un contact")
 @section('contenu')
 <div class="text-center">
-    <h1>Contact</h1>
+    <h1>Ajouter un Contact</h1>
 </div>
 <form action="{{ route('fournisseur.storeContactCreer', $fournisseur->id) }}" method="post" id="form1">
     <div class="container-fluid bordure">

@@ -1,8 +1,8 @@
 @extends('layouts.fournisseur')
-@section('title', "RBQ")
+@section('title', "MOD RBQ")
 @section('contenu')
-<div class="text-center py-5">
-    <h1 class="py-5">Mise à jour (RBQ)</h1>
+<div class="text-center">
+    <h1>Mise à jour (RBQ)</h1>
 </div>
 <div class="container-fluid">
     <div class="row">

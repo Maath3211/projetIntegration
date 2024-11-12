@@ -796,15 +796,70 @@ class PortailFournisseurController extends Controller
         }
     }
 
+    public function editImportation()
+    {
+        $fournisseur = Auth::user();
+        return view('fournisseur.editImportation', compact('fournisseur'));
+    }
+
+    public function updateImportation(Request $request)
+    {
+ 
+        if ($request->hasFile('images')) 
+        {
+            $maxSize = Setting::latest()->first()->tailleMax * 1024;
+
+            foreach ($request->file('images') as $key => $image) 
+            {
+                try 
+                {
+                    $request->validate([
+                        "images.{$key}" => 'required|max:' . $maxSize . '|mimes:pdf,doc,docx,jpg,jpeg,png,xlsx,xls,csv,svg',
+                    ], [
+                        "images.{$key}.max" => 'Le fichier est au-dessus de la limite définie',
+                        "images.{$key}.required" => 'L\'image est requise',
+                        "images.{$key}.mimes" => 'Le fichier doit être dans un format imprimable: JPG, PNG, DOCX, DOC, PDF, XLSX, XLS, CSV'
+                    ]);
+
+                    $uniqueFileName = str_replace(' ', '_', Auth::user()->id) . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
+                    $fileSize = $image->getSize();
+
+                    if ($fileSize === false || $fileSize === 0) 
+                    {
+                        throw new \RuntimeException("Impossible de trouver la taille pour: " . $image->getClientOriginalName());
+                    }
+
+                    $image->move(public_path('images/fournisseurs'), $uniqueFileName);
+
+                    $file = new File();
+                    $file->nomFichier = $image->getClientOriginalName();
+                    $file->lienFichier = '/images/fournisseurs/' . $uniqueFileName;
+                    $file->tailleFichier_KO = $fileSize;
+                    $file->fournisseur_id = Auth::user()->id;
+                    $file->save();
+
+                    \Log::info("Fichier importé avec succès: " . $uniqueFileName);
+                } 
+                catch (\Exception $e) 
+                {
+                    \Log::error("Erreur pendant l'importation: " . $image->getClientOriginalName(), [
+                        'error' => $e->getMessage(),
+                        'trace' => $e->getTraceAsString()
+                    ]);
+                    return redirect()->route('fournisseur.importation')->withErrors(['error' => 'Erreur lors du téléversement du fichier: ' . $e->getMessage()]);
+                }
+            }
+
+            return redirect()->route('fournisseur.information')->with('message', 'Fichiers importés avec succès.');
+        }
+
+            return redirect()->route('fournisseur.importation')->withErrors(['error' => 'Aucun fichier à importer.']);
+        
+    }
 
     // Importation
     public function importation()
     {
-        if (Auth::check()) 
-        {
-            return view('fournisseur.importationImg');
-        }
-
         $fournisseurData = session('fournisseur');
         $coordonneesData = session('coordonnees');
         $contactData[] = session('contact');
@@ -821,59 +876,6 @@ class PortailFournisseurController extends Controller
 
     public function storeImportation(Request $request)
     {
-
-        if (Auth::check()) 
-        {
-            if ($request->hasFile('images')) 
-            {
-                $maxSize = Setting::latest()->first()->tailleMax * 1024;
-
-                foreach ($request->file('images') as $key => $image) 
-                {
-                    try 
-                    {
-                        $request->validate([
-                            "images.{$key}" => 'required|max:' . $maxSize . '|mimes:pdf,doc,docx,jpg,jpeg,png,xlsx,xls,csv,svg',
-                        ], [
-                            "images.{$key}.max" => 'Le fichier est au-dessus de la limite définie',
-                            "images.{$key}.required" => 'L\'image est requise',
-                            "images.{$key}.mimes" => 'Le fichier doit être dans un format imprimable: JPG, PNG, DOCX, DOC, PDF, XLSX, XLS, CSV'
-                        ]);
-
-                        $uniqueFileName = str_replace(' ', '_', Auth::user()->id) . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
-                        $fileSize = $image->getSize();
-
-                        if ($fileSize === false || $fileSize === 0) 
-                        {
-                            throw new \RuntimeException("Impossible de trouver la taille pour: " . $image->getClientOriginalName());
-                        }
-
-                        $image->move(public_path('images/fournisseurs'), $uniqueFileName);
-
-                        $file = new File();
-                        $file->nomFichier = $image->getClientOriginalName();
-                        $file->lienFichier = '/images/fournisseurs/' . $uniqueFileName;
-                        $file->tailleFichier_KO = $fileSize;
-                        $file->fournisseur_id = Auth::user()->id;
-                        $file->save();
-
-                        \Log::info("Fichier importé avec succès: " . $uniqueFileName);
-                    } 
-                    catch (\Exception $e) 
-                    {
-                        \Log::error("Erreur pendant l'importation: " . $image->getClientOriginalName(), [
-                            'error' => $e->getMessage(),
-                            'trace' => $e->getTraceAsString()
-                        ]);
-                        return redirect()->route('fournisseur.importation')->withErrors(['error' => 'Erreur lors du téléversement du fichier: ' . $e->getMessage()]);
-                    }
-                }
-
-                return redirect()->route('fournisseur.information')->with('message', 'Fichiers importés avec succès.');
-            }
-
-             return redirect()->route('fournisseur.importation')->withErrors(['error' => 'Aucun fichier à importer.']);
-        }
 
         if ($request->hasFile('images')) 
         {

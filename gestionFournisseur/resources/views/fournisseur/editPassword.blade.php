@@ -1,8 +1,8 @@
 @extends('layouts.fournisseur')
-@section('title',"Changer mot de passe")
+@section('title',"MOD mot de passe")
 @section('contenu')
-<div class="text-center py-5">
-    <h1>Changer le mot de passe</h1>
+<div class="text-center">
+    <h1>Mise à jour ( MOT DE PASSE )</h1>
 </div>
 <form method="post" action="{{route('fournisseur.password.update')}}">
   @csrf

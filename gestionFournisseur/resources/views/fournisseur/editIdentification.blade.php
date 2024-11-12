@@ -1,7 +1,7 @@
 @extends('layouts.fournisseur')
 @section('title',"MOD Identification")
 @section('contenu')
-<div class="text-center py-5">
+<div class="text-center">
     <h1>Mise à jour ( IDENTIFICATION )</h1>
 </div>
 <form method="post" action="{{route('fournisseur.identification.update')}}">

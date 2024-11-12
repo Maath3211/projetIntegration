@@ -2,7 +2,7 @@
 @section('title',"MOD Coordonnées")
 @section('contenu')
 <div class="text-center">
-    <h1>Coordonnées</h1>
+    <h1>Mise à jour ( COORDONNÉES )</h1>
 </div>
 <form method="post" action="{{ route('fournisseur.coordonnees.update', ['id' => $fournisseur->id]) }}"> <!-- MOD ICI -->
     @csrf

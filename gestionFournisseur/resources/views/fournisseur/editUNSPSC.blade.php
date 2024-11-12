@@ -3,7 +3,7 @@
 @section('title',"MOD UNSPSC")
 @section('contenu')
 <div class="text-center">
-    <h1 class="py-5">Mise à jour UNSPSC</h1>
+    <h1>Mise à jour ( UNSPSC )</h1>
 </div>
 <div class="container-fluid">
     <div class="row">

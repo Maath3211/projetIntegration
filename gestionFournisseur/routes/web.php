@@ -117,6 +117,12 @@ Route::GET('/importation',
 Route::PATCH('/importation/store',
 [PortailFournisseurController::class,'storeImportation'])->name('fournisseur.storeImportation');
 
+Route::GET('/importation/edit',
+[PortailFournisseurController::class, 'editImportation'])->name('fournisseur.importation.edit');
+
+Route::PATCH('/importation/update',
+[PortailFournisseurController::class, 'updateImportation'])->name('fournisseur.importation.update');
+
 Route::delete('/file/{id}',
 [PortailFournisseurController::class,'deleteFile'])->name('fournisseur.deleteFile');
 
