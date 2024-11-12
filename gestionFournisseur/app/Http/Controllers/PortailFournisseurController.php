@@ -68,21 +68,11 @@ class PortailFournisseurController extends Controller
     public function infoLogin()
     {
         $fournisseur = Auth::user();
+        $numero = $this->formatPhoneNumber($fournisseur->coordonnees->numero);
+        $numero2 = $this->formatPhoneNumber($fournisseur->coordonnees->numero2);
+        $codePostal = $this->formatPostalCode($fournisseur->coordonnees->codePostal);
         $rbq = RBQLicence::where('fournisseur_id', $fournisseur->id)->first();
-        $unspsc = Unspsccode::where('fournisseur_id', $fournisseur->id)->first();
-        $contacts = Contact::where('fournisseur_id', $fournisseur->id)->get();
-        $contacts = DB::table('contact')->where('fournisseur_id', $fournisseur->id)->get();
-        $coordonnees = FournisseurCoord::where('fournisseur_id', $fournisseur->id)->first();
-        $numero = $coordonnees->numero;
-        $numero = substr($numero, 0, 3) . '-' . substr($numero, 3, 3) . '-' . substr($numero, 6);
-        $numero2 = $coordonnees->numero;
-        $numero2 = substr($numero2, 0, 3) . '-' . substr($numero2, 3, 3) . '-' . substr($numero2, 6);
-        $codePostal = $coordonnees->codePostal;
-        $codePostal = substr($codePostal, 0, 3) . ' ' . substr($codePostal, 3);
-        $files = File::where('fournisseur_id', $fournisseur->id)->get();
-        $finance = Finance::where('fournisseur_id', $fournisseur->id)->first();
         $categorie = Categorie::where('id', $rbq->idCategorie)->first();
-        $unspscCode = UNSPSC::where('id', $unspsc->idUnspsc)->first();
         $unspscFournisseur = DB::table('unspsccodes')->where('fournisseur_id', $fournisseur->id)->get();
         $unspscCollection = collect();
         foreach ($unspscFournisseur as $uc) 
@@ -90,7 +80,6 @@ class PortailFournisseurController extends Controller
             $unspsc = DB::table('unspsc')->where('id', $uc->idUnspsc)->first();
             $unspscCollection->push($unspsc);
         }
-
         if ($fournisseur->statut === "En attente") 
         {
             return redirect()->route('fournisseur.finances');
@@ -100,9 +89,19 @@ class PortailFournisseurController extends Controller
         //     $finance = Finance::where('fournisseur_id', $fournisseur->id)->first();
         // }s
         //dd($unspscFournisseur);
-        return View('fournisseur.information', compact('fournisseur','rbq','categorie','unspscCollection','unspscFournisseur', 'contacts', 'coordonnees', 'files','finance','numero','numero2','codePostal','unspscCode'));
+                
+        return View('fournisseur.information', compact('fournisseur','rbq','categorie','unspscCollection','unspscFournisseur',   'numero','numero2','codePostal'));
     }
 
+    private function formatPhoneNumber($number)
+    {
+        return substr($number, 0, 3) . '-' . substr($number, 3, 3) . '-' . substr($number, 6);
+    }
+
+    private function formatPostalCode($code)
+    {
+        return substr($code, 0, 3) . ' ' . substr($code, 3);
+    }
     public function storeDesactive()
     {
         try 
