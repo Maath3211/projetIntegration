@@ -367,7 +367,10 @@
                     </form>
                     @endrole
                 </div>
+                @if (empty($finance->tps))
 
+                @else
+                    
                 <div class="custom-box">
                     <h4>Finances</h4>
                     <p><strong>TPS :</strong> {{ $finance->tps ?? 'N/A' }}<br><strong>TVQ :</strong>
@@ -393,6 +396,7 @@
                     </form>
                     @endrole
                 </div>
+                @endif
 
                 @if ($files && count($files) > 0)
                     <div class="custom-box">

@@ -112,7 +112,9 @@ class PortailFournisseurController extends Controller
         //     $finance = Finance::where('fournisseur_id', $fournisseur->id)->first();
         // }s
         //dd($unspscFournisseur);
-                
+             
+        
+        
         return View('fournisseur.information', compact('fournisseur','rbq','categorie','unspscCollection','unspscFournisseur',   'numero','numero2','codePostal'));
     }
 
@@ -627,7 +629,7 @@ class PortailFournisseurController extends Controller
             return redirect()->route('fournisseur.contact')->withErrors(['Les informations du fournisseur, des coordonnées ou du contact sont manquantes.']);
         }
 
-        $codes = Unspsc::limit(500)->get();
+        $codes = Unspsc::limit(20904)->get();
         //20904
         //$codes = Unspsc::paginate(1000);
 
@@ -665,7 +667,7 @@ class PortailFournisseurController extends Controller
         $unspscFournisseur = DB::table('unspsccodes')->where('fournisseur_id', $fournisseur->id)->get();
         $unspscDetails= DB::table('unspsccodes')->where('fournisseur_id', $fournisseur->id)->first();
         $unspscChamp = DB::table('unspsccodes')->where('fournisseur_id', $fournisseur->id)->pluck('idUnspsc')->toArray();
-        $codes = Unspsc::limit(500)->get();
+        $codes = Unspsc::limit(20904)->get();
         return View('fournisseur.editUNSPSC', compact('unspscFournisseur', 'codes','unspscChamp', 'unspscDetails'));
     }
 

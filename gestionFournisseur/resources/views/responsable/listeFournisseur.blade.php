@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="{{ asset('css/listeFournisseur.css') }}">
 @extends('layouts.fournisseur')
 @section('title', "Info Fournisseurs")
 @section('navbar')
