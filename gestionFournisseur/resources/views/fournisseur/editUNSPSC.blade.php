@@ -19,7 +19,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <form method="POST" action="{{ route('fournisseur.UNSPSC.update', $unspscFournisseur->first()->idUnspsc) }}">
+                    <form method="POST" action="{{ route('fournisseur.UNSPSC.update', $unspscFournisseur->first()->fournisseur_id) }}">
                         <div class="col-md-1">
                         </div>
                         @csrf
