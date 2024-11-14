@@ -187,8 +187,11 @@ Route::GET('/responsable',
 Route::POST('/connexion/responsable/email',
 [AdminController::class,'loginEmailResponsable'])->name('login.email.responsable');
 
+# Logout
 Route::POST('/admin/logout',
 [AdminController::class,'logout'])->name('admin.logout');
+
+# Gestion des roles
 
 Route::GET('/administration/gerer',
 [AdminController::class,'gererResponsable'])->name('responsable.gererResponsable')->middleware('check.role:Administrateur');
@@ -208,6 +211,8 @@ Route::GET('/administration/deleteResponsableListe',
 Route::DELETE('/administration/deleteResponsable/{id}',
 [AdminController::class,'deleteResponsable'])->name('responsable.deleteResponsable')->middleware('check.role:Administrateur');
 
+# Liste fournisseur
+
 Route::GET('/responsable/listeFournisseur',
 [AdminController::class,'listeFournisseur'])->name('responsable.listeFournisseur')->middleware('check.role:Commis,Gestionnaire,Administrateur');
 
@@ -220,6 +225,7 @@ Route::get('/responsable/fournisseurs/details',
 Route::GET('/responsable/demandeFournisseur',
 [AdminController::class,'demandeFournisseurView'])->name('responsable.demandeFournisseur');
 
+# Gestion des status
 Route::GET('/responsable/demandeFournisseur/{fournisseur}',
 [AdminController::class,'demandeFournisseurZoom'])->name('responsable.demandeFournisseurZoom');
 
@@ -229,6 +235,7 @@ Route::POST('/responsable/demandeFournisseur/{fournisseur}/accepter',
 Route::POST('/responsable/demandeFournisseur/{fournisseur}/refuser',
 [AdminController::class, 'refuserFournisseur'])->name('responsable.refuserFournisseur');
 
+# Téléchargement des fichiers
 Route::GET('/responsable/demandeFournisseur/{fournisseur}/fichier/{idFichier}',
 [AdminController::class, 'telechargerFichier'])->name('responsable.telechargerFichier');
 

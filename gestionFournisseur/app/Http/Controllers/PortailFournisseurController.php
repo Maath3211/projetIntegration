@@ -675,14 +675,10 @@ class PortailFournisseurController extends Controller
     {
     
 
-        $responsable = false;
-        // Récupérer l'utilisateur authentifié
-        $fournisseur = Fournisseur::find(Auth::id());
-        if($fournisseur == null){
-            $responsable = true;
-            $fournisseur = Fournisseur::where('id',$id)->first();
-            
-        }
+    $fournisseur = Fournisseur::find(Auth::id());
+    if($fournisseur == null){
+        $fournisseur = Fournisseur::where('id',$id)->first();
+    }
 
     $unspscData = $request->input('idUnspsc', []); 
     try {
@@ -714,16 +710,9 @@ class PortailFournisseurController extends Controller
         }
 
             $fournisseur->touch();
-
-            if($responsable){
-                return redirect()->route('responsable.demandeFournisseurZoom', [$fournisseur->email])->with('message', 'code unspsc mise à jour avec succès');
-            }
-            else{
-                return redirect()->route('fournisseur.information')->with('message', 'code unspsc mise à jour avec succès');
-            }
+            return redirect()->route('fournisseur.information')->with('message', 'Codes UNSPSC mis à jour avec succès!');
         } catch (\Throwable $e) {
             Log::error($e);
-
             return redirect()->route('fournisseur.UNSPSC.edit',[$fournisseur->id])->withErrors(['Erreur lors de la mise à jour des codes UNSPSC']);
         }
     }
@@ -877,7 +866,7 @@ class PortailFournisseurController extends Controller
             // Rediriger avec un message de succès
 
             if($responsable){
-                return redirect()->route('responsable.demandeFournisseurZoom', [$fournisseur->email])->with('message', 'Licence RBQ mise à jour avec succès');
+                return redirect()->route('responsable.demandeFournisseurZoom', [$fournisseur->neq])->with('message', 'Licence RBQ mise à jour avec succès');
             }
             else{
                 return redirect()->route('fournisseur.information')->with('message', 'Licence RBQ mise à jour avec succès');

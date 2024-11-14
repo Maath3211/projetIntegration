@@ -6,15 +6,53 @@
         <i class="fas fa-user"></i>
     </a>
     <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
+        @role(['Administrateur'])
+        <li>
+            <form action="{{ route('admin.setting') }}" method="GET" class="px-3 py-2">
+                @csrf
+                <button type="submit" class="btn btn-secondary w-100">Paramètres</button>
+            </form>
+        </li>
+        <li>
+          <hr class="dropdown-divider">
+        </li>
+        <li>
+          <form action="{{ route('responsable.addResponsable') }}" method="GET" class="px-3 py-2">
+              @csrf
+              <button type="submit" class="btn btn-secondary w-100">Ajouter utilisateur</button>
+          </form>
+        </li>
+        <li>
+          <hr class="dropdown-divider">
+        </li>
+        <li>
+          <form action="{{ route('responsable.afficherModelCourriel') }}" method="GET" class="px-3 py-2">
+              @csrf
+              <button type="submit" class="btn btn-secondary w-100">Modèle courriel</button>
+          </form>
+        </li>
+        <li>
+          <hr class="dropdown-divider">
+        </li>
+        <li>
+          <form action="{{ route('responsable.gererResponsable') }}" method="GET" class="px-3 py-2">
+              @csrf
+              <button type="submit" class="btn btn-secondary w-100">Roles</button>
+          </form>
+        </li>
+        <li>
+          <hr class="dropdown-divider">
+        </li>
+        @endrole
         <li>
             <form action="{{ route('admin.logout') }}" method="POST" class="px-3 py-2">
                 @csrf
                 <button type="submit" class="btn btn-secondary w-100">Déconnexion</button>
             </form>
         </li>
-    </ul>
-</li>
-@endsection
+      </ul>
+  </li>
+  @endsection
 @section('contenu')
 
 <div class="container">
@@ -26,13 +64,13 @@
                 <form action="{{ route('admin.saveSetting') }}" method="post">
                     @csrf
                     <div class="d-flex">
-                        <label>Courriel de l'Appro.</label>
+                        <label class="labelSetting">Courriel de l'Appro.</label>
                         <input type="email" class="form-control inputCourriel" placeholder="Courriel"
                             name="emailAppro" @if ($settings && $settings->emailAppro) value="{{ $settings->emailAppro }}" @endif required>
                     </div>
 
                     <div class="d-flex">
-                        <label>Délai avant la révision (mois)</label>
+                        <label class="labelSetting">Délai avant la révision (mois)</label>
                         <input type="number" class="form-control inputChiffre" placeholder="24" name="delaiRev" required @if ($settings && $settings->emailAppro) value="{{ $settings->delaiRev }}" @endif>
                         @error('delaiRev')
                         <span class="text-danger">{{ $message }}</span>
@@ -40,7 +78,7 @@
                     </div>
                     
                     <div class="d-flex">
-                        <label>Taille maximale des fichiers joints (Mo)</label>
+                        <label class="labelSetting">Taille maximale des fichiers joints (Mo)</label>
                         <input type="number" class="form-control inputChiffre" placeholder="75" name="tailleMax" required @if ($settings && $settings->emailAppro)value="{{ $settings->tailleMax }}" @endif>
                         @error('tailleMax')
                         <span class="text-danger">{{ $message }}</span>
@@ -48,7 +86,7 @@
                     </div>
 
                     <div class="d-flex">
-                        <label>Courriel des finances</label>
+                        <label class="labelSetting">Courriel des finances</label>
                         <input type="email" class="form-control inputCourriel" placeholder="Courriel"
                             name="emailFinance" required  @if ($settings && $settings->emailAppro) value="{{ $settings->emailFinance }} @endif">
                             @error('emailFinance')
