@@ -307,6 +307,7 @@ class AdminController extends Controller
 
     }
 
+    // TODO: supprimer si view n'existe plus
     public function demandeFournisseurView()
     {
 

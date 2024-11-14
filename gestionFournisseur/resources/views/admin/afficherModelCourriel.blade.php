@@ -1,6 +1,5 @@
 @extends('layouts.layoutAdmin')
-@section('title', 'Administration')
-
+@section('title', 'Modele courriel')
 @section('contenu')
     <link rel="stylesheet" href="{{ asset('css/modelCourriel.css') }}">
 

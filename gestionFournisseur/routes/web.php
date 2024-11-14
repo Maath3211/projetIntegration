@@ -190,22 +190,22 @@ Route::POST('/connexion/responsable/email',
 Route::POST('/admin/logout',
 [AdminController::class,'logout'])->name('admin.logout');
 
-Route::GET('/responsable/gerer',
+Route::GET('/administration/gerer',
 [AdminController::class,'gererResponsable'])->name('responsable.gererResponsable')->middleware('check.role:Administrateur');
 
-Route::POST('/responsable/gerer/edit/{id}',
+Route::POST('/administration/gerer/edit/{id}',
 [AdminController::class,'editResponsable'])->name('responsable.editResponsable')->middleware('check.role:Administrateur');
 
-Route::GET('/responsable/ajouter',
+Route::GET('/administration/ajouter',
 [AdminController::class,'addResponsable'])->name('responsable.addResponsable')->middleware('check.role:Administrateur');
 
-Route::POST('/responsable/storeResponsable',
+Route::POST('/administration/storeResponsable',
 [AdminController::class,'storeResponsable'])->name('responsable.storeResponsable')->middleware('check.role:Administrateur');
 
-Route::GET('/responsable/deleteResponsableListe',
+Route::GET('/administration/deleteResponsableListe',
 [AdminController::class,'deleteResponsableListe'])->name('responsable.deleteResponsableListe')->middleware('check.role:Administrateur');
 
-Route::DELETE('/responsable/deleteResponsable/{id}',
+Route::DELETE('/administration/deleteResponsable/{id}',
 [AdminController::class,'deleteResponsable'])->name('responsable.deleteResponsable')->middleware('check.role:Administrateur');
 
 Route::GET('/responsable/listeFournisseur',
@@ -216,6 +216,7 @@ Route::get('/responsable/fournisseurs/details',
 
 
 # Demande de fournisseur
+# TODO: Supprimer si view n'existe plus
 Route::GET('/responsable/demandeFournisseur',
 [AdminController::class,'demandeFournisseurView'])->name('responsable.demandeFournisseur');
 

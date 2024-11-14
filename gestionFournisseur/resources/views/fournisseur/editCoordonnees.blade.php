@@ -254,4 +254,5 @@
 
 <script src="{{ asset('js/numTelephone.js') }}"></script>
 <script src="{{ asset('js/ville.js') }}"></script>
+<script src="{{ asset('js/codePostal.js') }}"></script>
 
