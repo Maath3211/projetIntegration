@@ -1063,7 +1063,7 @@ class PortailFournisseurController extends Controller
     public function editFinances()
     {
         $fournisseur = Auth::user();
-        $finances = $fournisseur->finances;
+        $finances = $fournisseur->finance;
 
         return view('fournisseur.editFinances', compact('finances'));
     }
@@ -1071,7 +1071,7 @@ class PortailFournisseurController extends Controller
     public function updateFinances(FinanceRequest $request)
     {
         $fournisseur = Auth::user();
-        $finances = $fournisseur->finances;
+        $finances = $fournisseur->finance;
         $finances->fill($request->validated()); 
         $finances->save(); 
 
