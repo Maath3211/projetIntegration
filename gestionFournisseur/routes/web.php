@@ -217,7 +217,7 @@ Route::GET('/responsable/listeFournisseur',
 [AdminController::class,'listeFournisseur'])->name('responsable.listeFournisseur')->middleware('check.role:Commis,Gestionnaire,Administrateur');
 
 Route::get('/responsable/fournisseurs/details', 
-[AdminController::class, 'detailsFournisseurs'])->name('responsable.detailsFournisseurs');
+[AdminController::class, 'detailsFournisseurs'])->name('responsable.detailsFournisseurs')->middleware('check.role:Commis,Gestionnaire,Administrateur');
 
 
 # Demande de fournisseur

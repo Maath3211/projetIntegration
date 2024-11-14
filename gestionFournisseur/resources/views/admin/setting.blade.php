@@ -6,7 +6,15 @@
         <i class="fas fa-user"></i>
     </a>
     <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
-        @role(['Administrateur'])
+        <li>
+            <form action="{{ route('responsable.listeFournisseur') }}" method="GET" class="px-3 py-2">
+                @csrf
+                <button type="submit" class="btn btn-secondary w-100">Listes fournisseurs</button>
+            </form>
+        </li>
+        <li>
+          <hr class="dropdown-divider">
+        </li>
         <li>
             <form action="{{ route('admin.setting') }}" method="GET" class="px-3 py-2">
                 @csrf
@@ -28,7 +36,7 @@
         <li>
           <form action="{{ route('responsable.afficherModelCourriel') }}" method="GET" class="px-3 py-2">
               @csrf
-              <button type="submit" class="btn btn-secondary w-100">Modèle courriel</button>
+              <button type="submit" class="btn btn-secondary w-100">Modèles de courriels</button>
           </form>
         </li>
         <li>
@@ -37,13 +45,12 @@
         <li>
           <form action="{{ route('responsable.gererResponsable') }}" method="GET" class="px-3 py-2">
               @csrf
-              <button type="submit" class="btn btn-secondary w-100">Roles</button>
+              <button type="submit" class="btn btn-secondary w-100">Rôles</button>
           </form>
         </li>
         <li>
           <hr class="dropdown-divider">
         </li>
-        @endrole
         <li>
             <form action="{{ route('admin.logout') }}" method="POST" class="px-3 py-2">
                 @csrf
