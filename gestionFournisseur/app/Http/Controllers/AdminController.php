@@ -348,6 +348,8 @@ class AdminController extends Controller
         if ($fournisseur->raisonRefus)
             $fournisseur->raisonRefus = Crypt::decryptString($fournisseur->raisonRefus);
 
+            
+
         return view('responsable.zoomDemandeFournisseur', compact('fournisseur', 'contacts', 'coordonnees', 'files', 'rbq', 'categories', 'unspscFournisseur', 'unspscCollection','numero','numero2','codePostal'));
     }
 

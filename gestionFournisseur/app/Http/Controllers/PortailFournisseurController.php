@@ -1148,6 +1148,7 @@ class PortailFournisseurController extends Controller
         $fournisseur = Auth::user();
         $finances = $fournisseur->finance;
 
+
         return view('fournisseur.editFinances', compact('finances'));
     }
 
