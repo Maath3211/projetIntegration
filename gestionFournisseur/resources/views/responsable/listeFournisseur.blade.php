@@ -19,9 +19,11 @@
 @section('contenu')
 <div class="container">
     <!-- Search and filter section -->
+    @role(['Administrateur','Responsable'])
+                                
     <div class="filter-section">
       <div class="checkbox-group">
-        <div class="form-check">
+        <div class="form-check" >
           <input class="form-check-input" type="checkbox" id="pending" checked>
           <label class="form-check-label" for="pending">En attente</label>
         </div>
@@ -38,6 +40,28 @@
           <label class="form-check-label" for="to-review">À réviser</label>
         </div>
       </div>
+
+      @else
+      <div class="filter-section" hidden>
+        <div class="checkbox-group">
+          <div class="form-check" >
+            <input class="form-check-input" type="checkbox" id="pending" checked>
+            <label class="form-check-label" for="pending">En attente</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="accepted" checked>
+            <label class="form-check-label" for="accepted">Acceptée</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="refused" checked>
+            <label class="form-check-label" for="refused">Refusée</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="to-review" checked>
+            <label class="form-check-label" for="to-review">À réviser</label>
+          </div>
+        </div>
+      @endrole
 
       <div class="search-bar">
         <input type="text" class="form-control search-input" placeholder="Rechercher">

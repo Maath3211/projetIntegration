@@ -103,7 +103,8 @@ class PortailFournisseurController extends Controller
             $unspsc = DB::table('unspsc')->where('id', $uc->idUnspsc)->first();
             $unspscCollection->push($unspsc);
         }
-        if ($fournisseur->statut === "En attente") 
+
+        if ($fournisseur->statut === "Acceptée" && !$fournisseur->finance) 
         {
             return redirect()->route('fournisseur.finances');
         }
@@ -113,7 +114,6 @@ class PortailFournisseurController extends Controller
         // }s
         //dd($unspscFournisseur);
              
-        
         
         return View('fournisseur.information', compact('fournisseur','rbq','categorie','unspscCollection','unspscFournisseur',   'numero','numero2','codePostal'));
     }
@@ -1143,7 +1143,6 @@ class PortailFournisseurController extends Controller
             $leFournisseur = Fournisseur::where('id', $fournisseur->id)->first();
             $finance = new Finance($request->all());
             $finance->fournisseur_id = $fournisseur->id;
-            $leFournisseur->statut = "Acceptée";
             $finance->save();
             $leFournisseur->save();
 
