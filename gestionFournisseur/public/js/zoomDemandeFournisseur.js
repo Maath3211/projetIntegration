@@ -3,6 +3,7 @@ const btAccepter = document.getElementById("btAccepter");
 const form1 = document.getElementById("form1");
 var clicked = false;
 
+console.log(btRefuser);
 btRefuser.addEventListener("click", function () {
     if (!clicked) {
         btRefuser.style.visibility = "hidden";

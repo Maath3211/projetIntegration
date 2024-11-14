@@ -1,5 +1,4 @@
-
-@role('Administrateur')
+@role('Commis' || 'Gestionnaire' || 'Administrateur')
 @extends('layouts.fournisseur')
 @section('title', 'Informations')
 @section('navbar')
@@ -41,6 +40,12 @@
                                 <path
                                     d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
                             </svg></span> {{ $fournisseur->statut }}
+                            @if ($fournisseur->statut == 'Refusée')
+                                <br>
+                                Refusé le: {{$fournisseur->dateStatut}}
+                                <br>
+                                Raison du refus: {{$fournisseur->raisonRefus}}
+                            @endif
                     </p>
                     @if ($fournisseur->statut == 'Désactivée')
                         <form action="{{ route('fournisseur.storeActive') }}" method="post">
@@ -132,7 +137,8 @@
                                 d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z" />
                         </svg> {{ $coordonnees->typeTel2 }} : {{ $numero2 }} ext {{ $coordonnees->poste2 }}
                     </p>
-                    <form action="{{ route('fournisseur.coordonnees.edit', ['id' => $fournisseur->id]) }}" method="GET"> <!-- MOD ICI -->
+                    <form action="{{ route('fournisseur.coordonnees.edit', ['id' => $fournisseur->id]) }}" method="GET">
+                        <!-- MOD ICI -->
                         @csrf
                         <div class="form-group">
                             <button type="submit" class="btn btn-secondary">
@@ -251,12 +257,15 @@
 
                 </div>
                 @if ($fournisseur->statut == 'En attente' || $fournisseur->statut == 'En révision')
-                    <form action="{{ route('responsable.accepterFournisseur', $fournisseur->neq != null ? $fournisseur->neq : $fournisseur->email) }}" method="post">
+                    <form
+                        action="{{ route('responsable.accepterFournisseur', $fournisseur->neq != null ? $fournisseur->neq : $fournisseur->email) }}"
+                        method="post">
                         @csrf
                         <button type="submit" class="btn btn-success" id="btAccepter">Accepter</button>
                     </form>
-                    <form action="{{ route('responsable.refuserFournisseur', $fournisseur->neq != null ? $fournisseur->neq : $fournisseur->email) }}" method="post"
-                        id="form1">
+                    <form
+                        action="{{ route('responsable.refuserFournisseur', $fournisseur->neq != null ? $fournisseur->neq : $fournisseur->email) }}"
+                        method="post" id="form1">
                         @csrf
                         <a class="btn btn-danger" id="btRefuser">Refuser</a>
                     </form>
@@ -386,7 +395,8 @@
                                 </button>
                             </form>
 
-                            <a href="{{ route('responsable.telechargerFichier', [$fournisseur->neq != null ? $fournisseur->neq : $fournisseur->email, $file->id]) }}">
+                            <a
+                                href="{{ route('responsable.telechargerFichier', [$fournisseur->neq != null ? $fournisseur->neq : $fournisseur->email, $file->id]) }}">
                                 <?php $extension = pathinfo($file->nomFichier, PATHINFO_EXTENSION); ?>
                                 @if ($extension == 'png')
                                     <img src="{{ asset('images/icons/png.png') }}" class="imgFormat">
@@ -422,8 +432,8 @@
             </div>
         </div>
     </div>
+
+    <script src="{{ asset('js/zoomDemandeFournisseur.js') }}"></script>
+    <script src="{{ asset('js/showContacts.js') }}"></script>
 @endsection
-
-
-<script src="{{ asset('js/showContacts.js') }}"></script>
 @endrole

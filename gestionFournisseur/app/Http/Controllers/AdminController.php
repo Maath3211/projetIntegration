@@ -314,7 +314,7 @@ class AdminController extends Controller
     {
 
         $fnAttentes = DB::table('fournisseurs')->where('statut', 'En attente')->get();
-        return view('admin.demandeFournisseur', compact('fnAttentes'));
+        return view('responsable.demandeFournisseur', compact('fnAttentes'));
     }
 
     public function demandeFournisseurZoom($fournisseur)
@@ -347,7 +347,7 @@ class AdminController extends Controller
         if ($fournisseur->raisonRefus)
             $fournisseur->raisonRefus = Crypt::decryptString($fournisseur->raisonRefus);
 
-        return view('admin.zoomDemandeFournisseur', compact('fournisseur', 'contacts', 'coordonnees', 'files', 'rbq', 'categories', 'unspscFournisseur', 'unspscCollection','numero','numero2','codePostal'));
+        return view('responsable.zoomDemandeFournisseur', compact('fournisseur', 'contacts', 'coordonnees', 'files', 'rbq', 'categories', 'unspscFournisseur', 'unspscCollection','numero','numero2','codePostal'));
     }
 
     public function accepterFournisseur($fournisseur)
@@ -383,7 +383,7 @@ class AdminController extends Controller
                 $fournisseur = Fournisseur::where('email', $fournisseur)->first();
         $fournisseur->dateStatut = Carbon::now();
         $fournisseur->raisonRefus = Crypt::encryptString($request->raisonRefus);
-        $fournisseur->statut = 'Refusé';
+        $fournisseur->statut = 'Refusée';
         $fournisseur->save();
         return redirect()->route('responsable.demandeFournisseur')->with('message', 'Le fournisseur a été refusé.');
     }
