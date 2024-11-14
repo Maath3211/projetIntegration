@@ -28,7 +28,6 @@
                 <legend>Produits et services offerts</legend>
                 <div class="row">
                     <div class="col-md-7">
-                        <h1>Services</h1>
                     </div>
                     <div class="col-md-4">
                         <input type="text" class="form-control" maxlength="80" id="search-input" name="recherche" placeholder="Rechercher...">
