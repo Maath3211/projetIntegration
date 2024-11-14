@@ -1,4 +1,4 @@
-@section('title', 'Supprimer accès')
+
 <link rel="stylesheet" href="{{ asset('css/role.css') }}">
 
 <div class="container">

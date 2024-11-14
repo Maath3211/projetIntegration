@@ -18,7 +18,7 @@ window.addEventListener("click", function (event) {
 });
 
 function loadPopupContent() {
-    fetch("/responsable/deleteResponsableListe")
+    fetch("/administration/deleteResponsableListe")
         .then((response) => response.text())
         .then((data) => {
             document.getElementById("popupContent").innerHTML = data;
