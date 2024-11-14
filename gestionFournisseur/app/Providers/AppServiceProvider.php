@@ -21,10 +21,19 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Blade::directive('role', function ($role) {
-            // Wrap the role in single quotes to ensure it’s interpreted as a string
-            return "<?php if (Auth::guard('responsables')->check() && Auth::guard('responsables')->user()->role === {$role}): ?>";
+        Blade::directive('role', function ($expression) {
+            $roles = explode(',', str_replace(['[', ']'], '', $expression));
+        
+            $roleChecks = [];
+            foreach ($roles as $role) {
+                $roleChecks[] = "Auth::guard('responsables')->user()->role === " . trim($role);
+            }
+        
+            $roleExpression = implode(' || ', $roleChecks);
+        
+            return "<?php if (Auth::guard('responsables')->check() && ($roleExpression)): ?>";
         });
+        
         Blade::directive('endrole', function () {
             return "<?php endif; ?>";
         });
