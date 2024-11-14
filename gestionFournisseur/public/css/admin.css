@@ -109,6 +109,10 @@ input::placeholder {
     width: 50% !important;
 }
 
+.labelSetting{
+  width: auto;
+}
+
 .inscription {
     font-size: 26px;
   }

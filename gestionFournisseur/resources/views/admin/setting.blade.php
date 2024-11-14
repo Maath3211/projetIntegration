@@ -26,13 +26,13 @@
                 <form action="{{ route('admin.saveSetting') }}" method="post">
                     @csrf
                     <div class="d-flex">
-                        <label>Courriel de l'Appro.</label>
+                        <label class="labelSetting">Courriel de l'Appro.</label>
                         <input type="email" class="form-control inputCourriel" placeholder="Courriel"
                             name="emailAppro" @if ($settings && $settings->emailAppro) value="{{ $settings->emailAppro }}" @endif required>
                     </div>
 
                     <div class="d-flex">
-                        <label>Délai avant la révision (mois)</label>
+                        <label class="labelSetting">Délai avant la révision (mois)</label>
                         <input type="number" class="form-control inputChiffre" placeholder="24" name="delaiRev" required @if ($settings && $settings->emailAppro) value="{{ $settings->delaiRev }}" @endif>
                         @error('delaiRev')
                         <span class="text-danger">{{ $message }}</span>
@@ -40,7 +40,7 @@
                     </div>
                     
                     <div class="d-flex">
-                        <label>Taille maximale des fichiers joints (Mo)</label>
+                        <label class="labelSetting">Taille maximale des fichiers joints (Mo)</label>
                         <input type="number" class="form-control inputChiffre" placeholder="75" name="tailleMax" required @if ($settings && $settings->emailAppro)value="{{ $settings->tailleMax }}" @endif>
                         @error('tailleMax')
                         <span class="text-danger">{{ $message }}</span>
@@ -48,7 +48,7 @@
                     </div>
 
                     <div class="d-flex">
-                        <label>Courriel des finances</label>
+                        <label class="labelSetting">Courriel des finances</label>
                         <input type="email" class="form-control inputCourriel" placeholder="Courriel"
                             name="emailFinance" required  @if ($settings && $settings->emailAppro) value="{{ $settings->emailFinance }} @endif">
                             @error('emailFinance')

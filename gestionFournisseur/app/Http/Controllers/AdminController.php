@@ -483,7 +483,7 @@ class AdminController extends Controller
         $responsable->email = $request->email;
         $responsable->role = $request->role;
         $responsable->save();
-        return back();
+        return redirect()->route('responsable.gererResponsable');
     }
 
     public function deleteResponsableListe(){
@@ -492,10 +492,41 @@ class AdminController extends Controller
     }
 
     public function deleteResponsable($id){
-        $responsable = Responsable::where('id', $id);
-        $responsable->delete();
+        $listeResponsable = Responsable::all();
+        $nbAdministrateur = 0;
+        $nbResponsable = 0;
+        foreach($listeResponsable as $respo){
+            if($respo->role == 'Administrateur')
+                $nbAdministrateur++;
+            elseif($respo->role == 'Responsable')
+                $nbResponsable++;
+        }
 
-        return back();
+        $responsable = Responsable::where('id', $id)->get()->firstOrFail();
+
+        switch($responsable->role){
+            case('Commis'):
+                $responsable->delete();
+                    return back();
+
+            case('Responsable'):
+                if($responsable->role == 'Responsable' && $nbResponsable > 1){
+                    $responsable->delete();
+                    return back();
+                }
+                else{
+                    return back()->withErrors('Impossible de supprimer le dernier responsable');
+                }
+
+            case('Administrateur'):
+                if($responsable->role == 'Administrateur' && $nbAdministrateur > 1){
+                    $responsable->delete();
+                    return back();
+                }
+                else{
+                    return back()->withErrors('Impossible de supprimer le dernier administrateur');
+                }
+            }
     }
 
     
