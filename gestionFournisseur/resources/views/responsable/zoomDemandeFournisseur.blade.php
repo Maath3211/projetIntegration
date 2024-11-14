@@ -1,4 +1,5 @@
-@role('Commis' || 'Gestionnaire' || 'Administrateur')
+@role(['Commis', 'Gestionnaire', 'Administrateur'])
+
 @extends('layouts.fournisseur')
 @section('title', 'Informations')
 @section('navbar')
@@ -30,13 +31,20 @@
                                 <path
                                     d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
                             </svg></span> {{ $fournisseur->statut }}
+                           
                             @if ($fournisseur->statut == 'Refusée')
                                 <br>
                                 Refusé le: {{$fournisseur->dateStatut}}
+                                
+                                @role(['Gestionnaire', 'Administrateur'])
                                 <br>
                                 Raison du refus: {{$fournisseur->raisonRefus}}
+                                @endrole
                             @endif
+                            
                     </p>
+
+                    {{--  TODO: Supprimer??????
                     @if ($fournisseur->statut == 'Désactivée')
                         <form action="{{ route('fournisseur.storeActive') }}" method="post">
                             @csrf
@@ -52,6 +60,7 @@
                             </div>
                         </form>
                     @endif
+                    --}}
                 </div>
                 <div class="custom-box">
                     <h4>Identification</h4>
@@ -83,6 +92,7 @@
                                 d="M15.834 12.244c0 1.168-.577 2.025-1.587 2.025-.503 0-1.002-.228-1.12-.648h-.043c-.118.416-.543.643-1.015.643-.77 0-1.259-.542-1.259-1.434v-.529c0-.844.481-1.4 1.26-1.4.585 0 .87.333.953.63h.03v-.568h.905v2.19c0 .272.18.42.411.42.315 0 .639-.415.639-1.39v-.118c0-1.277-.95-2.326-2.484-2.326h-.04c-1.582 0-2.64 1.067-2.64 2.724v.157c0 1.867 1.237 2.654 2.57 2.654h.045c.507 0 .935-.07 1.18-.18v.731c-.219.1-.643.175-1.237.175h-.044C10.438 16 9 14.82 9 12.646v-.214C9 10.36 10.421 9 12.485 9h.035c2.12 0 3.314 1.43 3.314 3.034zm-4.04.21v.227c0 .586.227.8.581.8.31 0 .564-.17.564-.743v-.367c0-.516-.275-.708-.572-.708-.346 0-.573.245-.573.791" />
                         </svg> {{ $fournisseur->email }}
                     </p>
+                    @role(['Gestionnaire', 'Administrateur'])
                     <form action="{{ route('fournisseur.identification.edit') }}" method="GET">
                         @csrf
                         <div class="form-group">
@@ -98,6 +108,7 @@
                             </button>
                         </div>
                     </form>
+                    @endrole
                 </div>
 
                 <div class="custom-box">
@@ -127,6 +138,7 @@
                                 d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z" />
                         </svg> {{ $coordonnees->typeTel2 }} : {{ $numero2 }} ext {{ $coordonnees->poste2 }}
                     </p>
+                    @role(['Gestionnaire', 'Administrateur'])
                     <form action="{{ route('fournisseur.coordonnees.edit', ['id' => $fournisseur->id]) }}" method="GET">
                         <!-- MOD ICI -->
                         @csrf
@@ -143,6 +155,7 @@
                             </button>
                         </div>
                     </form>
+                    @endrole
                 </div>
 
 
@@ -173,6 +186,7 @@
                                                     {{ $contact->poste ? 'ext ' . $contact->poste : '' }}
                                                 </p>
                                             </li>
+                                            @role(['Gestionnaire', 'Administrateur'])
                                             <form class="divContactForm"
                                                 action="{{ route('fournisseur.deleteContact', $contact->id) }}"
                                                 method="post">
@@ -201,6 +215,7 @@
                                                     </svg>
                                                 </button>
                                             </form>
+                                            @endrole
                                         </div>
                                     @endforeach
                                 </div>
@@ -210,7 +225,9 @@
 
                         @endif
                     </p>
+
                     <div id="btsContacts">
+                        @role(['Gestionnaire', 'Administrateur'])
                         <form class="divContactForm"
                             action="{{ route('fournisseur.addContactCreer', $fournisseur->id) }}" method="get">
                             @method('get')
@@ -234,6 +251,7 @@
                                 Ajouter
                             </button>
                         </form>
+                        @endrole
 
                         @if ($contacts->count() > 3)
                             <div class="text-center">
@@ -246,6 +264,8 @@
                     </div>
 
                 </div>
+
+                @role(['Gestionnaire', 'Administrateur'])
                 @if ($fournisseur->statut == 'En attente' || $fournisseur->statut == 'En révision')
                     <form
                         action="{{ route('responsable.accepterFournisseur', $fournisseur->neq != null ? $fournisseur->neq : $fournisseur->email) }}"
@@ -260,6 +280,7 @@
                         <a class="btn btn-danger" id="btRefuser">Refuser</a>
                     </form>
                 @endif
+                @endrole
             </div>
 
             <!-- Right side sections -->
@@ -295,6 +316,7 @@
                     @endif
                     <h4>Détails et spécifications</h4>
                     <p>{{ $unspscFournisseur->first()->details }}</p>
+                    @role(['Gestionnaire', 'Administrateur'])
                     <form action="{{ route('fournisseur.UNSPSC.edit', $unspscFournisseur->first()->fournisseur_id) }}"
                         method="GET">
                         @csrf
@@ -311,6 +333,7 @@
                             </button>
                         </div>
                     </form>
+                    @endrole
                 </div>
 
                 <div class="custom-box">
@@ -326,6 +349,7 @@
                     <ul>
                         <li>{{ $categories->codeSousCategorie ?? 'N/A' }} {{ $categories->nom ?? 'N/A' }}</li>
                     </ul>
+                    @role(['Gestionnaire', 'Administrateur'])
                     <form action="{{ route('fournisseur.RBQ.edit', [$rbq->fournisseur_id]) }}" method="GET">
                         @csrf
                         <div class="form-group">
@@ -341,6 +365,7 @@
                             </button>
                         </div>
                     </form>
+                    @endrole
                 </div>
 
                 <div class="custom-box">
@@ -350,6 +375,7 @@
                     <p><strong>Conditions de paiement</strong><br>{{ $finance->paiement ?? 'N/A' }}</p>
                     <p><strong>Devise</strong><br>{{ $finance->devise ?? 'N/A' }}</p>
                     <p><strong>Mode de communication</strong><br>{{ $finance->communication ?? 'N/A' }}</p>
+                    @role(['Gestionnaire', 'Administrateur'])
                     <form action="{{ route('fournisseur.finances.edit') }}" method="GET">
                         @csrf
                         <div class="form-group">
@@ -365,6 +391,7 @@
                             </button>
                         </div>
                     </form>
+                    @endrole
                 </div>
 
                 @if ($files && count($files) > 0)
@@ -372,6 +399,7 @@
                         <h4>Documents</h4>
                         @foreach ($files as $file)
                             <p>
+                                @role(['Gestionnaire', 'Administrateur'])
                             <form action="{{ route('fournisseur.deleteFile', $file->id) }}" method="POST"
                                 style="display: inline;">
                                 @csrf
@@ -384,6 +412,7 @@
                                     </svg>
                                 </button>
                             </form>
+                            @endrole
 
                             <a
                                 href="{{ route('responsable.telechargerFichier', [$fournisseur->neq != null ? $fournisseur->neq : $fournisseur->email, $file->id]) }}">
