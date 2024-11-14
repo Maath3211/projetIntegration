@@ -29,7 +29,7 @@
       <li>
         <form action="{{ route('responsable.afficherModelCourriel') }}" method="GET" class="px-3 py-2">
             @csrf
-            <button type="submit" class="btn btn-secondary w-100">Modèle courriel</button>
+            <button type="submit" class="btn btn-secondary w-100">Modèles de courriels</button>
         </form>
       </li>
       <li>
@@ -38,7 +38,7 @@
       <li>
         <form action="{{ route('responsable.gererResponsable') }}" method="GET" class="px-3 py-2">
             @csrf
-            <button type="submit" class="btn btn-secondary w-100">Roles</button>
+            <button type="submit" class="btn btn-secondary w-100">Rôles</button>
         </form>
       </li>
       <li>
