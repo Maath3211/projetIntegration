@@ -316,6 +316,7 @@ class AdminController extends Controller
 
     public function demandeFournisseurZoom($fournisseur)
     {
+        //BRUHRUHRURHR
 
         if(is_numeric($fournisseur))
             $fournisseur = DB::table('fournisseurs')->where('neq', $fournisseur)->first();
