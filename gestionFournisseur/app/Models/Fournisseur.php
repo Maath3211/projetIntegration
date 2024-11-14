@@ -8,7 +8,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\FournisseurCoord;
 use App\Models\Contact;
-use App\Models\Finances;
+use App\Models\Finance;
+use App\Models\Unspsccode;
+use App\Models\File;
+use App\Models\RBQLicence;
+use App\Models\Categorie;
 
 
 
@@ -42,8 +46,33 @@ class Fournisseur extends Authenticatable
         return $this->hasMany(Contact::class, 'fournisseur_id');
     }
 
-    public function finances(){
+    public function unspsc()
+    {
+        return $this->belongsToMany(UNSPSC::class, 'unspsccodes', 'fournisseur_id', 'idUnspsc');
+    }
+
+    public function unspscCodes()
+    {
+        return $this->hasMany(Unspsccode::class, 'fournisseur_id');
+    }
+    
+
+    public function files()
+    {
+        return $this->hasMany(File::class, 'fournisseur_id');
+    }
+
+
+    public function finance(){
         return $this->hasOne(Finance::class, 'fournisseur_id');
+    }
+
+    public function rbq(){
+        return $this->hasOne(RBQLicence::class, 'fournisseur_id');
+    }
+
+    public function categorie(){
+        return $this->hasManyThrough(Categorie::class,RBQLicence::class,'fournisseur_id','id');
     }
 
 

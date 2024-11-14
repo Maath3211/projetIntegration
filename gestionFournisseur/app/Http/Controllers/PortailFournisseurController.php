@@ -35,11 +35,24 @@ use Redirect;
 class PortailFournisseurController extends Controller
 {
 
-    public function index()
-    {
-        $fournisseurs = Fournisseur::all();
-        return View('fournisseur.index');
-    }
+    /**
+     * CONNEXION **** CONNEXION **** CONNEXION ****CONNEXION ****CONNEXION****CONNEXION **** CONNEXION ****CONNEXION ****
+    */
+
+     public function loginEmail(ConnexionRequest $request)
+     {
+         $reussi = Auth::attempt(['email' => $request->email, 'password' => $request->password]);
+ 
+         if ($reussi) 
+         {
+             $fournisseurEmail = Fournisseur::where('email', $request->email)->firstOrFail();
+             return redirect()->route('fournisseur.information');
+         } 
+         else 
+         {
+             return redirect()->route('fournisseur.index')->withErrors(['Informations invalides']);
+         }
+     }
 
     public function loginNeq(ConnexionRequest $request)
     {
@@ -65,24 +78,24 @@ class PortailFournisseurController extends Controller
         return redirect()->route('fournisseur.index')->with('message', 'Déconnecté avec succès');
     }
 
+    /**
+     * VIEW **** VIEW **** VIEW ****VIEW ****VIEW****VIEW **** VIEW ****VIEW ****
+    */
+
+    public function index()
+    {
+        $fournisseurs = Fournisseur::all();
+        return View('fournisseur.index');
+    }
+
     public function infoLogin()
     {
         $fournisseur = Auth::user();
+        $numero = $this->formatPhoneNumber($fournisseur->coordonnees->numero);
+        $numero2 = $this->formatPhoneNumber($fournisseur->coordonnees->numero2);
+        $codePostal = $this->formatPostalCode($fournisseur->coordonnees->codePostal);
         $rbq = RBQLicence::where('fournisseur_id', $fournisseur->id)->first();
-        $unspsc = Unspsccode::where('fournisseur_id', $fournisseur->id)->first();
-        $contacts = Contact::where('fournisseur_id', $fournisseur->id)->get();
-        $contacts = DB::table('contact')->where('fournisseur_id', $fournisseur->id)->get();
-        $coordonnees = FournisseurCoord::where('fournisseur_id', $fournisseur->id)->first();
-        $numero = $coordonnees->numero;
-        $numero = substr($numero, 0, 3) . '-' . substr($numero, 3, 3) . '-' . substr($numero, 6);
-        $numero2 = $coordonnees->numero;
-        $numero2 = substr($numero2, 0, 3) . '-' . substr($numero2, 3, 3) . '-' . substr($numero2, 6);
-        $codePostal = $coordonnees->codePostal;
-        $codePostal = substr($codePostal, 0, 3) . ' ' . substr($codePostal, 3);
-        $files = File::where('fournisseur_id', $fournisseur->id)->get();
-        $finance = Finance::where('fournisseur_id', $fournisseur->id)->first();
         $categorie = Categorie::where('id', $rbq->idCategorie)->first();
-        $unspscCode = UNSPSC::where('id', $unspsc->idUnspsc)->first();
         $unspscFournisseur = DB::table('unspsccodes')->where('fournisseur_id', $fournisseur->id)->get();
         $unspscCollection = collect();
         foreach ($unspscFournisseur as $uc) 
@@ -90,7 +103,6 @@ class PortailFournisseurController extends Controller
             $unspsc = DB::table('unspsc')->where('id', $uc->idUnspsc)->first();
             $unspscCollection->push($unspsc);
         }
-
         if ($fournisseur->statut === "En attente") 
         {
             return redirect()->route('fournisseur.finances');
@@ -100,8 +112,10 @@ class PortailFournisseurController extends Controller
         //     $finance = Finance::where('fournisseur_id', $fournisseur->id)->first();
         // }s
         //dd($unspscFournisseur);
-        return View('fournisseur.information', compact('fournisseur','rbq','categorie','unspscCollection','unspscFournisseur', 'contacts', 'coordonnees', 'files','finance','numero','numero2','codePostal','unspscCode'));
+                
+        return View('fournisseur.information', compact('fournisseur','rbq','categorie','unspscCollection','unspscFournisseur',   'numero','numero2','codePostal'));
     }
+
 
     public function storeDesactive()
     {
@@ -530,6 +544,77 @@ class PortailFournisseurController extends Controller
         }
     }
 
+    public function deleteContact($id)
+    {
+        try {
+            $contact = Contact::where('id', $id)->get()->firstOrFail();
+            $contact->delete();
+            return Redirect::back();
+        } catch (\Throwable $e) {
+            Log::debug($e);
+            return Redirect::back()->withErrors(['Erreur interne']);
+        }
+
+    }
+
+    public function addContactCreer($id){
+        session(['return_to' => url()->previous()]);
+        $fournisseur = Fournisseur::where('id', $id)->firstOrFail();
+        return view('fournisseur.ajoutContactCreer', compact('fournisseur'));
+    }
+
+    public function storeContactCreer($id, ContactRequest $request){
+        try{
+        $contact = new Contact();
+
+        $contact->prenom = $request->prenom;
+        $contact->nom = $request->nom;
+        $contact->fonction = $request->fonction;
+        $contact->courriel = $request->courriel;
+        $contact->typeTelephone = $request->typeTelephone;
+        $contact->telephone = $request->telephone;
+        $contact->poste = $request->poste;
+        $contact->fournisseur_id = $id;
+        $contact->save();
+        $return_url = session('return_to');
+        session()->forget('return_to');
+        return redirect($return_url);
+    }catch (\Throwable $e) {
+        Log::debug($e);
+        return Redirect::back()->withInput()->withErrors(['Erreur interne']);
+    }
+    }
+
+    public function editContact($id)
+    {
+        session(['return_to' => url()->previous()]);
+        $contact = Contact::where('id', $id)->get()->firstOrFail();
+        
+        return view('fournisseur.editContact', compact('contact'));
+    }
+
+    public function updateContact($id, ContactRequest $request)
+    {
+        try {
+            $return_url = session('return_to');
+            $contact = Contact::where('id', $id)->get()->firstOrFail();
+            $contact->prenom = $request->prenom;
+            $contact->nom = $request->nom;
+            $contact->fonction = $request->fonction;
+            $contact->courriel = $request->courriel;
+            $contact->typeTelephone = $request->typeTelephone;
+            $contact->telephone = $request->telephone;
+            $contact->poste = $request->poste;
+
+            $contact->save();
+            session()->forget('return_to');
+            return redirect($return_url);
+        } catch (\Throwable $e) {
+            Log::debug($e);
+            return Redirect::back()->withInput()->withErrors(['Erreur interne']);
+        }
+    }
+
     // Code Unspsc 
 
     public function UNSPSC(Request $request)
@@ -630,8 +715,6 @@ class PortailFournisseurController extends Controller
         }
     }
     
-
-
     // Licence RBQ
 
     public function RBQ()
@@ -681,9 +764,6 @@ class PortailFournisseurController extends Controller
         // Passer les données à la vue
         return view('fournisseur.RBQ', compact('codes', 'numRBQ', 'statutRBQ', 'typeLicence', 'categorie', 'sousCategories', 'restriction'));
     }
-
-
-
 
     public function storeRBQ(RBQRequest $request)
     {
@@ -796,15 +876,10 @@ class PortailFournisseurController extends Controller
         }
     }
 
-
-    // Importation
+   
+    // Importation et !! SAUVEGARDE DES INFORMATIONS !!
     public function importation()
     {
-        if (Auth::check()) 
-        {
-            return view('fournisseur.importationImg');
-        }
-
         $fournisseurData = session('fournisseur');
         $coordonneesData = session('coordonnees');
         $contactData[] = session('contact');
@@ -821,59 +896,6 @@ class PortailFournisseurController extends Controller
 
     public function storeImportation(Request $request)
     {
-
-        if (Auth::check()) 
-        {
-            if ($request->hasFile('images')) 
-            {
-                $maxSize = Setting::latest()->first()->tailleMax * 1024;
-
-                foreach ($request->file('images') as $key => $image) 
-                {
-                    try 
-                    {
-                        $request->validate([
-                            "images.{$key}" => 'required|max:' . $maxSize . '|mimes:pdf,doc,docx,jpg,jpeg,png,xlsx,xls,csv,svg',
-                        ], [
-                            "images.{$key}.max" => 'Le fichier est au-dessus de la limite définie',
-                            "images.{$key}.required" => 'L\'image est requise',
-                            "images.{$key}.mimes" => 'Le fichier doit être dans un format imprimable: JPG, PNG, DOCX, DOC, PDF, XLSX, XLS, CSV'
-                        ]);
-
-                        $uniqueFileName = str_replace(' ', '_', Auth::user()->id) . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
-                        $fileSize = $image->getSize();
-
-                        if ($fileSize === false || $fileSize === 0) 
-                        {
-                            throw new \RuntimeException("Impossible de trouver la taille pour: " . $image->getClientOriginalName());
-                        }
-
-                        $image->move(public_path('images/fournisseurs'), $uniqueFileName);
-
-                        $file = new File();
-                        $file->nomFichier = $image->getClientOriginalName();
-                        $file->lienFichier = '/images/fournisseurs/' . $uniqueFileName;
-                        $file->tailleFichier_KO = $fileSize;
-                        $file->fournisseur_id = Auth::user()->id;
-                        $file->save();
-
-                        \Log::info("Fichier importé avec succès: " . $uniqueFileName);
-                    } 
-                    catch (\Exception $e) 
-                    {
-                        \Log::error("Erreur pendant l'importation: " . $image->getClientOriginalName(), [
-                            'error' => $e->getMessage(),
-                            'trace' => $e->getTraceAsString()
-                        ]);
-                        return redirect()->route('fournisseur.importation')->withErrors(['error' => 'Erreur lors du téléversement du fichier: ' . $e->getMessage()]);
-                    }
-                }
-
-                return redirect()->route('fournisseur.information')->with('message', 'Fichiers importés avec succès.');
-            }
-
-             return redirect()->route('fournisseur.importation')->withErrors(['error' => 'Aucun fichier à importer.']);
-        }
 
         if ($request->hasFile('images')) 
         {
@@ -1010,6 +1032,67 @@ class PortailFournisseurController extends Controller
         }
     }
 
+    public function editImportation()
+    {
+        $fournisseur = Auth::user();
+        return view('fournisseur.editImportation', compact('fournisseur'));
+    }
+
+    public function updateImportation(Request $request)
+    {
+ 
+        if ($request->hasFile('images')) 
+        {
+            $maxSize = Setting::latest()->first()->tailleMax * 1024;
+
+            foreach ($request->file('images') as $key => $image) 
+            {
+                try 
+                {
+                    $request->validate([
+                        "images.{$key}" => 'required|max:' . $maxSize . '|mimes:pdf,doc,docx,jpg,jpeg,png,xlsx,xls,csv,svg',
+                    ], [
+                        "images.{$key}.max" => 'Le fichier est au-dessus de la limite définie',
+                        "images.{$key}.required" => 'L\'image est requise',
+                        "images.{$key}.mimes" => 'Le fichier doit être dans un format imprimable: JPG, PNG, DOCX, DOC, PDF, XLSX, XLS, CSV'
+                    ]);
+
+                    $uniqueFileName = str_replace(' ', '_', Auth::user()->id) . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
+                    $fileSize = $image->getSize();
+
+                    if ($fileSize === false || $fileSize === 0) 
+                    {
+                        throw new \RuntimeException("Impossible de trouver la taille pour: " . $image->getClientOriginalName());
+                    }
+
+                    $image->move(public_path('images/fournisseurs'), $uniqueFileName);
+
+                    $file = new File();
+                    $file->nomFichier = $image->getClientOriginalName();
+                    $file->lienFichier = '/images/fournisseurs/' . $uniqueFileName;
+                    $file->tailleFichier_KO = $fileSize;
+                    $file->fournisseur_id = Auth::user()->id;
+                    $file->save();
+
+                    \Log::info("Fichier importé avec succès: " . $uniqueFileName);
+                } 
+                catch (\Exception $e) 
+                {
+                    \Log::error("Erreur pendant l'importation: " . $image->getClientOriginalName(), [
+                        'error' => $e->getMessage(),
+                        'trace' => $e->getTraceAsString()
+                    ]);
+                    return redirect()->route('fournisseur.importation')->withErrors(['error' => 'Erreur lors du téléversement du fichier: ' . $e->getMessage()]);
+                }
+            }
+
+            return redirect()->route('fournisseur.information')->with('message', 'Fichiers importés avec succès.');
+        }
+
+            return redirect()->route('fournisseur.importation')->withErrors(['error' => 'Aucun fichier à importer.']);
+        
+    }
+
     public function deleteFile($id)
     {
         try {
@@ -1062,7 +1145,7 @@ class PortailFournisseurController extends Controller
     public function editFinances()
     {
         $fournisseur = Auth::user();
-        $finances = $fournisseur->finances;
+        $finances = $fournisseur->finance;
 
         return view('fournisseur.editFinances', compact('finances'));
     }
@@ -1070,104 +1153,25 @@ class PortailFournisseurController extends Controller
     public function updateFinances(FinanceRequest $request)
     {
         $fournisseur = Auth::user();
-        $finances = $fournisseur->finances;
+        $finances = $fournisseur->finance;
         $finances->fill($request->validated()); 
         $finances->save(); 
 
         return redirect()->route('fournisseur.information')->with('message', 'Informations mises à jour avec succès.');
     }
 
-
-
     /**
-     * CONNEXION **** CONNEXION **** CONNEXION ****CONNEXION ****CONNEXION****CONNEXION **** CONNEXION ****CONNEXION ****
-     */
+     * FUNCTION **** FUNCTION**** FUNCTION ****FUNCTION ****FUNCTION****FUNCTION **** FUNCTION ****FUNCTION ****
+    */
 
-    public function loginEmail(ConnexionRequest $request)
+    private function formatPhoneNumber($number)
     {
-        $reussi = Auth::attempt(['email' => $request->email, 'password' => $request->password]);
+        return substr($number, 0, 3) . '-' . substr($number, 3, 3) . '-' . substr($number, 6);
+    }
 
-        if ($reussi) 
-        {
-            $fournisseurEmail = Fournisseur::where('email', $request->email)->firstOrFail();
-            return redirect()->route('fournisseur.information');
-        } 
-        else 
-        {
-            return redirect()->route('fournisseur.index')->withErrors(['Informations invalides']);
-        }
+    private function formatPostalCode($code)
+    {
+        return substr($code, 0, 3) . ' ' . substr($code, 3);
     }
     
-
-    
-    public function deleteContact($id)
-    {
-        try {
-            $contact = Contact::where('id', $id)->get()->firstOrFail();
-            $contact->delete();
-            return Redirect::back();
-        } catch (\Throwable $e) {
-            Log::debug($e);
-            return Redirect::back()->withErrors(['Erreur interne']);
-        }
-
-    }
-
-    public function addContactCreer($id){
-        session(['return_to' => url()->previous()]);
-        $fournisseur = Fournisseur::where('id', $id)->firstOrFail();
-        return view('fournisseur.ajoutContactCreer', compact('fournisseur'));
-    }
-
-    public function storeContactCreer($id, ContactRequest $request){
-        try{
-        $contact = new Contact();
-
-        $contact->prenom = $request->prenom;
-        $contact->nom = $request->nom;
-        $contact->fonction = $request->fonction;
-        $contact->courriel = $request->courriel;
-        $contact->typeTelephone = $request->typeTelephone;
-        $contact->telephone = $request->telephone;
-        $contact->poste = $request->poste;
-        $contact->fournisseur_id = $id;
-        $contact->save();
-        $return_url = session('return_to');
-        session()->forget('return_to');
-        return redirect($return_url);
-    }catch (\Throwable $e) {
-        Log::debug($e);
-        return Redirect::back()->withInput()->withErrors(['Erreur interne']);
-    }
-    }
-
-    public function editContact($id)
-    {
-        session(['return_to' => url()->previous()]);
-        $contact = Contact::where('id', $id)->get()->firstOrFail();
-        
-        return view('fournisseur.editContact', compact('contact'));
-    }
-
-    public function updateContact($id, ContactRequest $request)
-    {
-        try {
-            $return_url = session('return_to');
-            $contact = Contact::where('id', $id)->get()->firstOrFail();
-            $contact->prenom = $request->prenom;
-            $contact->nom = $request->nom;
-            $contact->fonction = $request->fonction;
-            $contact->courriel = $request->courriel;
-            $contact->typeTelephone = $request->typeTelephone;
-            $contact->telephone = $request->telephone;
-            $contact->poste = $request->poste;
-
-            $contact->save();
-            session()->forget('return_to');
-            return redirect($return_url);
-        } catch (\Throwable $e) {
-            Log::debug($e);
-            return Redirect::back()->withInput()->withErrors(['Erreur interne']);
-        }
-    }
 }

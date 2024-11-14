@@ -2,7 +2,7 @@
 @section('title', "MOD Finances")
 @section('contenu')
 <div class="text-center">
-    <h1>Mise à jour (FINANCES)</h1>
+    <h1>Mise à jour ( FINANCES )</h1>
 </div>
 <form method="POST" action="{{ route('fournisseur.finances.update') }}">
     @csrf
