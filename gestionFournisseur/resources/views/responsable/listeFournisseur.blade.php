@@ -192,7 +192,7 @@
                             <td><input type="checkbox" class="select-fournisseur" value='{{$fn->id}}'></td>
         
                             <td>
-                                <a href="{{ route('responsable.demandeFournisseurZoom', $fn->email) }}" class="btn btn-info">
+                                <a href="{{ route('responsable.demandeFournisseurZoom', $fn->neq != null ? $fn->neq : $fn->email) }}" class="btn btn-info">
                                     Plus d'information
                                 </a>
                             </td>

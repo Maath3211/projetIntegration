@@ -81,7 +81,7 @@ class AdminController extends Controller
             $reussi = Auth::guard('responsables')->login( $responsable);
         if ($responsable ) 
         {
-            session(['responsable' => $responsable]);
+            
             return redirect()->route('responsable.listeFournisseur')->with('message', 'Connexion réussie.');
         } 
         else 
@@ -98,7 +98,9 @@ class AdminController extends Controller
 
     public function listeFournisseur()
     {
-        dd(Auth::user());
+        
+        Auth::logout();
+        
         $response = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22munnom%22%20FROM%20%2219385b4e-5503-4330-9e59-f998f5918363%22');
     
         $villes = $response->successful() ? collect($response->json()['result']['records'])->pluck('munnom')->sort()->all() : []; // Sort the cities alphabetically
@@ -306,9 +308,13 @@ class AdminController extends Controller
         return view('admin.demandeFournisseur', compact('fnAttentes'));
     }
 
-    public function demandeFournisseurZoom($email)
+    public function demandeFournisseurZoom($fournisseur)
     {
-        $fournisseur = DB::table('fournisseurs')->where('email', $email)->first();
+
+        if(is_numeric($fournisseur))
+            $fournisseur = DB::table('fournisseurs')->where('neq', $fournisseur)->first();
+        else
+            $fournisseur = DB::table('fournisseurs')->where('email', $fournisseur)->first();
         $contacts = DB::table('contact')->where('fournisseur_id', $fournisseur->id)->get();
         $coordonnees = DB::table('coordonnees')->where('fournisseur_id', $fournisseur->id)->get()->firstOrFail();
         $numero = $coordonnees->numero;
@@ -335,14 +341,17 @@ class AdminController extends Controller
         return view('admin.zoomDemandeFournisseur', compact('fournisseur', 'contacts', 'coordonnees', 'files', 'rbq', 'categories', 'unspscFournisseur', 'unspscCollection','numero','numero2','codePostal'));
     }
 
-    public function accepterFournisseur($neq)
+    public function accepterFournisseur($fournisseur)
     {
         try {
-            $fn = Fournisseur::where('neq', $neq)->firstOrFail();
-            $fn->statut = 'Acceptée';
-            $fn->dateStatut = Carbon::now();
-            $fn->raisonRefus = null;
-            $fn->save();
+            if(is_numeric($fournisseur))
+                $fournisseur = Fournisseur::where('neq', $fournisseur)->first();
+            else
+                $fournisseur = Fournisseur::where('email', $fournisseur)->first();
+            $fournisseur->statut = 'Acceptée';
+            $fournisseur->dateStatut = Carbon::now();
+            $fournisseur->raisonRefus = null;
+            $fournisseur->save();
 
             return redirect()->route('responsable.demandeFournisseur')->with('message', "Enregistré!");
         } catch (\Throwable $e) {
@@ -352,18 +361,21 @@ class AdminController extends Controller
 
     }
 
-    public function refuserFournisseur($neq, Request $request)
+    public function refuserFournisseur($fournisseur, Request $request)
     {
         $request->validate([
             "raisonRefus" => 'required',
         ], [
             "raisonRefus.required" => 'La raison de refus est requise',
         ]);
-        $fn = Fournisseur::where('neq', $neq)->firstOrFail();
-        $fn->dateStatut = Carbon::now();
-        $fn->raisonRefus = Crypt::encryptString($request->raisonRefus);
-        $fn->statut = 'Refusé';
-        $fn->save();
+        if(is_numeric($fournisseur))
+                $fournisseur = Fournisseur::where('neq', $fournisseur)->first();
+            else
+                $fournisseur = Fournisseur::where('email', $fournisseur)->first();
+        $fournisseur->dateStatut = Carbon::now();
+        $fournisseur->raisonRefus = Crypt::encryptString($request->raisonRefus);
+        $fournisseur->statut = 'Refusé';
+        $fournisseur->save();
         return redirect()->route('responsable.demandeFournisseur')->with('message', 'Le fournisseur a été refusé.');
     }
 

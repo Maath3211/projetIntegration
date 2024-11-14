@@ -64,18 +64,11 @@ Route::GET('/coordonnees',
 Route::POST('/coordonnees/store',
 [PortailFournisseurController::class,'storeCoordo'])->name('fournisseur.storeCoordonnees');
 
-//Route::GET('/coordonnees/edit',
-//[PortailFournisseurController::class, 'editCoordonnees'])->name('fournisseur.coordonnees.edit');
-
-//Route::POST('/coordonnees/update',
-//[PortailFournisseurController::class, 'updateCoordonnees'])->name('fournisseur.coordonnees.update');
-
-Route::get('/coordonnees/{id}/edit',
+Route::GET('/coordonnees/edit',
 [PortailFournisseurController::class, 'editCoordonnees'])->name('fournisseur.coordonnees.edit');
 
-Route::post('/coordonnees/{id}/update',
+Route::POST('/coordonnees/update',
 [PortailFournisseurController::class, 'updateCoordonnees'])->name('fournisseur.coordonnees.update');
-
 
 # InscriptionContact
 Route::GET('/contact',
@@ -223,16 +216,16 @@ Route::get('/responsable/fournisseurs/details',
 Route::GET('/responsable/demandeFournisseur',
 [AdminController::class,'demandeFournisseurView'])->name('responsable.demandeFournisseur');
 
-Route::GET('/responsable/demandeFournisseur/{email}',
+Route::GET('/responsable/demandeFournisseur/{fournisseur}',
 [AdminController::class,'demandeFournisseurZoom'])->name('responsable.demandeFournisseurZoom');
 
-Route::POST('/responsable/demandeFournisseur/{email}/accepter',
+Route::POST('/responsable/demandeFournisseur/{fournisseur}/accepter',
 [AdminController::class, 'accepterFournisseur'])->name('responsable.accepterFournisseur');
 
-Route::POST('/responsable/demandeFournisseur/{email}/refuser',
+Route::POST('/responsable/demandeFournisseur/{fournisseur}/refuser',
 [AdminController::class, 'refuserFournisseur'])->name('responsable.refuserFournisseur');
 
-Route::GET('/responsable/demandeFournisseur/{email}/fichier/{idFichier}',
+Route::GET('/responsable/demandeFournisseur/{fournisseur}/fichier/{idFichier}',
 [AdminController::class, 'telechargerFichier'])->name('responsable.telechargerFichier');
 
 
