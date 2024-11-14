@@ -1,14 +1,20 @@
 @extends('layouts.fournisseur')
-
-@section('title', "Fournisseurs")
-
-<header>
-    <div>
-        <a href="/"><h5 class="compagny">LOGO-VILLE3R</h5></a>
-    </div>
-    <link rel="stylesheet" href="{{ asset('css/listeFournisseur.css') }}">
-</header>
-
+@section('title', "Info Fournisseurs")
+@section('navbar')
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="userMenu" role="button" data-bs-toggle="dropdown" data-boundary="viewport" aria-expanded="false">
+        <i class="fas fa-user"></i>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
+        <li>
+            <form action="{{ route('admin.logout') }}" method="POST" class="px-3 py-2">
+                @csrf
+                <button type="submit" class="btn btn-secondary w-100">Déconnexion</button>
+            </form>
+        </li>
+    </ul>
+</li>
+@endsection
 @section('contenu')
 <div class="container">
     <!-- Search and filter section -->
@@ -192,7 +198,7 @@
                             <td><input type="checkbox" class="select-fournisseur" value='{{$fn->id}}'></td>
         
                             <td>
-                                <a href="{{ route('responsable.demandeFournisseurZoom', $fn->email) }}" class="btn btn-info">
+                                <a href="{{ route('responsable.demandeFournisseurZoom', $fn->neq != null ? $fn->neq : $fn->email) }}" class="btn btn-info">
                                     Plus d'information
                                 </a>
                             </td>

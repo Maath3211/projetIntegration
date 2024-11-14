@@ -21,7 +21,7 @@ class CheckRole
     {
         $user = Auth::guard('responsables')->user();
 
-        if (in_array($user->role, $roles)) {
+        if (Auth::guard('responsables')->check() && in_array($user->role, $roles)) {
             return $next($request);
         }
 

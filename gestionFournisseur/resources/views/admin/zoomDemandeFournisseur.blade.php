@@ -251,11 +251,11 @@
 
                 </div>
                 @if ($fournisseur->statut == 'En attente' || $fournisseur->statut == 'En révision')
-                    <form action="{{ route('responsable.accepterFournisseur', $fournisseur->neq) }}" method="post">
+                    <form action="{{ route('responsable.accepterFournisseur', $fournisseur->neq != null ? $fournisseur->neq : $fournisseur->email) }}" method="post">
                         @csrf
                         <button type="submit" class="btn btn-success" id="btAccepter">Accepter</button>
                     </form>
-                    <form action="{{ route('responsable.refuserFournisseur', $fournisseur->neq) }}" method="post"
+                    <form action="{{ route('responsable.refuserFournisseur', $fournisseur->neq != null ? $fournisseur->neq : $fournisseur->email) }}" method="post"
                         id="form1">
                         @csrf
                         <a class="btn btn-danger" id="btRefuser">Refuser</a>
@@ -386,7 +386,7 @@
                                 </button>
                             </form>
 
-                            <a href="{{ route('responsable.telechargerFichier', [$fournisseur->neq, $file->id]) }}">
+                            <a href="{{ route('responsable.telechargerFichier', [$fournisseur->neq != null ? $fournisseur->neq : $fournisseur->email, $file->id]) }}">
                                 <?php $extension = pathinfo($file->nomFichier, PATHINFO_EXTENSION); ?>
                                 @if ($extension == 'png')
                                     <img src="{{ asset('images/icons/png.png') }}" class="imgFormat">

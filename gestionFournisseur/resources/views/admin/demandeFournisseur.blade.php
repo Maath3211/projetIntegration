@@ -26,7 +26,7 @@
                             <tr>
                             <td>{{$fn->entreprise}}</td>
                             <td>{{$fn->email}}</td>
-                            <td> <a href="{{ route('responsable.demandeFournisseurZoom', $fn->neq) }}" class="btn btn-info">Plus d'information</a> </td>
+                            {{-- <td> <a href="{{ route('responsable.demandeFournisseurZoom', $fn->neq) }}" class="btn btn-info">Plus d'information</a> </td> --}}
                             </tr>
                         @endforeach
                             
