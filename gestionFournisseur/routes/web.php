@@ -187,6 +187,9 @@ Route::GET('/responsable',
 Route::POST('/connexion/responsable/email',
 [AdminController::class,'loginEmailResponsable'])->name('login.email.responsable');
 
+Route::POST('/admin/logout',
+[AdminController::class,'logout'])->name('admin.logout');
+
 Route::GET('/responsable/gerer',
 [AdminController::class,'gererResponsable'])->name('responsable.gererResponsable')->middleware('check.role:Administrateur');
 

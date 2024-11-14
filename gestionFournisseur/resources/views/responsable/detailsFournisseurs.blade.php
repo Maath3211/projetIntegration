@@ -1,7 +1,19 @@
 @extends('layouts.fournisseur')
-
-@section('title', 'Fournisseurs sélectionnés')
-
+@section('navbar')
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="userMenu" role="button" data-bs-toggle="dropdown" data-boundary="viewport" aria-expanded="false">
+        <i class="fas fa-user"></i>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
+        <li>
+            <form action="{{ route('admin.logout') }}" method="POST" class="px-3 py-2">
+                @csrf
+                <button type="submit" class="btn btn-secondary w-100">Déconnexion</button>
+            </form>
+        </li>
+    </ul>
+</li>
+@endsection
 @section('contenu')
 <div class="container mt-4">
     <h2 class="text-center mb-4">Fournisseurs sélectionnés</h2>
