@@ -22,6 +22,7 @@ use App\Models\User;
 use App\Models\Categorie;
 use App\Models\Unspsc;
 use App\Models\Unspsccode;
+use App\Models\File;
 use App\Http\Requests\SettingRequest;
 use App\Http\Requests\ResetPasswordRequest;
 use App\Mail\ResetPassword;
@@ -61,7 +62,7 @@ class AdminController extends Controller
 
         $courrielEnvoye = false;
         $fournisseurs = Fournisseur::where("statut", 'Refusée')->get()->all();
-        $parametre = DB::table('setting')->get()->firstOrFail();
+        $parametre = Setting::get()->firstOrFail();
         $responsables = Responsable::where('role', ['Administrateur', 'Responsable'])->get();
         foreach($fournisseurs as $fournisseur){
             $date = Carbon::parse($fournisseur->dateStatut);
@@ -111,23 +112,23 @@ class AdminController extends Controller
     
         $villes = $response->successful() ? collect($response->json()['result']['records'])->pluck('munnom')->sort()->all() : []; // Sort the cities alphabetically
     
-        $fnAttentes = DB::table('fournisseurs')->get();
+        $fnAttentes = Fournisseur::get();
         $coordonnees = DB::table('coordonnees')->get();
         $nomRegion = DB::table('coordonnees')->distinct()->pluck('nomRegion');
         $nomVille = DB::table('coordonnees')->distinct()->pluck('ville');
     
         // Récupérer les unspsc pour chaque fournisseur
-        $unspsc = DB::table('unspsccodes')
-            ->join('unspsc', 'unspsccodes.idUnspsc', '=', 'unspsc.id')
+        $unspsc = Unspsccode::
+            join('unspsc', 'unspsccodes.idUnspsc', '=', 'unspsc.id')
             ->select('unspsccodes.fournisseur_id', 'unspsc.code', 'unspsc.description', 'unspsc.id')
             ->get()
             ->groupBy('fournisseur_id');
     
         // Récupérer toutes les descriptions UNSPSC
-        $unspscDescription = DB::table('unspsc')->distinct()->get(['description']);
+        $unspscDescription = Unspsc::distinct()->get(['description']);
     
-        $rbqCategorie = DB::table('categories')->get();
-        $rbq = DB::table('rbqlicences')->get();
+        $rbqCategorie = Categorie::get();
+        $rbq = RBQLicence::get();
         $rbqCategorieIds = $rbq->pluck('idCategorie')->unique();
         $codes = Categorie::whereIn('id', $rbqCategorieIds)->distinct()->get(['codeSousCategorie', 'nom']);
             
@@ -167,13 +168,13 @@ class AdminController extends Controller
             fputcsv($file, ['Entreprise', 'Courriel', 'Telephone', 'Contacts', 'Statut']);
     
             // Fetch only selected suppliers
-            $fnAttentes = DB::table('fournisseurs')->whereIn('id', $supplierIds)->get();
+            $fnAttentes = Fournisseur::whereIn('id', $supplierIds)->get();
             $coordonnees = DB::table('coordonnees')->whereIn('fournisseur_id', $supplierIds)->get();
-            $rbq = DB::table('rbqlicences')->whereIn('fournisseur_id', $supplierIds)->get();
-            $contacts = DB::table('contact')->whereIn('fournisseur_id', $supplierIds)->get();
-            $rbqCategorie = DB::table('categories')->get();
-            $unspsc = DB::table('unspsccodes')
-                        ->join('unspsc', 'unspsccodes.idUnspsc', '=', 'unspsc.id')
+            $rbq = RBQLicence::whereIn('fournisseur_id', $supplierIds)->get();
+            $contacts = Contact::whereIn('fournisseur_id', $supplierIds)->get();
+            $rbqCategorie = Categorie::get();
+            $unspsc = Unspsccode::
+                        join('unspsc', 'unspsccodes.idUnspsc', '=', 'unspsc.id')
                         ->select('unspsccodes.fournisseur_id', 'unspsc.code', 'unspsc.description')
                         ->whereIn('unspsccodes.fournisseur_id', $supplierIds)
                         ->get()
@@ -300,7 +301,7 @@ class AdminController extends Controller
 
     public function demandeFourn()
     {
-        $admins = DB::table('users')->where('role', ['admin', 'responsable'])->get();
+        $admins = Responsable::where('role', ['Administrateur', 'Gestionnaire'])->get();
         foreach ($admins as $admin) {
             Mail::to($admin->email)->send(new demandeFournisseur());
         }
@@ -311,8 +312,8 @@ class AdminController extends Controller
     public function demandeFournisseurView()
     {
 
-        $fnAttentes = DB::table('fournisseurs')->where('statut', 'En attente')->get();
-        return view('responsable.demandeFournisseur', compact('fnAttentes'));
+        $fnAttentes = Fournisseur::where('statut', 'En attente')->get();
+        return view('responsable.111demandeFournisseur', compact('fnAttentes'));
     }
 
     public function demandeFournisseurZoom($fournisseur)
@@ -320,10 +321,11 @@ class AdminController extends Controller
         //BRUHRUHRURHR
 
         if(is_numeric($fournisseur))
-            $fournisseur = DB::table('fournisseurs')->where('neq', $fournisseur)->first();
+            $fournisseur = Fournisseur::where('neq', $fournisseur)->first();
         else
-            $fournisseur = DB::table('fournisseurs')->where('email', $fournisseur)->first();
-        $contacts = DB::table('contact')->where('fournisseur_id', $fournisseur->id)->get();
+            $fournisseur = Fournisseur::where('email', $fournisseur)->first();
+        $contacts = Contact::where('fournisseur_id', $fournisseur->id)->get();
+        // * Pas de model
         $coordonnees = DB::table('coordonnees')->where('fournisseur_id', $fournisseur->id)->get()->firstOrFail();
         $numero = $coordonnees->numero;
         $numero = substr($numero, 0, 3) . '-' . substr($numero, 3, 3) . '-' . substr($numero, 6);
@@ -331,10 +333,10 @@ class AdminController extends Controller
         $numero2 = substr($numero2, 0, 3) . '-' . substr($numero2, 3, 3) . '-' . substr($numero2, 6);
         $codePostal = $coordonnees->codePostal;
         $codePostal = substr($codePostal, 0, 3) . ' ' . substr($codePostal, 3);
-        $files = DB::table('file')->where('fournisseur_id', $fournisseur->id)->get();
-        $rbq = DB::table('rbqlicences')->where('fournisseur_id', $fournisseur->id)->get()->firstOrFail();
-        $categories = DB::table('categories')->where('id', $rbq->idCategorie)->get()->firstOrFail();
-        $unspscFournisseur = DB::table('unspsccodes')->where('fournisseur_id', $fournisseur->id)->get();
+        $files = File::where('fournisseur_id', $fournisseur->id)->get();
+        $rbq = RBQLicence::where('fournisseur_id', $fournisseur->id)->get()->firstOrFail();
+        $categories = Categorie::where('id', $rbq->idCategorie)->get()->firstOrFail();
+        $unspscFournisseur = Unspsccode::where('fournisseur_id', $fournisseur->id)->get();
         $unspscCollection = collect();
         foreach ($unspscFournisseur as $uc) {
             $unspsc = DB::table('unspsc')->where('id', $uc->idUnspsc)->first();
@@ -390,7 +392,7 @@ class AdminController extends Controller
     // neq necessaire meme si pas utilisé, sinon l'id du fichier devient le neq
     public function telechargerFichier($neq, $idFichier)
     {
-        $file = DB::table('file')->where('id', $idFichier)->get()->firstOrFail();
+        $file = File::where('id', $idFichier)->get()->firstOrFail();
 
         $fichier = public_path($file->lienFichier);
         if (file_exists($fichier)) {
@@ -431,7 +433,7 @@ class AdminController extends Controller
     }
 
     public function gererResponsable(){
-        $responsables = Responsable::get()->all();
+        $responsables = Responsable::get()->sortBy('email')->all();
         return view('admin.role', compact('responsables'));
     }
     public function editResponsable($id, ResponsableRequest $request){
@@ -487,7 +489,7 @@ class AdminController extends Controller
     }
 
     public function deleteResponsableListe(){
-        $responsables = Responsable::get()->all();
+        $responsables = Responsable::get()->sortBy('email')->all();
         return view('admin.deleteResponsableListe', compact('responsables'));
     }
 
