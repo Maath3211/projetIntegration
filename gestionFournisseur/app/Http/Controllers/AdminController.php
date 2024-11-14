@@ -91,14 +91,11 @@ class AdminController extends Controller
         }
     }
 
-    public function affiche()
-    {
-        return View('responsable.affiche');
-    }
+
 
     public function listeFournisseur()
     {
-        dd(Auth::user());
+ 
         $response = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22munnom%22%20FROM%20%2219385b4e-5503-4330-9e59-f998f5918363%22');
     
         $villes = $response->successful() ? collect($response->json()['result']['records'])->pluck('munnom')->sort()->all() : []; // Sort the cities alphabetically
@@ -309,6 +306,8 @@ class AdminController extends Controller
     public function demandeFournisseurZoom($email)
     {
         $fournisseur = DB::table('fournisseurs')->where('email', $email)->first();
+       
+
         $contacts = DB::table('contact')->where('fournisseur_id', $fournisseur->id)->get();
         $coordonnees = DB::table('coordonnees')->where('fournisseur_id', $fournisseur->id)->get()->firstOrFail();
         $numero = $coordonnees->numero;

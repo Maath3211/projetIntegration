@@ -64,7 +64,7 @@
       </div>
 
       <!-- Administrative regions section -->
-      <div class="col-md-3 col-12 mb-3">
+      {{-- <div class="col-md-3 col-12 mb-3">
         <label for="regions" class="form-label">Régions administratives</label>
         <select id="regions" name="regions" class="form-select">
           <option value="">Aucun</option>
@@ -72,12 +72,12 @@
           <option>{{ $coo }}</option>
           @endforeach
         </select>
-      </div>
+      </div> --}}
 
       <!-- Cities section -->
       <div class="col-md-3 col-12 mb-3">
         <label for="cities" class="form-label">Villes</label>
-        <select class="form-control" id="villes" name="villes">
+        <select class="form-control mt-4" id="villes" name="villes">
             <option value="">Aucun</option>
             @foreach ($villes as $ville)
               <option>{{ $ville }}</option>

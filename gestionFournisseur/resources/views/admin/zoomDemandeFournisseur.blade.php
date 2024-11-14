@@ -1,5 +1,5 @@
 
-@role('Administrateur')
+@role('Commis')
 @extends('layouts.fournisseur')
 @section('title', 'Informations')
 @section('navbar')
