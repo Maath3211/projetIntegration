@@ -4,7 +4,7 @@
 <div class="text-center">
     <h1>Mise à jour ( FINANCES )</h1>
 </div>
-<form method="POST" action="{{ route('fournisseur.finances.update') }}">
+<form method="POST" action="{{ route('fournisseur.finances.update', [$finances->fournisseur_id]) }}">
     @csrf
     <div class="container-fluid bordure">
         <fieldset class="border p-3">

@@ -1143,23 +1143,41 @@ class PortailFournisseurController extends Controller
         }
     }
 
-    public function editFinances()
+    public function editFinances($id)
     {
-        $fournisseur = Auth::user();
-        $finances = $fournisseur->finance;
 
+        $fournisseur = Fournisseur::find(Auth::id());
+        if($fournisseur == null){
+            $fournisseur = Fournisseur::where('id',$id)->first();
+        }
+        $finances = $fournisseur->finance;
 
         return view('fournisseur.editFinances', compact('finances'));
     }
 
-    public function updateFinances(FinanceRequest $request)
+    public function updateFinances(FinanceRequest $request,$id)
     {
-        $fournisseur = Auth::user();
+        $responsable = false;
+        // Récupérer l'utilisateur authentifié
+        $fournisseur = Fournisseur::find(Auth::id());
+        if($fournisseur == null){
+            $responsable = true;
+            $fournisseur = Fournisseur::where('id',$id)->first();
+            
+        }
+
         $finances = $fournisseur->finance;
         $finances->fill($request->validated()); 
         $finances->save(); 
 
-        return redirect()->route('fournisseur.information')->with('message', 'Informations mises à jour avec succès.');
+        if($responsable){
+            return redirect()->route('responsable.demandeFournisseurZoom', [$fournisseur->neq])->with('message', 'finance mise à jour avec succès');
+        }
+        else{
+            return redirect()->route('fournisseur.information')->with('message', 'Licence RBQ mise à jour avec succès');
+        }
+
+
     }
 
     /**
