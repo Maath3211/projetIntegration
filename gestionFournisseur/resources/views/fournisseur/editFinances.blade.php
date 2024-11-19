@@ -105,7 +105,7 @@
             </div>
             <div class="d-flex row justify-content-center">
                 <div class="form-group">
-                    <button type="submit" class="btn btn-secondary">Sauvegarder les modifications</button>
+                    <button type="submit" class="btn btn-secondary">Enregistrer</button>
                 </div> 
             </div>
         </fieldset>

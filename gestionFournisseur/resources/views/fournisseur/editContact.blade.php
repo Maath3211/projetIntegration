@@ -142,7 +142,6 @@
             </div>
             <div class="d-flex row justify-content-center">
                 <div class="form-group">
-                    <a href="{{  route('fournisseur.information') }}" class="btn btn-secondary">Retour</a>
                     <button type="submit" class="btn btn-secondary">Enregistrer</button>    
                 </div>
             </div>
