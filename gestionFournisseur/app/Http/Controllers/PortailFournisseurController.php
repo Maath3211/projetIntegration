@@ -674,9 +674,10 @@ class PortailFournisseurController extends Controller
     public function updateUNSPSC(UnspscRequest $request, $id)
     {
     
-
+        $responsable = false;
     $fournisseur = Fournisseur::find(Auth::id());
     if($fournisseur == null){
+        $responsable = true;
         $fournisseur = Fournisseur::where('id',$id)->first();
     }
 
@@ -710,7 +711,14 @@ class PortailFournisseurController extends Controller
         }
 
             $fournisseur->touch();
-            return redirect()->route('fournisseur.information')->with('message', 'Codes UNSPSC mis à jour avec succès!');
+
+
+            if($responsable){
+                return redirect()->route('responsable.demandeFournisseurZoom', [$fournisseur->id])->with('message', 'Code UNSPSC mise à jour avec succès');
+            }
+            else{
+                return redirect()->route('fournisseur.information')->with('message', 'Code UNSPSC mise à jour avec succès');
+            }
         } catch (\Throwable $e) {
             Log::error($e);
             return redirect()->route('fournisseur.UNSPSC.edit',[$fournisseur->id])->withErrors(['Erreur lors de la mise à jour des codes UNSPSC']);
@@ -866,7 +874,7 @@ class PortailFournisseurController extends Controller
             // Rediriger avec un message de succès
 
             if($responsable){
-                return redirect()->route('responsable.demandeFournisseurZoom', [$fournisseur->neq])->with('message', 'Licence RBQ mise à jour avec succès');
+                return redirect()->route('responsable.demandeFournisseurZoom', [$fournisseur->id])->with('message', 'Licence RBQ mise à jour avec succès');
             }
             else{
                 return redirect()->route('fournisseur.information')->with('message', 'Licence RBQ mise à jour avec succès');
@@ -1171,7 +1179,7 @@ class PortailFournisseurController extends Controller
         $fournisseur->touch();
 
         if($responsable){
-            return redirect()->route('responsable.demandeFournisseurZoom', [$fournisseur->neq])->with('message', 'finance mise à jour avec succès');
+            return redirect()->route('responsable.demandeFournisseurZoom', [$fournisseur->id])->with('message', 'finance mise à jour avec succès');
         }
         else{
             return redirect()->route('fournisseur.information')->with('message', 'Licence RBQ mise à jour avec succès');
