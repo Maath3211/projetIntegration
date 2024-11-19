@@ -1,22 +1,69 @@
 @role(['Commis', 'Gestionnaire', 'Administrateur'])
 
-    @extends('layouts.fournisseur')
-    @section('title', 'Informations')
+@extends('layouts.fournisseur')
+@section('title', 'Informations')
 @section('navbar')
-    <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="userMenu" role="button" data-bs-toggle="dropdown"
-            data-boundary="viewport" aria-expanded="false">
-            <i class="fas fa-user"></i>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
-            <li>
-                <form action="{{ route('admin.logout') }}" method="POST" class="px-3 py-2">
-                    @csrf
-                    <button type="submit" class="btn btn-secondary w-100">Déconnexion</button>
-                </form>
-            </li>
-        </ul>
-    </li>
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="userMenu" role="button" data-bs-toggle="dropdown"
+        data-boundary="viewport" aria-expanded="false">
+        <i class="fas fa-user"></i>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
+        @role(['Administrateur'])
+        <li>
+            <form action="{{ route('responsable.listeFournisseur') }}" method="GET" class="px-3 py-2">
+                @csrf
+                <button type="submit" class="btn btn-secondary w-100">Listes fournisseurs</button>
+            </form>
+        </li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li>
+            <form action="{{ route('admin.setting') }}" method="GET" class="px-3 py-2">
+                @csrf
+                <button type="submit" class="btn btn-secondary w-100">Paramètres</button>
+            </form>
+        </li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li>
+            <form action="{{ route('responsable.addResponsable') }}" method="GET" class="px-3 py-2">
+                @csrf
+                <button type="submit" class="btn btn-secondary w-100">Ajouter utilisateur</button>
+            </form>
+        </li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li>
+            <form action="{{ route('responsable.afficherModelCourriel') }}" method="GET" class="px-3 py-2">
+                @csrf
+                <button type="submit" class="btn btn-secondary w-100">Modèles de courriels</button>
+            </form>
+        </li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li>
+            <form action="{{ route('responsable.gererResponsable') }}" method="GET" class="px-3 py-2">
+                @csrf
+                <button type="submit" class="btn btn-secondary w-100">Rôles</button>
+            </form>
+        </li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        @endrole
+        <li>
+            <form action="{{ route('admin.logout') }}" method="POST" class="px-3 py-2">
+                @csrf
+                <button type="submit" class="btn btn-secondary w-100">Déconnexion</button>
+            </form>
+        </li>
+    </ul>
+</li>
 @endsection
 @section('contenu')
     <div class="text-center">

@@ -3,55 +3,55 @@
 @section('title', "Info Fournisseurs")
 @section('navbar')
 <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" href="#" id="userMenu" role="button" data-bs-toggle="dropdown" data-boundary="viewport" aria-expanded="false">
-        <i class="fas fa-user"></i>
-    </a>
-    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
-      @role(['Administrateur'])
-      <li>
-          <form action="{{ route('admin.setting') }}" method="GET" class="px-3 py-2">
-              @csrf
-              <button type="submit" class="btn btn-secondary w-100">Paramètres</button>
-          </form>
-      </li>
-      <li>
-        <hr class="dropdown-divider">
-      </li>
-      <li>
-        <form action="{{ route('responsable.addResponsable') }}" method="GET" class="px-3 py-2">
+  <a class="nav-link dropdown-toggle" href="#" id="userMenu" role="button" data-bs-toggle="dropdown" data-boundary="viewport" aria-expanded="false">
+      <i class="fas fa-user"></i>
+  </a>
+  <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
+    @role(['Administrateur'])
+    <li>
+        <form action="{{ route('admin.setting') }}" method="GET" class="px-3 py-2">
             @csrf
-            <button type="submit" class="btn btn-secondary w-100">Ajouter utilisateur</button>
+            <button type="submit" class="btn btn-secondary w-100">Paramètres</button>
         </form>
-      </li>
-      <li>
-        <hr class="dropdown-divider">
-      </li>
-      <li>
-        <form action="{{ route('responsable.afficherModelCourriel') }}" method="GET" class="px-3 py-2">
+    </li>
+    <li>
+      <hr class="dropdown-divider">
+    </li>
+    <li>
+      <form action="{{ route('responsable.addResponsable') }}" method="GET" class="px-3 py-2">
+          @csrf
+          <button type="submit" class="btn btn-secondary w-100">Ajouter utilisateur</button>
+      </form>
+    </li>
+    <li>
+      <hr class="dropdown-divider">
+    </li>
+    <li>
+      <form action="{{ route('responsable.afficherModelCourriel') }}" method="GET" class="px-3 py-2">
+          @csrf
+          <button type="submit" class="btn btn-secondary w-100">Modèles de courriels</button>
+      </form>
+    </li>
+    <li>
+      <hr class="dropdown-divider">
+    </li>
+    <li>
+      <form action="{{ route('responsable.gererResponsable') }}" method="GET" class="px-3 py-2">
+          @csrf
+          <button type="submit" class="btn btn-secondary w-100">Rôles</button>
+      </form>
+    </li>
+    <li>
+      <hr class="dropdown-divider">
+    </li>
+    @endrole
+    <li>
+        <form action="{{ route('admin.logout') }}" method="POST" class="px-3 py-2">
             @csrf
-            <button type="submit" class="btn btn-secondary w-100">Modèles de courriels</button>
+            <button type="submit" class="btn btn-secondary w-100">Déconnexion</button>
         </form>
-      </li>
-      <li>
-        <hr class="dropdown-divider">
-      </li>
-      <li>
-        <form action="{{ route('responsable.gererResponsable') }}" method="GET" class="px-3 py-2">
-            @csrf
-            <button type="submit" class="btn btn-secondary w-100">Rôles</button>
-        </form>
-      </li>
-      <li>
-        <hr class="dropdown-divider">
-      </li>
-      @endrole
-      <li>
-          <form action="{{ route('admin.logout') }}" method="POST" class="px-3 py-2">
-              @csrf
-              <button type="submit" class="btn btn-secondary w-100">Déconnexion</button>
-          </form>
-      </li>
-    </ul>
+    </li>
+  </ul>
 </li>
 @endsection
 @section('contenu')
