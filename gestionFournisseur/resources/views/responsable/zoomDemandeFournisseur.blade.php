@@ -267,13 +267,13 @@
                 @role(['Gestionnaire', 'Administrateur'])
                 @if ($fournisseur->statut == 'En attente' || $fournisseur->statut == 'En révision')
                     <form
-                        action="{{ route('responsable.accepterFournisseur', $fournisseur->neq != null ? $fournisseur->neq : $fournisseur->email) }}"
+                        action="{{ route('responsable.accepterFournisseur', $fournisseur->id) }}"
                         method="post">
                         @csrf
                         <button type="submit" class="btn btn-success" id="btAccepter">Accepter</button>
                     </form>
                     <form
-                        action="{{ route('responsable.refuserFournisseur', $fournisseur->neq != null ? $fournisseur->neq : $fournisseur->email) }}"
+                        action="{{ route('responsable.refuserFournisseur', $fournisseur->id) }}"
                         method="post" id="form1">
                         @csrf
                         <a class="btn btn-danger" id="btRefuser">Refuser</a>
@@ -282,7 +282,14 @@
                 @endrole
             </div>
 
-            <!-- Right side sections -->
+
+
+            
+
+
+
+
+            {{-- ** Right side sections  **--}}
             <div class="col-md-6">
                 <div class="custom-box">
                     <h4>Produits et services offerts</h4>
