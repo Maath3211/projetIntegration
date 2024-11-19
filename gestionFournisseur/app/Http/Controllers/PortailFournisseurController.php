@@ -119,13 +119,24 @@ class PortailFournisseurController extends Controller
     }
 
 
-    public function storeDesactive()
+    public function storeDesactive($id = null)
     {
         try 
         {
-            $id = Auth::user()->id;
-            //$fournisseurId = Auth::user()->id;
-            $fournisseur = Fournisseur::where('id', $id)->firstOrFail();
+            $responsable = false;
+            $fournisseur = null;
+            $fournisseur = Fournisseur::find(Auth::id());
+    
+            if($fournisseur == null){
+                $responsable = true;
+                $fournisseur = Fournisseur::where('id',$id)->first();      
+            }
+    
+            if (!$fournisseur) 
+            {
+                return redirect()->route('fournisseur.information')->withErrors(['Fournisseur introuvable']);
+            }
+    
             $fournisseur->statut = 'Désactivée';
             $fournisseur->dateStatut = Carbon::now();
             $files = File::where('fournisseur_id', $id)->get();
@@ -143,9 +154,16 @@ class PortailFournisseurController extends Controller
             }
 
             $fournisseur->save();
-
-            return redirect()->route('fournisseur.information')->with('message', "Fournisseur désactivé et fichiers supprimés !");
-
+            $fournisseur->touch();
+            
+            if($responsable)
+            {
+                return redirect()->route('responsable.demandeFournisseurZoom', [$fournisseur->id])->with('message', "Fournisseur désactivé et fichiers supprimés !");
+            }
+            else
+            {
+                return redirect()->route('fournisseur.information')->with('message', "Fournisseur désactivé et fichiers supprimés !");
+            }
         } 
         catch (\Throwable $e) 
         {
@@ -154,16 +172,38 @@ class PortailFournisseurController extends Controller
         }
     }
 
-    public function storeActive()
+    public function storeActive($id = null)
     {
         try 
         {
-            $id = Auth::user()->id;
+            $responsable = false;
+            $fournisseur = null;
+            $fournisseur = Fournisseur::find(Auth::id());
+    
+            if($fournisseur == null){
+                $responsable = true;
+                $fournisseur = Fournisseur::where('id',$id)->first();      
+            }
+    
+            if (!$fournisseur) 
+            {
+                return redirect()->route('fournisseur.information')->withErrors(['Fournisseur introuvable']);
+            }
+
             $fournisseur = Fournisseur::where('id', $id)->firstOrFail();
             $fournisseur->statut = 'Acceptée';
             $fournisseur->dateStatut = Carbon::now();
             $fournisseur->save();
-            return redirect()->route('fournisseur.information')->with('message', "Enregistré!");
+            $fournisseur->touch();
+            
+            if($responsable)
+            {
+                return redirect()->route('responsable.demandeFournisseurZoom', [$fournisseur->id])->with('message', "Enregistré");
+            }
+            else
+            {
+                return redirect()->route('fournisseur.information')->with('message', "Enregistré!");
+            }  
         } 
         catch (\Throwable $e) 
         {

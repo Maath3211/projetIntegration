@@ -39,14 +39,14 @@
                     </svg></span> {{$fournisseur->statut}}
                 </p>
                 @if ($fournisseur->statut == 'Désactivée')
-                    <form action="{{ route('fournisseur.storeActive') }}" method="post">
+                    <form action="{{ route('fournisseur.storeActive', ['id' => $fournisseur->id]) }}" method="POST">
                         @csrf
                         <div class="form-group">
                             <button type="submit" class="btn btn-secondary">Réactiver mon compte</button>
                         </div>
                     </form>
                 @else
-                    <form action="{{ route('fournisseur.storeDesactive') }}" method="post">
+                    <form action="{{ route('fournisseur.storeDesactive', ['id' => $fournisseur->id]) }}" method="POST">
                         @csrf
                         <div class="form-group">
                             <button type="submit" class="btn btn-secondary">Retirer mon compte</button>
