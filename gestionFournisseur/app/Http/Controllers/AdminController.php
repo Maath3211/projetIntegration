@@ -322,7 +322,7 @@ class AdminController extends Controller
         
 
         $fournisseur = Fournisseur::findOrFail($fournisseur);
-
+        $modelCourriels = ModelCourriel::all();
         $contacts = Contact::where('fournisseur_id', $fournisseur->id)->get();
         // * Pas de model
         $coordonnees = DB::table('coordonnees')->where('fournisseur_id', $fournisseur->id)->get()->firstOrFail();
@@ -348,7 +348,7 @@ class AdminController extends Controller
             $fournisseur->raisonRefus = Crypt::decryptString($fournisseur->raisonRefus);
 
 
-        return view('responsable.zoomDemandeFournisseur', compact('fournisseur', 'contacts', 'coordonnees', 'files', 'rbq', 'categories', 'unspscFournisseur', 'unspscCollection','numero','numero2','codePostal'));
+        return view('responsable.zoomDemandeFournisseur', compact('fournisseur', 'modelCourriels', 'contacts', 'coordonnees', 'files', 'rbq', 'categories', 'unspscFournisseur', 'unspscCollection','numero','numero2','codePostal'));
     }
 
     public function accepterFournisseur($fournisseur)
@@ -376,11 +376,12 @@ class AdminController extends Controller
             "raisonRefus.required" => 'La raison de refus est requise',
         ]);
 
+
         $fournisseur = Fournisseur::find($fournisseur);
         $fournisseur->dateStatut = Carbon::now();
         $fournisseur->raisonRefus = Crypt::encryptString($request->raisonRefus);
         $fournisseur->statut = 'Refusée';
-        $template = ModelCourriel::find(2);
+        $template = ModelCourriel::find($request->model_courriel);
        
         if($request->envoyerMessage === "true"){
             Mail::to('mathys.lessard.02@edu.cegeptr.qc.ca')->send(new customMail($template, $fournisseur, $request->raisonRefus));

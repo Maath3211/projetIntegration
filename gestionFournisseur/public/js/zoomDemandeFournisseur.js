@@ -1,7 +1,13 @@
 const btRefuser = document.getElementById("btRefuser");
 const btAccepter = document.getElementById("btAccepter");
 const form1 = document.getElementById("form1");
+const modeleDiv = document.querySelectorAll(".modele");
+const lineBreak = document.createElement("br");
 var clicked = false;
+
+document.addEventListener("DOMContentLoaded", (event) => {
+    modeleDiv.forEach((element) => element.hidden = true);
+  });
 
 btRefuser.addEventListener("click", function () {
     if (!clicked) {
@@ -18,7 +24,7 @@ btRefuser.addEventListener("click", function () {
         form1.append(raisonRefus);
         raisonRefus.select();
 
-        const lineBreak = document.createElement("br");
+        
         form1.append(lineBreak);
 
         const checkMessageRefus = document.createElement("input");
@@ -46,6 +52,8 @@ btRefuser.addEventListener("click", function () {
         btAnnuler.textContent = "Annuler";
         btAnnuler.className = "btn btn-secondary";
         form1.append(btAnnuler);
+        
+        modeleDiv.forEach((element) => element.hidden = false);
 
         btAnnuler.addEventListener("click", function () {
             btRefuser.style.visibility = "visible";
@@ -57,6 +65,7 @@ btRefuser.addEventListener("click", function () {
             checkMessageRefus.remove();
             label.remove();
             lineBreak.remove();
+            modeleDiv.forEach((element) => element.hidden = true);
         });
     }
 });
