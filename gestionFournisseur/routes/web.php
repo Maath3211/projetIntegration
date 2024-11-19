@@ -141,11 +141,11 @@ Route::GET('/information',
 [PortailFournisseurController::class,'infoLogin'])->name('fournisseur.information');
 
 # Retirer la fiche fournisseur
-Route::POST('/information/desactive',
+Route::POST('/information/desactive/{id}',
 [PortailFournisseurController::class,'storeDesactive'])->name('fournisseur.storeDesactive');
 
 # Activer la fiche fournisseur
-Route::POST('/information/active',
+Route::POST('/information/active/{id}',
 [PortailFournisseurController::class,'storeActive'])->name('fournisseur.storeActive');
 
 #Contact page informations
@@ -223,21 +223,21 @@ Route::get('/responsable/fournisseurs/details',
 # Demande de fournisseur
 # TODO: Supprimer si view n'existe plus
 Route::GET('/responsable/demandeFournisseur',
-[AdminController::class,'demandeFournisseurView'])->name('responsable.demandeFournisseur');
+[AdminController::class,'demandeFournisseurView'])->name('responsable.demandeFournisseur')->middleware('check.role:Commis,Gestionnaie,Administrateur');
 
 # Gestion des status
 Route::GET('/responsable/demandeFournisseur/{fournisseur}',
-[AdminController::class,'demandeFournisseurZoom'])->name('responsable.demandeFournisseurZoom');
+[AdminController::class,'demandeFournisseurZoom'])->name('responsable.demandeFournisseurZoom')->middleware('check.role:Commis,Gestionnaie,Administrateur');
 
 Route::POST('/responsable/demandeFournisseur/{fournisseur}/accepter',
-[AdminController::class, 'accepterFournisseur'])->name('responsable.accepterFournisseur');
+[AdminController::class, 'accepterFournisseur'])->name('responsable.accepterFournisseur')->middleware('check.role:Gestionnaie,Administrateur');
 
 Route::POST('/responsable/demandeFournisseur/{fournisseur}/refuser',
-[AdminController::class, 'refuserFournisseur'])->name('responsable.refuserFournisseur');
+[AdminController::class, 'refuserFournisseur'])->name('responsable.refuserFournisseur')->middleware('check.role:Gestionnaie,Administrateur');
 
 # Téléchargement des fichiers
 Route::GET('/responsable/demandeFournisseur/{fournisseur}/fichier/{idFichier}',
-[AdminController::class, 'telechargerFichier'])->name('responsable.telechargerFichier');
+[AdminController::class, 'telechargerFichier'])->name('responsable.telechargerFichier')->middleware('check.role:Commis,Gestionnaie,Administrateur');
 
 
 # Modele de courriel

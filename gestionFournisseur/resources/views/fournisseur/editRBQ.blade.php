@@ -97,13 +97,12 @@
                         @endif
                     </div>
 
-                    <div class="row mt-4">
+                    <div class="row mt-5">
                         <div class="col-md-3">
-                            <button type="submit" class="btn btn-secondary">Précédent</button>
+                            <button type="submit" class="btn btn-secondary">Enregistrer</button>
                         </div>
-                        <div class="col-md-6"></div>
-                        <div class="col-md-3">
-                            <button type="submit" class="btn btn-secondary">Suivant</button>
+                        <div class="col-md-7"></div>
+                        <div class="col-md-2">
                         </div>
                     </div>
                 </form>

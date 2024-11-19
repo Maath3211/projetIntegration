@@ -243,8 +243,7 @@
             </div>
             <div class="d-flex row justify-content-center">
                 <div class="form-group">
-                    <button type="button" class="btn btn-secondary">Précédent</button>
-                    <button type="submit" class="btn btn-secondary">Suivant</button>
+                    <button type="submit" class="btn btn-secondary">Enregistrer</button>
                 </div>
             </div>
         </fieldset>

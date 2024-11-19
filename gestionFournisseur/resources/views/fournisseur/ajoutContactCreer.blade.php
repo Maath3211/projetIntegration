@@ -142,7 +142,7 @@
                     {{-- TODO: ajouter plus --}}
                     {{-- <button type="submit" name="action" value="save_another"
                         class="btn btn-warning">Enregistrer et ajouter un autre</button> --}}
-                    <button type="submit" name="action" value="save_next" class="btn btn-secondary">Enregistrer et continuer</button>
+                    <button type="submit" name="action" value="save_next" class="btn btn-secondary">Enregistrer</button>
                 </div>
             </div>
         </fieldset>

@@ -99,14 +99,7 @@
         </div> 
       </div> 
       <div class="d-flex row justify-content-center">
-        <div class="col-md-1"></div>
-        <div class="form-group col-md-5 btnleft">
-          <a href="{{route('fournisseur.index')}}" alt="Accueil du site" title="Accueil du site">
-            <button type="button" class="btn btn-secondary">Précédent</button>
-          </a>
-        </div>
-        <div class="col-md-3"></div>
-        <div class="form-group col-md-3">
+        <div class="form-group">
           <button type="submit" class="btn btn-secondary">Suivant</button>
         </div> 
       </div>

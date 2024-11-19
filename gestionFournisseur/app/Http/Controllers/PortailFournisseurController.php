@@ -119,16 +119,27 @@ class PortailFournisseurController extends Controller
     }
 
 
-    public function storeDesactive()
+    public function storeDesactive($id = null)
     {
         try 
         {
-            $neq = Auth::user()->neq;
-            $fournisseurId = Auth::user()->id;
-            $fournisseur = Fournisseur::where('neq', $neq)->firstOrFail();
+            $responsable = false;
+            $fournisseur = null;
+            $fournisseur = Fournisseur::find(Auth::id());
+    
+            if($fournisseur == null){
+                $responsable = true;
+                $fournisseur = Fournisseur::where('id',$id)->first();      
+            }
+    
+            if (!$fournisseur) 
+            {
+                return redirect()->route('fournisseur.information')->withErrors(['Fournisseur introuvable']);
+            }
+    
             $fournisseur->statut = 'Désactivée';
             $fournisseur->dateStatut = Carbon::now();
-            $files = File::where('fournisseur_id', $fournisseurId)->get();
+            $files = File::where('fournisseur_id', $id)->get();
             $destination = public_path('images/fournisseurs/');
 
             foreach ($files as $file) 
@@ -143,9 +154,16 @@ class PortailFournisseurController extends Controller
             }
 
             $fournisseur->save();
-
-            return redirect()->route('fournisseur.information')->with('message', "Fournisseur désactivé et fichiers supprimés !");
-
+            $fournisseur->touch();
+            
+            if($responsable)
+            {
+                return redirect()->route('responsable.demandeFournisseurZoom', [$fournisseur->id])->with('message', "Fournisseur désactivé et fichiers supprimés !");
+            }
+            else
+            {
+                return redirect()->route('fournisseur.information')->with('message', "Fournisseur désactivé et fichiers supprimés !");
+            }
         } 
         catch (\Throwable $e) 
         {
@@ -154,16 +172,38 @@ class PortailFournisseurController extends Controller
         }
     }
 
-    public function storeActive()
+    public function storeActive($id = null)
     {
         try 
         {
-            $neq = Auth::user()->neq;
-            $fournisseur = Fournisseur::where('neq', $neq)->firstOrFail();
+            $responsable = false;
+            $fournisseur = null;
+            $fournisseur = Fournisseur::find(Auth::id());
+    
+            if($fournisseur == null){
+                $responsable = true;
+                $fournisseur = Fournisseur::where('id',$id)->first();      
+            }
+    
+            if (!$fournisseur) 
+            {
+                return redirect()->route('fournisseur.information')->withErrors(['Fournisseur introuvable']);
+            }
+
+            $fournisseur = Fournisseur::where('id', $id)->firstOrFail();
             $fournisseur->statut = 'Acceptée';
             $fournisseur->dateStatut = Carbon::now();
             $fournisseur->save();
-            return redirect()->route('fournisseur.information')->with('message', "Enregistré!");
+            $fournisseur->touch();
+            
+            if($responsable)
+            {
+                return redirect()->route('responsable.demandeFournisseurZoom', [$fournisseur->id])->with('message', "Enregistré");
+            }
+            else
+            {
+                return redirect()->route('fournisseur.information')->with('message', "Enregistré!");
+            }  
         } 
         catch (\Throwable $e) 
         {
@@ -706,10 +746,9 @@ public function UNSPSC(Request $request)
     public function updateUNSPSC(UnspscRequest $request, $id)
     {
     
-        $responsable = false;
+
     $fournisseur = Fournisseur::find(Auth::id());
     if($fournisseur == null){
-        $responsable = true;
         $fournisseur = Fournisseur::where('id',$id)->first();
     }
 
@@ -743,14 +782,7 @@ public function UNSPSC(Request $request)
         }
 
             $fournisseur->touch();
-
-
-            if($responsable){
-                return redirect()->route('responsable.demandeFournisseurZoom', [$fournisseur->id])->with('message', 'Code UNSPSC mise à jour avec succès');
-            }
-            else{
-                return redirect()->route('fournisseur.information')->with('message', 'Code UNSPSC mise à jour avec succès');
-            }
+            return redirect()->route('fournisseur.information')->with('message', 'Codes UNSPSC mis à jour avec succès!');
         } catch (\Throwable $e) {
             Log::error($e);
             return redirect()->route('fournisseur.UNSPSC.edit',[$fournisseur->id])->withErrors(['Erreur lors de la mise à jour des codes UNSPSC']);
@@ -906,7 +938,7 @@ public function UNSPSC(Request $request)
             // Rediriger avec un message de succès
 
             if($responsable){
-                return redirect()->route('responsable.demandeFournisseurZoom', [$fournisseur->id])->with('message', 'Licence RBQ mise à jour avec succès');
+                return redirect()->route('responsable.demandeFournisseurZoom', [$fournisseur->neq])->with('message', 'Licence RBQ mise à jour avec succès');
             }
             else{
                 return redirect()->route('fournisseur.information')->with('message', 'Licence RBQ mise à jour avec succès');
@@ -1147,12 +1179,12 @@ public function UNSPSC(Request $request)
 
             $file->delete();
 
-            return redirect()->route('fournisseur.information')->with('message', 'Fichier supprimé avec succès.');
+            return Redirect::back()->with('message', 'Fichier supprimé avec succès.');
         } 
         catch (\Throwable $e) 
         {
             Log::debug($e);
-            return redirect()->route('fournisseur.information')->withErrors(['error' => 'Erreur lors de la suppression du fichier.']);
+            return Redirect::back()->withErrors(['error' => 'Erreur lors de la suppression du fichier.']);
         }
     }
 
@@ -1211,7 +1243,7 @@ public function UNSPSC(Request $request)
         $fournisseur->touch();
 
         if($responsable){
-            return redirect()->route('responsable.demandeFournisseurZoom', [$fournisseur->id])->with('message', 'finance mise à jour avec succès');
+            return redirect()->route('responsable.demandeFournisseurZoom', [$fournisseur->neq])->with('message', 'finance mise à jour avec succès');
         }
         else{
             return redirect()->route('fournisseur.information')->with('message', 'Licence RBQ mise à jour avec succès');
