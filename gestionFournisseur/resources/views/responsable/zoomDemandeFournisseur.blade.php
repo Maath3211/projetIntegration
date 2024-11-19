@@ -93,7 +93,7 @@
                         </svg> {{ $fournisseur->email }}
                     </p>
                     @role(['Gestionnaire', 'Administrateur'])
-                    <form action="{{ route('fournisseur.identification.edit') }}" method="GET">
+                    <form action="{{ route('fournisseur.identification.edit', ['id' => $fournisseur->id]) }}" method="GET">
                         @csrf
                         <div class="form-group">
                             <button type="submit" class="btn btn-secondary">
@@ -140,7 +140,6 @@
                     </p>
                     @role(['Gestionnaire', 'Administrateur'])
                     <form action="{{ route('fournisseur.coordonnees.edit', ['id' => $fournisseur->id]) }}" method="GET">
-                        <!-- MOD ICI -->
                         @csrf
                         <div class="form-group">
                             <button type="submit" class="btn btn-secondary">

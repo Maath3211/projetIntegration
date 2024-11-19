@@ -4,7 +4,7 @@
 <div class="text-center">
     <h1>Mise à jour ( IDENTIFICATION )</h1>
 </div>
-<form method="post" action="{{route('fournisseur.identification.update')}}">
+  <form method="post" action="{{ route('fournisseur.identification.update', ['id' => $fournisseur->id]) }}">
   @csrf
   <div class="container-fluid bordure">
     <fieldset class="border p-3">

@@ -249,22 +249,59 @@ class PortailFournisseurController extends Controller
         }
     }
 
-    public function editIdentification()
-    {
-        $fournisseur = Auth::user();
+    public function editIdentification($id = null)
+    {       
+        $fournisseur = $id ? Fournisseur::findOrFail($id) : Auth::user();
+
+        if (!$fournisseur) {
+            return redirect()->route('fournisseur.information')->withErrors(['Fournisseur introuvable']);
+        }
+
         $email = $fournisseur->email;
         $neq = $fournisseur->neq;
         $entreprise = $fournisseur->entreprise;
-        return view('fournisseur.editIdentification', compact('email', 'neq', 'entreprise'));
+
+        return view('fournisseur.editIdentification', compact('email', 'neq', 'entreprise', 'fournisseur'));
     }
 
-    public function updateIdentification(FournisseurEditRequest $request)
+    public function updateIdentification(FournisseurEditRequest $request, $id = null)
     {
-        $fournisseur = Auth::user();
+        $responsable = false;
+        $fournisseur = null;
+        $fournisseur = Fournisseur::find(Auth::id());
+
+        if($fournisseur == null){
+            $responsable = true;
+            $fournisseur = Fournisseur::where('id',$id)->first();      
+        }
+
+        if (!$fournisseur) 
+        {
+            return redirect()->route('fournisseur.information')->withErrors(['Fournisseur introuvable']);
+        }
+
+        $identification = FournisseurCoord::where('fournisseur_id', $fournisseur->id)->first();
+
+        if (!$identification) 
+        {
+            return redirect()->route('fournisseur.information')->withErrors(['Identification introuvable pour ce fournisseur']);
+        }
+
         $fournisseur->entreprise = $request->entreprise;
         $fournisseur->email = $request->email;
         $fournisseur->save();
-        return redirect()->route('fournisseur.information')->with('message', 'Informations mises à jour avec succès.');
+        $fournisseur->touch(); 
+
+        if($responsable)
+        {
+            return redirect()->route('responsable.demandeFournisseurZoom', [$fournisseur->id])->with('message', 'Identification à jour');
+        }
+        else
+        {
+            return redirect()->route('fournisseur.information')->with('message', 'Identification à jour');
+        }
+
+        return redirect()->route('fournisseur.information')->withErrors(['Informations invalides']);     
     }
 
     public function editPassword()
@@ -459,7 +496,8 @@ class PortailFournisseurController extends Controller
                 }
             }
 
-            if (!$fournisseur) {
+            if (!$fournisseur) 
+            {
                 return redirect()->route('fournisseur.information')->withErrors(['Fournisseur introuvable']);
             }
 
@@ -480,7 +518,7 @@ class PortailFournisseurController extends Controller
 
             if($responsable)
             {
-                return redirect()->route('responsable.demandeFournisseurZoom', [$fournisseur->neq])->with('message', 'Coordonnées à jour');
+                return redirect()->route('responsable.demandeFournisseurZoom', [$fournisseur->id])->with('message', 'Coordonnées à jour');
             }
             else
             {

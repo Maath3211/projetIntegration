@@ -4,7 +4,7 @@
 <div class="text-center">
     <h1>Mise à jour ( COORDONNÉES )</h1>
 </div>
-<form method="post" action="{{ route('fournisseur.coordonnees.update', ['id' => $fournisseur->id]) }}"> <!-- MOD ICI -->
+<form method="post" action="{{ route('fournisseur.coordonnees.update', ['id' => $fournisseur->id]) }}">
     @csrf
     <input type="hidden" name="fournisseur_id" value="{{ $fournisseur->id }}">
     <div class="container-fluid bordure">

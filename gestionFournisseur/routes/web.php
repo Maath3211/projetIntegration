@@ -51,10 +51,10 @@ Route::GET('/identification',
 Route::POST('/identification/store',
 [PortailFournisseurController::class,'storeIdentification'])->name('fournisseur.storeIdentification');
 
-Route::GET('/identification/edit',
+Route::GET('/identification/{id}/edit',
 [PortailFournisseurController::class, 'editIdentification'])->name('fournisseur.identification.edit');
 
-Route::POST('/identification/update',
+Route::POST('/identification/{id}/update',
 [PortailFournisseurController::class, 'updateIdentification'])->name('fournisseur.identification.update');
 
 # InscriptionCoordonnées
@@ -64,10 +64,10 @@ Route::GET('/coordonnees',
 Route::POST('/coordonnees/store',
 [PortailFournisseurController::class,'storeCoordo'])->name('fournisseur.storeCoordonnees');
 
-Route::GET('/coordonnees/edit',
+Route::GET('/coordonnees/{id}/edit',
 [PortailFournisseurController::class, 'editCoordonnees'])->name('fournisseur.coordonnees.edit');
 
-Route::POST('/coordonnees/update',
+Route::POST('/coordonnees/{id}/update',
 [PortailFournisseurController::class, 'updateCoordonnees'])->name('fournisseur.coordonnees.update');
 
 # InscriptionContact
