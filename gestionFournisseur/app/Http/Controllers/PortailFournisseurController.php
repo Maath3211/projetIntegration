@@ -650,25 +650,26 @@ class PortailFournisseurController extends Controller
 
     // Code Unspsc 
 
-    public function UNSPSC(Request $request)
-    {
-        $fournisseurData = session('fournisseur');
-        $coordonneesData = session('coordonnees');
-        $contactData = session('contact');
+public function UNSPSC(Request $request)
+{
+    // Vérifier si une recherche est en cours
+    if ($request->has('query')) {
+        $query = $request->get('query');
+        $codes = Unspsc::where('code', 'like', "%{$query}%")
+            ->orWhere('description', 'like', "%{$query}%")
+            ->limit(50) // Limite les résultats pour de meilleures performances
+            ->get();
 
-        if (is_null($fournisseurData) || is_null($coordonneesData) || is_null($contactData)) {
-            return redirect()->route('fournisseur.contact')->withErrors(['Les informations du fournisseur, des coordonnées ou du contact sont manquantes.']);
-        }
-
-        $codes = Unspsc::limit(20904)->get();
-        //20904
-        //$codes = Unspsc::paginate(1000);
-
-
-
-        return view('fournisseur.UNSPSC', compact('codes'));
-
+        // Retourner les données au format JSON pour AJAX
+        return response()->json($codes);
     }
+
+    // Sinon, charger un échantillon initial
+    $codes = Unspsc::limit(20)->get();
+
+    return view('fournisseur.UNSPSC', compact('codes'));
+}
+
 
 
     public function storeUnspsc(UnspscRequest $request)

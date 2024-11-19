@@ -1,58 +1,72 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const searchInput = document.getElementById('search-input');
-    const searchMessage = document.getElementById('no-results-message');
-    const unspscItems = document.getElementById('unspsc-items');
-    const items = Array.from(document.querySelectorAll('.item'));
+    const unspscList = document.getElementById('unspsc-list');
+    const noResultsMessage = document.getElementById('no-results-message');
+    const loadingMessage = document.getElementById('loading-message');
 
-    // Préparez les données pour Fuse.js
-    const data = items.map(item => ({
-        element: item,
-        code: item.querySelector('.col-md-4 p').textContent.toLowerCase(),
-        description: item.querySelector('.col-md-7 p').textContent.toLowerCase(),
-    }));
-    
-    const options = {
-        keys: ['code', 'description'],
-        threshold: 0.3,
-    };
-    
-    const fuse = new Fuse(data, options);
-    let typingTimer;
-
-    function filterItems() {
-        const query = searchInput.value.toLowerCase().trim();
-
-        if (query === '') {
-            // Si la requête est vide, affiche le message de recherche et masque les items
-            searchMessage.style.display = 'block';
-            unspscItems.style.display = 'none';
-            return;
-        }
-
-        // Sinon, cache le message et affiche le conteneur des items
-        searchMessage.style.display = 'none';
-        unspscItems.style.display = 'block';
-
-        // Effectue la recherche
-        const results = fuse.search(query);
-
-        // Masque tous les éléments d'abord
-        items.forEach(item => item.style.display = 'none');
-
-        // Affiche uniquement les résultats correspondants
-        if (results.length > 0) {
-            results.forEach(result => {
-                result.item.element.style.display = '';
-            });
-        } else {
-            // Affiche un message si aucun résultat n'est trouvé
-            searchMessage.textContent = 'Aucun résultat trouvé';
-            searchMessage.style.display = 'block';
-        }
+    // Vérification des éléments
+    if (!searchInput || !unspscList || !noResultsMessage || !loadingMessage) {
+        console.error("Un ou plusieurs éléments nécessaires sont introuvables dans le DOM.");
+        return;
     }
 
-    searchInput.addEventListener('input', function() {
-        clearTimeout(typingTimer);
-        typingTimer = setTimeout(filterItems, 800);
-    });
+    searchInput.addEventListener('input', debounce(function () {
+        const query = searchInput.value.trim();
+
+        // Affiche un message de chargement
+        loadingMessage.style.display = 'block';
+        noResultsMessage.style.display = 'none';
+
+        fetch(`/UNSPSC?query=${encodeURIComponent(query)}`)
+            .then(response => {
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                return response.json();
+            })
+            .then(data => {
+                loadingMessage.style.display = 'none'; // Cache le message de chargement
+                if (data.length === 0) {
+                    noResultsMessage.style.display = 'block';
+                    unspscList.innerHTML = '';
+                } else {
+                    noResultsMessage.style.display = 'none';
+                    updateList(data);
+                }
+            })
+            .catch(error => {
+                console.error('Erreur lors de la recherche UNSPSC :', error);
+                loadingMessage.style.display = 'none'; // Cache le message de chargement
+                noResultsMessage.style.display = 'block';
+                noResultsMessage.textContent = "Une erreur s'est produite lors de la recherche.";
+            });
+    }, 500));
+
+    // Fonction pour mettre à jour dynamiquement la liste
+    function updateList(data) {
+        unspscList.innerHTML = ''; // Vide la liste avant d'ajouter les nouveaux éléments
+        data.forEach(item => {
+            const row = document.createElement('div');
+            row.classList.add('row', 'item');
+            row.innerHTML = `
+                <div class="col-md-1">
+                    <input type="checkbox" class="mt-2" id="idUnspsc${item.id}" name="idUnspsc[]" value="${item.id}">
+                </div>
+                <div class="col-md-4">
+                    <p>${item.code}</p>
+                </div>
+                <div class="col-md-7">
+                    <p>${item.description}</p>
+                </div>
+            `;
+            unspscList.appendChild(row);
+        });
+    }
+
+    // Fonction debounce pour limiter les appels réseau
+    function debounce(func, delay) {
+        let timeout;
+        return function (...args) {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), delay);
+        };
+    }
 });

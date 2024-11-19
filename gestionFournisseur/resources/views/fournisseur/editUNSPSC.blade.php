@@ -25,17 +25,13 @@
                         </div>
                         @csrf
                         @method('PATCH')
-                        @if (count($codes))
-                            <div class="scroll-container" id="unspsc-items" style="display: none;">
-                            <p id="no-results-message" class="text-muted" style="display: none;">Effectuer une recherche</p>
-
-                                @foreach($codes as $code)
-                                    <div class="item">
+                        <div id="unspsc-list" style="max-height: 400px; overflow-y: auto; border: 1px solid #ddd; padding: 10px;">
+                            <div id="unspsc-list">
+                                {{-- Affichage des exemples initiaux --}}
+                                    @foreach($codes as $code)
+                                    <div class="row item">
                                         <div class="col-md-1">
-                                            <label for="code" class="titreForm">Code
-                                                <small class="text-danger">*</small>
-                                            </label>
-                                            <input type="checkbox" class="mt-2" id="idUnspsc{{ $code->id }}" name="idUnspsc[]" value="{{ $code->id }}"  {{ in_array($code->id, $unspscChamp) ? 'checked' : '' }}>
+                                            <input type="checkbox" class="mt-2" id="idUnspsc{{ $code->id }}" name="idUnspsc[]" value="{{ $code->id }}">
                                         </div>
                                         <div class="col-md-4">
                                             <p>{{ $code->code }}</p>
@@ -45,10 +41,9 @@
                                         </div>
                                     </div>
                                 @endforeach
+                                <div id="loading-message" style="display: none;">Chargement...</div>
                             </div>
-                        @else
-                            <p>Erreur : aucun service public proposé</p>
-                        @endif
+                        </div>
                         @error('idUnspsc')
                         <span class="text-danger">{{ $message }}
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">

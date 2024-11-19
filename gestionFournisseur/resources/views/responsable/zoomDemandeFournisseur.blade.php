@@ -61,6 +61,8 @@
                         </form>
                     @endif
                     --}}
+                    <p>Date de création : {{substr($fournisseur->created_at,0,10)}}</p>
+                    <p>Dernière modification : {{substr($fournisseur->updated_at,0,10)}}</p>
                 </div>
                 <div class="custom-box">
                     <h4>Identification</h4>

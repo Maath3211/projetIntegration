@@ -19,11 +19,8 @@
 <div class="text-center">
     <h1>RBQ</h1>
 </div>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
-            <fieldset>
+<div class="container-fluid bordure">
+            <fieldset class="border">
                 <legend>Licence RBQ</legend>
 
                 <form method="POST" action="{{ route('fournisseur.storeRBQ') }}">
@@ -82,7 +79,7 @@
                         </div>
                     </div>
 
-                    <div class="row py-5">
+                    <div class=" ">
                         <h5 class="pl-5">Catégories et sous-catégories autorisées
                         </h5>
                         
@@ -125,10 +122,8 @@
                     </div>
                 </form>
             </fieldset>
-        </div>
 
         <div class="col-md-2"></div>
-    </div>
 </div>
 @endsection
 <script src="{{ asset('js/RBQ.js') }}"></script>
