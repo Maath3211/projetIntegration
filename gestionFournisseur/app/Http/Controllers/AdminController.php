@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
 use App\Models\Setting;
 use App\Models\Fournisseur;
 use App\Models\FournisseurCoord;
@@ -26,10 +27,10 @@ use App\Models\File;
 use App\Http\Requests\SettingRequest;
 use App\Http\Requests\ResetPasswordRequest;
 use App\Mail\ResetPassword;
+use App\Mail\customMail;
 use App\Http\Requests\ConnexionResponsableRequest;
 use App\Models\RBQLicence;
 use Carbon\Carbon;
-use Mail;
 use Response;
 use Str;
 use DB;
@@ -320,10 +321,8 @@ class AdminController extends Controller
     {
         
 
-        if(is_numeric($fournisseur))
-            $fournisseur = Fournisseur::where('id', $fournisseur)->first();
-        else
-            $fournisseur = Fournisseur::where('email', $fournisseur)->first();
+        $fournisseur = Fournisseur::findOrFail($fournisseur);
+
         $contacts = Contact::where('fournisseur_id', $fournisseur->id)->get();
         // * Pas de model
         $coordonnees = DB::table('coordonnees')->where('fournisseur_id', $fournisseur->id)->get()->firstOrFail();
@@ -355,10 +354,7 @@ class AdminController extends Controller
     public function accepterFournisseur($fournisseur)
     {
         try {
-            if(is_numeric($fournisseur))
-                $fournisseur = Fournisseur::where('neq', $fournisseur)->first();
-            else
-                $fournisseur = Fournisseur::where('email', $fournisseur)->first();
+            $fournisseur = Fournisseur::find( $fournisseur);
             $fournisseur->statut = 'Acceptée';
             $fournisseur->dateStatut = Carbon::now();
             $fournisseur->raisonRefus = null;
@@ -379,15 +375,22 @@ class AdminController extends Controller
         ], [
             "raisonRefus.required" => 'La raison de refus est requise',
         ]);
-        if(is_numeric($fournisseur))
-                $fournisseur = Fournisseur::where('neq', $fournisseur)->first();
-            else
-                $fournisseur = Fournisseur::where('email', $fournisseur)->first();
+
+        $fournisseur = Fournisseur::find($fournisseur);
         $fournisseur->dateStatut = Carbon::now();
         $fournisseur->raisonRefus = Crypt::encryptString($request->raisonRefus);
         $fournisseur->statut = 'Refusée';
-        $fournisseur->save();
-        return redirect()->route('responsable.demandeFournisseur')->with('message', 'Le fournisseur a été refusé.');
+        $template = ModelCourriel::find(2);
+       
+        if($request->envoyerMessage === "true"){
+            Mail::to('mathys.lessard.02@edu.cegeptr.qc.ca')->send(new customMail($template, $fournisseur, $request->raisonRefus));
+        }
+        else{
+            Mail::to('mathys.lessard.02@edu.cegeptr.qc.ca')->send(new customMail($template, $fournisseur));
+        }
+        // TODO: enlever commentaire
+        //$fournisseur->save();
+        return redirect()->route('responsable.listeFournisseur')->with('message', 'Le fournisseur a été refusé.');
     }
 
     // neq necessaire meme si pas utilisé, sinon l'id du fichier devient le neq
