@@ -321,7 +321,7 @@ class AdminController extends Controller
         
 
         if(is_numeric($fournisseur))
-            $fournisseur = Fournisseur::where('neq', $fournisseur)->first();
+            $fournisseur = Fournisseur::where('id', $fournisseur)->first();
         else
             $fournisseur = Fournisseur::where('email', $fournisseur)->first();
         $contacts = Contact::where('fournisseur_id', $fournisseur->id)->get();
