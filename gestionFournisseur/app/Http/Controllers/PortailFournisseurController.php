@@ -123,12 +123,12 @@ class PortailFournisseurController extends Controller
     {
         try 
         {
-            $neq = Auth::user()->neq;
-            $fournisseurId = Auth::user()->id;
-            $fournisseur = Fournisseur::where('neq', $neq)->firstOrFail();
+            $id = Auth::user()->id;
+            //$fournisseurId = Auth::user()->id;
+            $fournisseur = Fournisseur::where('id', $id)->firstOrFail();
             $fournisseur->statut = 'Désactivée';
             $fournisseur->dateStatut = Carbon::now();
-            $files = File::where('fournisseur_id', $fournisseurId)->get();
+            $files = File::where('fournisseur_id', $id)->get();
             $destination = public_path('images/fournisseurs/');
 
             foreach ($files as $file) 
@@ -158,8 +158,8 @@ class PortailFournisseurController extends Controller
     {
         try 
         {
-            $neq = Auth::user()->neq;
-            $fournisseur = Fournisseur::where('neq', $neq)->firstOrFail();
+            $id = Auth::user()->id;
+            $fournisseur = Fournisseur::where('id', $id)->firstOrFail();
             $fournisseur->statut = 'Acceptée';
             $fournisseur->dateStatut = Carbon::now();
             $fournisseur->save();
@@ -705,10 +705,9 @@ class PortailFournisseurController extends Controller
     public function updateUNSPSC(UnspscRequest $request, $id)
     {
     
-        $responsable = false;
+
     $fournisseur = Fournisseur::find(Auth::id());
     if($fournisseur == null){
-        $responsable = true;
         $fournisseur = Fournisseur::where('id',$id)->first();
     }
 
@@ -742,14 +741,7 @@ class PortailFournisseurController extends Controller
         }
 
             $fournisseur->touch();
-
-
-            if($responsable){
-                return redirect()->route('responsable.demandeFournisseurZoom', [$fournisseur->id])->with('message', 'Code UNSPSC mise à jour avec succès');
-            }
-            else{
-                return redirect()->route('fournisseur.information')->with('message', 'Code UNSPSC mise à jour avec succès');
-            }
+            return redirect()->route('fournisseur.information')->with('message', 'Codes UNSPSC mis à jour avec succès!');
         } catch (\Throwable $e) {
             Log::error($e);
             return redirect()->route('fournisseur.UNSPSC.edit',[$fournisseur->id])->withErrors(['Erreur lors de la mise à jour des codes UNSPSC']);
@@ -905,7 +897,7 @@ class PortailFournisseurController extends Controller
             // Rediriger avec un message de succès
 
             if($responsable){
-                return redirect()->route('responsable.demandeFournisseurZoom', [$fournisseur->id])->with('message', 'Licence RBQ mise à jour avec succès');
+                return redirect()->route('responsable.demandeFournisseurZoom', [$fournisseur->neq])->with('message', 'Licence RBQ mise à jour avec succès');
             }
             else{
                 return redirect()->route('fournisseur.information')->with('message', 'Licence RBQ mise à jour avec succès');
@@ -1210,7 +1202,7 @@ class PortailFournisseurController extends Controller
         $fournisseur->touch();
 
         if($responsable){
-            return redirect()->route('responsable.demandeFournisseurZoom', [$fournisseur->id])->with('message', 'finance mise à jour avec succès');
+            return redirect()->route('responsable.demandeFournisseurZoom', [$fournisseur->neq])->with('message', 'finance mise à jour avec succès');
         }
         else{
             return redirect()->route('fournisseur.information')->with('message', 'Licence RBQ mise à jour avec succès');
