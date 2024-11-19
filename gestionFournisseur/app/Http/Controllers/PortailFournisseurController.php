@@ -1178,12 +1178,12 @@ class PortailFournisseurController extends Controller
 
             $file->delete();
 
-            return redirect()->route('fournisseur.information')->with('message', 'Fichier supprimé avec succès.');
+            return Redirect::back()->with('message', 'Fichier supprimé avec succès.');
         } 
         catch (\Throwable $e) 
         {
             Log::debug($e);
-            return redirect()->route('fournisseur.information')->withErrors(['error' => 'Erreur lors de la suppression du fichier.']);
+            return Redirect::back()->withErrors(['error' => 'Erreur lors de la suppression du fichier.']);
         }
     }
 
