@@ -1163,12 +1163,12 @@ class PortailFournisseurController extends Controller
         if($fournisseur == null){
             $responsable = true;
             $fournisseur = Fournisseur::where('id',$id)->first();
-            
         }
 
         $finances = $fournisseur->finance;
         $finances->fill($request->validated()); 
         $finances->save(); 
+        $fournisseur->touch();
 
         if($responsable){
             return redirect()->route('responsable.demandeFournisseurZoom', [$fournisseur->neq])->with('message', 'finance mise à jour avec succès');

@@ -305,7 +305,7 @@
                     <p><strong>Conditions de paiement</strong><br>{{$fournisseur->finance->paiement ?? 'N/A'}}</p>
                     <p><strong>Devise</strong><br>{{$fournisseur->finance->devise ?? 'N/A'}}</p>
                     <p><strong>Mode de communication</strong><br>{{$fournisseur->finance->communication ?? 'N/A'}}</p>
-                    <form action="{{ route('fournisseur.finances.edit') }}" method="GET">
+                    <form action="{{ route('fournisseur.finances.edit',$unspscFournisseur->first()->fournisseur_id) }}" method="GET">
                         @csrf
                         <div class="form-group">
                             <button type="submit" class="btn btn-secondary">
