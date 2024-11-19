@@ -261,11 +261,9 @@ class PortailFournisseurController extends Controller
     public function updateIdentification(FournisseurEditRequest $request)
     {
         $fournisseur = Auth::user();
-
         $fournisseur->entreprise = $request->entreprise;
         $fournisseur->email = $request->email;
         $fournisseur->save();
-
         return redirect()->route('fournisseur.information')->with('message', 'Informations mises à jour avec succès.');
     }
 
@@ -413,13 +411,11 @@ class PortailFournisseurController extends Controller
             $villes = [];
         }
 
-        // nouveau code teste //
         $fournisseur = $id ? Fournisseur::findOrFail($id) : Auth::user();
         if (!$fournisseur) {
             return redirect()->route('fournisseur.information')->withErrors(['Fournisseur introuvable']);
         }
-        // nouveau code teste //
-        //$fournisseur = Auth::user(); 
+
         $coordonnees = $fournisseur->coordonnees;
         $numero = $coordonnees->numero;
         $numero = substr($numero, 0, 3) . '-' . substr($numero, 3, 3) . '-' . substr($numero, 6);
@@ -428,21 +424,20 @@ class PortailFournisseurController extends Controller
         $codePostal = $coordonnees->codePostal;
         $codePostal = substr($codePostal, 0, 3) . ' ' . substr($codePostal, 3);
     
-        return view('fournisseur.editCoordonnees', compact('coordonnees', 'villes','fournisseur','numero','numero2','codePostal')); //founisseur ajouté
+        return view('fournisseur.editCoordonnees', compact('coordonnees', 'villes','fournisseur','numero','numero2','codePostal'));
     }
 
     public function updateCoordonnees(FournisseurCoordRequest $request, $id = null)
     {
-        // nouveau code //
         $responsable = false;
         $fournisseur = null;
         $fournisseur = Fournisseur::find(Auth::id());
+
         if($fournisseur == null){
             $responsable = true;
-            $fournisseur = Fournisseur::where('id',$id)->first();
-            
+            $fournisseur = Fournisseur::where('id',$id)->first();  
         }
-        // nouveau code //
+
         try 
         {
             $nomRegion = "";
@@ -463,14 +458,11 @@ class PortailFournisseurController extends Controller
                     }
                 }
             }
-            // nouveau code ici //
-           // $fournisseur = $id ? Fournisseur::findOrFail($id) : Auth::user();
-        
+
             if (!$fournisseur) {
                 return redirect()->route('fournisseur.information')->withErrors(['Fournisseur introuvable']);
             }
-            // nouveau code ici //
-            //$fournisseur = Auth::user();
+
             $coordonnees = FournisseurCoord::where('fournisseur_id', $fournisseur->id)->first();
 
             if (!$coordonnees) 
@@ -484,16 +476,17 @@ class PortailFournisseurController extends Controller
             $coordonnees->codePostal = strtoupper($request->codePostal);
             $coordonnees->site = strtolower($request->site);
             $coordonnees->save();
-            $fournisseur->touch(); // nouveau code //
-            //return redirect()->route('fournisseur.information')->with('message', "Enregistré!");
-            // nouvau code //
-            if($responsable){
+            $fournisseur->touch();
+
+            if($responsable)
+            {
                 return redirect()->route('responsable.demandeFournisseurZoom', [$fournisseur->neq])->with('message', 'Coordonnées à jour');
             }
-            else{
+            else
+            {
                 return redirect()->route('fournisseur.information')->with('message', 'Coordonnées à jour');
             }
-            // nouvau code //
+
         } 
         catch (\Throwable $e) 
         {
