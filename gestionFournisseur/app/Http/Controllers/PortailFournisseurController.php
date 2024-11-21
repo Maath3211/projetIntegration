@@ -729,18 +729,31 @@ public function UNSPSC(Request $request)
         }
     }
 
-    public function editUNSPSC($id)
+    public function editUNSPSC(Request $request,$id)
     {
         $fournisseur = Auth::user();
         if($fournisseur == null){
             $fournisseur = Fournisseur::where('id',$id)->first();
         }
+
+        if ($request->has('query')) {
+            $query = $request->get('query');
+            $codes = Unspsc::where('code', 'like', "%{$query}%")
+                ->orWhere('description', 'like', "%{$query}%")
+                ->limit(50) // Limite les résultats pour de meilleures performances
+                ->get();
+    
+            // Retourner les données au format JSON pour AJAX 
+            return response()->json($codes);
+        }
+    
+        // Sinon, charger un échantillon initial
+        $codes = Unspsc::limit(20)->get();
         
         $unspscFournisseur = DB::table('unspsccodes')->where('fournisseur_id', $fournisseur->id)->get();
         $unspscDetails= DB::table('unspsccodes')->where('fournisseur_id', $fournisseur->id)->first();
         $unspscChamp = DB::table('unspsccodes')->where('fournisseur_id', $fournisseur->id)->pluck('idUnspsc')->toArray();
-        $codes = Unspsc::limit(20904)->get();
-        return View('fournisseur.editUNSPSC', compact('unspscFournisseur', 'codes','unspscChamp', 'unspscDetails'));
+        return View('fournisseur.editUNSPSC', compact('unspscFournisseur', 'codes','unspscChamp', 'unspscDetails','id'));
     }
 
     public function updateUNSPSC(UnspscRequest $request, $id)

@@ -1,0 +1,10 @@
+UnspscPage.js:24 Page Edit UNSPSC
+UnspscPage.js:35 /UNSPSC/3/modifier
+UnspscPage.js:54  Erreur lors de la recherche UNSPSC : TypeError: Cannot read properties of null (reading 'style')
+    at UnspscPage.js:50:42
+(anonymes) @ UnspscPage.js:54
+Promise.catch
+(anonymes) @ UnspscPage.js:54
+(anonymes) @ UnspscPage.js:83
+setTimeout
+(anonymes) @ UnspscPage.js:83

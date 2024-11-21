@@ -85,7 +85,7 @@ Route::POST('/UNSPSC/store',
 [PortailFournisseurController::class,'storeUnspsc'])->name('fournisseur.storeUnspsc');
 
 Route::GET('/UNSPSC/{unspsc}/modifier',
-[PortailFournisseurController::class,'editUnspsc'])->name('fournisseur.UNSPSC.edit');
+[PortailFournisseurController::class,'editUNSPSC'])->name('fournisseur.UNSPSC.edit');
 
 Route::PATCH('/UNSPSC/{unspsc}/modifier',
 [PortailFournisseurController::class,'updateUNSPSC'])->name('fournisseur.UNSPSC.update');
