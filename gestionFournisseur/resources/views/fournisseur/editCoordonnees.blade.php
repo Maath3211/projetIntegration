@@ -129,7 +129,7 @@
                     <label for="site" class="titreForm">Site internet
                         <small class="text-muted">(Optionnel)</small>
                     </label>
-                    <input type="url" class="form-control" id="site" placeholder="Votre site internet" name="site" value="{{old('site', $coordonnees->site)}}">
+                    <input type="url" class="form-control" id="site" placeholder="https://www.v3r.net" name="site" value="{{old('site', $coordonnees->site)}}">
                     @error('site')
                     <span class="text-danger">{{ $message }}
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
