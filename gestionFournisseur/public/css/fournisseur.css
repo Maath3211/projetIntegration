@@ -415,7 +415,13 @@ body.night-mode .filter-section{
     width: 100%;
     margin-bottom: 20px; 
   }
-  
+  footer  {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  aside  {
+    margin-left: 10px;
+  }
 }
 
 .divContactForm{

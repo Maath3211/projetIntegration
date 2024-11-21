@@ -50,8 +50,8 @@
     <main>
         @yield('contenu')
     </main>
-    <footer>
-		<div>
+    <footer classe="test3">
+		<div class="test2">
 			<aside class="white">
 				<h5>Aide</h5>
 				<p>Centre d'aide</p>
@@ -59,7 +59,7 @@
 				<p>311 / Nous joindre</p>
 			</aside>
 		</div>
-		<div>
+		<div class="test2">
 			<aside class="white">
 				<h5>Politiques</h5>
 				<p>Politique de confidentialité</p>
