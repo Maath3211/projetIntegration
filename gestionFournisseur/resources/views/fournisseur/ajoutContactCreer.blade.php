@@ -15,7 +15,7 @@
                         <small class="text-danger">*</small>
                     </label>
                     <input type="text" class="form-control" placeholder="Prénom" name="prenom" required
-                        value="{{-- {{ old('prenom') }} --}}a" id="prenom1">
+                        value="{{ old('prenom') }}" id="prenom1">
                     @error('prenom')
                         <span class="text-danger">{{ $message }}
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
@@ -33,7 +33,7 @@
                         <small class="text-danger">*</small>
                     </label>
                     <input type="text" class="form-control" placeholder="Nom" name="nom" required
-                        value="{{-- {{ old('nom') }} --}}a" id="nom1">
+                        value="{{ old('nom') }}" id="nom1">
                     @error('nom')
                         <span class="text-danger">{{ $message }}
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
@@ -51,7 +51,7 @@
                         <small class="text-danger">*</small>
                     </label>
                     <input type="text" class="form-control" placeholder="Fonction" name="fonction" required
-                        value="{{-- {{ old('fonction') }} --}}a" id="fonction1">
+                        value="{{ old('fonction') }}" id="fonction1">
                     @error('fonction')
                         <span class="text-danger">{{ $message }}
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
@@ -69,7 +69,7 @@
                         <small class="text-danger">*</small>
                     </label>
                     <input type="email" class="form-control" placeholder="Courriel" name="courriel" required
-                        value="{{-- {{ old('courriel') }} --}}a@a" id="courriel1">
+                        value="{{ old('courriel') }}" id="courriel1">
                     @error('courriel')
                         <span class="text-danger">{{ $message }}
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
@@ -108,7 +108,7 @@
                         <small class="text-danger">*</small>
                     </label>
                     <input type="text" class="form-control telephones" placeholder="Téléphone"
-                        name="telephone" required value="{{-- {{ old('telephone') }} --}}111-111-1111" id="telephone1">
+                        name="telephone" required value=" {{ old('telephone') }}" id="telephone1">
                     @error('telephone1')
                         <span class="text-danger">{{ $message }}
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
@@ -126,7 +126,7 @@
                         <small class="text-muted">(Optionnel)</small>
                     </label>
                     <input type="tel" class="form-control" placeholder="Poste" name="poste"
-                        value="{{-- {{ old('poste') }} --}}" id="poste1">
+                        value="{{ old('poste') }}" id="poste1">
                     @error('poste')
                         <span class="text-danger">{{ $message }}
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"

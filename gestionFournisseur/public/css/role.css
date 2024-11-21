@@ -1,5 +1,6 @@
 #selectRoles{
-    width: 30%;
+    width: auto;
+    left: auto;
 }
 
 #formSupprimer{
@@ -8,15 +9,16 @@
 
 .list-group-item {
     display: flex;
-    align-items: center; /* Aligns items vertically */
+    align-items: center;
 
 }
 
 #role {
     text-align: center;
     margin: 0 auto;
-    padding-left: 100px; /* Adds space between email and role */
+    padding-left: 100px;
 }
+
 
 
 
