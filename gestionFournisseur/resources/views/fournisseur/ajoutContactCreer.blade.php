@@ -5,6 +5,7 @@
     <h1>Ajouter un Contact</h1>
 </div>
 <form action="{{ route('fournisseur.storeContactCreer', $fournisseur->id) }}" method="post" id="form1">
+    @csrf
     <div class="container-fluid bordure">
         <fieldset class="border p-3">
             <legend>Contact</legend>

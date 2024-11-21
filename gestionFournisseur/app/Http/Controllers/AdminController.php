@@ -384,13 +384,12 @@ class AdminController extends Controller
         $template = ModelCourriel::find($request->model_courriel);
        
         if($request->envoyerMessage === "true"){
-            Mail::to('mathys.lessard.02@edu.cegeptr.qc.ca')->send(new customMail($template, $fournisseur, $request->raisonRefus));
+            Mail::to($fournisseur->email)->send(new customMail($template, $fournisseur, $request->raisonRefus));
         }
         else{
-            Mail::to('mathys.lessard.02@edu.cegeptr.qc.ca')->send(new customMail($template, $fournisseur));
+            Mail::to($fournisseur->email)->send(new customMail($template, $fournisseur));
         }
-        // TODO: enlever commentaire
-        //$fournisseur->save();
+        $fournisseur->save();
         return redirect()->route('responsable.listeFournisseur')->with('message', 'Le fournisseur a été refusé.');
     }
 

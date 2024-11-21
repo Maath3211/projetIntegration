@@ -14,6 +14,8 @@ use App\Models\Contact;
 use App\Models\File;
 use App\Models\Finance;
 use App\Models\Setting;
+use App\Models\Responsable;
+use App\Models\ModelCourriel;
 use App\Http\Requests\ConnexionRequest;
 use App\Http\Requests\FournisseurNeqRequest;
 use App\Http\Requests\FournisseurEditRequest;
@@ -26,6 +28,7 @@ use App\Http\Requests\FinanceRequest;
 use App\Http\Requests\ResetPasswordRequest;
 use App\Mail\recevoirConfirmation;
 use App\Mail\demandeFournisseur;
+use App\Mail\customMail;
 use Carbon\Carbon;
 use Mail;
 use DB;
@@ -327,6 +330,17 @@ class PortailFournisseurController extends Controller
             return redirect()->route('fournisseur.information')->withErrors(['Identification introuvable pour ce fournisseur']);
         }
 
+        if($responsable == null)
+        {
+        $template = ModelCourriel::where('nom', 'Modification')->get()->firstOrFail();
+            $emailAppro = Setting::first()->emailAppro;
+
+            $modification = [['Adresse' ,$fournisseur->email, $request->email],
+                             ['Nom d\'entreprise' ,$fournisseur->entreprise, $request->entreprise]];
+            
+            Mail::to($emailAppro)->send(new customMail($template, $fournisseur, null, $modification));
+        }
+
         $fournisseur->entreprise = $request->entreprise;
         $fournisseur->email = $request->email;
         $fournisseur->save();
@@ -341,7 +355,6 @@ class PortailFournisseurController extends Controller
             return redirect()->route('fournisseur.information')->with('message', 'Identification à jour');
         }
 
-        return redirect()->route('fournisseur.information')->withErrors(['Informations invalides']);     
     }
 
     public function editPassword()
@@ -548,6 +561,27 @@ class PortailFournisseurController extends Controller
                 return redirect()->route('fournisseur.information')->withErrors(['Coordonnées introuvables pour ce fournisseur']);
             }
 
+            if($responsable == null)
+            {
+                $template = ModelCourriel::where('nom', 'Modification')->get()->firstOrFail();
+                $emailAppro = Setting::first()->emailAppro;
+                $modification = [
+                ['Numéro civic',$coordonnees->noCivic, $request->noCivic],
+                ['Rue',$coordonnees->rue, $request->rue],
+                ['Bureau',$coordonnees->bureau, $request->bureau],
+                ['Ville',$coordonnees->ville, $request->ville],
+                ['Province',$coordonnees->province, $request->province],
+                ['Code postal',$coordonnees->codePostal, $request->codePostal],
+                ['Site web',$coordonnees->site, $request->site],
+                ['Type de téléphone',$coordonnees->typeTel, $request->typeTel],
+                ['Numéro de téléphone',$coordonnees->numero, $request->numero],
+                ['Poste téléphonique',$coordonnees->poste, $request->poste],
+                ['Type de téléphone secondaire',$coordonnees->typeTel2, $request->typeTel2],
+                ['Numéro de téléphone secondaire',$coordonnees->numero2, $request->numero2],
+                ['Poste téléphonique secondaire',$coordonnees->poste2, $request->poste2]
+            ];
+            }
+
             $coordonnees->fill($request->validated());
             $coordonnees->codeRegion = $codeRegion;
             $coordonnees->nomRegion = $nomRegion;
@@ -562,6 +596,7 @@ class PortailFournisseurController extends Controller
             }
             else
             {
+                Mail::to($emailAppro)->send(new customMail($template, $fournisseur, null, $modification));
                 return redirect()->route('fournisseur.information')->with('message', 'Coordonnées à jour');
             }
 
@@ -637,7 +672,21 @@ class PortailFournisseurController extends Controller
     }
 
     public function storeContactCreer($id, ContactRequest $request){
+        $responsable = false;
+        $fournisseur = null;
+        $fournisseur = Fournisseur::find(Auth::id());
+
+        if($fournisseur == null){
+            $responsable = true;
+            $fournisseur = Fournisseur::where('id',$id)->first();  
+        }
+        
         try{
+            if (!$fournisseur) 
+            {
+                return redirect()->route('fournisseur.information')->withErrors(['Fournisseur introuvable']);
+            }
+
         $contact = new Contact();
 
         $contact->prenom = $request->prenom;
@@ -649,6 +698,26 @@ class PortailFournisseurController extends Controller
         $contact->poste = $request->poste;
         $contact->fournisseur_id = $id;
         $contact->save();
+
+        if($responsable == null)
+            {
+                
+                $template = ModelCourriel::where('nom', 'Modification')->get()->firstOrFail();
+                $emailAppro = Setting::first()->emailAppro;
+                $modification = [
+                ['Prénom', '', $request->prenom],
+                ['Nom', '', $request->nom],
+                ['Fonction', '', $request->fonction],
+                ['Courriel', '', $request->courriel],
+                ['Type de téléphone', '', $request->typeTelephone],
+                ['Numéro de téléphone', '', $request->telephone],
+                ['Poste téléphonique', '', $request->poste],
+            ];
+            Mail::to($emailAppro)->send(new customMail($template, $fournisseur, null, $modification));
+            }
+            
+
+        
         $return_url = session('return_to');
         session()->forget('return_to');
         return redirect($return_url);
@@ -668,9 +737,40 @@ class PortailFournisseurController extends Controller
 
     public function updateContact($id, ContactRequest $request)
     {
+        $responsable = false;
+        $fournisseur = Fournisseur::find($id);
+        $contact = null;
+        $contact = Contact::find(Auth::id());
+
+        if($contact == null){
+            $responsable = true;
+            $contact = Contact::where('id',$id)->first();  
+        }
+        
+
         try {
             $return_url = session('return_to');
+            if (!$contact) 
+        {
+            return redirect($return_url)->withErrors(['Fournisseur introuvable']);
+        }
             $contact = Contact::where('id', $id)->get()->firstOrFail();
+
+            if($responsable == null)
+            {
+                $template = ModelCourriel::where('nom', 'Modification')->get()->firstOrFail();
+                $emailAppro = Setting::first()->emailAppro;
+                $modification = [
+                ['Prénom',$contact->prenom, $request->prenom],
+                ['Nom',$contact->nom, $request->nom],
+                ['Fonction',$contact->fonction, $request->fonction],
+                ['Courriel',$contact->courriel, $request->courriel],
+                ['Type de téléphone',$contact->typeTelephone, $request->typeTelephone],
+                ['Numéro de téléphone', $this->formatPhoneNumber($contact->telephone), $this->formatPhoneNumber($request->telephone)],
+                ['Poste téléphonique',$contact->poste, $request->poste],
+            ];
+            }
+
             $contact->prenom = $request->prenom;
             $contact->nom = $request->nom;
             $contact->fonction = $request->fonction;
@@ -680,8 +780,19 @@ class PortailFournisseurController extends Controller
             $contact->poste = $request->poste;
 
             $contact->save();
-            session()->forget('return_to');
-            return redirect($return_url);
+
+            if($responsable)
+            {
+                session()->forget('return_to');
+                return redirect($return_url)->with('message', 'Coordonnées à jour');
+            }
+            else
+            {
+                Mail::to($emailAppro)->send(new customMail($template, $fournisseur, null, $modification));
+                return redirect()->route('fournisseur.information')->with('message', 'Coordonnées à jour');
+            }
+
+            
         } catch (\Throwable $e) {
             Log::debug($e);
             return Redirect::back()->withInput()->withErrors(['Erreur interne']);
@@ -868,7 +979,8 @@ public function UNSPSC(Request $request)
         if($fournisseur == null){
             $fournisseur = Fournisseur::where('id',$id)->first();
         }
-
+        session(['return_to' => url()->previous()]);
+        
         $rbq = RBQLicence::where('fournisseur_id', $fournisseur->id)->first();
         $codes = Categorie::all();
         $neq = $fournisseur->neq;
@@ -924,6 +1036,17 @@ public function UNSPSC(Request $request)
             return redirect()->route('fournisseur.RBQ.edit')->withErrors(['Licence RBQ non trouvée']);
         }
 
+        if($responsable == null)
+            {
+                $template = ModelCourriel::where('nom', 'Modification')->get()->firstOrFail();
+                $emailAppro = Setting::first()->emailAppro;
+                $modification = [
+                ['Licence RBQ',$rbq->licenceRBQ, $request->licenceRBQ],
+                ['Statut RBQ',$rbq->statut, $request->statut],
+                ['Type de licence RBQ',$rbq->typeLicence, $request->typeLicence],
+            ];
+            }
+
         try {
             // Mettre à jour les données avec celles du formulaire
             $rbq->licenceRBQ = $request->licenceRBQ;
@@ -938,10 +1061,15 @@ public function UNSPSC(Request $request)
             // Rediriger avec un message de succès
 
             if($responsable){
-                return redirect()->route('responsable.demandeFournisseurZoom', [$fournisseur->neq])->with('message', 'Licence RBQ mise à jour avec succès');
+                $return_url = session('return_to');
+                session()->forget('return_to');
+                return redirect($return_url)->with('message', 'Licence RBQ mise à jour avec succès');
             }
             else{
-                return redirect()->route('fournisseur.information')->with('message', 'Licence RBQ mise à jour avec succès');
+                $return_url = session('return_to');
+                session()->forget('return_to');
+                Mail::to($emailAppro)->send(new customMail($template, $fournisseur, null, $modification));
+                return redirect($return_url)->with('message', 'Licence RBQ mise à jour avec succès');
             }
         } catch (\Throwable $e) {
             // En cas d'erreur, enregistrer l'exception dans les logs et rediriger avec une erreur
@@ -1106,13 +1234,14 @@ public function UNSPSC(Request $request)
         }
     }
 
-    public function editImportation()
+    public function editImportation($id)
     {
-        $fournisseur = Auth::user();
+        session(['return_to' => url()->previous()]);
+        $fournisseur = Fournisseur::find($id);
         return view('fournisseur.editImportation', compact('fournisseur'));
     }
 
-    public function updateImportation(Request $request)
+    public function updateImportation($id, Request $request)
     {
  
         if ($request->hasFile('images')) 
@@ -1131,7 +1260,7 @@ public function UNSPSC(Request $request)
                         "images.{$key}.mimes" => 'Le fichier doit être dans un format imprimable: JPG, PNG, DOCX, DOC, PDF, XLSX, XLS, CSV'
                     ]);
 
-                    $uniqueFileName = str_replace(' ', '_', Auth::user()->id) . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
+                    $uniqueFileName = str_replace(' ', '_', $id) . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
                     $fileSize = $image->getSize();
 
                     if ($fileSize === false || $fileSize === 0) 
@@ -1145,7 +1274,7 @@ public function UNSPSC(Request $request)
                     $file->nomFichier = $image->getClientOriginalName();
                     $file->lienFichier = '/images/fournisseurs/' . $uniqueFileName;
                     $file->tailleFichier_KO = $fileSize;
-                    $file->fournisseur_id = Auth::user()->id;
+                    $file->fournisseur_id = $id;
                     $file->save();
 
                     \Log::info("Fichier importé avec succès: " . $uniqueFileName);
@@ -1159,8 +1288,9 @@ public function UNSPSC(Request $request)
                     return redirect()->route('fournisseur.importation')->withErrors(['error' => 'Erreur lors du téléversement du fichier: ' . $e->getMessage()]);
                 }
             }
-
-            return redirect()->route('fournisseur.information')->with('message', 'Fichiers importés avec succès.');
+            $return_url = session('return_to');
+            session()->forget('return_to');
+            return redirect($return_url)->with('message', 'Fichiers importés avec succès.');
         }
 
             return redirect()->route('fournisseur.importation')->withErrors(['error' => 'Aucun fichier à importer.']);

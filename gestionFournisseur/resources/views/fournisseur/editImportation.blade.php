@@ -4,7 +4,7 @@
 <div class="text-center">
     <h1>Mise à jour ( IMPORTATION )</h1>
 </div>
-<form action="{{ route('fournisseur.importation.update') }}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('fournisseur.importation.update', $fournisseur->id) }}" method="POST" enctype="multipart/form-data">
     @csrf
     @method("patch")
     <div class="container-fluid bordure">
@@ -34,7 +34,7 @@
             <div class="d-flex row justify-content-center">
                 <div class="form-group">
                     <button type="submit" name="action" value="save" class="btn btn-secondary">Enregistrer</button>
-                    <button type="submit" name="action" value="add_more" class="btn btn-secondary">Enregistrer et ajouter d'autres</button>
+                    {{-- <button type="submit" name="action" value="add_more" class="btn btn-secondary">Enregistrer et ajouter d'autres</button> --}}
                 </div>
             </div>
         </fieldset>
