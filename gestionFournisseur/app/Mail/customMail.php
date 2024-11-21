@@ -20,14 +20,16 @@ class customMail extends Mailable
     public $template;
     public $fournisseur;
     public $raisonRefu;
+    public $modification;
     /**
      * Create a new message instance.
      */
-    public function __construct(ModelCourriel $template, Fournisseur $fournisseur, string $raisonRefus = null)
+    public function __construct(ModelCourriel $template, Fournisseur $fournisseur, string $raisonRefus = null, ?array $modification = null)
     {
         $this->template = $template;
         $this->fournisseur = $fournisseur;
         $this->raisonRefus = $raisonRefus;
+        $this->modification = $modification;
     }
     /**
      * Get the message content definition.
@@ -40,6 +42,7 @@ class customMail extends Mailable
                 'template' => $this->template,
                 'fournisseur' => $this->fournisseur,
                 'raisonRefus' => $this->raisonRefus,
+                'modification' => $this->modification,
             ]
         );
     }

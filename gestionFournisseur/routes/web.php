@@ -110,10 +110,10 @@ Route::GET('/importation',
 Route::PATCH('/importation/store',
 [PortailFournisseurController::class,'storeImportation'])->name('fournisseur.storeImportation');
 
-Route::GET('/importation/edit',
+Route::GET('/importation/edit/{id}',
 [PortailFournisseurController::class, 'editImportation'])->name('fournisseur.importation.edit');
 
-Route::PATCH('/importation/update',
+Route::PATCH('/importation/update/{id}',
 [PortailFournisseurController::class, 'updateImportation'])->name('fournisseur.importation.update');
 
 Route::delete('/file/{id}',
@@ -141,11 +141,11 @@ Route::GET('/information',
 [PortailFournisseurController::class,'infoLogin'])->name('fournisseur.information');
 
 # Retirer la fiche fournisseur
-Route::POST('/information/desactive/{id}',
+Route::POST('/information/desactive',
 [PortailFournisseurController::class,'storeDesactive'])->name('fournisseur.storeDesactive');
 
 # Activer la fiche fournisseur
-Route::POST('/information/active/{id}',
+Route::POST('/information/active',
 [PortailFournisseurController::class,'storeActive'])->name('fournisseur.storeActive');
 
 #Contact page informations
@@ -158,7 +158,7 @@ Route::GET('/contact/editContact/{id}',
 Route::POST('/contact/updateContact/{id}',
 [PortailFournisseurController::class, 'updateContact'])->name('fournisseur.updateContact');
 
-Route::GET('/contact/addContactCreer/{id}',
+Route::GET('/contact/addContact/{id}',
 [PortailFournisseurController::class, 'addContactCreer'])->name('fournisseur.addContactCreer');
 
 Route::POST('/contact/storeContactCreer/{id}',
