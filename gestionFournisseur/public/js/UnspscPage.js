@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const isEditUnspscPage = document.getElementById('edit-unspsc-page') !== null;
 
     const unspscDataElement = document.getElementById('unspsc-data');
-    const selectedUnspscIds = JSON.parse(unspscDataElement.getAttribute('data-unspsc'));
+    let selectedUnspscIds = JSON.parse(unspscDataElement.getAttribute('data-unspsc'));
 
     console.log(selectedUnspscIds);
 
@@ -77,18 +77,17 @@ document.addEventListener('DOMContentLoaded', function () {
         function updateList(data) {
             unspscList.innerHTML = ''; // Vide la liste avant de la remplir à nouveau
             
-            data.forEach(item => {
+            // Filtrer les éléments sélectionnés et non sélectionnés
+            const selectedItems = data.filter(item => selectedUnspscIds.includes(item.id));
+            const filteredItems = data.filter(item => !selectedUnspscIds.includes(item.id));
+        
+            // Afficher les éléments déjà sélectionnés en premier (cochés)
+            selectedItems.forEach(item => {
                 const row = document.createElement('div');
                 row.classList.add('row', 'item');
-                
-                // Vérifie si l'ID de l'élément est dans selectedUnspscIds et coche la case si oui
-                const isChecked = selectedUnspscIds.includes(item.id); // Vérifie si l'ID est sélectionné
-                console.log(isChecked);
-
-
                 row.innerHTML = `
                     <div class="col-md-1">
-                        <input type="checkbox" class="mt-2" id="idUnspsc${item.id}" name="idUnspsc[]" value="${item.id}" ${isChecked ? 'checked' : ''}>
+                        <input type="checkbox" class="mt-2" id="idUnspsc${item.id}" name="idUnspsc[]" value="${item.id}" checked>
                     </div>
                     <div class="col-md-4">
                         <p>${item.code}</p>
@@ -97,10 +96,62 @@ document.addEventListener('DOMContentLoaded', function () {
                         <p>${item.description}</p>
                     </div>
                 `;
-                
                 unspscList.appendChild(row);
+        
+                // Ajoute un événement de changement (coché/décoché) pour mettre à jour selectedUnspscIds
+                const checkbox = row.querySelector('input[type="checkbox"]');
+                checkbox.addEventListener('change', function () {
+                    if (checkbox.checked) {
+                        // Si la case est cochée, ajoute l'ID à selectedUnspscIds
+                        if (!selectedUnspscIds.includes(item.id)) {
+                            selectedUnspscIds.push(item.id);
+                        }
+                    } else {
+                        // Si la case est décochée, retire l'ID de selectedUnspscIds
+                        selectedUnspscIds = selectedUnspscIds.filter(id => id !== item.id);
+                    }
+                    console.log("Updated selectedUnspscIds: ", selectedUnspscIds);
+                });
+            });
+        
+            // Afficher les éléments non sélectionnés ensuite
+            filteredItems.forEach(item => {
+                const row = document.createElement('div');
+                row.classList.add('row', 'item');
+                row.innerHTML = `
+                    <div class="col-md-1">
+                        <input type="checkbox" class="mt-2" id="idUnspsc${item.id}" name="idUnspsc[]" value="${item.id}">
+                    </div>
+                    <div class="col-md-4">
+                        <p>${item.code}</p>
+                    </div>
+                    <div class="col-md-7">
+                        <p>${item.description}</p>
+                    </div>
+                `;
+                unspscList.appendChild(row);
+        
+                // Ajoute un événement de changement (coché/décoché) pour mettre à jour selectedUnspscIds
+                const checkbox = row.querySelector('input[type="checkbox"]');
+                checkbox.addEventListener('change', function () {
+                    if (checkbox.checked) {
+                        // Si la case est cochée, ajoute l'ID à selectedUnspscIds
+                        if (!selectedUnspscIds.includes(item.id)) {
+                            selectedUnspscIds.push(item.id);
+                        }
+                    } else {
+                        // Si la case est décochée, retire l'ID de selectedUnspscIds
+                        selectedUnspscIds = selectedUnspscIds.filter(id => id !== item.id);
+                    }
+                    console.log("Updated selectedUnspscIds: ", selectedUnspscIds);
+                });
             });
         }
+        
+        
+        
+        
+        
         
         
         
