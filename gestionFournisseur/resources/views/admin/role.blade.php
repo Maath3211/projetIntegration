@@ -7,7 +7,7 @@
             data-boundary="viewport" aria-expanded="false">
             <i class="fas fa-user"></i>
         </a>
-        <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
+        <ul id="ulRole" class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
             <li>
                 <form action="{{ route('responsable.listeFournisseur') }}" method="GET" class="px-3 py-2">
                     @csrf
@@ -76,10 +76,10 @@
                             @csrf
                             <li class="list-group-item">
                                 <div class="row">
-                                    <div class="col-12 col-md-6 mb-2 mb-md-0">
+                                    <div class="col-12 col-md-8 mb-2 mb-md-0 email">
                                         <h5 class="mb-1">{{ $responsable->email }}</h5>
                                     </div>
-                                    <div class="col-12 col-md-6 text-md-end">
+                                    <div class="col-12 col-md-4 divRole">
                                         <select id="selectRoles" class="form-control role-select" name="role">
                                             <option value="Commis" {{ $responsable->role == 'Commis' ? 'selected' : '' }}>Commis</option>
                                             <option value="Responsable" {{ $responsable->role == 'Responsable' ? 'selected' : '' }}>Responsable</option>

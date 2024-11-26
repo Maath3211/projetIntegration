@@ -72,10 +72,10 @@
                     <form action="{{ route('responsable.storeResponsable') }}" method="POST">
                         @csrf
 
-                        <input type="text" class="form-control" placeholder="Courriel" name="email" required
+                        <input type="text" class="form-control addEmail" placeholder="Courriel" name="email" required
                             value="{{ old('email') }}">
 
-                        <select id="selectRoles" class="form-control" name="role">
+                        <select id="selectRoles" class="form-control addRoles" name="role">
                             <option value="Commis">Commis</option>
                             <option value="Responsable">Responsable</option>
                             <option value="Gestionnaire">Gestionnaire</option>
