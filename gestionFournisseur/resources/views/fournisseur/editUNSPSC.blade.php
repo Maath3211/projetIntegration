@@ -6,7 +6,7 @@
     <h1>Mise à jour ( UNSPSC )</h1>
 </div>
 <div class="container-fluid" id="edit-unspsc-page">
-    <p id="test" hidden>{{$id}}</p>
+
     <div id="unspsc-data" data-unspsc="{{ json_encode($unspscChamp) }}" style="display:none;"></div>
     <div class="row">
         <div class="col-md-2"></div>
@@ -27,13 +27,16 @@
                         </div>
                         @csrf
                         @method('PATCH')
-                        <div  style="max-height: 400px; overflow-y: auto; border: 1px solid #ddd; padding: 10px;">
-                            <div id="unspsc-list">
-                                {{-- Affichage des exemples initiaux --}}
-                                    @foreach($codes as $code)
-                                    <div class="row item">
-                                        <div class="col-md-1">
-                                            <input type="checkbox" class="mt-2" id="idUnspsc{{ $code->id }}" name="idUnspsc[]" value="{{ $code->id }}" {{ in_array($code->id, $unspscChamp) ? 'checked' : '' }}>
+                        @if (count($codes))
+                        <div class="scroll-container" id="unspsc-items" style="display: none;">
+                        <p id="no-results-message" class="text-muted" style="display: none;">Effectuer une recherche</p>
+                            @foreach($codes as $code)
+                                <div class="item">
+                                    <div class="col-md-1">
+                                        <label for="code" class="titreForm">Code
+                                            <small class="text-danger">*</small>
+                                        </label>
+                                        <input type="checkbox" class="mt-2" id="idUnspsc{{ $code->id }}" name="idUnspsc[]" value="{{ $code->id }}"  {{ in_array($code->id, $unspscChamp) ? 'checked' : '' }}>
                                         </div>
                                         <div class="col-md-4">
                                             <p>{{ $code->code }}</p>
@@ -46,6 +49,7 @@
 
                             </div>
                         </div>
+                        @endif
                         @error('idUnspsc')
                         <span class="text-danger">{{ $message }}
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
@@ -80,11 +84,15 @@
                             <div class="col-md-2">
                             </div>
                         </div>
+                        <input type="checkbox" class="mt-2" id="test2" name="test2" value="[]" checked>
+
                     </form>
                 </div>
             </fieldset>
         </div>
         <div class="col-md-2"></div>
+
+
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.basic.min.js"></script>
