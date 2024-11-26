@@ -17,15 +17,15 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        $this->call(FournisseursSeeder::class);
+        // $this->call(FournisseursSeeder::class);
         // $this->call(UnspscSeeder::class);
-        $this->call(SettingSeeder::class);
+        // $this->call(SettingSeeder::class);
         $this->call(CategorieSeeder::class);
-        $this->call(UserSeeder::class);
-        $this->call(CoordonneSeeder::class);
-        $this->call(ResponsableSeeder::class);
-        $this->call(ModeleSeeder::class);
-
+        // $this->call(UserSeeder::class);
+        // $this->call(CoordonneSeeder::class);
+        // $this->call(ResponsableSeeder::class);
+        // $this->call(ModeleSeeder::class);
+        $this->call(Minimum::class);
         
     }
 }

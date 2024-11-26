@@ -26,17 +26,17 @@ class ContactRequest extends FormRequest
             'prenom' => [
                 'required',
                 'max:32',
-                'regex:/^[a-zA-Z\'\-]+$/'
+                'regex:/^[a-zA-ZÀ-ÿ\'\-]+$/u'
             ],
             'nom' => [
                 'required',
                 'max:32',
-                'regex:/^[a-zA-Z\'\-]+$/'
+                'regex:/^[a-zA-ZÀ-ÿ\'\-]+$/u'
             ],
             'fonction' => [
                 'required',
                 'max:32',
-                'regex:/^[a-zA-Z\s!@#$%^&*(),.?":{}|<>]+$/'
+                'regex:/^[a-zA-ZÀ-ÿ\s!@#$%^&*(),.?":{}|<>]+$/u'
             ],
             'courriel' => [
                 'required',

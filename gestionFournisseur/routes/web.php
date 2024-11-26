@@ -249,6 +249,15 @@ Route::get('/get-template-content', [AdminController::class, 'getModel']);
 Route::POST('/responsable/sauvegarderModeleCourriel',
 [AdminController::class, 'sauvegarderModelCourriel'])->name('responsable.sauvegarderModelCourriel')->middleware('check.role:Administrateur');
 
+Route::GET('/responsable/ajouterModeleCourriel',
+[AdminController::class, 'addModelCourriel'])->name('responsable.addModelCourriel')->middleware('check.role:Administrateur');
+
+Route::POST('/responsable/storeModelCourriel',
+[AdminController::class, 'storeModelCourriel'])->name('responsable.storeModelCourriel')->middleware('check.role:Administrateur');
+
+Route::POST('/responsable/deleteModelCourriel',
+[AdminController::class, 'deleteModelCourriel'])->name('responsable.deleteModelCourriel')->middleware('check.role:Administrateur');
+
 
 # Exportation
 Route::get('/export-csv', [AdminController::class, 'exportCsv'])->name('export.csv');

@@ -12,6 +12,17 @@
     src: url("../fonts/TT-Hoves-Pro-Trial-Medium.ttf");
 }
 
+.bordure {
+	max-width: 600px;
+  }
+  
+.border{
+	box-shadow: 5px 5px!important;
+	border: 5px solid!important;
+	border-radius:20px!important;
+	border-style:outset!important;
+  }
+
 body {
   display: flex;
   flex-direction: column;
@@ -25,9 +36,6 @@ main {
   flex: 1;
 }
 
-.bordure {
-  max-width: 600px;
-}
 
 
 /* NAV-BAR*/
@@ -195,6 +203,7 @@ input::placeholder {
     background-color: #0076d5;
   }
 
+
 /* FOOTER */
 
 footer {                               
@@ -311,5 +320,36 @@ footer {
       margin-left: 10px;
     }
     
+
+
+    .d-flex.align-items-center {
+      flex-direction: column;
+      align-items: flex-start !important;
+      
+  }
+  .form-control.inputCourriel{
+    margin-left: auto;
+    width: 80% !important;
+    /* margin-left: 0; */
+  }
+  .form-control.inputChiffre{
+    margin-left: auto;
+    width: 20% !important;
+    /* margin-left: 0; */
+  }
+  
+  .labelSetting {
+      margin-bottom: 5px;
+  }
+  
+  .form-control {
+      width: 100%;
+  }
+
+  #selectRoles{
+    width: 50%;
+  }
+
+
   }
   

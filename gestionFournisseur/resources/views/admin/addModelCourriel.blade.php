@@ -67,18 +67,12 @@
 
     <div class="container-fluid bordure">
         <fieldset class="border">
-            <form action="{{ route('responsable.sauvegarderModelCourriel') }}" method="post">
+            <form action="{{ route('responsable.storeModelCourriel') }}" method="post">
                 @csrf
-                <label for="model" class="titreForm">Modèle
-                    <small class="text-danger"></small>
-                </label>
-
-                <select id="templateSelect" class="form-control" name="model_courriel">
-                    @foreach ($modelCourriels as $modelCourriel)
-                        <option value="{{ $modelCourriel->id }}">{{ $modelCourriel->nom }}</option>
-                    @endforeach
-                </select>
-
+                <input name="model" placeholder="Nom du modèle"></input>
+                <br>
+                <small class="text-muted">Modification est utilisé pour envoyer des courriels quand un fournisseur modifie sa fiche</small>
+                
                 <div id="templateContent">
                     <label for="sujet">Sujet</label>
                     <textarea name="sujet" id="sujet" cols="50" rows="1"></textarea>
@@ -92,29 +86,7 @@
 
                 <button type="submit" class="btn btn-secondary" id="btAccepter">Sauvegarder</button>
             </form>
-
-            <form action="{{ route('responsable.addModelCourriel') }}" method="get">
-                @csrf
-                <button type="submit" class="btn btn-secondary" id="btAccepter">Ajouter</button>
-            </form>
-
-            <form action="{{ route('responsable.deleteModelCourriel') }}" method="POST">
-                @csrf
-
-                <input id="idDelete" name="id" type="hidden" value="">
-                <button type="submit" class="btn btn-secondary" id="btAccepter">Supprimer</button>
-            </form>
-
         </fieldset>
     </div>
 
-
-
-
-
-
-
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{{ asset('js/modelCourriel.js') }}"></script>
 @endsection

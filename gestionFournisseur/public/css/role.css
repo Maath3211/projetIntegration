@@ -1,24 +1,46 @@
 #selectRoles{
-    width: 30%;
+    width: auto;
+    left: auto;
 }
 
 #formSupprimer{
-    right: 0;
+    right: 0 !important;
+    width: 20%;
 }
 
 .list-group-item {
     display: flex;
-    align-items: center; /* Aligns items vertically */
 
+}
+
+li{
+    width: 100% !important;
 }
 
 #role {
     text-align: center;
     margin: 0 auto;
-    padding-left: 100px; /* Adds space between email and role */
+    padding-left: 100px;
 }
 
+.list-group-item .email {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    
+  }
+  
+  .list-group-item .email h5 {
+    max-width: 100%;
+    overflow-wrap: break-word;
+  }
 
+  .addEmail{
+    margin-bottom: 10px;
+  }
+  .addRoles{
+    margin-bottom: 10px;
+  }
 
 .popup {
     position: fixed;
@@ -39,10 +61,11 @@
     padding-bottom: 2%;
     margin-bottom: 5%;
     border: 1px solid #888;
-    width: 80%;
+    width: 40%;
     max-width: 80%;
     border-radius: 8px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+    
 }
 
 .close-button {
@@ -58,3 +81,27 @@
     text-decoration: none;
     cursor: pointer;
 }
+
+@media (min-width: 1001px) {
+    .role-select{
+        margin-left: auto;
+    }
+  }
+
+@media (max-width: 1000px) {
+  
+    #formSupprimer{
+        right: 0;
+        width: 20%;
+    }
+
+    .popup-content {
+        width: 80%;
+        max-width: 80%;
+    }
+
+    #ulRole{
+        flex-direction: column;
+      align-items: flex-start;
+    }
+  }

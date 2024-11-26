@@ -14,6 +14,7 @@ document
 window.addEventListener("click", function (event) {
     if (event.target == document.getElementById("popup")) {
         document.getElementById("popup").style.display = "none";
+        
     }
 });
 
@@ -27,6 +28,8 @@ function loadPopupContent() {
             console.error("Error loading popup content:", error);
         });
 }
+
+
 // *************************************************************
 
 // Enregistrer role
@@ -49,7 +52,7 @@ function submitForms() {
     changedForms.forEach((form, index) => {
         setTimeout(() => {
             form.submit();
-        }, index * 100);
+        }, index * 300);
     });
 }
 // *************************************************************
