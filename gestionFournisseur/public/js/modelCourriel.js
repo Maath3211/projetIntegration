@@ -10,8 +10,10 @@ $(document).ready(function() {
                 modelId: selectedModelId
             },
             success: function(response) {
+                console.log(response);
                 $('#sujet').text(response.sujet);
                 $('#contenu').text(response.contenu);
+                $('#idDelete').val(response.id);
             },
             error: function(xhr) {
                 console.log('Error loading template:', xhr.responseText);

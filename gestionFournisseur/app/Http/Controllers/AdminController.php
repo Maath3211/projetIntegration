@@ -420,6 +420,7 @@ class AdminController extends Controller
         $modelCourriel = ModelCourriel::findOrFail($modelId);
 
         return response()->json([
+            'id' => $modelCourriel->id,
             'sujet' => $modelCourriel->sujet,
             'contenu' => $modelCourriel->contenu
         ]);
@@ -435,6 +436,28 @@ class AdminController extends Controller
 
         return back();
     }
+
+    public function addModelCourriel(){
+        return view('admin.addModelCourriel');
+    }
+
+    public function storeModelCourriel(ModelCourrielRequest $request){
+        $model = new ModelCourriel();
+        $model->nom = $request->model;
+        $model->sujet = $request->sujet;
+        $model->contenu = $request->contenu;
+        $model->save();
+        return redirect()->route('responsable.afficherModelCourriel');
+    }
+
+    public function deleteModelCourriel(Request $request){
+        $model = ModelCourriel::find($request->id);
+        $model->delete();
+        return redirect()->route('responsable.afficherModelCourriel');
+    }
+
+
+
 
     public function gererResponsable(){
         $responsables = Responsable::get()->sortBy('email')->all();

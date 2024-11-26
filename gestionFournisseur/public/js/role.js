@@ -52,7 +52,7 @@ function submitForms() {
     changedForms.forEach((form, index) => {
         setTimeout(() => {
             form.submit();
-        }, index * 100);
+        }, index * 300);
     });
 }
 // *************************************************************
