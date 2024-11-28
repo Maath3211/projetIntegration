@@ -1392,6 +1392,7 @@ class PortailFournisseurController extends Controller
 
     public function updateFinances(FinanceRequest $request,$id)
     {
+
         $responsable = false;
         // Récupérer l'utilisateur authentifié
         $fournisseur = Fournisseur::find(Auth::id());
@@ -1401,15 +1402,21 @@ class PortailFournisseurController extends Controller
         }
 
         $finances = $fournisseur->finance;
+
+        $finances->tps = $request->tps;
+        $finances->tvq = $request->tvq;
+        $finances->paiement = $request->paiement;
+        $finances->devise = $request->devise;
+        $finances->communication = $request->communication;
         $finances->fill($request->validated()); 
         $finances->save(); 
         $fournisseur->touch();
 
         if($responsable){
-            return redirect()->route('responsable.demandeFournisseurZoom', [$fournisseur->neq])->with('message', 'finance mise à jour avec succès');
+            return redirect()->route('responsable.demandeFournisseurZoom', [$fournisseur->id])->with('message', 'Finance mise à jour avec succès');
         }
         else{
-            return redirect()->route('fournisseur.information')->with('message', 'Licence RBQ mise à jour avec succès');
+            return redirect()->route('fournisseur.information')->with('message', 'Finance mise à jour avec succès');
         }
 
 

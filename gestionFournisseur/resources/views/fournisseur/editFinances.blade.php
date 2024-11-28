@@ -15,7 +15,7 @@
                     <label for="prenom" class="titreForm">Numéro TPS
                         <small class="text-danger">*</small>
                     </label>
-                    <input type="text" class="form-control" id="tps" name="tps" value="{{old('tps', $finances->tps)}}">
+                    <input type="text" class="form-control" id="tps" name="tps" maxlength="9" placeholder="XXXXXXXXX" value="{{ old('tps', $finances->tps) }}">
                     @error('tps')
                     <span class="text-danger">{{ $message }}
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
@@ -30,7 +30,7 @@
                     <label for="prenom" class="titreForm">Numéro TVQ
                         <small class="text-danger">*</small>
                     </label>
-                    <input type="text" class="form-control" id="tvq" name="tvq" value="{{old('tvq', $finances->tvq)}}">
+                    <input type="text" class="form-control" id="tvq" name="tvq" maxlength="16" placeholder="XXXXXXXXXX TQXXXX" value="{{ old('tvq', $finances->tvq) }}">
                     @error('tvq')
                     <span class="text-danger">{{ $message }}
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
@@ -113,4 +113,6 @@
         </fieldset>
     </div>
 </form>
+<script src="{{ asset('js/finances.js') }}"></script>
+
 @endsection
