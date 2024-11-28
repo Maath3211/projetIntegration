@@ -49,7 +49,7 @@
             <div class="d-flex row justify-content-center">
                 <div class="form-group">
                     <button type="submit" name="action" value="save" class="btn btn-secondary">Enregistrer</button>
-                    <button type="submit" name="action" value="add_more" class="btn btn-secondary">Enregistrer et ajouter d'autres</button>
+                    {{-- <button type="submit" name="action" value="add_more" class="btn btn-secondary">Enregistrer et ajouter d'autres</button> --}}
                 </div>
             </div>
         </fieldset>

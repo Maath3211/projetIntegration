@@ -44,6 +44,10 @@ return [
             'driver' => 'session',  // Set the driver for session-based authentication
             'provider' => 'responsables',  // Match with the provider name below
         ],
+        'fournisseurs' => [
+            'driver' => 'session',  // Set the driver for session-based authentication
+            'provider' => 'fournisseurs',  // Match with the provider name below
+        ],
     ],
 
     'providers' => [
@@ -54,6 +58,10 @@ return [
         'responsables' => [
             'driver' => 'eloquent',
             'model' => App\Models\Responsable::class,
+        ],
+        'fournisseurs' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Fournisseur::class,
         ],
     ],
 
@@ -82,6 +90,10 @@ return [
         'responsables' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\Responsable::class),
+        ],
+        'fournisseurs' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Fournisseur::class,
         ],
 
         // 'users' => [

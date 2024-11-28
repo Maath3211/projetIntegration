@@ -44,7 +44,7 @@ class PortailFournisseurController extends Controller
 
      public function loginEmail(ConnexionRequest $request)
      {
-         $reussi = Auth::attempt(['email' => $request->email, 'password' => $request->password]);
+         $reussi = Auth::guard('fournisseurs')->attempt(['email' => $request->email, 'password' => $request->password]);
  
          if ($reussi) 
          {
@@ -59,7 +59,7 @@ class PortailFournisseurController extends Controller
 
     public function loginNeq(ConnexionRequest $request)
     {
-        $reussi = Auth::guard('users')->attempt( ['neq' => $request->neq, 'password' => $request->password]);
+        $reussi = Auth::Guard('fournisseurs')->attempt( ['neq' => $request->neq, 'password' => $request->password]);
 
         if ($reussi) 
         {
@@ -74,7 +74,7 @@ class PortailFournisseurController extends Controller
 
     public function logout(Request $request)
     {
-        Auth::logout();
+        Auth::Guard('fournisseurs')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
@@ -93,7 +93,7 @@ class PortailFournisseurController extends Controller
 
     public function infoLogin()
     {
-        $fournisseur = Auth::user();
+        $fournisseur = Auth::Guard('fournisseurs')->user();
         $numero = $this->formatPhoneNumber($fournisseur->coordonnees->numero);
         $numero2 = $this->formatPhoneNumber($fournisseur->coordonnees->numero2);
         $codePostal = $this->formatPostalCode($fournisseur->coordonnees->codePostal);
@@ -128,7 +128,7 @@ class PortailFournisseurController extends Controller
         {
             $responsable = false;
             $fournisseur = null;
-            $fournisseur = Fournisseur::find(Auth::id());
+            $fournisseur = Fournisseur::find(Auth::Guard('fournisseurs')->id());
     
             if($fournisseur == null){
                 $responsable = true;
@@ -183,7 +183,7 @@ class PortailFournisseurController extends Controller
         {
             $responsable = false;
             $fournisseur = null;
-            $fournisseur = Fournisseur::find(Auth::id());
+            $fournisseur = Fournisseur::find(Auth::Guard('fournisseurs')->id());
 
             if($fournisseur == null){
                 $responsable = true;
@@ -297,7 +297,7 @@ class PortailFournisseurController extends Controller
 
     public function editIdentification($id = null)
     {       
-        $fournisseur = $id ? Fournisseur::findOrFail($id) : Auth::user();
+        $fournisseur = $id ? Fournisseur::findOrFail($id) : Auth::Guard('fournisseurs')->user();
 
         if (!$fournisseur) {
             return redirect()->route('fournisseur.information')->withErrors(['Fournisseur introuvable']);
@@ -314,7 +314,7 @@ class PortailFournisseurController extends Controller
     {
         $responsable = false;
         $fournisseur = null;
-        $fournisseur = Fournisseur::find(Auth::id());
+        $fournisseur = Fournisseur::find(Auth::Guard('fournisseurs')->id());
 
         if($fournisseur == null){
             $responsable = true;
@@ -367,7 +367,7 @@ class PortailFournisseurController extends Controller
 
     public function updatePassword(ResetPasswordRequest $request)
     {
-        $fournisseur = Auth::user();
+        $fournisseur = Auth::Guard('fournisseurs')->user();
         $fournisseur->password = $request->password;
         $fournisseur->save();
 
@@ -504,7 +504,7 @@ class PortailFournisseurController extends Controller
             $villes = [];
         }
 
-        $fournisseur = $id ? Fournisseur::findOrFail($id) : Auth::user();
+        $fournisseur = $id ? Fournisseur::findOrFail($id) : Auth::Guard('fournisseurs')->user();
         if (!$fournisseur) {
             return redirect()->route('fournisseur.information')->withErrors(['Fournisseur introuvable']);
         }
@@ -524,7 +524,7 @@ class PortailFournisseurController extends Controller
     {
         $responsable = false;
         $fournisseur = null;
-        $fournisseur = Fournisseur::find(Auth::id());
+        $fournisseur = Fournisseur::find(Auth::Guard('fournisseurs')->id());
 
         if($fournisseur == null){
             $responsable = true;
@@ -677,7 +677,7 @@ class PortailFournisseurController extends Controller
     public function storeContactCreer($id, ContactRequest $request){
         $responsable = false;
         $fournisseur = null;
-        $fournisseur = Fournisseur::find(Auth::id());
+        $fournisseur = Fournisseur::find(Auth::Guard('fournisseurs')->id());
 
         if($fournisseur == null){
             $responsable = true;
@@ -743,7 +743,7 @@ class PortailFournisseurController extends Controller
         $responsable = false;
         $fournisseur = Fournisseur::find($id);
         $contact = null;
-        $contact = Contact::find(Auth::id());
+        $contact = Contact::find(Auth::Guard('fournisseurs')->id());
 
         if($contact == null){
             $responsable = true;
@@ -842,7 +842,7 @@ class PortailFournisseurController extends Controller
 
     public function editUNSPSC($id)
     {
-        $fournisseur = Auth::user();
+        $fournisseur = Auth::Guard('fournisseurs')->user();
         if($fournisseur == null){
             $fournisseur = Fournisseur::where('id',$id)->first();
         }
@@ -859,7 +859,7 @@ class PortailFournisseurController extends Controller
     {
     
     $responsable = false;
-    $fournisseur = Fournisseur::find(Auth::id());
+    $fournisseur = Fournisseur::find(Auth::Guard('fournisseurs')->id());
     if($fournisseur == null)
     {
         $responsable = true;
@@ -1008,7 +1008,7 @@ class PortailFournisseurController extends Controller
     public function editRBQ(RBQLicence $rbqLicence, $id)
     {
 
-        $fournisseur = Fournisseur::find(Auth::id());
+        $fournisseur = Fournisseur::find(Auth::Guard('fournisseurs')->id());
         if($fournisseur == null){
             $fournisseur = Fournisseur::where('id',$id)->first();
         }
@@ -1053,7 +1053,7 @@ class PortailFournisseurController extends Controller
     {
         $responsable = false;
         // Récupérer l'utilisateur authentifié
-        $fournisseur = Fournisseur::find(Auth::id());
+        $fournisseur = Fournisseur::find(Auth::Guard('fournisseurs')->id());
         if($fournisseur == null){
             $responsable = true;
             $fournisseur = Fournisseur::where('id',$id)->first();
@@ -1276,11 +1276,11 @@ class PortailFournisseurController extends Controller
 
     public function updateImportation($id, Request $request)
     {
- 
+        $return_url = session('return_to');
         if ($request->hasFile('images')) 
         {
             $maxSize = Setting::latest()->first()->tailleMax * 1024;
-
+            
             foreach ($request->file('images') as $key => $image) 
             {
                 try 
@@ -1318,15 +1318,15 @@ class PortailFournisseurController extends Controller
                         'error' => $e->getMessage(),
                         'trace' => $e->getTraceAsString()
                     ]);
-                    return redirect()->route('fournisseur.importation')->withErrors(['error' => 'Erreur lors du téléversement du fichier: ' . $e->getMessage()]);
+                    return redirect($return_url)->withErrors(['error' => 'Erreur lors du téléversement du fichier: ' . $e->getMessage()]);
                 }
             }
-            $return_url = session('return_to');
+            
             session()->forget('return_to');
             return redirect($return_url)->with('message', 'Fichiers importés avec succès.');
         }
 
-            return redirect()->route('fournisseur.importation')->withErrors(['error' => 'Aucun fichier à importer.']);
+            return redirect($return_url)->withErrors(['error' => 'Aucun fichier à importer.']);
         
     }
 
@@ -1363,7 +1363,7 @@ class PortailFournisseurController extends Controller
     public function storeFinances(FinanceRequest $request)
     {
         try {
-            $fournisseur = Auth::user();
+            $fournisseur = Auth::Guard('fournisseurs')->user();
             $leFournisseur = Fournisseur::where('id', $fournisseur->id)->first();
             $finance = new Finance($request->all());
             $finance->fournisseur_id = $fournisseur->id;
@@ -1381,7 +1381,7 @@ class PortailFournisseurController extends Controller
     public function editFinances($id)
     {
 
-        $fournisseur = Fournisseur::find(Auth::id());
+        $fournisseur = Fournisseur::find(Auth::Guard('fournisseurs')->id());
         if($fournisseur == null){
             $fournisseur = Fournisseur::where('id',$id)->first();
         }
@@ -1395,7 +1395,7 @@ class PortailFournisseurController extends Controller
 
         $responsable = false;
         // Récupérer l'utilisateur authentifié
-        $fournisseur = Fournisseur::find(Auth::id());
+        $fournisseur = Fournisseur::find(Auth::Guard('fournisseurs')->id());
         if($fournisseur == null){
             $responsable = true;
             $fournisseur = Fournisseur::where('id',$id)->first();

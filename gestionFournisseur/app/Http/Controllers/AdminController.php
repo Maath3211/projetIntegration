@@ -386,10 +386,14 @@ class AdminController extends Controller
         $template = ModelCourriel::find($request->model_courriel);
        
         if($request->envoyerMessage === "true"){
-            Mail::to($fournisseur->email)->send(new customMail($template, $fournisseur, $request->raisonRefus));
+            // !!! ENLEVER IF !!! //
+            if($fournisseur->email == 'mathys.l.lessard@gmail.com')
+                Mail::to($fournisseur->email)->send(new customMail($template, $fournisseur, $request->raisonRefus));
         }
         else{
-            Mail::to($fournisseur->email)->send(new customMail($template, $fournisseur));
+            // !!! ENLEVER IF !!! //
+            if($fournisseur->email == 'mathys.l.lessard@gmail.com')
+                Mail::to($fournisseur->email)->send(new customMail($template, $fournisseur));
         }
         $fournisseur->save();
         return redirect()->route('responsable.listeFournisseur')->with('message', 'Le fournisseur a été refusé.');

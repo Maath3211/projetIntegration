@@ -36,7 +36,7 @@ Route::POST('/password/update',
 
 #Déconnexion
 Route::POST('/logout',
-[PortailFournisseurController::class,'logout'])->name('fournisseur.logout');
+[PortailFournisseurController::class,'logout'])->name('fournisseur.logout')->middleware('fournisseur');
 
 # InscriptionIdentification
 Route::GET('/inscription',
@@ -138,31 +138,31 @@ Route::POST('/finances/update/{id}',
 
 # Information du fournisseur
 Route::GET('/information',
-[PortailFournisseurController::class,'infoLogin'])->name('fournisseur.information');
+[PortailFournisseurController::class,'infoLogin'])->name('fournisseur.information')->middleware('fournisseur');
 
 # Retirer la fiche fournisseur
 Route::POST('/information/desactive/{id}',
-[PortailFournisseurController::class,'storeDesactive'])->name('fournisseur.storeDesactive');
+[PortailFournisseurController::class,'storeDesactive'])->name('fournisseur.storeDesactive')->middleware('fournisseur');
 
 # Activer la fiche fournisseur
 Route::POST('/information/active/{id}',
-[PortailFournisseurController::class,'storeActive'])->name('fournisseur.storeActive');
+[PortailFournisseurController::class,'storeActive'])->name('fournisseur.storeActive')->middleware('fournisseur');
 
 #Contact page informations
 Route::delete('/contact/supprimer/{id}',
-[PortailFournisseurController::class, 'deleteContact'])->name('fournisseur.deleteContact');
+[PortailFournisseurController::class, 'deleteContact'])->name('fournisseur.deleteContact')->middleware('fournisseur');
 
 Route::GET('/contact/editContact/{id}',
-[PortailFournisseurController::class, 'editContact'])->name('fournisseur.editContact');
+[PortailFournisseurController::class, 'editContact'])->name('fournisseur.editContact')->middleware('fournisseur');
 
 Route::POST('/contact/updateContact/{id}',
-[PortailFournisseurController::class, 'updateContact'])->name('fournisseur.updateContact');
+[PortailFournisseurController::class, 'updateContact'])->name('fournisseur.updateContact')->middleware('fournisseur');
 
 Route::GET('/contact/addContact/{id}',
-[PortailFournisseurController::class, 'addContactCreer'])->name('fournisseur.addContactCreer');
+[PortailFournisseurController::class, 'addContactCreer'])->name('fournisseur.addContactCreer')->middleware('fournisseur');
 
 Route::POST('/contact/storeContactCreer/{id}',
-[PortailFournisseurController::class, 'storeContactCreer'])->name('fournisseur.storeContactCreer');
+[PortailFournisseurController::class, 'storeContactCreer'])->name('fournisseur.storeContactCreer')->middleware('fournisseur');
 
 
 
@@ -189,7 +189,7 @@ Route::POST('/connexion/responsable/email',
 
 # Logout
 Route::POST('/admin/logout',
-[AdminController::class,'logout'])->name('admin.logout');
+[AdminController::class,'logout'])->name('admin.logout')->middleware('check.role:Commis,Gestionnaie,Administrateur');
 
 # Gestion des roles
 
@@ -260,5 +260,5 @@ Route::POST('/responsable/deleteModelCourriel',
 
 
 # Exportation
-Route::get('/export-csv', [AdminController::class, 'exportCsv'])->name('export.csv');
+Route::get('/export-csv', [AdminController::class, 'exportCsv'])->name('export.csv')->middleware('check.role:Commis,Gestionnaie,Administrateur');
 
