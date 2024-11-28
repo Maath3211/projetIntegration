@@ -10,21 +10,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Formatage et validation pour le champ TVQ
     document.getElementById('tvq').addEventListener('input', function () {
-        var input = this.value.replace(/[^0-9TQ ]/g, '').toUpperCase(); // Supprimer tout sauf chiffres, TQ et espaces
+
         var formatted = '';
 
         // Ajouter les 10 premiers chiffres
         if (input.length > 0) {
-            formatted += input.substring(0, 10);
+            formatted = input.substring(0, 20); // Jusqu'à 10 chiffres
         }
-        // Ajouter " TQ" après les 10 premiers chiffres
-        // if (input.length > 10) {
-        //     formatted += ' TQ' + input.substring(10, 14); // Ajouter jusqu'à 4 chiffres après TQ
+        
+        // // Ajouter " TQ" après les 10 premiers chiffres
+        // if (formatted.length === 10) {
+        //     formatted += ' TQ';
         // }
+        
         // Limiter à 16 caractères
         if (formatted.length > 16) {
-            formatted = formatted.substring(0, 16);
+            formatted = formatted.substring(0, 16); // Limiter à 16 caractères
         }
+
         this.value = formatted; // Mettre à jour la valeur
     });
 });

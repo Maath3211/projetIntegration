@@ -297,7 +297,7 @@
 
 
 
-             @if (empty($fournisseur->finance->tps))
+             @if (empty($fournisseur->finance->fournisseur_id))
 
              @else
                 <div class="custom-box">

@@ -116,7 +116,6 @@ class PortailFournisseurController extends Controller
         //     $finance = Finance::where('fournisseur_id', $fournisseur->id)->first();
         // }s
         //dd($unspscFournisseur);
-             
         
         return View('fournisseur.information', compact('fournisseur','rbq','categorie','unspscCollection','unspscFournisseur','numero','numero2','codePostal'));
     }

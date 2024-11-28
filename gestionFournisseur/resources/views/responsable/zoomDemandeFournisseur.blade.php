@@ -399,7 +399,8 @@
                     @endrole
                 </div>
 
-                @if (empty($fournisseur->finance->tps))
+                @if (empty($fournisseur->finance->fournisseur_id))
+                
                 @else
                     <div class="custom-box">
                         <h4>Finances</h4>
