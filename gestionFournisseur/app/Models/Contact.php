@@ -27,6 +27,11 @@ class Contact extends Model
         return $this->belongsTo(Fournisseur::class, 'fournisseur_id');
     }
 
+    public function formatPhoneNumber($number)
+    {
+        return substr($number, 0, 3) . '-' . substr($number, 3, 3) . '-' . substr($number, 6);
+    }
+
     
 
 }

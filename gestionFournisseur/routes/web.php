@@ -141,11 +141,11 @@ Route::GET('/information',
 [PortailFournisseurController::class,'infoLogin'])->name('fournisseur.information')->middleware('fournisseur');
 
 # Retirer la fiche fournisseur
-Route::POST('/information/desactive',
+Route::POST('/information/desactive/{id}',
 [PortailFournisseurController::class,'storeDesactive'])->name('fournisseur.storeDesactive')->middleware('fournisseur');
 
 # Activer la fiche fournisseur
-Route::POST('/information/active',
+Route::POST('/information/active/{id}',
 [PortailFournisseurController::class,'storeActive'])->name('fournisseur.storeActive')->middleware('fournisseur');
 
 #Contact page informations

@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     const options = {
         keys: ['code', 'description'],
-        threshold: 0.3,
+        threshold: 0.1,
     };
     
     const fuse = new Fuse(data, options);

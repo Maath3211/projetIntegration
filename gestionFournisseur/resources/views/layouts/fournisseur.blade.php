@@ -12,7 +12,7 @@
 </head>
 <body>
 <header>
-<a href="/" alt="Accueil du site" title="Accueil du site">
+<a href="{{ route('fournisseur.information') }}" alt="Accueil du site" title="Accueil du site">
     <img src="{{asset('images/logo-v3r-v2.svg')}}" alt="logoV3R" id="logoV3R" class="img-fluid ville">
 </a>
 <nav class="navbar d-flex navbar-inverse">
@@ -47,6 +47,7 @@
             <p>{{ session('message') }}</p>
         </div>
     @endif
+
     <main>
         @yield('contenu')
     </main>

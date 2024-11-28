@@ -42,7 +42,7 @@
                             </td>
                             <td>
                                 @if($fournisseur->coordonnees)
-                                    <div><i class="fas fa-phone"></i> {{ $fournisseur->coordonnees->numero }}</div>
+                                    <div><i class="fas fa-phone"></i> {{ $fournisseur->coordonnees->formatPhoneNumber($fournisseur->coordonnees->numero) }}</div>
                                 @else
                                     <div>N/A</div>
                                 @endif
@@ -51,9 +51,9 @@
                                 @if($fournisseur->contacts->isNotEmpty())
                                     @foreach($fournisseur->contacts as $contact)
                                         <div>
-                                            <i class="fas fa-user"></i> {{ $contact->nom }}, {{ $contact->fonction }}<br>
+                                            <i class="fas fa-user profil"></i> {{ $contact->nom }}, {{ $contact->fonction }}<br>
                                             <i class="fas fa-envelope"></i> {{ $contact->courriel }}<br>
-                                            <i class="fas fa-phone"></i> {{ $contact->telephone }}
+                                            <i class="fas fa-phone"></i> {{ $contact->formatPhoneNumber($contact->telephone) }}
                                         </div>
                                         <hr>
                                     @endforeach

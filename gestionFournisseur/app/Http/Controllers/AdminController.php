@@ -108,15 +108,16 @@ class AdminController extends Controller
     {
         
         Auth::logout();
-        
-        $response = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22munnom%22%20FROM%20%2219385b4e-5503-4330-9e59-f998f5918363%22');
+
+        //Si on veut toutes les villes
+        // $response = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22munnom%22%20FROM%20%2219385b4e-5503-4330-9e59-f998f5918363%22');
     
-        $villes = $response->successful() ? collect($response->json()['result']['records'])->pluck('munnom')->sort()->all() : []; // Sort the cities alphabetically
+        // $villes = $response->successful() ? collect($response->json()['result']['records'])->pluck('munnom')->sort()->all() : []; // Sort the cities alphabetically
     
         $fnAttentes = Fournisseur::get();
         $coordonnees = DB::table('coordonnees')->get();
         $nomRegion = DB::table('coordonnees')->distinct()->pluck('nomRegion');
-        $nomVille = DB::table('coordonnees')->distinct()->pluck('ville');
+        $nomVille = DB::table('coordonnees')->distinct()->orderBy('ville','asc')->pluck('ville');
     
         // Récupérer les unspsc pour chaque fournisseur
         $unspsc = Unspsccode::
@@ -133,7 +134,7 @@ class AdminController extends Controller
         $rbqCategorieIds = $rbq->pluck('idCategorie')->unique();
         $codes = Categorie::whereIn('id', $rbqCategorieIds)->distinct()->get(['codeSousCategorie', 'nom']);
             
-        return view('responsable.listeFournisseur', compact('fnAttentes', 'villes', 'coordonnees', 'codes', 'nomRegion', 'nomVille', 'rbq', 'rbqCategorie', 'unspsc', 'unspscDescription'));
+        return view('responsable.listeFournisseur', compact('fnAttentes', 'coordonnees', 'codes', 'nomRegion', 'nomVille', 'rbq', 'rbqCategorie', 'unspsc', 'unspscDescription'));
     }
 
     public function detailsFournisseurs(Request $request)
@@ -334,7 +335,8 @@ class AdminController extends Controller
         $codePostal = substr($codePostal, 0, 3) . ' ' . substr($codePostal, 3);
         $files = File::where('fournisseur_id', $fournisseur->id)->get();
         $rbq = RBQLicence::where('fournisseur_id', $fournisseur->id)->get()->firstOrFail();
-        $categories = Categorie::where('id', $rbq->idCategorie)->get()->firstOrFail();
+        $categories = Categorie::where('id', $rbq->idCategorie)->first();
+        
         $unspscFournisseur = Unspsccode::where('fournisseur_id', $fournisseur->id)->get();
         $unspscCollection = collect();
         foreach ($unspscFournisseur as $uc) {
@@ -562,7 +564,7 @@ class AdminController extends Controller
             }
     }
 
-    
+
 
 
 }

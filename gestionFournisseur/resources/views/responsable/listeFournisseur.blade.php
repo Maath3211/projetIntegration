@@ -148,7 +148,7 @@
         <label for="cities" class="form-label">Villes</label>
         <select class="form-control mt-4" id="villes" name="villes">
             <option value="">Aucun</option>
-            @foreach ($villes as $ville)
+            @foreach ($nomVille as $ville)
               <option>{{ $ville }}</option>
             @endforeach
         </select>
@@ -174,6 +174,7 @@
                             <th scope="col" hidden>RBQ id</th>
                             <th scope="col" hidden>unspsc</th>
                             <th scope="col">Selectionner</th>
+                            <th scope="col">Information</th>
                         </tr>
                         </thead>
 

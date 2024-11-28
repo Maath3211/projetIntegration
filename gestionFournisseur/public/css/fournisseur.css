@@ -36,6 +36,18 @@ main {
   border-style:outset!important;
 }
 
+.table-responsive {
+  max-height: 700px; 
+  overflow-y: auto; 
+  overflow-x: auto; 
+  border: 1px solid #ddd; 
+  margin-top: 15px; 
+}
+
+
+
+
+
 
 /* NAV-BAR*/
 
@@ -53,7 +65,7 @@ main {
 
 .fa-user{
   font-size: 1.5rem;
-  color: white;
+  color: black;
 }
 
 .uni{
@@ -388,6 +400,10 @@ body.night-mode legend {
 }
 
 body.night-mode td{
+  color: #fff;
+}
+
+body.night-mode .fa-user{
   color: #fff;
 }
 
