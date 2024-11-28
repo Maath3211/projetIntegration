@@ -1,0 +1,1 @@
+4:1: Incorrect string value: '\xEF\xBF\xBDrob...' for column 'typeActivite' at row 1

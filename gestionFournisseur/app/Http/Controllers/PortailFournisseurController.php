@@ -44,7 +44,7 @@ class PortailFournisseurController extends Controller
 
      public function loginEmail(ConnexionRequest $request)
      {
-         $reussi = Auth::attempt(['email' => $request->email, 'password' => $request->password]);
+         $reussi = Auth::guard('fournisseurs')->attempt(['email' => $request->email, 'password' => $request->password]);
  
          if ($reussi) 
          {
@@ -1243,11 +1243,11 @@ class PortailFournisseurController extends Controller
 
     public function updateImportation($id, Request $request)
     {
- 
+        $return_url = session('return_to');
         if ($request->hasFile('images')) 
         {
             $maxSize = Setting::latest()->first()->tailleMax * 1024;
-
+            
             foreach ($request->file('images') as $key => $image) 
             {
                 try 
@@ -1285,15 +1285,15 @@ class PortailFournisseurController extends Controller
                         'error' => $e->getMessage(),
                         'trace' => $e->getTraceAsString()
                     ]);
-                    return redirect()->route('fournisseur.importation')->withErrors(['error' => 'Erreur lors du téléversement du fichier: ' . $e->getMessage()]);
+                    return redirect($return_url)->withErrors(['error' => 'Erreur lors du téléversement du fichier: ' . $e->getMessage()]);
                 }
             }
-            $return_url = session('return_to');
+            
             session()->forget('return_to');
             return redirect($return_url)->with('message', 'Fichiers importés avec succès.');
         }
 
-            return redirect()->route('fournisseur.importation')->withErrors(['error' => 'Aucun fichier à importer.']);
+            return redirect($return_url)->withErrors(['error' => 'Aucun fichier à importer.']);
         
     }
 

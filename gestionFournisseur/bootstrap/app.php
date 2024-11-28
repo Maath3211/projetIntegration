@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\Fournisseur;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -16,6 +17,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'check.role' => CheckRole::class,
             /* 'Administrateur' => CheckRole::class,
             'Commis' => CheckRole::class, */
+        ]);
+        $middleware->alias([
+            'fournisseur' => Fournisseur::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
