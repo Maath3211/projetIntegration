@@ -7,8 +7,8 @@ use Illuminate\Foundation\Http\FormRequest;
 class FinanceRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
-     */
+    * Determine if the user is authorized to make this request.
+    */
     public function authorize(): bool
     {
         return true;
@@ -28,7 +28,7 @@ class FinanceRequest extends FormRequest
             ],
             'tvq' => [
                 'nullable', // Autorise un champ vide
-                'regex:/^\d{10}TQ\d{4}$/' // Valide si contient 10 chiffres, ' TQ', et 4 chiffres
+                'regex:/^\d{10}[tT][qQ]\d{4}$/' // Valide si contient 10 chiffres, ' TQ', et 4 chiffres
             ],
             'paiement' => 'in:Aucune option de paiement,Payable immédiatement sans déduction,Payable immédiatement sans déduction. Date de base au 15 du mois suivant,Dans les 15 jours 2% escompte. dans les 30 jours sans déduction,Après entrée facture jusqu\'au 15 du mois. jusqu\'au 15 du mois suivant,Dans les 15 jours sans déduction,Dans les 30 jours sans déduction,Dans les 45 jours sans déduction,Dans les 60 jours sans déduction,',
             'devise' => 'in:CAD,USD',

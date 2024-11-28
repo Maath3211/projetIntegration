@@ -18,7 +18,7 @@
                     </div>
                     <div class="col-md-4">
                         <input type="text" class="form-control" id="search-input" placeholder="Rechercher un code ou une description...">
-                        <small id="search-message" class="text-muted">Effectuer une recherche</small>
+                        <h1 id="search-message" class="">Effectuer une recherche</h1>
                     </div>
                 </div>
                 <div class="row">
@@ -28,15 +28,20 @@
                         @csrf
                         @method('PATCH')
                         @if (count($codes))
+                    <div class="test">
+                        
                         <div class="scroll-container" id="unspsc-items" style="display: none;">
-                        <p id="no-results-message" class="text-muted" style="display: none;">Effectuer une recherche</p>
+                        <h1 id="no-results-message" class="text-muted RechercheUnspsc"  style="display: none;">Effectuer une recherche</h1>
                             @foreach($codes as $code)
                                 <div class="item">
-                                    <div class="col-md-1">
-                                        <label for="code" class="titreForm">Code
-                                            <small class="text-danger">*</small>
-                                        </label>
-                                        <input type="checkbox" class="mt-2" id="idUnspsc{{ $code->id }}" name="idUnspsc[]" value="{{ $code->id }}"  {{ in_array($code->id, $unspscChamp) ? 'checked' : '' }}>
+                                        <div class="col-md-1">
+                                        <div class="custom-checkbox-container">
+                                            <label for="idUnspsc{{ $code->id }}" class="custom-checkbox-label">
+                                                <input type="checkbox" class="custom-checkbox" id="idUnspsc{{ $code->id }}" name="idUnspsc[]" value="{{ $code->id }}" {{ in_array($code->id, $unspscChamp) ? 'checked' : '' }}>
+                                                <span class="checkbox-custom"></span>
+                                                Code <small class="text-danger">*</small>
+                                            </label>
+                                        </div>
                                         </div>
                                         <div class="col-md-4">
                                             <p>{{ $code->code }}</p>
@@ -46,6 +51,8 @@
                                         </div>
                                     </div>
                                 @endforeach
+                                
+                    </div>
 
                             </div>
                         </div>
