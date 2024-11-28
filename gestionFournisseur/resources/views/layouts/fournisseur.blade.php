@@ -34,7 +34,7 @@
     </div>
 </nav>
 </header>
-
+<!--  MSG d'erreurs lors de la conception
     @if (isset($errors) && $errors->any())
     <div class="alert alert-danger">
         @foreach ($errors->all() as $error)
@@ -47,6 +47,7 @@
             <p>{{ session('message') }}</p>
         </div>
     @endif
+    -->
     <main>
         @yield('contenu')
     </main>
