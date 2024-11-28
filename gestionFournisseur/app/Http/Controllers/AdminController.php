@@ -335,7 +335,8 @@ class AdminController extends Controller
         $codePostal = substr($codePostal, 0, 3) . ' ' . substr($codePostal, 3);
         $files = File::where('fournisseur_id', $fournisseur->id)->get();
         $rbq = RBQLicence::where('fournisseur_id', $fournisseur->id)->get()->firstOrFail();
-        $categories = Categorie::where('id', $rbq->idCategorie)->get()->firstOrFail();
+        $categories = Categorie::where('id', $rbq->idCategorie)->first();
+        
         $unspscFournisseur = Unspsccode::where('fournisseur_id', $fournisseur->id)->get();
         $unspscCollection = collect();
         foreach ($unspscFournisseur as $uc) {
