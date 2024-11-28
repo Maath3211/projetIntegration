@@ -30,6 +30,7 @@
                             <h5>Numéro de licence RBQ
                             </h5>
                             <input type="text" value="{{ $numRBQ ?? old('licenceRBQ') }}" id="search-input" name="licenceRBQ" class="form-control" maxlength="12" placeholder="####-####-##">
+
                             @error('licenceRBQ')
                             <span class="text-danger">{{ $message }}
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
@@ -124,6 +125,7 @@
 
         <div class="col-md-2"></div>
 </div>
-@endsection
 <script src="{{ asset('js/RBQ.js') }}"></script>
+@endsection
+
 

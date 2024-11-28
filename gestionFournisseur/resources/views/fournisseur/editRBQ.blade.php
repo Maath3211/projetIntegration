@@ -108,6 +108,6 @@
                 </form>
             </fieldset>
 </div>
-@endsection
 <script src="{{ asset('js/RBQ.js') }}"></script>
+@endsection
 

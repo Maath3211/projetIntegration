@@ -84,7 +84,7 @@
                             <div class="col-md-2">
                             </div>
                         </div>
-                        <input type="checkbox" class="mt-2" id="test2" name="test2" value="[]" checked>
+
 
                     </form>
                 </div>

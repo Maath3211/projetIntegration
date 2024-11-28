@@ -843,6 +843,7 @@ class PortailFournisseurController extends Controller
         if($fournisseur == null){
             $fournisseur = Fournisseur::where('id',$id)->first();
         }
+        session(['return_to' => url()->previous()]);
 
         $unspscFournisseur = DB::table('unspsccodes')->where('fournisseur_id', $fournisseur->id)->get();
         $unspscDetails= DB::table('unspsccodes')->where('fournisseur_id', $fournisseur->id)->first();
@@ -854,13 +855,17 @@ class PortailFournisseurController extends Controller
     public function updateUNSPSC(UnspscRequest $request, $id)
     {
     
-
+    $responsable = false;
     $fournisseur = Fournisseur::find(Auth::id());
-    if($fournisseur == null){
+    if($fournisseur == null)
+    {
+        $responsable = true;
         $fournisseur = Fournisseur::where('id',$id)->first();
     }
 
     $unspscData = $request->input('idUnspsc', []); 
+
+
 
 
 
@@ -873,6 +878,17 @@ class PortailFournisseurController extends Controller
             $unspsc = Unspsccode::where('fournisseur_id', $fournisseur->id)
                         ->where('idUnspsc', $unspscId)
                         ->first();
+            
+            if($responsable == null)
+            {
+                $template = ModelCourriel::where('nom', 'Modification')->get()->firstOrFail();
+                $emailAppro = Setting::first()->emailAppro;
+                $modification = [
+                ['Details',$unspsc->details, $request->details],
+                ['idUnspsc',$unspsc->idUnspsc, $unspscData],
+                
+            ];
+            }
 
             if ($unspsc) {
                 $unspsc->details = $request->details ?? '';
@@ -890,6 +906,20 @@ class PortailFournisseurController extends Controller
             Unspsccode::where('fournisseur_id', $fournisseur->id)
                 ->whereIn('idUnspsc', $unspscToDelete)
                 ->delete();
+        }
+
+
+        if($responsable){
+            $return_url = session('return_to');
+            session()->forget('return_to');
+            return redirect($return_url)->with('message', 'UNSPSC mise à jour avec succès');
+            
+        }
+        else{
+            $return_url = session('return_to');
+            session()->forget('return_to');
+            Mail::to($emailAppro)->send(new customMail($template, $fournisseur, null, $modification));
+            return redirect($return_url)->with('message', 'UNSPSC mise à jour avec succès');
         }
 
             $fournisseur->touch();

@@ -117,7 +117,7 @@ class AdminController extends Controller
         $fnAttentes = Fournisseur::get();
         $coordonnees = DB::table('coordonnees')->get();
         $nomRegion = DB::table('coordonnees')->distinct()->pluck('nomRegion');
-        $nomVille = DB::table('coordonnees')->distinct()->pluck('ville');
+        $nomVille = DB::table('coordonnees')->distinct()->orderBy('ville','asc')->pluck('ville');
     
         // Récupérer les unspsc pour chaque fournisseur
         $unspsc = Unspsccode::
@@ -560,7 +560,7 @@ class AdminController extends Controller
             }
     }
 
-    
+
 
 
 }
