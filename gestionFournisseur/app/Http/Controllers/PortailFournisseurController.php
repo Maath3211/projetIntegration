@@ -93,7 +93,7 @@ class PortailFournisseurController extends Controller
 
     public function infoLogin()
     {
-        $fournisseur = Auth::user();
+        $fournisseur = Auth::Guard('fournisseurs')->user();
         $numero = $this->formatPhoneNumber($fournisseur->coordonnees->numero);
         $numero2 = $this->formatPhoneNumber($fournisseur->coordonnees->numero2);
         $codePostal = $this->formatPostalCode($fournisseur->coordonnees->codePostal);
