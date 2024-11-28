@@ -118,7 +118,7 @@ class PortailFournisseurController extends Controller
         //dd($unspscFournisseur);
              
         
-        return View('fournisseur.information', compact('fournisseur','rbq','categorie','unspscCollection','unspscFournisseur',   'numero','numero2','codePostal'));
+        return View('fournisseur.information', compact('fournisseur','rbq','categorie','unspscCollection','unspscFournisseur','numero','numero2','codePostal'));
     }
 
 
@@ -142,7 +142,9 @@ class PortailFournisseurController extends Controller
     
             $fournisseur->statut = 'Désactivée';
             $fournisseur->dateStatut = Carbon::now();
-            $files = File::where('fournisseur_id', $id)->get();
+        
+            $files = File::where('fournisseur_id', $fournisseur->id)->get();
+           
             $destination = public_path('images/fournisseurs/');
 
             foreach ($files as $file) 
@@ -182,18 +184,19 @@ class PortailFournisseurController extends Controller
             $responsable = false;
             $fournisseur = null;
             $fournisseur = Fournisseur::find(Auth::id());
-    
+
             if($fournisseur == null){
                 $responsable = true;
-                $fournisseur = Fournisseur::where('id',$id)->first();      
+                $fournisseur = Fournisseur::where('id',$id)->first();
+      
             }
     
             if (!$fournisseur) 
             {
-                return redirect()->route('fournisseur.information')->withErrors(['Fournisseur introuvable']);
+                return redirect()->route('fournisseur.index')->withErrors(['Fournisseur introuvable']);
             }
 
-            $fournisseur = Fournisseur::where('id', $id)->firstOrFail();
+            $fournisseur = Fournisseur::where('id', $fournisseur->id)->firstOrFail();
             $fournisseur->statut = 'Acceptée';
             $fournisseur->dateStatut = Carbon::now();
             $fournisseur->save();
