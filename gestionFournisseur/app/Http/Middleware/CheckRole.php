@@ -19,6 +19,7 @@ class CheckRole
      */
     public function handle(Request $request, Closure $next, ...$roles)
     {
+        
         $user = Auth::guard('responsables')->user();
         if (Auth::guard('responsables')->check() && in_array($user->role, $roles)) {
             return $next($request);
