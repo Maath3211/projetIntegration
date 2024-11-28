@@ -174,6 +174,7 @@
                             <th scope="col" hidden>RBQ id</th>
                             <th scope="col" hidden>unspsc</th>
                             <th scope="col">Selectionner</th>
+                            <th scope="col">Information</th>
                         </tr>
                         </thead>
 
