@@ -243,7 +243,16 @@
                                     Non disponible
                                 @endif
                             </td>
-                            <td><input type="checkbox" class="select-fournisseur" value='{{$fn->id}}'></td>
+                            <td>
+                            <div class="custom-checkbox-container">
+                              <label for="{{$fn->id}}" class="custom-checkbox-label">
+                                  <input type="checkbox" class="select-fournisseur custom-checkbox" value='{{$fn->id}}' id="{{$fn->id}}"> 
+                                  <span class="checkbox-custom"></span>        
+                              </label>
+                            </div>
+
+                            
+                            </td>
         
                             <td>
                                 <a href="{{ route('responsable.demandeFournisseurZoom', $fn->id) }}" class="btn btn-info">

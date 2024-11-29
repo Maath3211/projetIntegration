@@ -22,33 +22,36 @@
     <h1>UNSPSC</h1>
 </div>
 
-<div class="container-fluid" id="unspsc-page">
-    <div class="row">
-        <div class="col-md-2" ></div>
-        <div class="col-md-8">
-            <fieldset>
+<div class="container-fluid bordureUNSPSC" id="unspsc-page">
+            <fieldset class="border">
                 <legend>Produits et services offerts</legend>
                 <div class="row">
                     <div class="col-md-7"></div>
                     <div class="col-md-4">
                         <input type="text" class="form-control" id="search-input" placeholder="Rechercher un code ou une description...">
-                        <small id="search-message" class="text-muted">Effectuer une recherche</small>
+                        <h1 id="search-message" class="">Effectuer une recherche</h1>
                     </div>
                 </div>
                 <div class="row">
                     <form method="POST" action="{{ route('fournisseur.storeUnspsc') }}">
                         @csrf
                         @if (count($codes))
+                    <div class="test">
                         <div class="scroll-container" id="unspsc-items" style="display: none;">
+                        <h1 id="no-results-message" class="text-muted RechercheUnspsc"  style="display: none;">Effectuer une recherche</h1>
+
                             @foreach($codes as $code)
                             <div class="item">
-                                <div class="col-md-1">
-                                    <label for="code" class="titreForm">Code
-                                        <small class="text-danger">*</small>
+                                <div class="col-md-2">
+                                <div class="custom-checkbox-container">
+                                    <label for="idUnspsc{{ $code->id }}" class="custom-checkbox-label">
+                                        <input type="checkbox" class="custom-checkbox" id="idUnspsc{{ $code->id }}" name="idUnspsc[]" value="{{ $code->id }}" {{ in_array($code->id, old('idUnspsc', [])) ? 'checked' : '' }}>
+                                        <span class="checkbox-custom"></span>
+                                        Code <small class="text-danger">*</small>
                                     </label>
-                                    <input type="checkbox" class="mt-2" id="idUnspsc{{ $code->id }}" name="idUnspsc[]" value="{{ $code->id }}" {{ in_array($code->id, old('idUnspsc', [])) ? 'checked' : '' }}>
                                 </div>
-                                <div class="col-md-4">
+                                </div>
+                                <div class="col-md-3">
                                     <p>{{ $code->code }}</p>
                                 </div>
                                 <div class="col-md-7">
@@ -56,6 +59,7 @@
                                 </div>
                             </div>
                             @endforeach
+                        </div>
                         </div>
                         <p id="no-results-message" class="text-muted" style="display: none;">Effectuer une recherche</p>
                     @else
@@ -104,9 +108,7 @@
                     </form>
                 </div>
             </fieldset>
-        </div>
         <div class="col-md-2"></div>
-    </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.basic.min.js"></script>
 <script src="{{ asset('js/UnspscPage.js') }}"></script>

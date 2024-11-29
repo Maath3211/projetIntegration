@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Préparez les données pour Fuse.js
     const data = items.map(item => ({
         element: item,
-        code: item.querySelector('.col-md-4 p').textContent.toLowerCase(),
+        code: item.querySelector('.col-md-3 p').textContent.toLowerCase(),
         description: item.querySelector('.col-md-7 p').textContent.toLowerCase(),
     }));
     

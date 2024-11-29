@@ -5,13 +5,11 @@
 <div class="text-center">
     <h1>Mise à jour ( UNSPSC )</h1>
 </div>
-<div class="container-fluid" id="edit-unspsc-page">
+<div class="container-fluid bordureUNSPSC" id="edit-unspsc-page">
 
     <div id="unspsc-data" data-unspsc="{{ json_encode($unspscChamp) }}" style="display:none;"></div>
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
-            <fieldset>
+
+            <fieldset class="border">
                 <legend>Produits et services offerts</legend>
                 <div class="row">
                     <div class="col-md-7">
@@ -43,7 +41,7 @@
                                             </label>
                                         </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <p>{{ $code->code }}</p>
                                         </div>
                                         <div class="col-md-7">
@@ -96,11 +94,9 @@
                     </form>
                 </div>
             </fieldset>
-        </div>
         <div class="col-md-2"></div>
 
 
-    </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.basic.min.js"></script>
 <script src="{{ asset('js/UnspscPage.js') }}"></script>

@@ -28,6 +28,9 @@ main {
 .bordure {
   max-width: 600px;
 }
+.bordureUNSPSC{
+  max-width: 900px;
+}
 
 .border{
   box-shadow: 5px 5px!important;
@@ -42,6 +45,11 @@ main {
   overflow-x: auto; 
   border: 1px solid #ddd; 
   margin-top: 15px; 
+}
+
+.scroll {
+  max-height: 150px; 
+  overflow-y: auto; 
 }
 
 

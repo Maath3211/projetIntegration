@@ -16,7 +16,7 @@
 @endsection
 @section('contenu')
 <div class="container mt-4">
-    <h2 class="text-center mb-4">Fournisseurs sélectionnés</h2>
+    <h1 class="text-center mb-4">Fournisseurs sélectionnés</h1>
 
     <div class="table-responsive">
         <table class="table table-bordered table-striped table-hover">
@@ -47,8 +47,9 @@
                                     <div>N/A</div>
                                 @endif
                             </td>
-                            <td>
+                            <td >
                                 @if($fournisseur->contacts->isNotEmpty())
+                                <div class="scroll">
                                     @foreach($fournisseur->contacts as $contact)
                                         <div>
                                             <i class="fas fa-user profil"></i> {{ $contact->nom }}, {{ $contact->fonction }}<br>
@@ -57,12 +58,18 @@
                                         </div>
                                         <hr>
                                     @endforeach
+                                </div>
                                 @else
                                     <div>Aucun contact disponible</div>
                                 @endif
                             </td>
                             <td class="text-center">
-                                <input type="checkbox" name="contacted_{{ $fournisseur->id }}" value="1">
+                                <div class="custom-checkbox-container">
+                                <label for="{{$fournisseur->id}}" class="custom-checkbox-label">
+                                    <input type="checkbox" class="custom-checkbox" id="{{$fournisseur->id}}"> 
+                                    <span class="checkbox-custom"></span>        
+                                </label>
+                                </div>
                             </td>
                         </tr>
                     @endforeach
