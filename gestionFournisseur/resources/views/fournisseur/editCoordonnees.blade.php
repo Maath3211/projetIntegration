@@ -139,8 +139,6 @@
                     @enderror
                 </div>
             </div>
-        </fieldset>
-        <fieldset class="fieldset">
             <legend>Téléphone(s)</legend>
             <div class="d-flex row justify-content-center">
                 <div class="form-group">

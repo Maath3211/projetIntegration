@@ -73,6 +73,11 @@ main {
 
 .fa-user{
   font-size: 1.5rem;
+  color: #fff;
+}
+
+.profil{
+  font-size: 1.5rem;
   color: black;
 }
 
@@ -477,6 +482,10 @@ body.night-mode td{
 }
 
 body.night-mode .fa-user{
+  color: rgb(39, 38, 38);
+}
+
+body.night-mode .profil{
   color: #fff;
 }
 
