@@ -25,6 +25,11 @@
     </ul>
 </li>
 @endsection
+@if (session('message'))
+<div class="alert alert-success">
+    <p>{{ session('message') }}</p>
+</div>
+@endif
 @section('contenu')
 <div class="text-center">
     <h1>INFORMATIONS</h1>
