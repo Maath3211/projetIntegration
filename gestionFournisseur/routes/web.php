@@ -155,7 +155,7 @@ Route::POST('/finances/update/{id}',
 
 # Information du fournisseur
 Route::GET('/information',
-[PortailFournisseurController::class,'infoLogin'])->name('fournisseur.information');
+[PortailFournisseurController::class,'infoLogin'])->name('fournisseur.information')->middleware('check.role:fournisseur');
 
 # Retirer la fiche fournisseur
 Route::POST('/information/desactive/{id}',
