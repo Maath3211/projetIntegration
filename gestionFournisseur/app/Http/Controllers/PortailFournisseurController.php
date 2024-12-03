@@ -881,13 +881,13 @@ class PortailFournisseurController extends Controller
             
             if($responsable == null)
             {
-                $template = ModelCourriel::where('nom', 'Modification')->get()->firstOrFail();
-                $emailAppro = Setting::first()->emailAppro;
-                $modification = [
-                ['Details',$unspsc->details, $request->details],
-                ['idUnspsc',$unspsc->idUnspsc, $unspscData],
+            //     $template = ModelCourriel::where('nom', 'Modification')->get()->firstOrFail();
+            //     $emailAppro = Setting::first()->emailAppro;
+            //     $modification = [
+            //     ['Details',$unspsc->details, $request->details],
+            //     ['idUnspsc',$unspsc->idUnspsc, $unspscData],
                 
-            ];
+            // ];
             }
 
             if ($unspsc) {
@@ -910,20 +910,19 @@ class PortailFournisseurController extends Controller
 
 
         if($responsable){
-            $return_url = session('return_to');
-            session()->forget('return_to');
-            return redirect($return_url)->with('message', 'UNSPSC mise à jour avec succès');
             
+            return redirect()->route('responsable.demandeFournisseurZoom', $fournisseur->id )->with('message', "Enregistré!");
+            $fournisseur->touch();
+
         }
         else{
-            $return_url = session('return_to');
-            session()->forget('return_to');
-            Mail::to($emailAppro)->send(new customMail($template, $fournisseur, null, $modification));
-            return redirect($return_url)->with('message', 'UNSPSC mise à jour avec succès');
+
+            //Mail::to($emailAppro)->send(new customMail($template, $fournisseur, null, $modification));
+
         }
 
-            $fournisseur->touch();
             return redirect()->route('fournisseur.information')->with('message', 'Codes UNSPSC mis à jour avec succès!');
+            $fournisseur->touch();
         } catch (\Throwable $e) {
             Log::error($e);
             return redirect()->route('fournisseur.UNSPSC.edit',[$fournisseur->id])->withErrors(['Erreur lors de la mise à jour des codes UNSPSC']);
@@ -1091,18 +1090,15 @@ class PortailFournisseurController extends Controller
             // Rediriger avec un message de succès
 
             if($responsable){
-                $return_url = session('return_to');
-                session()->forget('return_to');
-                return redirect($return_url)->with('message', 'Licence RBQ mise à jour avec succès');
+                return redirect()->route('responsable.demandeFournisseurZoom', $fournisseur->id )->with('message', "Enregistré!");
             }
             else{
-                $return_url = session('return_to');
-                session()->forget('return_to');
-                Mail::to($emailAppro)->send(new customMail($template, $fournisseur, null, $modification));
-                return redirect($return_url)->with('message', 'Licence RBQ mise à jour avec succès');
+                //Mail::to($emailAppro)->send(new customMail($template, $fournisseur, null, $modification));
             }
+
+            return redirect()->route('fournisseur.information')->with('message', 'Codes UNSPSC mis à jour avec succès!');
         } catch (\Throwable $e) {
-            // En cas d'erreur, enregistrer l'exception dans les logs et rediriger avec une erreur
+
             Log::debug($e);
             return redirect()->route('fournisseur.RBQ.edit')->withErrors(['Erreur lors de la mise à jour de la licence RBQ']);
         }
@@ -1383,6 +1379,9 @@ class PortailFournisseurController extends Controller
             $fournisseur = Fournisseur::where('id',$id)->first();
         }
         $finances = $fournisseur->finance;
+
+
+
 
         return view('fournisseur.editFinances', compact('finances'));
     }

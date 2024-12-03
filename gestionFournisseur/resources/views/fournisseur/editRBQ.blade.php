@@ -30,7 +30,7 @@
                             </h5>
                             <select class="form-control" name="statut">
                                 <option value="Aucun" {{ $typeLicence == 'Aucun' ? 'selected' : '' }}>Aucun</option>
-                                <option value="Valide" {{ $rbq->statut == 'Active' ? 'selected' : '' }}>Valide</option>
+                                <option value="Valide" {{ $rbq->statut == 'Valide' ? 'selected' : '' }}>Valide</option>
                                 <option value="Valide avec restriction" {{ $rbq->statut == 'Valide avec restriction' ? 'selected' : '' }}>Valide avec restriction</option>
                                 <option value="Non valide" {{ $rbq->statut == 'Non valide' ? 'selected' : '' }}>Non valide</option>
                             </select>
