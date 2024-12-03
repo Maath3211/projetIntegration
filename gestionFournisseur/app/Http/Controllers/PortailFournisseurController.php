@@ -144,11 +144,9 @@ class PortailFournisseurController extends Controller
         
             $files = File::where('fournisseur_id', $fournisseur->id)->get();
            
-            $destination = public_path('images/fournisseurs/');
-
             foreach ($files as $file) 
             {
-                $filePath = $destination . $file->nomFichier;
+                $filePath = public_path($file->lienFichier);
 
                 if (file_exists($filePath)) 
                 {
