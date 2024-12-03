@@ -429,6 +429,11 @@ li {
     padding: 0;
     cursor: pointer;
 }
+
+.msgCour {
+  color:#007bff;
+  font-size: 20px;
+}
   /*MODE-NUIT*/
 
 .night-mode-toggle {
@@ -443,6 +448,7 @@ body.night-mode {
   background-color: rgb(39, 38, 38);
   color: #fff;
 }
+
 
 body.night-mode .custom-box {
   border-color: #fff;
