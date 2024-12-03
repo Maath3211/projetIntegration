@@ -52,8 +52,20 @@ main {
   overflow-y: auto; 
 }
 
+/* Parametre */
+.inputChiffre {
+  margin-left: auto;
+  width: 12% !important;
+}
 
+.inputCourriel {
+  margin-left: auto;
+  width: 50% !important;
+}
 
+.labelSetting{
+width: auto;
+}
 
 
 
@@ -498,6 +510,9 @@ body.night-mode .profil{
 body.night-mode .filter-section{
   border-color: #fff;
 }
+body.night-mode .math{
+  color:black;
+}
 
   /*MEDIA*/
   
@@ -526,6 +541,33 @@ body.night-mode .filter-section{
   aside  {
     margin-left: 10px;
   }
+
+  /* Paramètre */
+  .d-flex.align-items-center {
+    flex-direction: column;
+    align-items: flex-start !important;
+    
+}
+.form-control.inputCourriel{
+  width: 90% !important;
+  margin-left: 0;
+}
+.form-control.inputChiffre{
+  width: 20% !important;
+  margin-left: 0;
+}
+
+.labelSetting {
+    margin-bottom: 5px;
+}
+
+.form-control {
+    width: 100%;
+}
+
+#selectRoles{
+  width: 50%;
+}
 }
 
 .divContactForm{

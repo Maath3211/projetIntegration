@@ -203,7 +203,7 @@
             </div>
 
             <div class="custom-box">
-                <h4>Adresse</h4>
+                <h4>Coordonnées</h4>
                 <p>{{ $coordonnees->noCivic }}, rue {{ $coordonnees->rue }},
                     {{ $coordonnees->bureau }}<br>{{ $coordonnees->ville }} ({{ $coordonnees->province }})
                     {{ $codePostal }}</p>

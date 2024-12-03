@@ -74,6 +74,7 @@ class AdminController extends Controller
                 if(!$courrielEnvoye){
                     foreach ($responsables as $responsable) 
                     {
+                        // !!! Enlever if !!! //
                         if ($responsable->email == 'mathys.lessard.02@edu.cegeptr.qc.ca' || $responsable->email == 'simon.beaulieu.04@edu.cegeptr.qc.ca') 
                         {
                             // !!! CHANGER TEMPLATE !!! //
@@ -433,15 +434,20 @@ class AdminController extends Controller
         ]);
     }
 
-    public function saveModelCourriel(ModelCourrielRequest $request)
+    public function sauvegarderModelCourriel(ModelCourrielRequest $request)
     {
-        $model = ModelCourriel::where('id', $request->model_courriel)->get()->firstOrFail();
+        try{
+            $model = ModelCourriel::where('id', $request->model_courriel)->get()->firstOrFail();
 
-        $model->sujet = $request->sujet;
-        $model->contenu = $request->contenu;
-        $model->save();
-
-        return back();
+            $model->sujet = $request->sujet;
+            $model->contenu = $request->contenu;
+            $model->save();
+            return back()->with('message', 'Modèle de couriel sauvegarder avec succès');
+        }
+        catch (\Throwable $e) {
+            Log::debug($e);
+            return back()->withErrors(['Erreur lors de la sauvegarde']);
+        }
     }
 
     public function addModelCourriel(){

@@ -64,9 +64,11 @@
 @section('contenu')
     <link rel="stylesheet" href="{{ asset('css/modelCourriel.css') }}">
 
-
+    
     <div class="container-fluid bordure">
+        
         <fieldset class="border">
+            <h1 class="text-center">Modèle de courriel</h1>
             <form action="{{ route('responsable.sauvegarderModelCourriel') }}" method="post">
                 @csrf
                 <label for="model" class="titreForm">Modèle
