@@ -1,7 +1,7 @@
 @role(['Commis', 'Gestionnaire', 'Administrateur'])
-
-    @extends('layouts.fournisseur')
-    @section('title', 'Informations')
+<link rel="stylesheet" href="{{ asset('css/zoomDemandeFournisseur.css') }}">
+@extends('layouts.layoutAdmin')
+@section('title', 'Informations')
 @section('navbar')
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="userMenu" role="button" data-bs-toggle="dropdown"

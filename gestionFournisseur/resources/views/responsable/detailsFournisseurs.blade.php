@@ -1,4 +1,4 @@
-@extends('layouts.fournisseur')
+@extends('layouts.layoutAdmin')
 @section('navbar')
 <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" href="#" id="userMenu" role="button" data-bs-toggle="dropdown" data-boundary="viewport" aria-expanded="false">

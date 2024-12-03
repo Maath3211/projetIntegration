@@ -1,4 +1,4 @@
-@extends('layouts.fournisseur')
+@extends('layouts.layoutAdmin')
 @section('title', 'Roles')
 <link rel="stylesheet" href="{{ asset('css/role.css') }}">
 @section('navbar')

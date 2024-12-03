@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="{{ asset('css/listeFournisseur.css') }}">
-@extends('layouts.fournisseur')
+@extends('layouts.layoutAdmin')
 @section('title', "Info Fournisseurs")
 @section('navbar')
 <li class="nav-item dropdown">

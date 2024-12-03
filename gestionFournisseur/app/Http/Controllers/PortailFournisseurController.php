@@ -144,11 +144,9 @@ class PortailFournisseurController extends Controller
         
             $files = File::where('fournisseur_id', $fournisseur->id)->get();
            
-            $destination = public_path('images/fournisseurs/');
-
             foreach ($files as $file) 
             {
-                $filePath = $destination . $file->nomFichier;
+                $filePath = public_path($file->lienFichier);
 
                 if (file_exists($filePath)) 
                 {
@@ -196,7 +194,7 @@ class PortailFournisseurController extends Controller
             }
 
             $fournisseur = Fournisseur::where('id', $fournisseur->id)->firstOrFail();
-            $fournisseur->statut = 'Acceptée';
+            $fournisseur->statut = 'En attente';
             $fournisseur->dateStatut = Carbon::now();
             $fournisseur->save();
             $fournisseur->touch();
@@ -1427,6 +1425,10 @@ class PortailFournisseurController extends Controller
 
     private function formatPhoneNumber($number)
     {
+        if (empty($number)) 
+        {
+            return null;
+        }  
         return substr($number, 0, 3) . '-' . substr($number, 3, 3) . '-' . substr($number, 6);
     }
 

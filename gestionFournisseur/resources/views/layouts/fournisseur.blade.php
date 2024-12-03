@@ -18,7 +18,7 @@
 <nav class="navbar d-flex navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="/" alt="Accueil du site" title="Accueil du site">
+            <a class="navbar-brand" href="{{ route('fournisseur.information') }}" alt="Accueil du site" title="Accueil du site">
                 <span class="brand-uni uni">uni</span><span class="brand-v3r uni">.v3r.net</span>
             </a>
             <button class="night-mode-toggle" onclick="toggleNightMode()">
@@ -34,20 +34,6 @@
     </div>
 </nav>
 </header>
-
-    @if (isset($errors) && $errors->any())
-    <div class="alert alert-danger">
-        @foreach ($errors->all() as $error)
-            <p>{{ $error }}</p>
-        @endforeach
-    </div>
-    @endif
-    @if (session('message'))
-        <div class="alert alert-success">
-            <p>{{ session('message') }}</p>
-        </div>
-    @endif
-
     <main>
         @yield('contenu')
     </main>
@@ -71,7 +57,7 @@
 		<div>
             <div>
                 <aside>
-                    <a href="/" alt="Accueil du site" title="Accueil du site">
+                    <a href="{{ route('fournisseur.information') }}" alt="Accueil du site" title="Accueil du site">
                         <img src="{{asset('images/logo-v3r-v2.svg')}}" alt="logoV3R" id="logoV3RFooter" class="img-fluid ville">  
                     </a>
                 </aside>
@@ -90,10 +76,26 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 <script>
-    function toggleNightMode()
-    {
-        document.body.classList.toggle('night-mode');
-    }
+    document.addEventListener('DOMContentLoaded', () => {
+        const body = document.body;
+        if (localStorage.getItem('nightMode') === 'enabled') 
+        {
+            body.classList.add('night-mode');
+        }
+        window.toggleNightMode = () => 
+        {
+            if (body.classList.contains('night-mode')) 
+            {
+                body.classList.remove('night-mode');
+                localStorage.setItem('nightMode', 'disabled');
+            } 
+            else 
+            {
+                body.classList.add('night-mode');
+                localStorage.setItem('nightMode', 'enabled');
+            }
+        };
+    });
 </script>
 </body>
 </html>
