@@ -549,14 +549,12 @@ body.night-mode .math{
     
 }
 .form-control.inputCourriel{
-  margin-left: auto;
-  width: 80% !important;
-  /* margin-left: 0; */
+  width: 90% !important;
+  margin-left: 0;
 }
 .form-control.inputChiffre{
-  margin-left: auto;
   width: 20% !important;
-  /* margin-left: 0; */
+  margin-left: 0;
 }
 
 .labelSetting {

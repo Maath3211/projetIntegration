@@ -3,7 +3,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-10 offset-md-1 col-12">
-            <h2 class="my-4">Liste employés</h2>
+            <h1 class="my-4 text-center">Liste employés</h1>
             <ul class="list-group">
                 @foreach ($responsables as $responsable)
                     <li class="list-group-item d-flex flex-column">

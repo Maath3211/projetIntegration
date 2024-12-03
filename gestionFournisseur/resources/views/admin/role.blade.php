@@ -68,7 +68,7 @@
         <fieldset class="border">
             <div class="row">
                 <div class="col-md-12 col-12 ">
-                    <h2 class="my-4">Liste employés</h2>
+                    <h1 class="my-4 text-center">Liste employés</h1>
 
                     <ul class="list-group">
                         @foreach ($responsables as $responsable)

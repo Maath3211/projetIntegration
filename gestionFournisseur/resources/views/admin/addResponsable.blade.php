@@ -68,7 +68,7 @@
         <fieldset class="border">
             <div class="row">
                 <div class="col-md-6 offset-md-3 col-10 offset-1">
-                    <h2 class="my-4">Ajout d'un employé</h2>
+                    <h1 class="my-4">Ajout d'un employé</h1>
                     <form action="{{ route('responsable.storeResponsable') }}" method="POST">
                         @csrf
 
