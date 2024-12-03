@@ -666,7 +666,6 @@ class PortailFournisseurController extends Controller
     }
 
     public function addContactCreer($id){
-        session(['return_to' => url()->previous()]);
         $fournisseur = Fournisseur::where('id', $id)->firstOrFail();
         return view('fournisseur.ajoutContactCreer', compact('fournisseur'));
     }
@@ -714,13 +713,14 @@ class PortailFournisseurController extends Controller
                 ['Poste téléphonique', '', $request->poste],
             ];
             Mail::to($emailAppro)->send(new customMail($template, $fournisseur, null, $modification));
+                return redirect()->route('fournisseur.information')->with('message', "Enregistré!");
             }
-            
+            else
+            return redirect()->route('responsable.demandeFournisseurZoom', [$fournisseur->id])->with('message', "Enregistré!");
 
         
-        $return_url = session('return_to');
-        session()->forget('return_to');
-        return redirect($return_url);
+        
+        
     }catch (\Throwable $e) {
         Log::debug($e);
         return Redirect::back()->withInput()->withErrors(['Erreur interne']);
@@ -729,7 +729,6 @@ class PortailFournisseurController extends Controller
 
     public function editContact($id)
     {
-        session(['return_to' => url()->previous()]);
         $contact = Contact::where('id', $id)->get()->firstOrFail();
         
         return view('fournisseur.editContact', compact('contact'));
@@ -742,17 +741,16 @@ class PortailFournisseurController extends Controller
         $contact = null;
         $contact = Contact::find(Auth::Guard('fournisseurs')->id());
 
-        if($contact == null){
+        if($fournisseur == null){
             $responsable = true;
             $contact = Contact::where('id',$id)->first();  
         }
         
 
         try {
-            $return_url = session('return_to');
             if (!$contact) 
         {
-            return redirect($return_url)->withErrors(['Fournisseur introuvable']);
+            return redirect()->route('responsable.demandeFournisseurZoom', [$fournisseur->id])->withErrors(['Fournisseur introuvable']);
         }
             $contact = Contact::where('id', $id)->get()->firstOrFail();
 
@@ -781,10 +779,8 @@ class PortailFournisseurController extends Controller
 
             $contact->save();
 
-            if($responsable)
-            {
-                session()->forget('return_to');
-                return redirect($return_url)->with('message', 'Coordonnées à jour');
+            if($responsable){
+            return redirect()->route('responsable.demandeFournisseurZoom', [$contact->fournisseur_id])->with('message', "Enregistré!");
             }
             else
             {
@@ -1262,14 +1258,19 @@ class PortailFournisseurController extends Controller
 
     public function editImportation($id)
     {
-        session(['return_to' => url()->previous()]);
         $fournisseur = Fournisseur::find($id);
         return view('fournisseur.editImportation', compact('fournisseur'));
     }
 
     public function updateImportation($id, Request $request)
     {
-        $return_url = session('return_to');
+        $responsable = false;
+        $fournisseur = Auth::Guard('fournisseurs')->check();
+
+        if($fournisseur == null){
+            $responsable = true;
+        }
+
         if ($request->hasFile('images')) 
         {
             $maxSize = Setting::latest()->first()->tailleMax * 1024;
@@ -1311,15 +1312,32 @@ class PortailFournisseurController extends Controller
                         'error' => $e->getMessage(),
                         'trace' => $e->getTraceAsString()
                     ]);
-                    return redirect($return_url)->withErrors(['error' => 'Erreur lors du téléversement du fichier: ' . $e->getMessage()]);
+                    if($responsable){
+                        return redirect()->route('responsable.demandeFournisseurZoom', [$contact->fournisseur_id])->withErrors(['error' => 'Erreur lors du téléversement du fichier: ' . $e->getMessage()]);
+                        }
+                        else
+                        {
+                            return redirect()->route('fournisseur.information')->withErrors(['error' => 'Erreur lors du téléversement du fichier: ' . $e->getMessage()]);;
+                        }
                 }
             }
             
-            session()->forget('return_to');
-            return redirect($return_url)->with('message', 'Fichiers importés avec succès.');
+            if($responsable){
+                return redirect()->route('responsable.demandeFournisseurZoom', [$contact->fournisseur_id])->with('message', "Fichiers importés avec succès.");
+                }
+                else
+                {
+                    return redirect()->route('fournisseur.information')->with('message', 'Fichiers importés avec succès.');
+                }
         }
 
-            return redirect($return_url)->withErrors(['error' => 'Aucun fichier à importer.']);
+        if($responsable){
+            return redirect()->route('responsable.demandeFournisseurZoom', [$contact->fournisseur_id])->withErrors(['error' => 'Aucun fichier à importer']);
+            }
+            else
+            {
+                return redirect()->route('fournisseur.information')->withErrors(['error' => 'Aucun fichier à importer']);;
+            }
         
     }
 

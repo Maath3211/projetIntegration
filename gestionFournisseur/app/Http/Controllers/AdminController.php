@@ -74,6 +74,7 @@ class AdminController extends Controller
                 if(!$courrielEnvoye){
                     foreach ($responsables as $responsable) 
                     {
+                        // !!! Enlever if !!! //
                         if ($responsable->email == 'mathys.lessard.02@edu.cegeptr.qc.ca' || $responsable->email == 'simon.beaulieu.04@edu.cegeptr.qc.ca') 
                         {
                             // !!! CHANGER TEMPLATE !!! //
