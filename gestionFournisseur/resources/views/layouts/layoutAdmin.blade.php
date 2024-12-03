@@ -88,10 +88,26 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 <script>
-    function toggleNightMode()
-    {
-        document.body.classList.toggle('night-mode');
-    }
+    document.addEventListener('DOMContentLoaded', () => {
+        const body = document.body;
+        if (localStorage.getItem('nightMode') === 'enabled') 
+        {
+            body.classList.add('night-mode');
+        }
+        window.toggleNightMode = () => 
+        {
+            if (body.classList.contains('night-mode')) 
+            {
+                body.classList.remove('night-mode');
+                localStorage.setItem('nightMode', 'disabled');
+            } 
+            else 
+            {
+                body.classList.add('night-mode');
+                localStorage.setItem('nightMode', 'enabled');
+            }
+        };
+    });
 </script>
 </body>
 </html>
