@@ -1427,6 +1427,10 @@ class PortailFournisseurController extends Controller
 
     private function formatPhoneNumber($number)
     {
+        if (empty($number)) 
+        {
+            return null;
+        }  
         return substr($number, 0, 3) . '-' . substr($number, 3, 3) . '-' . substr($number, 6);
     }
 
