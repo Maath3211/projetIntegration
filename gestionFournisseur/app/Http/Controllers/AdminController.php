@@ -335,6 +335,7 @@ class AdminController extends Controller
         $codePostal = substr($codePostal, 0, 3) . ' ' . substr($codePostal, 3);
         $files = File::where('fournisseur_id', $fournisseur->id)->get();
         $rbq = RBQLicence::where('fournisseur_id', $fournisseur->id)->get()->firstOrFail();
+        $AffichageLicence = $this->formatLicenceNumber($rbq->licenceRBQ);
         $categories = Categorie::where('id', $rbq->idCategorie)->first();
         
         $unspscFournisseur = Unspsccode::where('fournisseur_id', $fournisseur->id)->get();
@@ -350,7 +351,7 @@ class AdminController extends Controller
             $fournisseur->raisonRefus = Crypt::decryptString($fournisseur->raisonRefus);
 
 
-        return view('responsable.zoomDemandeFournisseur', compact('fournisseur', 'modelCourriels', 'contacts', 'coordonnees', 'files', 'rbq', 'categories', 'unspscFournisseur', 'unspscCollection','numero','numero2','codePostal'));
+        return view('responsable.zoomDemandeFournisseur', compact('fournisseur', 'AffichageLicence' ,'modelCourriels', 'contacts', 'coordonnees', 'files', 'rbq', 'categories', 'unspscFournisseur', 'unspscCollection','numero','numero2','codePostal'));
     }
 
     public function accepterFournisseur($fournisseur)
@@ -564,6 +565,18 @@ class AdminController extends Controller
             }
     }
 
+
+
+    /* FUNCTION */
+
+    private function formatLicenceNumber($number)
+    {
+        if (empty($number)) 
+        {
+            return null;
+        }
+        return substr($number, 0, 4) . '-' . substr($number, 4, 4) . '-' . substr($number, 8);
+    }
 
 
 

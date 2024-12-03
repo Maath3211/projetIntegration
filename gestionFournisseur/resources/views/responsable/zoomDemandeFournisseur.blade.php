@@ -410,7 +410,7 @@
 
             <div class="custom-box">
                 <h4>Licence RBQ</h4>
-                <p>{{ $rbq->licenceRBQ }} – {{ $rbq->typeLicence }}</p>
+                <p>{{ $AffichageLicence }} – {{ $rbq->typeLicence }}</p>
                 <p><span><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                             class="bi bi-check-circle-fill info" viewBox="0 0 16 16">
                             <path

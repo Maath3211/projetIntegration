@@ -20,6 +20,7 @@ const searchButton = document.querySelector('.search-button');
 const unspscSelect = document.querySelector('#unspsc');
 const rbqSelect = document.querySelector('#rbq');
 const citySelect = document.querySelector('#villes');
+const regionSelect = document.querySelector('#regions');
 
 // Function to filter table rows based on all active filters
 function filterTable() {
@@ -53,6 +54,7 @@ function filterTable() {
   const selectedUnspsc = Array.from(unspscSelect.selectedOptions).map(option => option.value);
   const selectedRbq = Array.from(rbqSelect.selectedOptions).map(option => option.value);
   const selectedCity = citySelect.value;
+  const selectedRegion = regionSelect.value.toLowerCase();
 
   // Now filter the visible rows based on other filters
   rowsToDisplay.forEach(row => {
@@ -60,6 +62,8 @@ function filterTable() {
     const cityCell = cells[4].textContent.trim(); // Column index for city cell
     const unspscCell = cells[6].textContent.toLowerCase(); // Column index for UNSPSC cell
     const rbqCell = cells[5].textContent.toLowerCase(); // Column index for RBQ cell
+    const regionCell = cells[8].textContent.toLowerCase(); // Assuming region is stored in data-region
+
 
     // Check if row matches search term
     const searchMatch = searchTerm === "" || Array.from(cells).some(cell => cell.textContent.toLowerCase().includes(searchTerm));
@@ -73,8 +77,10 @@ function filterTable() {
     // Check if row matches city selection (skip filter if "Aucun" selected)
     const cityMatch = selectedCity === "" || cityCell === selectedCity;
 
+    const regionMatch = selectedRegion === "" || regionCell === selectedRegion;
+    console.log(regionCell + '   ' + selectedRegion);
     // Show row if all conditions are met
-    row.style.display = (searchMatch && unspscMatch && rbqMatch && cityMatch) ? '' : 'none';
+    row.style.display = (searchMatch && unspscMatch && rbqMatch && cityMatch && regionMatch) ? '' : 'none';
   });
 }
 
@@ -86,6 +92,7 @@ searchButton.addEventListener('click', filterTable);
 unspscSelect.addEventListener('change', filterTable);
 rbqSelect.addEventListener('change', filterTable);
 citySelect.addEventListener('change', filterTable);
+regionSelect.addEventListener('change', filterTable);
 
 // Attach event listeners to the status checkboxes
 document.querySelector('#pending').addEventListener('change', filterTable);
