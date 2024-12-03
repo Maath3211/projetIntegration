@@ -19,12 +19,13 @@ class CheckRole
      */
     public function handle(Request $request, Closure $next, ...$roles)
     {
-        
+
+        $fournisseur = Auth::guard('fournisseurs')->check();
         $user = Auth::guard('responsables')->user();
-        if (Auth::guard('responsables')->check() && in_array($user->role, $roles)) {
+        if (($fournisseur && $roles == 'fournisseur' || (Auth::guard('responsables')->check() && in_array($user->role, $roles)))) {
             return $next($request);
         }
-        
-        return redirect()->route('responsable.index');
+
+        return redirect()->route('fournisseur.index');
     }
 }
