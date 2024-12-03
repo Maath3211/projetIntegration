@@ -133,7 +133,7 @@
       </div>
 
       <!-- Administrative regions section -->
-      {{-- <div class="col-md-3 col-12 mb-3">
+      <div class="col-md-3 col-12 mb-3">
         <label for="regions" class="form-label">Régions administratives</label>
         <select id="regions" name="regions" class="form-select">
           <option value="">Aucun</option>
@@ -141,7 +141,7 @@
           <option>{{ $coo }}</option>
           @endforeach
         </select>
-      </div> --}}
+      </div>
 
       <!-- Cities section -->
       <div class="col-md-3 col-12 mb-3">
@@ -243,16 +243,20 @@
                                     Non disponible
                                 @endif
                             </td>
-                            <td>
-                            <div class="custom-checkbox-container">
-                              <label for="{{$fn->id}}" class="custom-checkbox-label">
-                                  <input type="checkbox" class="select-fournisseur custom-checkbox" value='{{$fn->id}}' id="{{$fn->id}}"> 
-                                  <span class="checkbox-custom"></span>        
-                              </label>
-                            </div>
 
-                            
+                            <td>
+                              <div class="custom-checkbox-container">
+                                <label for="{{$fn->id}}" class="custom-checkbox-label">
+                                    <input type="checkbox" class="select-fournisseur custom-checkbox" value='{{$fn->id}}' id="{{$fn->id}}"> 
+                                    <span class="checkbox-custom"></span>        
+                                </label>
+                              </div>
                             </td>
+
+                              @php
+                              $coord = $coordonnees->firstWhere('fournisseur_id', $fn->id);
+                          @endphp
+                          <td hidden>{{ $coord ? $coord->nomRegion : 'Non disponible' }}</td>
         
                             <td>
                                 <a href="{{ route('responsable.demandeFournisseurZoom', $fn->id) }}" class="btn btn-info">

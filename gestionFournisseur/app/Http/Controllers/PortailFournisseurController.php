@@ -98,6 +98,7 @@ class PortailFournisseurController extends Controller
         $numero2 = $this->formatPhoneNumber($fournisseur->coordonnees->numero2);
         $codePostal = $this->formatPostalCode($fournisseur->coordonnees->codePostal);
         $rbq = RBQLicence::where('fournisseur_id', $fournisseur->id)->first();
+        $AffichageLicence = $this->formatLicenceNumber($rbq->licenceRBQ);
         $categorie = Categorie::where('id', $rbq->idCategorie)->first();
         $unspscFournisseur = DB::table('unspsccodes')->where('fournisseur_id', $fournisseur->id)->get();
         $unspscCollection = collect();
@@ -117,7 +118,7 @@ class PortailFournisseurController extends Controller
         // }s
         //dd($unspscFournisseur);
         
-        return View('fournisseur.information', compact('fournisseur','rbq','categorie','unspscCollection','unspscFournisseur','numero','numero2','codePostal'));
+        return View('fournisseur.information', compact('fournisseur','AffichageLicence' ,'rbq','categorie','unspscCollection','unspscFournisseur','numero','numero2','codePostal'));
     }
 
 
@@ -727,6 +728,8 @@ class PortailFournisseurController extends Controller
     }
     }
 
+    
+
     public function editContact($id)
     {
         $contact = Contact::where('id', $id)->get()->firstOrFail();
@@ -1011,6 +1014,11 @@ class PortailFournisseurController extends Controller
         $neq = $fournisseur->neq;
 
 
+        $AffichageLicence = $this->formatLicenceNumber($rbq->licenceRBQ);
+
+
+
+
 
         $response = Http::withoutVerifying()->get('https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22Numero%20de%20licence%22,%20%22Statut%20de%20la%20licence%22,%20%22Categorie%22,%20%22Sous-categories%22,%20%22NEQ%22,%20%22Type%20de%20licence%22,%20%22Restriction%22%20FROM%20%2232f6ec46-85fd-45e9-945b-965d9235840a%22%20WHERE%20%22NEQ%22%20=%20%27' . $neq . '%27%20AND%20%22Categorie%22%20%3C%3E%20%27null%27');
         //$url = 'https://donneesquebec.ca/recherche/api/action/datastore_search_sql?sql=SELECT%20%22Numero%20de%20licence%22,%20%22Statut%20de%20la%20licence%22,%20%22Categorie%22,%20%22Sous-categories%22,%20%22Type%20de%20licence%22,%20%22Restriction%22%20FROM%20%2232f6ec46-85fd-45e9-945b-965d9235840a%22%20WHERE%20%22NEQ%22%20=%20%27' . $neqFournisseur . '%27%20AND%20%22Categorie%22%20%3C%3E%20%27null%27';
@@ -1037,8 +1045,11 @@ class PortailFournisseurController extends Controller
         }
 
 
-        return View('fournisseur.editRBQ', compact('rbq', 'codes', 'numRBQ', 'statutRBQ', 'typeLicence', 'categorie', 'sousCategories', 'restriction', 'rbqLicence'));
+        return View('fournisseur.editRBQ', compact('rbq', 'AffichageLicence' ,'codes', 'numRBQ', 'statutRBQ', 'typeLicence', 'categorie', 'sousCategories', 'restriction', 'rbqLicence'));
     }
+
+
+
 
 
     public function updateRBQ(RBQRequest $request, $id)
@@ -1453,5 +1464,18 @@ class PortailFournisseurController extends Controller
     {
         return substr($code, 0, 3) . ' ' . substr($code, 3);
     }
+
+
+    private function formatLicenceNumber($number)
+    {
+        if (empty($number)) 
+        {
+            return null;
+        }
+        return substr($number, 0, 4) . '-' . substr($number, 4, 4) . '-' . substr($number, 8);
+    }
+
+
+    
     
 }

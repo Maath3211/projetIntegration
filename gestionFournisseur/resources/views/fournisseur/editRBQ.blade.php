@@ -15,7 +15,7 @@
                         <div class="col-md-6">
                             <h5>Numéro de licence RBQ
                             </h5>
-                            <input type="text" value="{{  old('licenceRBQ', $rbq->licenceRBQ) }}" id="search-input" name="licenceRBQ" class="form-control" maxlength="12" placeholder="####-####-##">
+                            <input type="text" value="{{  old('licenceRBQ', $AffichageLicence) }}" id="search-input" name="licenceRBQ" class="form-control" maxlength="12" placeholder="####-####-##">
                             @error('licenceRBQ')
                             <span class="text-danger">{{ $message }}
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
