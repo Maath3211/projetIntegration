@@ -75,25 +75,23 @@
                 <div class="custom-box">
                     <h4>État de la demande</h4>
                     <p><span><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                class="bi bi-check-circle-fill info" viewBox="0 0 16 16">
-                                <path
-                                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
-                            </svg></span> {{ $fournisseur->statut }}
-                            
-                            @if ($fournisseur->statut == 'Désactivée')
-                            <form action="{{ route('fournisseur.storeActive', ['id' => $fournisseur->id]) }}" method="POST">
-                                @csrf
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-secondary">Réactiver le compte</button>
-                                </div>
-                            </form>
-                        @else
-                            <form action="{{ route('fournisseur.storeDesactive', ['id' => $fournisseur->id]) }}" method="POST">
-                                @csrf
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-secondary">Retirer le compte</button>
-                                </div>
-                            </form>
+                            class="bi bi-check-circle-fill info" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                        </svg></span> {{ $fournisseur->statut }}
+                        @if ($fournisseur->statut == 'Désactivée')
+                        <form action="{{ route('fournisseur.storeActive', ['id' => $fournisseur->id]) }}" method="POST">
+                            @csrf
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-secondary">Réactiver mon compte</button>
+                            </div>
+                        </form>
+                        @elseif ($fournisseur->statut != 'À réviser' && $fournisseur->statut != 'Refusée')
+                        <form action="{{ route('fournisseur.storeDesactive', ['id' => $fournisseur->id]) }}" method="POST">
+                            @csrf
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-secondary">Retirer mon compte</button>
+                            </div>
+                        </form>
                         @endif
 
                         @if ($fournisseur->statut == 'Refusée')

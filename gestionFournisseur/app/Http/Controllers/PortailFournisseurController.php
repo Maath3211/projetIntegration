@@ -196,7 +196,7 @@ class PortailFournisseurController extends Controller
             }
 
             $fournisseur = Fournisseur::where('id', $fournisseur->id)->firstOrFail();
-            $fournisseur->statut = 'Acceptée';
+            $fournisseur->statut = 'En attente';
             $fournisseur->dateStatut = Carbon::now();
             $fournisseur->save();
             $fournisseur->touch();

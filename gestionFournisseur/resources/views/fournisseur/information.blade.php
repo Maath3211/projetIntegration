@@ -45,7 +45,7 @@
                             <button type="submit" class="btn btn-secondary">Réactiver mon compte</button>
                         </div>
                     </form>
-                @else
+                    @elseif ($fournisseur->statut != 'À réviser' && $fournisseur->statut != 'Refusée')
                     <form action="{{ route('fournisseur.storeDesactive', ['id' => $fournisseur->id]) }}" method="POST">
                         @csrf
                         <div class="form-group">
