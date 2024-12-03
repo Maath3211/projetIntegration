@@ -35,6 +35,18 @@
     </div>
 </nav>
 </header>
+    @if (isset($errors) && $errors->any())
+    <div class="alert alert-danger">
+        @foreach ($errors->all() as $error)
+            <p>{{ $error }}</p>
+        @endforeach
+    </div>
+    @endif
+    @if (session('message'))
+        <div class="alert alert-success">
+            <p>{{ session('message') }}</p>
+        </div>
+    @endif
     <main>
         @yield('contenu')
     </main>

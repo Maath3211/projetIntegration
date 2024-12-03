@@ -1,6 +1,11 @@
 @extends('layouts.fournisseur')
 @section('title',"Page d'accueil")
 @section('contenu')
+    @if (session('message'))
+        <div class="alert alert-success">
+            <p>{{ session('message') }}</p>
+        </div>
+    @endif
 <div class="text-center">
     <h1 class="portail">Portail des fournisseurs</h1>
 </div>
