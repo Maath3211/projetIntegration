@@ -1313,7 +1313,7 @@ class PortailFournisseurController extends Controller
                         'trace' => $e->getTraceAsString()
                     ]);
                     if($responsable){
-                        return redirect()->route('responsable.demandeFournisseurZoom', [$contact->fournisseur_id])->withErrors(['error' => 'Erreur lors du téléversement du fichier: ' . $e->getMessage()]);
+                        return redirect()->route('responsable.demandeFournisseurZoom', [$id])->withErrors(['error' => 'Erreur lors du téléversement du fichier: ' . $e->getMessage()]);
                         }
                         else
                         {
@@ -1323,7 +1323,7 @@ class PortailFournisseurController extends Controller
             }
             
             if($responsable){
-                return redirect()->route('responsable.demandeFournisseurZoom', [$contact->fournisseur_id])->with('message', "Fichiers importés avec succès.");
+                return redirect()->route('responsable.demandeFournisseurZoom', [$id])->with('message', "Fichiers importés avec succès.");
                 }
                 else
                 {
@@ -1332,7 +1332,7 @@ class PortailFournisseurController extends Controller
         }
 
         if($responsable){
-            return redirect()->route('responsable.demandeFournisseurZoom', [$contact->fournisseur_id])->withErrors(['error' => 'Aucun fichier à importer']);
+            return redirect()->route('responsable.demandeFournisseurZoom', [$id])->withErrors(['error' => 'Aucun fichier à importer']);
             }
             else
             {
