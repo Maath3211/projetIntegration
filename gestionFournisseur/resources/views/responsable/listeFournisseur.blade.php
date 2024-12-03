@@ -112,7 +112,7 @@
       <div class="col-md-3 col-12 mb-3">
         <label for="products" class="form-label">Produits et services</label>
         <select id="unspsc" name="unspsc" class="form-select" multiple>
-          <option value="" selected>Aucun</option>
+          <option value="" selected>Aucun filtre</option>
           @foreach($unspsc as $supplierUnspscCollection)
           @foreach($supplierUnspscCollection as $des)
               <option>{{ $des->description }}</option>
@@ -125,7 +125,7 @@
       <div class="col-md-3 col-12 mb-3">
         <label for="categories" class="form-label">Catégories de travaux</label>
         <select id="rbq" name="rbq" class="form-select" multiple>
-          <option value="" selected>Aucun</option>
+          <option value="" selected>Aucun filtre</option>
         @foreach($codes as $code)
             <option>{{ $code->nom }}</option>
         @endforeach
@@ -136,7 +136,7 @@
       <div class="col-md-3 col-12 mb-3">
         <label for="regions" class="form-label">Régions administratives</label>
         <select id="regions" name="regions" class="form-select">
-          <option value="">Aucun</option>
+          <option value="">Aucun filtre</option>
           @foreach ($nomRegion as $coo)
           <option>{{ $coo }}</option>
           @endforeach
@@ -147,7 +147,7 @@
       <div class="col-md-3 col-12 mb-3">
         <label for="cities" class="form-label">Villes</label>
         <select class="form-control mt-4" id="villes" name="villes">
-            <option value="">Aucun</option>
+            <option value="">Aucun filtre</option>
             @foreach ($nomVille as $ville)
               <option>{{ $ville }}</option>
             @endforeach
