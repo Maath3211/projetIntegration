@@ -498,6 +498,9 @@ body.night-mode .profil{
 body.night-mode .filter-section{
   border-color: #fff;
 }
+body.night-mode .math{
+  color:black;
+}
 
   /*MEDIA*/
   

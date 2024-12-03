@@ -77,7 +77,7 @@
                             <li class="list-group-item">
                                 <div class="row">
                                     <div class="col-12 col-md-8 mb-2 mb-md-0 email">
-                                        <h5 class="mb-1">{{ $responsable->email }}</h5>
+                                        <h5 class="mb-1 math">{{ $responsable->email }}</h5>
                                     </div>
                                     <div class="col-12 col-md-4 divRole">
                                         <select id="selectRoles" class="form-control role-select" name="role">

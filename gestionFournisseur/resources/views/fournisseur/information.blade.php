@@ -25,12 +25,12 @@
     </ul>
 </li>
 @endsection
+@section('contenu')
 @if (session('message'))
 <div class="alert alert-success">
     <p>{{ session('message') }}</p>
 </div>
 @endif
-@section('contenu')
 <div class="text-center">
     <h1>INFORMATIONS</h1>
 </div>
@@ -95,7 +95,7 @@
             </div>
 
             <div class="custom-box">
-                <h4>Adresse</h4>
+                <h4>Coordonnées</h4>
                 <p>{{$fournisseur->coordonnees->noCivic}}, rue {{$fournisseur->coordonnees->rue}}, {{$fournisseur->coordonnees->bureau}}<br>{{$fournisseur->coordonnees->ville}} ({{$fournisseur->coordonnees->province}}) {{$codePostal}}</p>
                 <p><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-browser-edge info" viewBox="0 0 16 16">
                     <path d="M9.482 9.341c-.069.062-.17.153-.17.309 0 .162.107.325.3.456.877.613 2.521.54 2.592.538h.002c.667 0 1.32-.18 1.894-.519A3.84 3.84 0 0 0 16 6.819c.018-1.316-.44-2.218-.666-2.664l-.04-.08C13.963 1.487 11.106 0 8 0A8 8 0 0 0 .473 5.29C1.488 4.048 3.183 3.262 5 3.262c2.83 0 5.01 1.885 5.01 4.797h-.004v.002c0 .338-.168.832-.487 1.244l.006-.006z"/>
