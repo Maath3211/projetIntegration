@@ -77,6 +77,22 @@ Route::GET('/contact',
 Route::POST('/contact/store',
 [PortailFournisseurController::class,'storeContact'])->name('fournisseur.storeContact');
 
+#Contact page informations
+Route::delete('/contact/supprimer/{id}',
+[PortailFournisseurController::class, 'deleteContact'])->name('fournisseur.deleteContact');
+
+Route::GET('/contact/editContact/{id}',
+[PortailFournisseurController::class, 'editContact'])->name('fournisseur.editContact');
+
+Route::POST('/contact/updateContact/{id}',
+[PortailFournisseurController::class, 'updateContact'])->name('fournisseur.updateContact');
+
+Route::GET('/contact/addContact/{id}',
+[PortailFournisseurController::class, 'addContactCreer'])->name('fournisseur.addContactCreer');
+
+Route::POST('/contact/storeContactCreer/{id}',
+[PortailFournisseurController::class, 'storeContactCreer'])->name('fournisseur.storeContactCreer');
+
 # InscriptionUNSPSC
 Route::GET('/UNSPSC',
 [PortailFournisseurController::class,'UNSPSC'])->name('fournisseur.UNSPSC');
@@ -142,27 +158,12 @@ Route::GET('/information',
 
 # Retirer la fiche fournisseur
 Route::POST('/information/desactive/{id}',
-[PortailFournisseurController::class,'storeDesactive'])->name('fournisseur.storeDesactive')->middleware('fournisseur');
+[PortailFournisseurController::class,'storeDesactive'])->name('fournisseur.storeDesactive');
 
 # Activer la fiche fournisseur
 Route::POST('/information/active/{id}',
-[PortailFournisseurController::class,'storeActive'])->name('fournisseur.storeActive')->middleware('fournisseur');
+[PortailFournisseurController::class,'storeActive'])->name('fournisseur.storeActive');
 
-#Contact page informations
-Route::delete('/contact/supprimer/{id}',
-[PortailFournisseurController::class, 'deleteContact'])->name('fournisseur.deleteContact')->middleware('fournisseur');
-
-Route::GET('/contact/editContact/{id}',
-[PortailFournisseurController::class, 'editContact'])->name('fournisseur.editContact')->middleware('fournisseur');
-
-Route::POST('/contact/updateContact/{id}',
-[PortailFournisseurController::class, 'updateContact'])->name('fournisseur.updateContact')->middleware('fournisseur');
-
-Route::GET('/contact/addContact/{id}',
-[PortailFournisseurController::class, 'addContactCreer'])->name('fournisseur.addContactCreer')->middleware('fournisseur');
-
-Route::POST('/contact/storeContactCreer/{id}',
-[PortailFournisseurController::class, 'storeContactCreer'])->name('fournisseur.storeContactCreer')->middleware('fournisseur');
 
 
 
@@ -189,7 +190,7 @@ Route::POST('/connexion/responsable/email',
 
 # Logout
 Route::POST('/admin/logout',
-[AdminController::class,'logout'])->name('admin.logout')->middleware('check.role:Commis,Gestionnaie,Administrateur');
+[AdminController::class,'logout'])->name('admin.logout')->middleware('check.role:Commis,Gestionnaire,Administrateur');
 
 # Gestion des roles
 
@@ -223,21 +224,21 @@ Route::get('/responsable/fournisseurs/details',
 # Demande de fournisseur
 # TODO: Supprimer si view n'existe plus
 Route::GET('/responsable/demandeFournisseur',
-[AdminController::class,'demandeFournisseurView'])->name('responsable.demandeFournisseur')->middleware('check.role:Commis,Gestionnaie,Administrateur');
+[AdminController::class,'demandeFournisseurView'])->name('responsable.demandeFournisseur')->middleware('check.role:Commis,Gestionnaire,Administrateur');
 
 # Gestion des status
 Route::GET('/responsable/demandeFournisseur/{fournisseur}',
-[AdminController::class,'demandeFournisseurZoom'])->name('responsable.demandeFournisseurZoom')->middleware('check.role:Commis,Gestionnaie,Administrateur');
+[AdminController::class,'demandeFournisseurZoom'])->name('responsable.demandeFournisseurZoom')->middleware('check.role:Commis,Gestionnaire,Administrateur');
 
 Route::POST('/responsable/demandeFournisseur/{fournisseur}/accepter',
-[AdminController::class, 'accepterFournisseur'])->name('responsable.accepterFournisseur')->middleware('check.role:Gestionnaie,Administrateur');
+[AdminController::class, 'accepterFournisseur'])->name('responsable.accepterFournisseur')->middleware('check.role:Gestionnaire,Administrateur');
 
 Route::POST('/responsable/demandeFournisseur/{fournisseur}/refuser',
-[AdminController::class, 'refuserFournisseur'])->name('responsable.refuserFournisseur')->middleware('check.role:Gestionnaie,Administrateur');
+[AdminController::class, 'refuserFournisseur'])->name('responsable.refuserFournisseur')->middleware('check.role:Gestionnaire,Administrateur');
 
 # Téléchargement des fichiers
 Route::GET('/responsable/demandeFournisseur/{fournisseur}/fichier/{idFichier}',
-[AdminController::class, 'telechargerFichier'])->name('responsable.telechargerFichier')->middleware('check.role:Commis,Gestionnaie,Administrateur');
+[AdminController::class, 'telechargerFichier'])->name('responsable.telechargerFichier')->middleware('check.role:Commis,Gestionnaire,Administrateur');
 
 
 # Modele de courriel
@@ -260,5 +261,5 @@ Route::POST('/responsable/deleteModelCourriel',
 
 
 # Exportation
-Route::get('/export-csv', [AdminController::class, 'exportCsv'])->name('export.csv')->middleware('check.role:Commis,Gestionnaie,Administrateur');
+Route::get('/export-csv', [AdminController::class, 'exportCsv'])->name('export.csv')->middleware('check.role:Commis,Gestionnaire,Administrateur');
 
