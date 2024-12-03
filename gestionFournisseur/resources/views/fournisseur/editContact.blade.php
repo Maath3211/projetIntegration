@@ -1,9 +1,10 @@
 @extends('layouts.fournisseur')
 @section('title',"MOD Contacts")
+
+@section('contenu')
 <div class="text-center">
     <h1>Mise à jour ( CONTACT )</h1>
 </div>
-@section('contenu')
 <form action="{{ route('fournisseur.updateContact', $contact->id) }}" method="POST" id="form1">
     @csrf
     <div class="container-fluid bordure">
