@@ -18,7 +18,7 @@
 <nav class="navbar d-flex navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="/" alt="Accueil du site" title="Accueil du site">
+            <a class="navbar-brand" href="{{ route('fournisseur.information') }}" alt="Accueil du site" title="Accueil du site">
                 <span class="brand-uni uni">uni</span><span class="brand-v3r uni">.v3r.net</span>
             </a>
             <button class="night-mode-toggle" onclick="toggleNightMode()">
@@ -34,20 +34,6 @@
     </div>
 </nav>
 </header>
-
-    @if (isset($errors) && $errors->any())
-    <div class="alert alert-danger">
-        @foreach ($errors->all() as $error)
-            <p>{{ $error }}</p>
-        @endforeach
-    </div>
-    @endif
-    @if (session('message'))
-        <div class="alert alert-success">
-            <p>{{ session('message') }}</p>
-        </div>
-    @endif
-
     <main>
         @yield('contenu')
     </main>
@@ -71,7 +57,7 @@
 		<div>
             <div>
                 <aside>
-                    <a href="/" alt="Accueil du site" title="Accueil du site">
+                    <a href="{{ route('fournisseur.information') }}" alt="Accueil du site" title="Accueil du site">
                         <img src="{{asset('images/logo-v3r-v2.svg')}}" alt="logoV3R" id="logoV3RFooter" class="img-fluid ville">  
                     </a>
                 </aside>

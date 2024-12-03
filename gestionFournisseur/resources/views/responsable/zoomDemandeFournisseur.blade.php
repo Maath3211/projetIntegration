@@ -1,6 +1,6 @@
 @role(['Commis', 'Gestionnaire', 'Administrateur'])
 
-@extends('layouts.fournisseur')
+@extends('layouts.layoutAdmin')
 @section('title', 'Informations')
 @section('navbar')
 <li class="nav-item dropdown">

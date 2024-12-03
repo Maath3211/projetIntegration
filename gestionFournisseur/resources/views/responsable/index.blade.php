@@ -1,4 +1,4 @@
-@extends('layouts.fournisseur')
+@extends('layouts.layoutAdmin')
 @section('title',"Accueil")
 @section('contenu')
 <div class="text-center">

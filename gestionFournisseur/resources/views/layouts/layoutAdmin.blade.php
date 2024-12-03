@@ -12,13 +12,13 @@
 </head>
 <body>
 <header>
-<a href="/" alt="Accueil du site" title="Accueil du site">
+<a href="{{ route('responsable.listeFournisseur') }}" alt="Accueil du site" title="Accueil du site">
     <img src="{{asset('images/logo-v3r-v2.svg')}}" alt="logoV3R" id="logoV3R" class="img-fluid ville">
 </a>
 <nav class="navbar d-flex navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="/" alt="Accueil du site" title="Accueil du site">
+            <a class="navbar-brand" href="{{ route('responsable.listeFournisseur') }}" alt="Accueil du site" title="Accueil du site">
                 <span class="brand-uni uni">uni</span><span class="brand-v3r uni">.v3r.net</span>
             </a>
             <button class="night-mode-toggle" onclick="toggleNightMode()">
@@ -69,7 +69,7 @@
 		<div>
             <div>
                 <aside>
-                    <a href="/" alt="Accueil du site" title="Accueil du site">
+                    <a href="{{ route('responsable.listeFournisseur') }}" alt="Accueil du site" title="Accueil du site">
                         <img src="{{asset('images/logo-v3r-v2.svg')}}" alt="logoV3R" id="logoV3RFooter" class="img-fluid ville">  
                     </a>
                 </aside>
