@@ -109,7 +109,7 @@
 
     <!-- Product and services section -->
     <div class="filter-section row">
-      <div class="col-md-3 col-12 mb-3">
+      <div class="col-md-4 col-12 mb-3">
         <label for="products" class="form-label">Produits et services</label>
         <select id="unspsc" name="unspsc" class="form-select" multiple>
           <option value="" selected>Aucun filtre</option>
@@ -122,7 +122,7 @@
       </div>
 
       <!-- Categories section -->
-      <div class="col-md-3 col-12 mb-3">
+      <div class="col-md-4 col-12 mb-3">
         <label for="categories" class="form-label">Catégories de travaux</label>
         <select id="rbq" name="rbq" class="form-select" multiple>
           <option value="" selected>Aucun filtre</option>
@@ -133,7 +133,7 @@
       </div>
 
       <!-- Administrative regions section -->
-      <div class="col-md-3 col-12 mb-3">
+      <div class="col-md-3 col-12 mb-3" hidden>
         <label for="regions" class="form-label">Régions administratives</label>
         <select id="regions" name="regions" class="form-select">
           <option value="">Aucun filtre</option>
@@ -144,7 +144,7 @@
       </div>
 
       <!-- Cities section -->
-      <div class="col-md-3 col-12 mb-3">
+      <div class="col-md-4 col-12 mb-3">
         <label for="cities" class="form-label">Villes</label>
         <select class="form-control mt-4" id="villes" name="villes">
             <option value="">Aucun filtre</option>
