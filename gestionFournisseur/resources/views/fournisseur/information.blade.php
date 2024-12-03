@@ -155,7 +155,7 @@
                                         <li>
                                             <p>{{ $contact->prenom }} {{ $contact->nom }}</p>
                                             <p>{{ $contact->fonction }}</p>
-                                            <p><a href="mailto:{{ $contact->courriel }}">{{ $contact->courriel }}</a></p>
+                                            <p><a class="msgCour" href="mailto:{{ $contact->courriel }}">{{ $contact->courriel }}</a></p>
                                             <p>{{ $contact->typeTelephone }}:
                                                 {{ substr($contact->telephone, 0, 3) . '-' . substr($contact->telephone, 3, 3) . '-' . substr($contact->telephone, 6) }}
                                                 {{ $contact->poste ? 'ext ' . $contact->poste : '' }}
