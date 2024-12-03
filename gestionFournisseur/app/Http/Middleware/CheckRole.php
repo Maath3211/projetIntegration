@@ -26,7 +26,9 @@ class CheckRole
         if (($fournisseur && in_array('fournisseur', $roles) || (Auth::guard('responsables')->check() && in_array($user->role, $roles)))) {
             return $next($request);
         }
-
-        return redirect()->route('fournisseur.index');
+        if(in_array('fournisseur', $roles))
+            return redirect()->route('fournisseur.index');
+        else
+            return redirect()->route('responsable.index');
     }
 }

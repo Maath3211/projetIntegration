@@ -223,10 +223,6 @@ Route::get('/responsable/fournisseurs/details',
 
 
 # Demande de fournisseur
-# TODO: Supprimer si view n'existe plus
-Route::GET('/responsable/demandeFournisseur',
-[AdminController::class,'demandeFournisseurView'])->name('responsable.demandeFournisseur')->middleware('check.role:Commis,Gestionnaire,Administrateur');
-
 # Gestion des status
 Route::GET('/responsable/demandeFournisseur/{fournisseur}',
 [AdminController::class,'demandeFournisseurZoom'])->name('responsable.demandeFournisseurZoom')->middleware('check.role:Commis,Gestionnaire,Administrateur');
