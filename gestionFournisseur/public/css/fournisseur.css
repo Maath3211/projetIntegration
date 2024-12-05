@@ -514,6 +514,12 @@ body.night-mode .math{
   color:black;
 }
 
+.msgErreur{
+  font-size:30px;
+  font-weight: 700;
+}
+
+
   /*MEDIA*/
   
 @media (min-width: 1001px) {

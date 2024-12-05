@@ -97,7 +97,10 @@
           </span>
           @enderror
         </div> 
-      </div> 
+      </div>
+      <p>*Le mot de passe doit contenir entre 7 à 12 caractères.
+        Il doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spéciaux.
+        </p>
       <div class="d-flex row justify-content-center">
         <div class="form-group">
           <button type="submit" class="btn btn-secondary">Suivant</button>

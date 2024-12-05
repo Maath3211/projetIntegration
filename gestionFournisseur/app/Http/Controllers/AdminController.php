@@ -311,13 +311,6 @@ class AdminController extends Controller
 
     }
 
-    // TODO: supprimer si view n'existe plus
-    public function demandeFournisseurView()
-    {
-
-        $fnAttentes = Fournisseur::where('statut', 'En attente')->get();
-        return view('responsable.111demandeFournisseur', compact('fnAttentes'));
-    }
 
     public function demandeFournisseurZoom($fournisseur)
     {
@@ -364,7 +357,7 @@ class AdminController extends Controller
             $fournisseur->raisonRefus = null;
             $fournisseur->save();
 
-            return redirect()->route('responsable.demandeFournisseur')->with('message', "Enregistré!");
+            return redirect()->route('responsable.listeFournisseur')->with('message', "Enregistré!");
         } catch (\Throwable $e) {
             Log::debug($e);
             return Redirect::back()->withErrors(['Erreur interne']);

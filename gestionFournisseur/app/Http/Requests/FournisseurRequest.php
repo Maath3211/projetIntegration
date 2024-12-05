@@ -59,7 +59,7 @@ class FournisseurRequest extends FormRequest
             'password.required' => 'Le mot de passe est requis.',
             'password.min' => 'Le mot de passe doit contenir au moins 7 caractères.',
             'password.max' => 'Le mot de passe ne peut pas dépasser 12 caractères.',
-            'password.regex' => 'Le mot de passe doit contenir au moin une majuscules, une minuscules, un chiffre et un caractères spéciaux',
+            'password.regex' => 'Le mot de passe doit contenir au moin une majuscule, une minuscule, un chiffre et un caractère spéciaux',
             'password.confirmed' => 'Les mots de passe ne correspondent pas.',
         ];
     }

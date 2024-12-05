@@ -25,7 +25,9 @@
     <fieldset class="border p-3">
       <div class="d-flex row justify-content-center">
         <div class="form-group">
-          <label for="neq" class="titreForm">Numéro d'entreprise (NEQ)</label>
+          <label for="neq" class="titreForm">Numéro d'entreprise (NEQ)
+            <small class="text-danger">*</small>
+          </label>
           <input type="text" class="form-control" maxlength="10" pattern="\d*" inputmode="numeric" id="neq" placeholder="Numéro d'entreprise (NEQ)" name="neq">
           <a href="{{route('fournisseur.identification')}}" class="link-right">Pas de NEQ?</a>
           @error('neq')

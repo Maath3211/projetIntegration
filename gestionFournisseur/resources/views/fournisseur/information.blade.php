@@ -28,7 +28,7 @@
 @section('contenu')
 @if (session('message'))
 <div class="alert alert-success">
-    <p>{{ session('message') }}</p>
+    <p class="text-center msgErreur">{{ session('message') }}</p>
 </div>
 @endif
 <div class="text-center">
