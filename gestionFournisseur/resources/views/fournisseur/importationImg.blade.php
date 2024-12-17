@@ -21,7 +21,7 @@
 </div>
 <form action="{{ route('fournisseur.storeImportation') }}" method="POST" enctype="multipart/form-data">
     @csrf
-    @method("patch")
+    @method('PATCH')
     <div class="container-fluid bordure">
         <fieldset class="border p-3">
             <legend>Importation de fichiers</legend>
@@ -42,14 +42,13 @@
                 </div>
             </div>
             <div class="d-flex row justify-content-center">
-                <div class="form-group row" class="titreForm">
-                    <label for="imageID" class="custom-file-upload">Aucun fichier importé</label>
+                <div class="form-group row">
+                    <label for="imageID" class="custom-file-upload text-muted">Les fichiers doivent être sélectionner en même temps en appuyant sur CTRL</label>
                 </div>
             </div>
             <div class="d-flex row justify-content-center">
                 <div class="form-group">
                     <button type="submit" name="action" value="save" class="btn btn-secondary">Enregistrer</button>
-                    {{-- <button type="submit" name="action" value="add_more" class="btn btn-secondary">Enregistrer et ajouter d'autres</button> --}}
                 </div>
             </div>
         </fieldset>

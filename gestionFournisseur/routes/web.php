@@ -84,6 +84,12 @@ Route::delete('/contact/supprimer/{id}',
 Route::GET('/contact/editContact/{id}',
 [PortailFournisseurController::class, 'editContact'])->name('fournisseur.editContact')->middleware('check.role:fournisseur,Responsable,Administrateur');
 
+Route::GET('/contact/editContactRevision/{id}',
+[PortailFournisseurController::class, 'editContactRevision'])->name('fournisseur.editContactRevision');
+
+Route::POST('/contact/updateContactRevision/{id}',
+[PortailFournisseurController::class, 'updateContactRevision'])->name('fournisseur.updateContactRevision');
+
 Route::POST('/contact/updateContact/{id}',
 [PortailFournisseurController::class, 'updateContact'])->name('fournisseur.updateContact')->middleware('check.role:fournisseur,Responsable,Administrateur');
 
@@ -149,8 +155,11 @@ Route::GET('/finances/edit/{id}',
 Route::POST('/finances/update/{id}',
 [PortailFournisseurController::class,'updateFinances'])->name('fournisseur.finances.update')->middleware('check.role:fournisseur,Responsable,Administrateur');
 
+Route::GET('/verification',
+[PortailFournisseurController::class,'verification'])->name('fournisseur.verification');
 
-
+Route::DELETE('/contact/deleteSession/{id}',
+[PortailFournisseurController::class,'suppContactSession'])->name('fournisseur.suppContactSession');
 
 
 # Information du fournisseur

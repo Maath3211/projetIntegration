@@ -517,6 +517,7 @@
                         </a>
                         </p>
                     @endforeach
+                    @role(['Gestionnaire', 'Administrateur'])
                     <div class="form-group">
                         <a href="{{ route('fournisseur.importation.edit', $fournisseur->id) }}"
                             class="btn btn-secondary">
@@ -529,6 +530,7 @@
                             Ajouter un nouveau fichier
                         </a>
                     </div>
+                    @endrole
                 </div>
             @else
                 <div class="custom-box">
